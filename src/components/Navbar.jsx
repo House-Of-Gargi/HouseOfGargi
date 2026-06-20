@@ -48,24 +48,28 @@ export default function Navbar() {
         </div>
       </nav>
 
+      {/* Mobile drawer overlay */}
+      <div 
+        className={`mobile-drawer-overlay ${mobileOpen ? 'mobile-drawer-overlay--open' : ''}`} 
+        onClick={() => setMobileOpen(false)} 
+      />
+
       {/* Mobile drawer */}
-      {mobileOpen && (
-        <div className="mobile-drawer">
-          <div className="mobile-drawer__header">
-            <Link to="/" className="navbar__logo" style={{ color: 'var(--ink-brown)' }} onClick={() => setMobileOpen(false)}>House of Gargi</Link>
-            <button className="mobile-drawer__close" onClick={() => setMobileOpen(false)} aria-label="Close menu">
-              <CloseIcon size={28} />
-            </button>
-          </div>
-          <div className="mobile-drawer__links">
-            <Link to="/category/sarees" className="nav-label">Sarees</Link>
-            <Link to="/category/lehengas" className="nav-label">Lehengas</Link>
-            <Link to="/category/kurta-sets" className="nav-label">Kurta Sets</Link>
-            <Link to="/category/accessories" className="nav-label">Accessories</Link>
-            <Link to="/our-story" className="nav-label">Our Story</Link>
-          </div>
+      <div className={`mobile-drawer ${mobileOpen ? 'mobile-drawer--open' : ''}`}>
+        <div className="mobile-drawer__header">
+          <Link to="/" className="navbar__logo" style={{ color: 'var(--ink-brown)' }} onClick={() => setMobileOpen(false)}>House of Gargi</Link>
+          <button className="mobile-drawer__close" onClick={() => setMobileOpen(false)} aria-label="Close menu">
+            <CloseIcon size={28} />
+          </button>
         </div>
-      )}
+        <div className="mobile-drawer__links">
+          <Link to="/category/sarees" className="nav-label" onClick={() => setMobileOpen(false)}>Sarees</Link>
+          <Link to="/category/lehengas" className="nav-label" onClick={() => setMobileOpen(false)}>Lehengas</Link>
+          <Link to="/category/kurta-sets" className="nav-label" onClick={() => setMobileOpen(false)}>Kurta Sets</Link>
+          <Link to="/category/accessories" className="nav-label" onClick={() => setMobileOpen(false)}>Accessories</Link>
+          <Link to="/our-story" className="nav-label" onClick={() => setMobileOpen(false)}>Our Story</Link>
+        </div>
+      </div>
     </>
   );
 }
