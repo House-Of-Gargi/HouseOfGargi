@@ -44,7 +44,7 @@ html {
 body {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.7;
   color: var(--ink-brown);
   background: var(--ivory-silk);
@@ -76,18 +76,18 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 400;
-  font-size: clamp(15px, 2vw, 18px);
+  font-size: clamp(18px, 2.5vw, 22px);
 }
 
 .nav-label {
   font-family: var(--font-nav);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
 .caption {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--stone-taupe);
   line-height: 1.5;
 }
@@ -119,7 +119,7 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
   gap: 8px;
   padding: 14px 36px;
   font-family: var(--font-nav);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   border: 1.5px solid transparent;
@@ -221,7 +221,7 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
   overflow: hidden;
 }
 .product-card__artisan {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--stone-taupe);
   font-style: italic;
   margin-bottom: 8px;
@@ -355,7 +355,7 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
 }
 .navbar__links a {
   font-family: var(--font-nav);
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-brown);
@@ -445,7 +445,7 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
   padding: 24px 0;
   border-bottom: 1px solid var(--soft-gold-line);
   color: var(--ink-brown);
-  font-size: 14px;
+  font-size: 16px;
 }
 
 /* ── 10. Footer (§8.8) ────────────────────────────────────── */
@@ -553,7 +553,7 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
 }
 .filter-bar select {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 16px;
   color: var(--ink-brown);
   background: transparent;
   border: 1px solid var(--soft-gold-line);
@@ -573,7 +573,7 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
 }
 .filter-bar__label {
   font-family: var(--font-nav);
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--stone-taupe);
@@ -643,12 +643,14 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
 .hero__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    105deg,
-    rgba(43, 31, 24, 0.6) 0%,
-    rgba(43, 31, 24, 0.2) 50%,
-    transparent 70%
-  );
+  background: 
+    linear-gradient(to bottom, rgba(43,31,24,0.5) 0%, transparent 30%),
+    linear-gradient(
+      105deg,
+      rgba(43, 31, 24, 0.6) 0%,
+      rgba(43, 31, 24, 0.2) 50%,
+      transparent 70%
+    );
 }
 .hero__content {
   position: relative;
@@ -670,7 +672,7 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
 .hero__subtitle {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: clamp(16px, 2vw, 20px);
+  font-size: clamp(18px, 2.5vw, 24px);
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 36px;
   max-width: 420px;
@@ -814,7 +816,9 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(43,31,24,0.6) 0%, transparent 70%);
+  background: 
+    linear-gradient(to bottom, rgba(43,31,24,0.5) 0%, transparent 30%),
+    linear-gradient(to top, rgba(43,31,24,0.6) 0%, transparent 70%);
 }
 .category-banner__content {
   position: relative;
@@ -832,7 +836,7 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
   color: rgba(255,255,255,0.85);
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 18px;
+  font-size: clamp(18px, 2.5vw, 22px);
 }
 
 /* ── 21. PDP (§10) ────────────────────────────────────────── */
@@ -911,7 +915,7 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
 .pdp__artisan-note span {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 15px;
+  font-size: 18px;
   color: var(--ink-brown);
 }
 .pdp__size-selector {
