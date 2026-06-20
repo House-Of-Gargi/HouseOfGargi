@@ -35,11 +35,17 @@ export default function Category() {
 
   return (
     <>
-      {/* Banner */}
       <div className="category-banner">
         <img src={category.bannerImage || category.image} alt={category.name} />
         <div className="category-banner__content">
-          <h1>{category.name}</h1>
+          <h1>
+            {category.name}{' '}
+            {category.pronunciation && (
+              <span className="pronunciation" style={{ fontSize: '0.5em', opacity: 0.8, fontStyle: 'italic', fontWeight: '400' }}>
+                ({category.pronunciation})
+              </span>
+            )}
+          </h1>
           <p>{category.tagline}</p>
         </div>
       </div>
