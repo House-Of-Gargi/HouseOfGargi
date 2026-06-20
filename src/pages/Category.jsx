@@ -39,14 +39,7 @@ export default function Category() {
       <div className="category-banner">
         <img src={category.bannerImage || category.image} alt={category.name} />
         <div className="category-banner__content">
-          <h1>
-            {category.name}
-            {category.pronunciation && (
-              <span style={{ fontSize: '0.45em', color: 'rgba(255,255,255,0.7)', verticalAlign: 'middle', fontWeight: '400', letterSpacing: 'normal', fontStyle: 'italic', marginLeft: '12px' }}>
-                ({category.pronunciation})
-              </span>
-            )}
-          </h1>
+          <h1>{category.name}</h1>
           <p>{category.tagline}</p>
         </div>
       </div>
