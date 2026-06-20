@@ -17,7 +17,8 @@ export default function Navbar() {
     setMobileOpen(false);
   }, [location.pathname]);
 
-  const cls = `navbar ${scrolled ? 'navbar--scrolled' : 'navbar--hero'}`;
+  const isProductPage = location.pathname.startsWith('/product');
+  const cls = `navbar ${(scrolled || isProductPage) ? 'navbar--scrolled' : 'navbar--hero'}`;
 
   return (
     <>
