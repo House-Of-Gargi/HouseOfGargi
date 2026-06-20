@@ -4,12 +4,20 @@ import ScrollReveal from '../components/ScrollReveal';
 import ProductCard from '../components/ProductCard';
 import { getProduct, getRelatedProducts, formatPrice, categories } from '../data/products';
 import { DiyaIcon, WishlistIcon, PlusIcon, MinusIcon } from '../components/Icons';
+import useSEO from '../hooks/useSEO';
 
 export default function ProductDetail() {
   const { id } = useParams();
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState('');
   const [careOpen, setCareOpen] = useState(false);
+
+  const product = getProduct(id);
+  
+  useSEO({
+    title: product ? product.name : 'Product',
+    description: product ? product.description : ''
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -18,7 +26,6 @@ export default function ProductDetail() {
     setCareOpen(false);
   }, [id]);
 
-  const product = getProduct(id);
   if (!product) return <div className="section container"><h2>Product not found.</h2></div>;
 
   const related = getRelatedProducts(id, 4);

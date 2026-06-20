@@ -3,12 +3,14 @@ import ScrollReveal from '../components/ScrollReveal';
 import ProductCard from '../components/ProductCard';
 import { categories, products, featuredProductIds } from '../data/products';
 import { DiyaIcon, ArrowRightIcon, LotusIcon } from '../components/Icons';
+import useSEO from '../hooks/useSEO';
 
 import heroImg from '../assets/hero-desktop.png';
 import artisanImg from '../assets/artisan-hands.png';
 import craftBannerImg from '../assets/craft-story-banner.png';
 
 export default function Home() {
+  useSEO({ title: 'Home' });
   const featured = featuredProductIds.map(id => products.find(p => p.id === id)).filter(Boolean);
 
   return (

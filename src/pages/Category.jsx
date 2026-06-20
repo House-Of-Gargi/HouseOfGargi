@@ -4,12 +4,19 @@ import ScrollReveal from '../components/ScrollReveal';
 import ProductCard from '../components/ProductCard';
 import { getCategory, getProductsByCategory, categories } from '../data/products';
 import { DiyaIcon, ArrowRightIcon } from '../components/Icons';
+import useSEO from '../hooks/useSEO';
 
 export default function Category() {
   const { id } = useParams();
   const [fabric, setFabric] = useState('');
   const [occasion, setOccasion] = useState('');
   const [sort, setSort] = useState('');
+
+  const category = getCategory(id);
+  useSEO({ 
+    title: category ? category.name : 'Category',
+    description: category ? category.tagline : '' 
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -18,7 +25,6 @@ export default function Category() {
     setSort('');
   }, [id]);
 
-  const category = getCategory(id);
   if (!category) return <div className="section container"><h2>Category not found.</h2></div>;
 
   let items = getProductsByCategory(id);

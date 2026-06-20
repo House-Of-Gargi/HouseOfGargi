@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react';
 import ScrollReveal from '../components/ScrollReveal';
+import useSEO from '../hooks/useSEO';
 
 export default function Bespoke() {
+  useSEO({ 
+    title: 'Custom Commission', 
+    description: 'Commission a custom, handcrafted royal outfit from House of Gargi. Pure silk, hand embroidery, bespoke measurements.' 
+  });
+
   const [formData, setFormData] = useState({
     name: '',
     category: 'Sarees',
