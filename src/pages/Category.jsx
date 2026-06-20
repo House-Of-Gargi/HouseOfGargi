@@ -37,7 +37,7 @@ export default function Category() {
     <>
       {/* Banner */}
       <div className="category-banner">
-        <img src={category.image} alt={category.name} />
+        <img src={category.bannerImage || category.image} alt={category.name} />
         <div className="category-banner__content">
           <h1>{category.name}</h1>
           <p>{category.tagline}</p>

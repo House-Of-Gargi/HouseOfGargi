@@ -6,24 +6,28 @@ export const categories = [
     name: 'Sarees',
     tagline: 'Handwoven across the looms of Banaras and Kanchipuram.',
     image: '/src/assets/category-sarees.png',
+    bannerImage: '/src/assets/banner-sarees-wide.png',
   },
   {
     id: 'lehengas',
     name: 'Lehengas',
     tagline: 'Bridal silhouettes embroidered with centuries of tradition.',
     image: '/src/assets/category-lehengas.png',
+    bannerImage: '/src/assets/banner-lehengas-wide.png',
   },
   {
     id: 'kurta-sets',
     name: 'Kurta Sets',
     tagline: 'Block-printed cottons and silks for everyday grace.',
     image: '/src/assets/category-kurtas.png',
+    bannerImage: '/src/assets/banner-kurtas-wide.png',
   },
   {
     id: 'accessories',
     name: 'Accessories',
     tagline: 'Jadau, kundan, and heritage jewellery to complete the look.',
     image: '/src/assets/category-accessories.png',
+    bannerImage: '/src/assets/banner-accessories-wide.png',
   },
 ];
 
