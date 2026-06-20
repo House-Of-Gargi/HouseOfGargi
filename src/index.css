@@ -180,16 +180,8 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
 
 /* ── 7. Cards (§11) ───────────────────────────────────────── */
 .product-card {
-  background: var(--pure-white);
-  border: 1px solid var(--soft-gold-line);
-  border-radius: 2px;
-  overflow: hidden;
-  transition: box-shadow 300ms ease, border-color 300ms ease;
+  display: block;
   position: relative;
-}
-.product-card:hover {
-  box-shadow: 0 4px 24px rgba(43, 31, 24, 0.08);
-  border-color: var(--gargi-gold);
 }
 .product-card__image-wrap {
   aspect-ratio: 4/5;
@@ -206,7 +198,7 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
   transform: scale(1.05);
 }
 .product-card__body {
-  padding: 16px 20px 20px;
+  padding: 16px 0 0 0;
 }
 .product-card__name {
   font-family: var(--font-display);
@@ -1012,6 +1004,19 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
   .navbar__inner { padding: 0 16px; }
   .navbar__icons { gap: 8px; }
   .navbar__logo { font-size: 20px; }
+
+  .filter-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .filter-bar__label {
+    grid-column: 1 / -1;
+    margin-bottom: 4px;
+  }
+  .filter-bar select {
+    width: 100%;
+  }
 
   .product-grid, .related-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
   .category-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
