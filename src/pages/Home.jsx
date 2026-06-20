@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import ScrollReveal from '../components/ScrollReveal';
 import ProductCard from '../components/ProductCard';
-import { categories, products, featuredProductIds, formatPrice } from '../data/products';
+import { categories, products, featuredProductIds } from '../data/products';
+import { DiyaIcon, ArrowRightIcon, LotusIcon } from '../components/Icons';
 
 import heroImg from '../assets/hero-desktop.png';
 import artisanImg from '../assets/artisan-hands.png';
@@ -27,29 +28,27 @@ export default function Home() {
 
       {/* ═══════ 2. VISION STRIP ═══════ */}
       <section className="section section--ivory">
-        <div className="container">
-          <ScrollReveal>
-            <div className="vision-strip">
-              <div className="vision-strip__item">
-                <div className="vision-strip__icon">✦</div>
-                <div className="vision-strip__title">Handmade</div>
-                <div className="vision-strip__text">Every piece crafted entirely by artisan hands</div>
-              </div>
-              <div className="vision-strip__divider" />
-              <div className="vision-strip__item">
-                <div className="vision-strip__icon">🪔</div>
-                <div className="vision-strip__title">Traditional Craft</div>
-                <div className="vision-strip__text">Techniques passed down through generations</div>
-              </div>
-              <div className="vision-strip__divider" />
-              <div className="vision-strip__item">
-                <div className="vision-strip__icon">❋</div>
-                <div className="vision-strip__title">Modern Elegance</div>
-                <div className="vision-strip__text">Heritage silhouettes for the contemporary woman</div>
-              </div>
+        <ScrollReveal>
+          <div className="container vision-strip">
+            <div className="vision-strip__item">
+              <div className="vision-strip__icon"><LotusIcon size={32} /></div>
+              <h3 className="vision-strip__title">Handmade</h3>
+              <p className="vision-strip__text">Crafted by master artisans</p>
             </div>
-          </ScrollReveal>
-        </div>
+            <div className="vision-strip__divider" />
+            <div className="vision-strip__item">
+              <div className="vision-strip__icon"><DiyaIcon size={32} /></div>
+              <h3 className="vision-strip__title">Heritage</h3>
+              <p className="vision-strip__text">Rooted in ancient tradition</p>
+            </div>
+            <div className="vision-strip__divider" />
+            <div className="vision-strip__item">
+              <div className="vision-strip__icon"><LotusIcon size={32} /></div>
+              <h3 className="vision-strip__title">Elegance</h3>
+              <p className="vision-strip__text">Designed for the modern era</p>
+            </div>
+          </div>
+        </ScrollReveal>
       </section>
 
       {/* ═══════ 3. SHOP BY CATEGORY ═══════ */}
@@ -58,12 +57,12 @@ export default function Home() {
           <ScrollReveal>
             <div style={{ textAlign: 'center', marginBottom: '48px' }}>
               <h2>Shop by Collection</h2>
-              <p className="serif-italic" style={{ color: 'var(--stone-taupe)', marginTop: '8px', fontSize: '18px' }}>
-                Curated categories, each a world of craft unto itself.
+              <p className="subtitle-italic" style={{ color: 'var(--stone-taupe)', marginTop: '12px' }}>
+                Explore our curated lines of traditional wear
               </p>
             </div>
           </ScrollReveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
+          <div className="category-grid">
             {categories.map((cat, i) => (
               <ScrollReveal key={cat.id} style={{ transitionDelay: `${i * 100}ms` }}>
                 <Link to={`/category/${cat.id}`} className="category-tile">
@@ -71,7 +70,9 @@ export default function Home() {
                   <div className="category-tile__border" />
                   <div className="category-tile__label">
                     <h3>{cat.name}</h3>
-                    <span>Explore →</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      Explore <ArrowRightIcon size={14} />
+                    </span>
                   </div>
                 </Link>
               </ScrollReveal>
@@ -96,7 +97,7 @@ export default function Home() {
                 <p>
                   Every piece in our collection is handmade by skilled artisans using techniques that have been refined over centuries. We don't manufacture — we commission. Each saree, lehenga, and kurta set is a collaboration between our design atelier and the artisan families who've kept these traditions alive.
                 </p>
-                <p style={{ fontStyle: 'italic', color: 'var(--ink-brown)' }}>
+                <p className="subtitle-italic" style={{ color: 'var(--ink-brown)' }}>
                   Woven by hand. Worn for a lifetime.
                 </p>
                 <Link to="/our-story" className="btn btn--outline" style={{ marginTop: '16px' }}>Read Our Story</Link>
@@ -111,9 +112,9 @@ export default function Home() {
         <div className="container">
           <ScrollReveal>
             <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-              <h2>Featured Pieces</h2>
-              <p className="serif-italic" style={{ color: 'var(--stone-taupe)', marginTop: '8px', fontSize: '18px' }}>
-                Handpicked from across our collections.
+              <h2>Featured Curations</h2>
+              <p className="subtitle-italic" style={{ color: 'var(--stone-taupe)', marginTop: '12px' }}>
+                Our most loved pieces, selected for you
               </p>
             </div>
           </ScrollReveal>
@@ -140,16 +141,16 @@ export default function Home() {
                 <h2>Why House of Gargi</h2>
                 <div className="craft-points">
                   <div className="craft-points__item">
-                    <span className="craft-points__icon">✦</span>
-                    <span><strong>Handmade guarantee</strong> — every piece is crafted entirely by human hands, never machine-produced.</span>
+                    <span className="craft-points__icon"><LotusIcon size={18} /></span>
+                    <p><strong>100% Handmade:</strong> Every piece is crafted by skilled artisans, preserving techniques passed down through generations.</p>
                   </div>
                   <div className="craft-points__item">
-                    <span className="craft-points__icon">✦</span>
-                    <span><strong>Ethical sourcing</strong> — fair wages, safe workshops, and direct relationships with artisan families.</span>
+                    <span className="craft-points__icon"><DiyaIcon size={18} /></span>
+                    <p><strong>Ethically Sourced:</strong> We partner directly with weaving families across India to ensure fair wages and sustainable practices.</p>
                   </div>
                   <div className="craft-points__item">
-                    <span className="craft-points__icon">✦</span>
-                    <span><strong>Limited editions</strong> — small batches that honour the time each technique demands. No mass production.</span>
+                    <span className="craft-points__icon"><LotusIcon size={18} /></span>
+                    <p><strong>Limited Edition:</strong> Because true craft takes time, our collections are small-batch and uniquely yours.</p>
                   </div>
                 </div>
               </div>

@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import ScrollReveal from '../components/ScrollReveal';
 import ProductCard from '../components/ProductCard';
 import { getCategory, getProductsByCategory, categories } from '../data/products';
+import { DiyaIcon, ArrowRightIcon } from '../components/Icons';
 
 export default function Category() {
   const { id } = useParams();
@@ -66,7 +67,7 @@ export default function Category() {
           {/* Grid */}
           {items.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--stone-taupe)' }}>
-              <p>No products match your filters. <button style={{ color: 'var(--gargi-gold)', background: 'none', border: 'none', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => { setFabric(''); setOccasion(''); }}>Clear filters</button></p>
+              <p>No products match your filters. <button style={{ color: 'var(--maharani-maroon)', background: 'none', border: 'none', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => { setFabric(''); setOccasion(''); }}>Clear filters</button></p>
             </div>
           ) : (
             <div className="product-grid">
@@ -79,19 +80,21 @@ export default function Category() {
           )}
 
           {/* Explore Other Collections */}
-          <div className="divider" style={{ marginTop: '64px' }}><span className="divider__icon">🪔</span></div>
+          <div className="divider" style={{ marginTop: '64px' }}><span className="divider__icon"><DiyaIcon size={16} /></span></div>
           <ScrollReveal>
             <div style={{ textAlign: 'center', marginBottom: '32px' }}>
               <h2>Explore Other Collections</h2>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: `repeat(${otherCategories.length}, 1fr)`, gap: '16px' }}>
+            <div className="related-grid">
               {otherCategories.map(cat => (
                 <Link to={`/category/${cat.id}`} className="category-tile" key={cat.id} style={{ aspectRatio: '16/9' }}>
                   <img src={cat.image} alt={cat.name} loading="lazy" />
                   <div className="category-tile__border" />
                   <div className="category-tile__label">
                     <h3>{cat.name}</h3>
-                    <span>Explore →</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      Explore <ArrowRightIcon size={14} />
+                    </span>
                   </div>
                 </Link>
               ))}

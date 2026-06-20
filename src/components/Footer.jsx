@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import footerTexture from '../assets/footer-texture.png';
+import { DiyaIcon } from './Icons';
 
 export default function Footer() {
   return (
@@ -37,7 +38,7 @@ export default function Footer() {
         </div>
 
         <div className="divider" style={{ maxWidth: '200px' }}>
-          <span className="divider__icon">🪔</span>
+          <span className="divider__icon"><DiyaIcon size={16} /></span>
         </div>
 
         <div className="footer__bottom">

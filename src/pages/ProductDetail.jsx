@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import ScrollReveal from '../components/ScrollReveal';
 import ProductCard from '../components/ProductCard';
 import { getProduct, getRelatedProducts, formatPrice } from '../data/products';
+import { DiyaIcon, WishlistIcon, PlusIcon, MinusIcon } from '../components/Icons';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -23,7 +24,7 @@ export default function ProductDetail() {
   const related = getRelatedProducts(id, 4);
 
   return (
-    <div className="section section--ivory" style={{ paddingTop: '120px' }}>
+    <div className="section section--ivory" style={{ paddingTop: 'calc(var(--navbar-height) + 40px)' }}>
       <div className="container">
         {/* ═══════ PDP MAIN ═══════ */}
         <div className="pdp">
@@ -59,7 +60,9 @@ export default function ProductDetail() {
 
             {/* Artisan Note */}
             <div className="pdp__artisan-note">
-              <span>🪔 {product.artisanNote}</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <DiyaIcon size={16} /> {product.artisanNote}
+              </span>
               <br />
               <span style={{ fontSize: '13px', color: 'var(--stone-taupe)' }}>
                 {product.technique} · {product.region}
@@ -95,14 +98,14 @@ export default function ProductDetail() {
               Add to Cart
             </button>
             <button className="btn btn--outline" style={{ width: '100%' }}>
-              ♡&ensp;Add to Wishlist
+              <WishlistIcon size={16} />&ensp;Add to Wishlist
             </button>
 
             {/* Care Accordion */}
             <div className="pdp__accordion">
               <button className="pdp__accordion-header" onClick={() => setCareOpen(!careOpen)}>
                 <span>Care Instructions</span>
-                <span>{careOpen ? '−' : '+'}</span>
+                <span>{careOpen ? <MinusIcon size={16} /> : <PlusIcon size={16} />}</span>
               </button>
               {careOpen && (
                 <div className="pdp__accordion-body">{product.care}</div>
@@ -112,12 +115,12 @@ export default function ProductDetail() {
         </div>
 
         {/* ═══════ YOU MAY ALSO LIKE ═══════ */}
-        <div className="divider" style={{ marginTop: '80px' }}><span className="divider__icon">🪔</span></div>
+        <div className="divider" style={{ marginTop: '80px' }}><span className="divider__icon"><DiyaIcon size={16} /></span></div>
         <ScrollReveal>
           <div style={{ textAlign: 'center', marginBottom: '40px' }}>
             <h2>You May Also Like</h2>
           </div>
-          <div className="product-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
+          <div className="related-grid">
             {related.map(p => (
               <ProductCard key={p.id} product={p} />
             ))}

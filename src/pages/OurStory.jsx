@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import ScrollReveal from '../components/ScrollReveal';
 import artisanImg from '../assets/artisan-hands.png';
 import craftBannerImg from '../assets/craft-story-banner.png';
+import { DiyaIcon, LotusIcon, WishlistIcon, StarIcon } from '../components/Icons';
 
 export default function OurStory() {
   useEffect(() => { window.scrollTo(0, 0); }, []);
@@ -48,7 +49,7 @@ export default function OurStory() {
                 <p>
                   We work directly with these artisan communities — no middlemen, no factories. This means fair wages, safe working conditions, and the creative freedom for each artisan to bring their own signature to the work.
                 </p>
-                <p style={{ fontStyle: 'italic', color: 'var(--ink-brown)' }}>
+                <p className="subtitle-italic" style={{ color: 'var(--ink-brown)' }}>
                   When you wear House of Gargi, you wear someone's life's work.
                 </p>
               </div>
@@ -60,22 +61,22 @@ export default function OurStory() {
       <section className="section section--ivory">
         <div className="container" style={{ maxWidth: '800px' }}>
           <ScrollReveal>
-            <div className="divider"><span className="divider__icon">🪔</span></div>
+            <div className="divider"><span className="divider__icon"><DiyaIcon size={16} /></span></div>
             <div style={{ textAlign: 'center' }}>
               <h2 style={{ color: 'var(--maharani-maroon)', marginBottom: '24px' }}>Our Promise</h2>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px', marginTop: '40px' }}>
+              <div className="product-grid" style={{ marginTop: '40px' }}>
                 <div>
-                  <div style={{ fontSize: '32px', color: 'var(--gargi-gold)', marginBottom: '12px' }}>✦</div>
+                  <div style={{ color: 'var(--gargi-gold)', marginBottom: '12px' }}><LotusIcon size={32} /></div>
                   <h3 style={{ fontSize: '20px', marginBottom: '8px' }}>100% Handmade</h3>
                   <p className="caption">No machines. No shortcuts. Every stitch, every weave, every print — by human hands.</p>
                 </div>
                 <div>
-                  <div style={{ fontSize: '32px', color: 'var(--gargi-gold)', marginBottom: '12px' }}>♡</div>
+                  <div style={{ color: 'var(--gargi-gold)', marginBottom: '12px' }}><WishlistIcon size={32} /></div>
                   <h3 style={{ fontSize: '20px', marginBottom: '8px' }}>Ethically Sourced</h3>
                   <p className="caption">Fair wages, direct relationships, and respect for the artisan's time and skill.</p>
                 </div>
                 <div>
-                  <div style={{ fontSize: '32px', color: 'var(--gargi-gold)', marginBottom: '12px' }}>◇</div>
+                  <div style={{ color: 'var(--gargi-gold)', marginBottom: '12px' }}><StarIcon size={32} /></div>
                   <h3 style={{ fontSize: '20px', marginBottom: '8px' }}>Limited Editions</h3>
                   <p className="caption">Small batches that honour the months each technique demands. Never mass-produced.</p>
                 </div>
