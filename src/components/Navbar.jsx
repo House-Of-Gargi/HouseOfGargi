@@ -32,6 +32,7 @@ export default function Navbar() {
             <Link to="/category/kurta-sets">Kurta Sets</Link>
             <Link to="/category/accessories">Accessories</Link>
             <Link to="/our-story">Our Story</Link>
+            <Link to="/bespoke" style={{ color: 'var(--gargi-gold)' }}>Bespoke</Link>
           </div>
 
           <div className="navbar__icons">
@@ -69,6 +70,7 @@ export default function Navbar() {
           <Link to="/category/kurta-sets" className="nav-label" onClick={() => setMobileOpen(false)}>Kurta Sets</Link>
           <Link to="/category/accessories" className="nav-label" onClick={() => setMobileOpen(false)}>Accessories</Link>
           <Link to="/our-story" className="nav-label" onClick={() => setMobileOpen(false)}>Our Story</Link>
+          <Link to="/bespoke" className="nav-label" onClick={() => setMobileOpen(false)} style={{ color: 'var(--gargi-gold)' }}>Bespoke</Link>
         </div>
       </div>
     </>

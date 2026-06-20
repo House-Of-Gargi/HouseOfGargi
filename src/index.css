@@ -1027,3 +1027,125 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
   .newsletter__input-group input { border-right: 1px solid var(--soft-gold-line); border-radius: 1px; }
   .newsletter__input-group .btn { border-radius: 1px; }
 }
+
+/* ── 23. Bespoke Form ───────────────────────────────────────── */
+.bespoke-container {
+  background: var(--ivory-silk);
+  border: 4px double var(--gargi-gold);
+  padding: 48px;
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(43, 31, 24, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+.bespoke-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.bespoke-header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 48px);
+  color: var(--maharani-maroon);
+  margin-bottom: 16px;
+}
+.bespoke-header p {
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: var(--stone-taupe);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+.bespoke-form .form-group {
+  margin-bottom: 24px;
+}
+.bespoke-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+@media (max-width: 600px) {
+  .bespoke-form .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+.bespoke-form label {
+  display: block;
+  font-family: var(--font-nav);
+  font-size: 14px;
+  color: var(--maharani-maroon);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.bespoke-form input,
+.bespoke-form select,
+.bespoke-form textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--soft-gold-line);
+  padding: 12px 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--ink-brown);
+  transition: border-color 300ms;
+}
+.bespoke-form input:focus,
+.bespoke-form select:focus,
+.bespoke-form textarea:focus {
+  outline: none;
+  border-bottom-color: var(--gargi-gold);
+}
+.bespoke-form input::placeholder,
+.bespoke-form textarea::placeholder {
+  color: rgba(139, 126, 111, 0.5);
+  font-style: italic;
+}
+.bespoke-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+.bespoke-form select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238B7E6F'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0 center;
+  padding-right: 24px;
+  cursor: pointer;
+}
+.form-actions {
+  margin-top: 48px;
+  text-align: center;
+}
+.bespoke-submit {
+  padding: 16px 48px;
+  font-size: 16px;
+  letter-spacing: 0.15em;
+  background: var(--maharani-maroon);
+  color: var(--pure-white);
+  border: 1px solid var(--maharani-maroon);
+  border-radius: 2px;
+  font-family: var(--font-nav);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 300ms ease;
+}
+.bespoke-submit:hover {
+  background: var(--ink-brown);
+  border-color: var(--ink-brown);
+}
+.bespoke-success {
+  text-align: center;
+  padding: 48px 0;
+}
+.bespoke-success h3 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--gargi-gold);
+  margin-bottom: 16px;
+}
+.bespoke-success p {
+  font-size: 18px;
+  color: var(--stone-taupe);
+}
