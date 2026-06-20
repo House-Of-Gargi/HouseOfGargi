@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import ScrollReveal from '../components/ScrollReveal';
 import ProductCard from '../components/ProductCard';
-import { getProduct, getRelatedProducts, formatPrice } from '../data/products';
+import { getProduct, getRelatedProducts, formatPrice, categories } from '../data/products';
 import { DiyaIcon, WishlistIcon, PlusIcon, MinusIcon } from '../components/Icons';
 
 export default function ProductDetail() {
@@ -22,10 +22,14 @@ export default function ProductDetail() {
   if (!product) return <div className="section container"><h2>Product not found.</h2></div>;
 
   const related = getRelatedProducts(id, 4);
+  const categoryName = categories.find(c => c.id === product.category)?.name || 'Collection';
 
   return (
-    <div className="section section--ivory" style={{ paddingTop: 'calc(var(--navbar-height) + 40px)' }}>
+    <div className="section section--ivory" style={{ paddingTop: 'calc(var(--navbar-height) + 12px)' }}>
       <div className="container">
+        <Link to={`/category/${product.category}`} className="nav-label" style={{ display: 'inline-block', marginBottom: '32px', color: 'var(--stone-taupe)' }}>
+          ← Back to {categoryName}
+        </Link>
         {/* ═══════ PDP MAIN ═══════ */}
         <div className="pdp">
           {/* Left: Gallery */}
