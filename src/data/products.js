@@ -4,6 +4,7 @@ export const categories = [
   {
     id: 'sarees',
     name: 'Sarees',
+    pronunciation: 'saa-reez',
     tagline: 'Handwoven across the looms of Banaras and Kanchipuram.',
     image: '/images/category-sarees.png',
     bannerImage: '/images/banner-sarees-wide.png',
@@ -11,6 +12,7 @@ export const categories = [
   {
     id: 'lehengas',
     name: 'Lehengas',
+    pronunciation: 'le-hen-gaas',
     tagline: 'Bridal silhouettes embroidered with centuries of tradition.',
     image: '/images/category-lehengas.png',
     bannerImage: '/images/banner-lehengas-wide.png',
@@ -18,6 +20,7 @@ export const categories = [
   {
     id: 'kurta-sets',
     name: 'Kurta Sets',
+    pronunciation: 'kur-taa sets',
     tagline: 'Block-printed cottons and silks for everyday grace.',
     image: '/images/category-kurtas.png',
     bannerImage: '/images/banner-kurtas-wide.png',
@@ -25,6 +28,7 @@ export const categories = [
   {
     id: 'accessories',
     name: 'Accessories',
+    pronunciation: 'ak-ses-uh-reez',
     tagline: 'Jadau, kundan, and heritage jewellery to complete the look.',
     image: '/images/category-accessories.png',
     bannerImage: '/images/banner-accessories-wide.png',

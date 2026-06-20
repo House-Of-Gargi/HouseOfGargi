@@ -24,7 +24,14 @@ export default function Navbar() {
     <>
       <nav className={cls}>
         <div className="navbar__inner">
-          <Link to="/" className="navbar__logo">House of Gargi</Link>
+          <Link to="/" className="navbar__logo" style={{ display: 'flex', alignItems: 'center' }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ marginRight: '10px' }}>
+              <path d="M12 2C8 6 4 10 4 15C4 19.418 7.582 23 12 23C16.418 23 20 19.418 20 15C20 10 16 6 12 2Z" fill="var(--peacock-teal)"/>
+              <circle cx="12" cy="15" r="4.5" fill="var(--gargi-gold)"/>
+              <circle cx="12" cy="15" r="2.5" fill="var(--maharani-maroon)"/>
+            </svg>
+            House of Gārgī
+          </Link>
 
           <div className="navbar__links">
             <Link to="/category/sarees">Sarees</Link>
@@ -58,7 +65,14 @@ export default function Navbar() {
       {/* Mobile drawer */}
       <div className={`mobile-drawer ${mobileOpen ? 'mobile-drawer--open' : ''}`}>
         <div className="mobile-drawer__header">
-          <Link to="/" className="navbar__logo" style={{ color: 'var(--ink-brown)' }} onClick={() => setMobileOpen(false)}>House of Gargi</Link>
+          <Link to="/" className="navbar__logo" style={{ color: 'var(--ink-brown)', display: 'flex', alignItems: 'center' }} onClick={() => setMobileOpen(false)}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ marginRight: '10px' }}>
+              <path d="M12 2C8 6 4 10 4 15C4 19.418 7.582 23 12 23C16.418 23 20 19.418 20 15C20 10 16 6 12 2Z" fill="var(--peacock-teal)"/>
+              <circle cx="12" cy="15" r="4.5" fill="var(--gargi-gold)"/>
+              <circle cx="12" cy="15" r="2.5" fill="var(--maharani-maroon)"/>
+            </svg>
+            House of Gārgī
+          </Link>
           <button className="mobile-drawer__close" onClick={() => setMobileOpen(false)} aria-label="Close menu">
             <CloseIcon size={28} />
           </button>
