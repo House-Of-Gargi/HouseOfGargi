@@ -26,9 +26,10 @@ export default function Products() {
 
     const useFallbackData = () => {
       setProducts([
-        { id: '1', name: 'Banarasi Silk Saree (Fallback)', category: 'Sarees', price_in_rupees: 45000, stock: 4 },
-        { id: '2', name: 'Zari Work Lehenga', category: 'Lehengas', price_in_rupees: 85000, stock: 2 },
-        { id: '3', name: 'Cotton Block Print Kurta', category: 'Kurta Sets', price_in_rupees: 12000, stock: 15 },
+        { id: '1', name: 'Banarasi Gold Weave Saree', category: 'sarees', price_in_rupees: 28500, stock: 10, image_url: '/images/category-sarees.png' },
+        { id: '2', name: 'Royal Zardozi Bridal Lehenga', category: 'lehengas', price_in_rupees: 125000, stock: 10, image_url: '/images/category-lehengas.png' },
+        { id: '3', name: 'Sanganeri Block Print Kurta Set', category: 'kurta-sets', price_in_rupees: 4800, stock: 10, image_url: '/images/category-kurtas.png' },
+        { id: '4', name: 'Kundan Polki Choker Set', category: 'accessories', price_in_rupees: 18500, stock: 10, image_url: '/images/category-accessories.png' },
       ]);
     };
 

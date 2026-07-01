@@ -31,11 +31,24 @@ alter table orders disable row level security;
 
 -- 4. Insert Dummy Products
 insert into products (name, category, price_in_rupees, stock, image_url) values
-  ('Banarasi Silk Saree', 'Sarees', 45000, 4, 'https://images.unsplash.com/photo-1610189012543-8cebcbe64811?auto=format&fit=crop&q=80&w=800'),
-  ('Zari Work Lehenga', 'Lehengas', 85000, 2, 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800'),
-  ('Cotton Block Print Kurta', 'Kurta Sets', 12000, 15, 'https://images.unsplash.com/photo-1583391733958-d15a883fa50b?auto=format&fit=crop&q=80&w=800'),
-  ('Kundan Necklace Set', 'Accessories', 25000, 6, 'https://images.unsplash.com/photo-1599643477873-10821ec365bc?auto=format&fit=crop&q=80&w=800'),
-  ('Kanjeevaram Saree', 'Sarees', 65000, 3, 'https://images.unsplash.com/photo-1589465885857-44edb59bbff2?auto=format&fit=crop&q=80&w=800');
+  ('Banarasi Gold Weave Saree', 'sarees', 28500, 10, '/images/category-sarees.png'),
+  ('Kanchipuram Temple Border', 'sarees', 34000, 10, '/images/category-sarees.png'),
+  ('Chanderi Floral Jaal', 'sarees', 12800, 10, '/images/category-sarees.png'),
+  ('Tussar Silk Block Print', 'sarees', 9500, 10, '/images/category-sarees.png'),
+  ('Paithani Peacock Pallu', 'sarees', 42000, 10, '/images/category-sarees.png'),
+  ('Royal Zardozi Bridal Lehenga', 'lehengas', 125000, 10, '/images/category-lehengas.png'),
+  ('Gota Patti Festive Lehenga', 'lehengas', 68000, 10, '/images/category-lehengas.png'),
+  ('Chikankari Ivory Anarkali', 'lehengas', 45000, 10, '/images/category-lehengas.png'),
+  ('Mirror Work Chaniya Choli', 'lehengas', 38000, 10, '/images/category-lehengas.png'),
+  ('Sanganeri Block Print Kurta Set', 'kurta-sets', 4800, 10, '/images/category-kurtas.png'),
+  ('Chikankari White-on-White Kurta', 'kurta-sets', 6200, 10, '/images/category-kurtas.png'),
+  ('Ajrakh Silk Kurta Set', 'kurta-sets', 8900, 10, '/images/category-kurtas.png'),
+  ('Kalamkari Anarkali Kurta', 'kurta-sets', 5600, 10, '/images/category-kurtas.png'),
+  ('Bandhani Silk Festival Kurta', 'kurta-sets', 7200, 10, '/images/category-kurtas.png'),
+  ('Kundan Polki Choker Set', 'accessories', 18500, 10, '/images/category-accessories.png'),
+  ('Meenakari Jhumka Earrings', 'accessories', 4200, 10, '/images/category-accessories.png'),
+  ('Temple Jewellery Necklace Set', 'accessories', 12800, 10, '/images/category-accessories.png'),
+  ('Phulkari Silk Dupatta', 'accessories', 3600, 10, '/images/category-accessories.png');
 
 -- 5. Insert Dummy Orders
 insert into orders (order_number, customer_name, total_rupees, status, created_at) values
