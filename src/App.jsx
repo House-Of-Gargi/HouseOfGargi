@@ -12,6 +12,7 @@ import SellerLayout from './pages/seller/SellerLayout';
 import Dashboard from './pages/seller/Dashboard';
 import Products from './pages/seller/Products';
 import Orders from './pages/seller/Orders';
+import Login from './pages/seller/Login';
 
 export default function App() {
   return (
@@ -65,6 +66,7 @@ export default function App() {
         } />
 
         {/* Seller Portal Routes */}
+        <Route path="/seller/login" element={<Login />} />
         <Route path="/seller" element={<SellerLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="products" element={<Products />} />

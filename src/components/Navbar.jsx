@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { SearchIcon, WishlistIcon, CartIcon, MenuIcon, CloseIcon } from './Icons';
+import { SearchIcon, WishlistIcon, CartIcon, MenuIcon, CloseIcon, UserIcon } from './Icons';
+import CustomerLoginModal from './CustomerLoginModal';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -36,6 +38,7 @@ export default function Navbar() {
 
           <div className="navbar__icons">
             <button aria-label="Search" title="Search"><SearchIcon size={20} /></button>
+            <button aria-label="Login" title="Login" onClick={() => setLoginModalOpen(true)}><UserIcon size={20} /></button>
             <button aria-label="Wishlist" title="Wishlist"><WishlistIcon size={20} /></button>
             <button aria-label="Cart" title="Cart"><CartIcon size={20} /></button>
             <button
@@ -48,6 +51,8 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
+
+      <CustomerLoginModal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
 
       {/* Mobile drawer overlay */}
       <div 
