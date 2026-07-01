@@ -1,0 +1,137 @@
+/* Account Page Styles */
+.account-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.account-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.account-header h1 {
+  font-family: var(--font-nav);
+  color: var(--ink-brown);
+  font-size: 24px;
+  margin-left: 16px;
+}
+
+.account-profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--pure-white);
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(43,31,24,0.03);
+  margin-bottom: 24px;
+}
+
+.account-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--ivory-silk);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--stone-taupe);
+  margin-bottom: 16px;
+  border: 2px solid var(--soft-gold-line);
+}
+
+.account-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink-brown);
+  margin-bottom: 4px;
+}
+
+.account-meta {
+  color: var(--stone-taupe);
+  font-size: 14px;
+}
+
+.account-quick-links {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.account-quick-link-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--pure-white);
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--soft-gold-line);
+  color: var(--ink-brown);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.account-quick-link-btn:hover {
+  background: var(--ivory-silk);
+  border-color: var(--gargi-gold);
+}
+
+.account-quick-link-btn svg {
+  margin-bottom: 8px;
+  color: var(--stone-taupe);
+}
+
+.account-list-section {
+  background: var(--pure-white);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(43,31,24,0.03);
+}
+
+.account-list-title {
+  padding: 20px 24px 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-brown);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.account-list-item {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  border-bottom: 1px solid var(--ivory-silk);
+}
+
+.account-list-item:last-child {
+  border-bottom: none;
+}
+
+.account-list-item:hover {
+  background: var(--ivory-silk);
+}
+
+.account-list-item-icon {
+  margin-right: 16px;
+  color: var(--stone-taupe);
+}
+
+.account-list-item-text {
+  flex: 1;
+  font-size: 16px;
+  color: var(--ink-brown);
+}
+
+.account-list-item-arrow {
+  color: var(--stone-taupe);
+}

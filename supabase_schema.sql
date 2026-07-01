@@ -52,7 +52,7 @@ insert into products (name, category, price_in_rupees, stock, image_url) values
 
 -- 5. Insert Dummy Orders
 insert into orders (order_number, customer_name, total_rupees, status, created_at) values
-  ('#HG-1042', 'Priya Sharma', 45000, 'Processing', '2026-10-12 10:00:00'),
-  ('#HG-1041', 'Anjali Desai', 22500, 'Shipped', '2026-10-10 14:30:00'),
-  ('#HG-B009', 'Simran Kaur', 85000, 'Bespoke Review', '2026-10-08 09:15:00'),
-  ('#HG-1040', 'Neha Gupta', 18000, 'Delivered', '2026-10-05 16:45:00');
+  ('#HG-1042', 'Priya Sharma', 45000, 'Processing', '2026-10-12'),
+  ('#HG-1041', 'Anjali Desai', 22500, 'Shipped', '2026-10-10'),
+  ('#HG-B009', 'Simran Kaur', 85000, 'Bespoke Review', '2026-10-08'),
+  ('#HG-1040', 'Neha Gupta', 18000, 'Delivered', '2026-10-05');

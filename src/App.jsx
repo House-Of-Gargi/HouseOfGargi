@@ -13,6 +13,7 @@ import Dashboard from './pages/seller/Dashboard';
 import Products from './pages/seller/Products';
 import Orders from './pages/seller/Orders';
 import Login from './pages/seller/Login';
+import Account from './pages/customer/Account';
 
 export default function App() {
   return (
@@ -60,6 +61,15 @@ export default function App() {
             <Navbar />
             <main>
               <Bespoke />
+            </main>
+            <Footer />
+          </>
+        } />
+        <Route path="/account" element={
+          <>
+            <Navbar />
+            <main>
+              <Account />
             </main>
             <Footer />
           </>

@@ -1,13 +1,30 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { SearchIcon, WishlistIcon, CartIcon, MenuIcon, CloseIcon, UserIcon } from './Icons';
 import CustomerLoginModal from './CustomerLoginModal';
+import { supabase } from '../lib/supabaseClient';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [session, setSession] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -18,6 +35,14 @@ export default function Navbar() {
   useEffect(() => {
     setMobileOpen(false);
   }, [location.pathname]);
+
+  const handleUserClick = () => {
+    if (session) {
+      navigate('/account');
+    } else {
+      setLoginModalOpen(true);
+    }
+  };
 
   const isProductPage = location.pathname.startsWith('/product');
   const cls = `navbar ${(scrolled || isProductPage) ? 'navbar--scrolled' : 'navbar--hero'}`;
@@ -38,7 +63,7 @@ export default function Navbar() {
 
           <div className="navbar__icons">
             <button aria-label="Search" title="Search"><SearchIcon size={20} /></button>
-            <button aria-label="Login" title="Login" onClick={() => setLoginModalOpen(true)}><UserIcon size={20} /></button>
+            <button aria-label="Account" title="Account" onClick={handleUserClick}><UserIcon size={20} /></button>
             <button aria-label="Wishlist" title="Wishlist"><WishlistIcon size={20} /></button>
             <button aria-label="Cart" title="Cart"><CartIcon size={20} /></button>
             <button
