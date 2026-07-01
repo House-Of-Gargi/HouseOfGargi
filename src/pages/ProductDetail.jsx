@@ -16,7 +16,7 @@ export default function ProductDetail() {
   const [careOpen, setCareOpen] = useState(false);
   const [error, setError] = useState('');
 
-  const { addToCart } = useCart();
+  const { addToCart, cart, updateQuantity } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
 
   const product = getProduct(id);
@@ -39,6 +39,9 @@ export default function ProductDetail() {
   const related = getRelatedProducts(id, 4);
   const categoryName = categories.find(c => c.id === product.category)?.name || 'Collection';
   const saved = isInWishlist(product.id);
+  
+  const sizeToCart = product.sizes.length > 1 ? selectedSize : product.sizes[0];
+  const cartItem = cart.find(item => item.id === product.id && item.size === sizeToCart);
 
   const handleAddToCart = () => {
     if (product.sizes.length > 1 && !selectedSize) {
@@ -47,7 +50,6 @@ export default function ProductDetail() {
     }
     setError('');
     addToCart(product, 1, selectedSize || product.sizes[0]);
-    navigate('/cart');
   };
 
   return (
@@ -126,9 +128,27 @@ export default function ProductDetail() {
             )}
 
             {/* Add to Cart */}
-            <button className="btn btn--primary" style={{ width: '100%', marginBottom: '16px', padding: '16px' }} onClick={handleAddToCart}>
-              Add to Cart
-            </button>
+            {cartItem ? (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid var(--sand-beige)', marginBottom: '16px', padding: '8px' }}>
+                <button 
+                  onClick={() => updateQuantity(product.id, sizeToCart, cartItem.quantity - 1)}
+                  style={{ padding: '8px 16px', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-brown)' }}
+                >
+                  <MinusIcon size={16} />
+                </button>
+                <span style={{ fontSize: '16px', fontWeight: 'bold' }}>{cartItem.quantity} in Cart</span>
+                <button 
+                  onClick={() => updateQuantity(product.id, sizeToCart, cartItem.quantity + 1)}
+                  style={{ padding: '8px 16px', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-brown)' }}
+                >
+                  <PlusIcon size={16} />
+                </button>
+              </div>
+            ) : (
+              <button className="btn btn--primary" style={{ width: '100%', marginBottom: '16px', padding: '16px' }} onClick={handleAddToCart}>
+                Add to Cart
+              </button>
+            )}
             <button className="btn btn--outline" style={{ width: '100%' }} onClick={() => toggleWishlist(product)}>
               {saved ? <HeartFilledIcon size={16} color="var(--maharani-maroon)" /> : <WishlistIcon size={16} />}
               &ensp;{saved ? 'Remove from Wishlist' : 'Add to Wishlist'}
