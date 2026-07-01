@@ -7,6 +7,9 @@ import ProductDetail from './pages/ProductDetail';
 import OurStory from './pages/OurStory';
 import Bespoke from './pages/Bespoke';
 
+import { CartProvider } from './context/CartContext';
+import { WishlistProvider } from './context/WishlistContext';
+
 // Seller Portal
 import SellerLayout from './pages/seller/SellerLayout';
 import Dashboard from './pages/seller/Dashboard';
@@ -16,12 +19,16 @@ import Login from './pages/seller/Login';
 import Account from './pages/customer/Account';
 import Terms from './pages/customer/Terms';
 import Privacy from './pages/customer/Privacy';
+import Cart from './pages/customer/Cart';
+import Wishlist from './pages/customer/Wishlist';
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Customer Facing Store Routes */}
+    <CartProvider>
+      <WishlistProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* Customer Facing Store Routes */}
         <Route path="/" element={
           <>
             <Navbar />
@@ -92,6 +99,24 @@ export default function App() {
             <Footer />
           </>
         } />
+        <Route path="/cart" element={
+          <>
+            <Navbar />
+            <main>
+              <Cart />
+            </main>
+            <Footer />
+          </>
+        } />
+        <Route path="/wishlist" element={
+          <>
+            <Navbar />
+            <main>
+              <Wishlist />
+            </main>
+            <Footer />
+          </>
+        } />
 
         {/* Seller Portal Routes */}
         <Route path="/seller/login" element={<Login />} />
@@ -102,5 +127,7 @@ export default function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+      </WishlistProvider>
+    </CartProvider>
   );
 }

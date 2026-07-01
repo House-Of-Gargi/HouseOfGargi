@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { SearchIcon, WishlistIcon, CartIcon, MenuIcon, CloseIcon, UserIcon } from './Icons';
 import CustomerLoginModal from './CustomerLoginModal';
 import { supabase } from '../lib/supabaseClient';
+import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -11,6 +13,8 @@ export default function Navbar() {
   const [session, setSession] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const { itemCount } = useCart();
+  const { wishlistCount } = useWishlist();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -44,8 +48,14 @@ export default function Navbar() {
     }
   };
 
-  const isProductPage = location.pathname.startsWith('/product');
-  const cls = `navbar ${(scrolled || isProductPage) ? 'navbar--scrolled' : 'navbar--hero'}`;
+  const isDarkNavPage = 
+    location.pathname.startsWith('/product') ||
+    location.pathname === '/cart' ||
+    location.pathname === '/wishlist' ||
+    location.pathname === '/terms' ||
+    location.pathname === '/privacy';
+
+  const cls = `navbar ${(scrolled || isDarkNavPage) ? 'navbar--scrolled' : 'navbar--hero'}`;
 
   return (
     <>
@@ -73,8 +83,28 @@ export default function Navbar() {
           <div className="navbar__icons">
             <button aria-label="Search" title="Search"><SearchIcon size={20} /></button>
             <button aria-label="Account" title="Account" onClick={handleUserClick}><UserIcon size={20} /></button>
-            <button aria-label="Wishlist" title="Wishlist"><WishlistIcon size={20} /></button>
-            <button aria-label="Cart" title="Cart"><CartIcon size={20} /></button>
+            <button 
+              aria-label="Wishlist" 
+              title="Wishlist" 
+              onClick={() => navigate('/wishlist')}
+              style={{ position: 'relative' }}
+            >
+              <WishlistIcon size={20} />
+              {wishlistCount > 0 && (
+                <span className="navbar__badge">{wishlistCount}</span>
+              )}
+            </button>
+            <button 
+              aria-label="Cart" 
+              title="Cart" 
+              onClick={() => navigate('/cart')}
+              style={{ position: 'relative' }}
+            >
+              <CartIcon size={20} />
+              {itemCount > 0 && (
+                <span className="navbar__badge">{itemCount}</span>
+              )}
+            </button>
           </div>
         </div>
       </nav>

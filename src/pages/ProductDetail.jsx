@@ -1,16 +1,23 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import ScrollReveal from '../components/ScrollReveal';
 import ProductCard from '../components/ProductCard';
 import { getProduct, getRelatedProducts, formatPrice, categories } from '../data/products';
-import { DiyaIcon, WishlistIcon, PlusIcon, MinusIcon } from '../components/Icons';
+import { DiyaIcon, WishlistIcon, HeartFilledIcon, PlusIcon, MinusIcon } from '../components/Icons';
 import useSEO from '../hooks/useSEO';
+import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 
 export default function ProductDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState('');
   const [careOpen, setCareOpen] = useState(false);
+  const [error, setError] = useState('');
+
+  const { addToCart } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
 
   const product = getProduct(id);
   
@@ -24,12 +31,24 @@ export default function ProductDetail() {
     setSelectedImage(0);
     setSelectedSize('');
     setCareOpen(false);
+    setError('');
   }, [id]);
 
   if (!product) return <div className="section container"><h2>Product not found.</h2></div>;
 
   const related = getRelatedProducts(id, 4);
   const categoryName = categories.find(c => c.id === product.category)?.name || 'Collection';
+  const saved = isInWishlist(product.id);
+
+  const handleAddToCart = () => {
+    if (product.sizes.length > 1 && !selectedSize) {
+      setError('Please select a size first.');
+      return;
+    }
+    setError('');
+    addToCart(product, 1, selectedSize || product.sizes[0]);
+    navigate('/cart');
+  };
 
   return (
     <div className="section section--ivory" style={{ paddingTop: 'calc(var(--navbar-height) + 12px)' }}>
@@ -89,13 +108,15 @@ export default function ProductDetail() {
             {/* Size Selector */}
             {product.sizes.length > 1 && (
               <>
-                <p style={{ marginBottom: '8px', fontSize: '14px', fontWeight: '700' }}>Select Size</p>
+                <p style={{ marginBottom: '8px', fontSize: '14px', fontWeight: '700' }}>
+                  Select Size {error && <span style={{ color: 'var(--maharani-maroon)', fontWeight: 'normal', marginLeft: '8px' }}>{error}</span>}
+                </p>
                 <div className="pdp__size-selector">
                   {product.sizes.map(s => (
                     <button
                       key={s}
                       className={`pdp__size-btn ${selectedSize === s ? 'pdp__size-btn--active' : ''}`}
-                      onClick={() => setSelectedSize(s)}
+                      onClick={() => { setSelectedSize(s); setError(''); }}
                     >
                       {s}
                     </button>
@@ -105,11 +126,12 @@ export default function ProductDetail() {
             )}
 
             {/* Add to Cart */}
-            <button className="btn btn--primary" style={{ width: '100%', marginBottom: '16px', padding: '16px' }}>
+            <button className="btn btn--primary" style={{ width: '100%', marginBottom: '16px', padding: '16px' }} onClick={handleAddToCart}>
               Add to Cart
             </button>
-            <button className="btn btn--outline" style={{ width: '100%' }}>
-              <WishlistIcon size={16} />&ensp;Add to Wishlist
+            <button className="btn btn--outline" style={{ width: '100%' }} onClick={() => toggleWishlist(product)}>
+              {saved ? <HeartFilledIcon size={16} color="var(--maharani-maroon)" /> : <WishlistIcon size={16} />}
+              &ensp;{saved ? 'Remove from Wishlist' : 'Add to Wishlist'}
             </button>
 
             {/* Care Accordion */}

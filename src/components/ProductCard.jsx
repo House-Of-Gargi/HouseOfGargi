@@ -1,12 +1,21 @@
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../data/products';
-import { WishlistIcon } from './Icons';
+import { WishlistIcon, HeartFilledIcon } from './Icons';
+import { useWishlist } from '../context/WishlistContext';
 
 export default function ProductCard({ product }) {
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const saved = isInWishlist(product.id);
+
+  const handleWishlistClick = (e) => {
+    e.preventDefault();
+    toggleWishlist(product);
+  };
+
   return (
     <Link to={`/product/${product.id}`} className="product-card" style={{ textDecoration: 'none' }}>
-      <button className="product-card__wishlist" onClick={(e) => { e.preventDefault(); }}>
-        <WishlistIcon size={20} />
+      <button className="product-card__wishlist" onClick={handleWishlistClick}>
+        {saved ? <HeartFilledIcon size={20} color="var(--maharani-maroon)" /> : <WishlistIcon size={20} />}
       </button>
       <div className="product-card__image-wrap">
         <img src={product.images[0]} alt={product.name} loading="lazy" />
