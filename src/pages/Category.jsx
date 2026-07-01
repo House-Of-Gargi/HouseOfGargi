@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ScrollReveal from '../components/ScrollReveal';
 import ProductCard from '../components/ProductCard';
+import CustomDropdown from '../components/CustomDropdown';
 import { getCategory, getProductsByCategory, categories } from '../data/products';
 import { DiyaIcon, ArrowRightIcon } from '../components/Icons';
 import useSEO from '../hooks/useSEO';
@@ -61,19 +62,34 @@ export default function Category() {
           {/* Filter Bar */}
           <div className="filter-bar">
             <span className="filter-bar__label">Filter & Sort</span>
-            <select value={fabric} onChange={e => setFabric(e.target.value)}>
-              <option value="">All Fabrics</option>
-              {fabrics.map(f => <option key={f} value={f}>{f}</option>)}
-            </select>
-            <select value={occasion} onChange={e => setOccasion(e.target.value)}>
-              <option value="">All Occasions</option>
-              {occasions.map(o => <option key={o} value={o}>{o}</option>)}
-            </select>
-            <select value={sort} onChange={e => setSort(e.target.value)}>
-              <option value="">Sort by</option>
-              <option value="low">Price: Low → High</option>
-              <option value="high">Price: High → Low</option>
-            </select>
+            <CustomDropdown
+              placeholder="All Fabrics"
+              value={fabric}
+              onChange={setFabric}
+              options={[
+                { label: 'All Fabrics', value: '' },
+                ...fabrics.map(f => ({ label: f, value: f }))
+              ]}
+            />
+            <CustomDropdown
+              placeholder="All Occasions"
+              value={occasion}
+              onChange={setOccasion}
+              options={[
+                { label: 'All Occasions', value: '' },
+                ...occasions.map(o => ({ label: o, value: o }))
+              ]}
+            />
+            <CustomDropdown
+              placeholder="Sort by"
+              value={sort}
+              onChange={setSort}
+              options={[
+                { label: 'Sort by', value: '' },
+                { label: 'Price: Low → High', value: 'low' },
+                { label: 'Price: High → Low', value: 'high' }
+              ]}
+            />
           </div>
 
           {/* Grid */}

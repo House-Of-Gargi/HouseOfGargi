@@ -249,15 +249,19 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
 /* ── 8. Category Tile ─────────────────────────────────────── */
 .category-tile {
   position: relative;
+  display: block;
   overflow: hidden;
-  border-radius: 2px;
+  border-radius: 12px !important;
   aspect-ratio: 4/5;
   cursor: pointer;
+  transform: translateZ(0);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 .category-tile img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 12px !important;
   transition: transform 700ms ease;
 }
 .category-tile:hover img {
@@ -267,6 +271,7 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
   content: '';
   position: absolute;
   inset: 0;
+  border-radius: 12px !important;
   background: linear-gradient(to top, rgba(43,31,24,0.55) 0%, transparent 60%);
   pointer-events: none;
 }
@@ -297,6 +302,7 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
   position: absolute;
   inset: 8px;
   border: 1px solid var(--gargi-gold);
+  border-radius: 4px;
   z-index: 2;
   opacity: 0;
   transition: opacity 400ms ease;
@@ -588,6 +594,63 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
   border-color: var(--gargi-gold);
   outline: none;
 }
+
+/* Custom Dropdown for aesthetic matching */
+.custom-dropdown {
+  position: relative;
+  user-select: none;
+  min-width: 180px;
+}
+.custom-dropdown__trigger {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--ink-brown);
+  background: transparent;
+  border: 1px solid var(--soft-gold-line);
+  padding: 8px 12px;
+  border-radius: 1px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  transition: border-color 300ms;
+}
+.custom-dropdown__trigger:hover,
+.custom-dropdown__trigger.is-open {
+  border-color: var(--gargi-gold);
+}
+.custom-dropdown__menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: max-content;
+  min-width: 100%;
+  background: var(--pure-white);
+  border: 1px solid var(--soft-gold-line);
+  border-radius: 2px;
+  box-shadow: 0 8px 24px rgba(43, 31, 24, 0.08);
+  z-index: 50;
+  max-height: 280px;
+  overflow-y: auto;
+}
+.custom-dropdown__item {
+  padding: 10px 16px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--ink-brown);
+  cursor: pointer;
+  transition: background 200ms, color 200ms;
+}
+.custom-dropdown__item:hover {
+  background: var(--ivory-silk);
+  color: var(--maharani-maroon);
+}
+.custom-dropdown__item.is-selected {
+  background: var(--warm-sand);
+  color: var(--maharani-maroon);
+  font-weight: 500;
+}
 .filter-bar__label {
   font-family: var(--font-nav);
   font-size: 14px;
@@ -746,14 +809,17 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
   align-items: center;
 }
 .story-split__image {
-  border-radius: 2px;
+  border-radius: 12px !important;
   overflow: hidden;
   aspect-ratio: 1;
+  transform: translateZ(0);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 .story-split__image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 12px !important;
 }
 .story-split__copy h2 {
   margin-bottom: 20px;
@@ -770,11 +836,13 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
 /* ── 19. Craftsmanship Banner ─────────────────────────────── */
 .craft-banner {
   position: relative;
-  border-radius: 2px;
+  border-radius: 12px !important;
   overflow: hidden;
   min-height: 400px;
   display: flex;
   align-items: center;
+  transform: translateZ(0);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 .craft-banner__bg {
   position: absolute;
@@ -784,10 +852,12 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 12px !important;
 }
 .craft-banner__overlay {
   position: absolute;
   inset: 0;
+  border-radius: 12px !important;
   background: linear-gradient(90deg, rgba(43,31,24,0.75) 0%, rgba(43,31,24,0.3) 60%, transparent 100%);
 }
 .craft-banner__content {
