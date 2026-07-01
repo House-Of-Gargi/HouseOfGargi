@@ -8,7 +8,7 @@ export default function OurArtisans() {
     <>
       {/* Banner */}
       <div className="category-banner">
-        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/artisans_banner.png" alt="Our artisans at work" />
+        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/artisans_banner.webp" alt="Our artisans at work" />
         <div className="category-banner__content">
           <h1>Our Artisans</h1>
           <p>The masters behind the magic.</p>
@@ -33,7 +33,7 @@ export default function OurArtisans() {
           <ScrollReveal>
             <div className="story-split">
               <div className="story-split__image">
-                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/artisans_split.png" alt="Artisan embroidering" />
+                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/artisans_split.webp" alt="Artisan embroidering" />
               </div>
               <div className="story-split__copy">
                 <h2 style={{ color: 'var(--maharani-maroon)' }}>Fair Trade Promise</h2>
@@ -44,6 +44,19 @@ export default function OurArtisans() {
                   When you wear House of Gargi, you wear someone's life's work.
                 </p>
               </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="section section--ivory">
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <ScrollReveal>
+            <div className="divider"><span className="divider__icon">❖</span></div>
+            <div style={{ textAlign: 'center', marginTop: '40px' }}>
+              <h2 style={{ color: 'var(--maharani-maroon)', marginBottom: '16px' }}>Discover the Collection</h2>
+              <p style={{ color: 'var(--stone-taupe)', marginBottom: '32px' }}>Explore our latest handcrafted arrivals and support our artisan communities.</p>
+              <a href="/shop" className="btn btn--primary">Shop Now</a>
             </div>
           </ScrollReveal>
         </div>

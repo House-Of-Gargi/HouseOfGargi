@@ -7,7 +7,7 @@ export default function Sustainability() {
   return (
     <>
       <div className="category-banner">
-        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/sustainability_banner.png" alt="Natural dyes and sustainable practices" />
+        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/sustainability_banner.webp" alt="Natural dyes and sustainable practices" />
         <div className="category-banner__content">
           <h1>Sustainability</h1>
           <p>Treading lightly on the earth.</p>
@@ -32,7 +32,7 @@ export default function Sustainability() {
           <ScrollReveal>
             <div className="story-split">
               <div className="story-split__image">
-                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/sustainability_split.png" alt="Raw organic cotton" />
+                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/sustainability_split.webp" alt="Raw organic cotton" />
               </div>
               <div className="story-split__copy">
                 <h2 style={{ color: 'var(--maharani-maroon)' }}>Zero-Waste Craft</h2>
@@ -43,6 +43,19 @@ export default function Sustainability() {
                   By embracing a made-to-order model, we eliminate overproduction and minimize waste, ensuring that every garment created is cherished.
                 </p>
               </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="section section--ivory">
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <ScrollReveal>
+            <div className="divider"><span className="divider__icon">❖</span></div>
+            <div style={{ textAlign: 'center', marginTop: '40px' }}>
+              <h2 style={{ color: 'var(--maharani-maroon)', marginBottom: '16px' }}>Shop Sustainable Luxury</h2>
+              <p style={{ color: 'var(--stone-taupe)', marginBottom: '32px' }}>Discover pieces crafted with zero-waste philosophy and natural materials.</p>
+              <a href="/shop" className="btn btn--primary">View Collection</a>
             </div>
           </ScrollReveal>
         </div>

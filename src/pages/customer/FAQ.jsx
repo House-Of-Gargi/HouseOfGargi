@@ -15,7 +15,7 @@ export default function FAQ() {
   return (
     <>
       <div className="category-banner">
-        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/faq_banner.png" alt="Elegant boutique interior" />
+        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/faq_banner.webp" alt="Elegant boutique interior" />
         <div className="category-banner__content">
           <h1>FAQ</h1>
           <p>Common questions, answered.</p>
@@ -40,7 +40,7 @@ export default function FAQ() {
           <ScrollReveal>
             <div className="story-split">
               <div className="story-split__image">
-                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/returns_split.png" alt="Customer care" />
+                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/returns_split.webp" alt="Customer care" />
               </div>
               <div className="story-split__copy">
                 <h2 style={{ color: 'var(--maharani-maroon)' }}>Frequently Asked Questions</h2>
@@ -78,6 +78,19 @@ export default function FAQ() {
                 </div>
 
               </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="section section--ivory">
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <ScrollReveal>
+            <div className="divider"><span className="divider__icon">❖</span></div>
+            <div style={{ textAlign: 'center', marginTop: '40px' }}>
+              <h2 style={{ color: 'var(--maharani-maroon)', marginBottom: '16px' }}>Still need help?</h2>
+              <p style={{ color: 'var(--stone-taupe)', marginBottom: '32px' }}>We're always here for you.</p>
+              <a href="mailto:care@houseofgargi.com" className="btn btn--outline">Contact Us</a>
             </div>
           </ScrollReveal>
         </div>

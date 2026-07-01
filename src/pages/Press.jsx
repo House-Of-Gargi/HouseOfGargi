@@ -7,7 +7,7 @@ export default function Press() {
   return (
     <>
       <div className="category-banner">
-        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/press_banner.png" alt="Press and media coverage" />
+        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/press_banner.webp" alt="Press and media coverage" />
         <div className="category-banner__content">
           <h1>Press</h1>
           <p>House of Gargi in the spotlight.</p>
@@ -32,7 +32,7 @@ export default function Press() {
           <ScrollReveal>
             <div className="story-split">
               <div className="story-split__image">
-                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/press_split.png" alt="Fashion editorial" />
+                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/press_split.webp" alt="Fashion editorial" />
               </div>
               <div className="story-split__copy">
                 <h2 style={{ color: 'var(--maharani-maroon)' }}>Editorial Features</h2>
@@ -49,6 +49,19 @@ export default function Press() {
                   <strong style={{ color: 'var(--ink-brown)' }}>— Elle</strong>
                 </p>
               </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="section section--ivory">
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <ScrollReveal>
+            <div className="divider"><span className="divider__icon">❖</span></div>
+            <div style={{ textAlign: 'center', marginTop: '40px' }}>
+              <h2 style={{ color: 'var(--maharani-maroon)', marginBottom: '16px' }}>Wear the Art</h2>
+              <p style={{ color: 'var(--stone-taupe)', marginBottom: '32px' }}>Explore the pieces celebrated by fashion's finest.</p>
+              <a href="/shop" className="btn btn--primary">Shop the Collection</a>
             </div>
           </ScrollReveal>
         </div>

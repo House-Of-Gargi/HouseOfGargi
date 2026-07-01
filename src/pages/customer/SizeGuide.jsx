@@ -7,7 +7,7 @@ export default function SizeGuide() {
   return (
     <>
       <div className="category-banner">
-        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/size_guide_banner.png" alt="Tailor's measuring tape on silk" />
+        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/size_guide_banner.webp" alt="Tailor's measuring tape on silk" />
         <div className="category-banner__content">
           <h1>Size Guide</h1>
           <p>Find your perfect fit.</p>
@@ -32,7 +32,7 @@ export default function SizeGuide() {
           <ScrollReveal>
             <div className="story-split">
               <div className="story-split__image">
-                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/size_guide_split.png" alt="Tailoring measurements" />
+                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/size_guide_split.webp" alt="Tailoring measurements" />
               </div>
               <div className="story-split__copy">
                 <h2 style={{ color: 'var(--maharani-maroon)' }}>Standard Chart</h2>
@@ -81,6 +81,19 @@ export default function SizeGuide() {
                   </table>
                 </div>
               </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="section section--ivory">
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <ScrollReveal>
+            <div className="divider"><span className="divider__icon">❖</span></div>
+            <div style={{ textAlign: 'center', marginTop: '40px' }}>
+              <h2 style={{ color: 'var(--maharani-maroon)', marginBottom: '16px' }}>Ready to shop?</h2>
+              <p style={{ color: 'var(--stone-taupe)', marginBottom: '32px' }}>Find the piece that speaks to you.</p>
+              <a href="/shop" className="btn btn--primary">Browse Collection</a>
             </div>
           </ScrollReveal>
         </div>

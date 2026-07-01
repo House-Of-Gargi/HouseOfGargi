@@ -7,7 +7,7 @@ export default function Shipping() {
   return (
     <>
       <div className="category-banner">
-        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/shipping_banner.png" alt="Premium packaging" />
+        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/shipping_banner.webp" alt="Premium packaging" />
         <div className="category-banner__content">
           <h1>Shipping & Delivery</h1>
           <p>Carefully wrapped and swiftly delivered.</p>
@@ -32,7 +32,7 @@ export default function Shipping() {
           <ScrollReveal>
             <div className="story-split">
               <div className="story-split__image">
-                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/shipping_split.png" alt="Carefully wrapping a garment" />
+                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/shipping_split.webp" alt="Carefully wrapping a garment" />
               </div>
               <div className="story-split__copy">
                 <h2 style={{ color: 'var(--maharani-maroon)' }}>Shipping Timelines</h2>
@@ -45,6 +45,19 @@ export default function Shipping() {
                   Please note that made-to-order and bespoke items require an additional 2-4 weeks for crafting before they are shipped.
                 </p>
               </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="section section--ivory">
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <ScrollReveal>
+            <div className="divider"><span className="divider__icon">❖</span></div>
+            <div style={{ textAlign: 'center', marginTop: '40px' }}>
+              <h2 style={{ color: 'var(--maharani-maroon)', marginBottom: '16px' }}>Need assistance?</h2>
+              <p style={{ color: 'var(--stone-taupe)', marginBottom: '32px' }}>Our client care team is available to help with tracking and logistics.</p>
+              <a href="/faq" className="btn btn--outline">Read FAQs</a>
             </div>
           </ScrollReveal>
         </div>

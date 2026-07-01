@@ -7,7 +7,7 @@ export default function Returns() {
   return (
     <>
       <div className="category-banner">
-        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/returns_banner.png" alt="Premium garments neatly folded" />
+        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/returns_banner.webp" alt="Premium garments neatly folded" />
         <div className="category-banner__content">
           <h1>Returns & Exchanges</h1>
           <p>We want you to love your Gargi piece.</p>
@@ -34,7 +34,7 @@ export default function Returns() {
           <ScrollReveal>
             <div className="story-split">
               <div className="story-split__image">
-                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/returns_split.png" alt="Inspecting garment for quality" />
+                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/returns_split.webp" alt="Inspecting garment for quality" />
               </div>
               <div className="story-split__copy">
                 <h2 style={{ color: 'var(--maharani-maroon)' }}>How to Return</h2>
@@ -47,6 +47,19 @@ export default function Returns() {
                   Please note: Custom-made and bespoke pieces are crafted specifically for you and cannot be returned or exchanged unless there is a manufacturing defect.
                 </p>
               </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="section section--ivory">
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <ScrollReveal>
+            <div className="divider"><span className="divider__icon">❖</span></div>
+            <div style={{ textAlign: 'center', marginTop: '40px' }}>
+              <h2 style={{ color: 'var(--maharani-maroon)', marginBottom: '16px' }}>Still have questions?</h2>
+              <p style={{ color: 'var(--stone-taupe)', marginBottom: '32px' }}>We're here to help make your experience perfect.</p>
+              <a href="/faq" className="btn btn--primary">View FAQ</a>
             </div>
           </ScrollReveal>
         </div>
