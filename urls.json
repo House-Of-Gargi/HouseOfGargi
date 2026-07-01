@@ -1,6 +1,15 @@
 {
-  "artisans_hero.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/artisans_hero.png",
-  "sustainability_hero.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/sustainability_hero.png",
-  "press_hero.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/press_hero.png",
-  "size_guide_hero.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/size_guide_hero.png"
+  "artisans_banner.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/artisans_banner.png",
+  "artisans_split.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/artisans_split.png",
+  "faq_banner.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/faq_banner.png",
+  "press_banner.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/press_banner.png",
+  "press_split.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/press_split.png",
+  "returns_banner.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/returns_banner.png",
+  "returns_split.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/returns_split.png",
+  "shipping_banner.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/shipping_banner.png",
+  "shipping_split.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/shipping_split.png",
+  "size_guide_banner.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/size_guide_banner.png",
+  "size_guide_split.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/size_guide_split.png",
+  "sustainability_banner.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/sustainability_banner.png",
+  "sustainability_split.png": "https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/sustainability_split.png"
 }

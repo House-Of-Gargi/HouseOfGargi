@@ -1,43 +1,58 @@
-import React from 'react';
-import { LeafIcon } from '../components/Icons';
+import { useEffect } from 'react';
+import ScrollReveal from '../components/ScrollReveal';
 
 export default function Press() {
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+
   return (
-    <div className="page-container" style={{ padding: '4rem 1rem', maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-      <h1 className="hero__title" style={{ color: 'var(--ink-brown)', marginBottom: '1rem' }}>Press</h1>
-      <div className="divider" style={{ margin: '2rem auto' }}>
-        <span className="divider__icon"><LeafIcon size={16} /></span>
-      </div>
-      <p style={{ fontSize: '1.2rem', lineHeight: '1.8', color: 'var(--ink-brown-light)', marginBottom: '2rem' }}>
-        House of Gargi has been featured in leading fashion and lifestyle publications across the country. Our commitment to preserving Indian heritage crafts and our sustainable approach to modern fashion continues to garner attention from industry experts and fashion enthusiasts alike.
-      </p>
-      
-      <div style={{ width: '100%', height: '400px', backgroundColor: 'var(--ivory-dark)', borderRadius: '4px', overflow: 'hidden', margin: '2rem 0' }}>
-        <img 
-          src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/press_hero.png" 
-          alt="Press and media coverage" 
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-          onError={(e) => {
-            e.target.style.display = 'none';
-            e.target.parentElement.innerHTML = '<div style="display:flex; height:100%; align-items:center; justify-content:center; color: var(--ink-brown-light)">Press Image</div>';
-          }}
-        />
+    <>
+      <div className="category-banner">
+        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/press_banner.png" alt="Press and media coverage" />
+        <div className="category-banner__content">
+          <h1>Press</h1>
+          <p>House of Gargi in the spotlight.</p>
+        </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem', marginTop: '3rem' }}>
-        <div style={{ padding: '2rem', backgroundColor: '#fff', borderRadius: '4px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
-          <h3 style={{ color: 'var(--ink-brown)', marginBottom: '1rem' }}>Vogue India</h3>
-          <p style={{ color: 'var(--ink-brown-light)', fontSize: '0.9rem', fontStyle: 'italic' }}>"Redefining traditional silhouettes with a conscious mind and a regal aesthetic."</p>
+      <section className="section section--ivory">
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <ScrollReveal>
+            <h2 style={{ color: 'var(--maharani-maroon)', marginBottom: '32px', textAlign: 'center' }}>
+              Celebrated Craft
+            </h2>
+            <p style={{ color: 'var(--stone-taupe)', fontSize: '17px', lineHeight: '1.9', marginBottom: '24px' }}>
+              Since our inception, House of Gargi has been celebrated by leading fashion publications and tastemakers for our uncompromising dedication to Indian craftsmanship. We are proud to see our heritage pieces gracing the pages of Vogue, Harper's Bazaar, and Elle.
+            </p>
+          </ScrollReveal>
         </div>
-        <div style={{ padding: '2rem', backgroundColor: '#fff', borderRadius: '4px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
-          <h3 style={{ color: 'var(--ink-brown)', marginBottom: '1rem' }}>Elle</h3>
-          <p style={{ color: 'var(--ink-brown-light)', fontSize: '0.9rem', fontStyle: 'italic' }}>"A stunning tribute to the weaves of India, tailored for the modern woman."</p>
+      </section>
+
+      <section className="section section--sand">
+        <div className="container">
+          <ScrollReveal>
+            <div className="story-split">
+              <div className="story-split__image">
+                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/press_split.png" alt="Fashion editorial" />
+              </div>
+              <div className="story-split__copy">
+                <h2 style={{ color: 'var(--maharani-maroon)' }}>Editorial Features</h2>
+                <p>
+                  "House of Gargi is quietly redefining modern luxury by looking deeply into the past, proving that true elegance is handmade."<br />
+                  <strong style={{ color: 'var(--ink-brown)' }}>— Vogue India</strong>
+                </p>
+                <p>
+                  "A masterclass in reviving lost textiles, every garment feels less like a piece of clothing and more like a cherished heirloom."<br />
+                  <strong style={{ color: 'var(--ink-brown)' }}>— Harper's Bazaar</strong>
+                </p>
+                <p>
+                  "The brand putting artisans back at the center of the fashion narrative."<br />
+                  <strong style={{ color: 'var(--ink-brown)' }}>— Elle</strong>
+                </p>
+              </div>
+            </div>
+          </ScrollReveal>
         </div>
-        <div style={{ padding: '2rem', backgroundColor: '#fff', borderRadius: '4px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
-          <h3 style={{ color: 'var(--ink-brown)', marginBottom: '1rem' }}>Harper's Bazaar</h3>
-          <p style={{ color: 'var(--ink-brown-light)', fontSize: '0.9rem', fontStyle: 'italic' }}>"House of Gargi's new collection is a masterclass in understated elegance."</p>
-        </div>
-      </div>
-    </div>
+      </section>
+    </>
   );
 }

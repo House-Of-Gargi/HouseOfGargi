@@ -1,80 +1,90 @@
-import React from 'react';
-import { LeafIcon } from '../../components/Icons';
+import { useEffect } from 'react';
+import ScrollReveal from '../../components/ScrollReveal';
 
 export default function SizeGuide() {
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+
   return (
-    <div className="page-container" style={{ padding: '4rem 1rem', maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-      <h1 className="hero__title" style={{ color: 'var(--ink-brown)', marginBottom: '1rem' }}>Size Guide</h1>
-      <div className="divider" style={{ margin: '2rem auto' }}>
-        <span className="divider__icon"><LeafIcon size={16} /></span>
-      </div>
-      <p style={{ fontSize: '1.2rem', lineHeight: '1.8', color: 'var(--ink-brown-light)', marginBottom: '2rem' }}>
-        To ensure the perfect fit, please refer to our detailed sizing charts below. 
-        Measurements are in inches. If you fall between sizes, we recommend opting for the larger size 
-        or utilizing our Bespoke service for a custom fit.
-      </p>
-      
-      <div style={{ width: '100%', height: '300px', backgroundColor: 'var(--ivory-dark)', borderRadius: '4px', overflow: 'hidden', margin: '2rem 0' }}>
-        <img 
-          src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/size_guide_hero.png" 
-          alt="Measuring tape on silk fabric" 
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-          onError={(e) => {
-            e.target.style.display = 'none';
-            e.target.parentElement.innerHTML = '<div style="display:flex; height:100%; align-items:center; justify-content:center; color: var(--ink-brown-light)">Size Guide Image</div>';
-          }}
-        />
+    <>
+      <div className="category-banner">
+        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/size_guide_banner.png" alt="Tailor's measuring tape on silk" />
+        <div className="category-banner__content">
+          <h1>Size Guide</h1>
+          <p>Find your perfect fit.</p>
+        </div>
       </div>
 
-      <div style={{ textAlign: 'left', marginTop: '3rem' }}>
-        <h3 style={{ color: 'var(--ink-brown)', marginBottom: '1rem' }}>Standard Garment Measurements</h3>
-        <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '2rem' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid var(--ivory-dark)', color: 'var(--ink-brown)' }}>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Size</th>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Bust</th>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Waist</th>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Hip</th>
-            </tr>
-          </thead>
-          <tbody style={{ color: 'var(--ink-brown-light)' }}>
-            <tr style={{ borderBottom: '1px solid var(--ivory-dark)' }}>
-              <td style={{ padding: '1rem' }}>XS (UK 6)</td>
-              <td style={{ padding: '1rem' }}>32"</td>
-              <td style={{ padding: '1rem' }}>26"</td>
-              <td style={{ padding: '1rem' }}>36"</td>
-            </tr>
-            <tr style={{ borderBottom: '1px solid var(--ivory-dark)' }}>
-              <td style={{ padding: '1rem' }}>S (UK 8)</td>
-              <td style={{ padding: '1rem' }}>34"</td>
-              <td style={{ padding: '1rem' }}>28"</td>
-              <td style={{ padding: '1rem' }}>38"</td>
-            </tr>
-            <tr style={{ borderBottom: '1px solid var(--ivory-dark)' }}>
-              <td style={{ padding: '1rem' }}>M (UK 10)</td>
-              <td style={{ padding: '1rem' }}>36"</td>
-              <td style={{ padding: '1rem' }}>30"</td>
-              <td style={{ padding: '1rem' }}>40"</td>
-            </tr>
-            <tr style={{ borderBottom: '1px solid var(--ivory-dark)' }}>
-              <td style={{ padding: '1rem' }}>L (UK 12)</td>
-              <td style={{ padding: '1rem' }}>38"</td>
-              <td style={{ padding: '1rem' }}>32"</td>
-              <td style={{ padding: '1rem' }}>42"</td>
-            </tr>
-            <tr style={{ borderBottom: '1px solid var(--ivory-dark)' }}>
-              <td style={{ padding: '1rem' }}>XL (UK 14)</td>
-              <td style={{ padding: '1rem' }}>40"</td>
-              <td style={{ padding: '1rem' }}>34"</td>
-              <td style={{ padding: '1rem' }}>44"</td>
-            </tr>
-          </tbody>
-        </table>
-        
-        <p style={{ color: 'var(--ink-brown-light)', fontSize: '0.9rem' }}>
-          * For Sarees, standard blouse pieces are provided at 1 meter length unless stated otherwise.
-        </p>
-      </div>
-    </div>
+      <section className="section section--ivory">
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <ScrollReveal>
+            <h2 style={{ color: 'var(--maharani-maroon)', marginBottom: '32px', textAlign: 'center' }}>
+              Measurements & Fit
+            </h2>
+            <p style={{ color: 'var(--stone-taupe)', fontSize: '17px', lineHeight: '1.9', marginBottom: '24px' }}>
+              A beautiful garment is only as good as its fit. Use our comprehensive sizing charts to find your perfect measurements. If you fall between sizes, we recommend selecting the larger size for a more comfortable drape, or opting for our bespoke tailoring service for a custom fit.
+            </p>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="section section--sand">
+        <div className="container">
+          <ScrollReveal>
+            <div className="story-split">
+              <div className="story-split__image">
+                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/size_guide_split.png" alt="Tailoring measurements" />
+              </div>
+              <div className="story-split__copy">
+                <h2 style={{ color: 'var(--maharani-maroon)' }}>Standard Chart</h2>
+                <div style={{ overflowX: 'auto', marginTop: '1.5rem' }}>
+                  <table className="data-table" style={{ minWidth: '100%', borderCollapse: 'collapse', backgroundColor: 'transparent' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '2px solid var(--soft-gold-line)' }}>
+                        <th style={{ padding: '0.75rem', textAlign: 'left', color: 'var(--ink-brown)' }}>Size</th>
+                        <th style={{ padding: '0.75rem', textAlign: 'left', color: 'var(--ink-brown)' }}>Bust (in)</th>
+                        <th style={{ padding: '0.75rem', textAlign: 'left', color: 'var(--ink-brown)' }}>Waist (in)</th>
+                        <th style={{ padding: '0.75rem', textAlign: 'left', color: 'var(--ink-brown)' }}>Hip (in)</th>
+                      </tr>
+                    </thead>
+                    <tbody style={{ color: 'var(--stone-taupe)' }}>
+                      <tr style={{ borderBottom: '1px solid var(--soft-gold-line)' }}>
+                        <td style={{ padding: '0.75rem' }}>XS</td>
+                        <td style={{ padding: '0.75rem' }}>32</td>
+                        <td style={{ padding: '0.75rem' }}>26</td>
+                        <td style={{ padding: '0.75rem' }}>36</td>
+                      </tr>
+                      <tr style={{ borderBottom: '1px solid var(--soft-gold-line)' }}>
+                        <td style={{ padding: '0.75rem' }}>S</td>
+                        <td style={{ padding: '0.75rem' }}>34</td>
+                        <td style={{ padding: '0.75rem' }}>28</td>
+                        <td style={{ padding: '0.75rem' }}>38</td>
+                      </tr>
+                      <tr style={{ borderBottom: '1px solid var(--soft-gold-line)' }}>
+                        <td style={{ padding: '0.75rem' }}>M</td>
+                        <td style={{ padding: '0.75rem' }}>36</td>
+                        <td style={{ padding: '0.75rem' }}>30</td>
+                        <td style={{ padding: '0.75rem' }}>40</td>
+                      </tr>
+                      <tr style={{ borderBottom: '1px solid var(--soft-gold-line)' }}>
+                        <td style={{ padding: '0.75rem' }}>L</td>
+                        <td style={{ padding: '0.75rem' }}>38</td>
+                        <td style={{ padding: '0.75rem' }}>32</td>
+                        <td style={{ padding: '0.75rem' }}>42</td>
+                      </tr>
+                      <tr style={{ borderBottom: '1px solid var(--soft-gold-line)' }}>
+                        <td style={{ padding: '0.75rem' }}>XL</td>
+                        <td style={{ padding: '0.75rem' }}>40</td>
+                        <td style={{ padding: '0.75rem' }}>34</td>
+                        <td style={{ padding: '0.75rem' }}>44</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+    </>
   );
 }

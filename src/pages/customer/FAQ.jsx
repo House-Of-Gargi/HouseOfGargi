@@ -1,73 +1,87 @@
-import React, { useState } from 'react';
-import { LeafIcon } from '../../components/Icons';
+import { useEffect, useState } from 'react';
+import ScrollReveal from '../../components/ScrollReveal';
 
 export default function FAQ() {
+  useEffect(() => { window.scrollTo(0, 0); }, []);
   const [openIndex, setOpenIndex] = useState(null);
 
   const faqs = [
-    {
-      question: "Do you ship internationally?",
-      answer: "Yes, we ship worldwide. Shipping costs are calculated at checkout based on destination."
-    },
-    {
-      question: "How long will my order take to arrive?",
-      answer: "Domestic orders typically take 5-7 business days. International orders can take 10-15 business days depending on customs."
-    },
-    {
-      question: "Can I customize a design?",
-      answer: "Yes, our Bespoke service allows you to customize sizing, colors, and certain design elements. Please contact us or visit the Bespoke section."
-    },
-    {
-      question: "What is your return policy?",
-      answer: "We accept returns within 14 days of delivery for standard domestic orders. Items must be unworn and in original condition. Bespoke items are non-returnable."
-    },
-    {
-      question: "Are your dyes safe?",
-      answer: "Yes, we use 100% natural, eco-friendly, and azo-free dyes for all our garments."
-    }
+    { q: "Do you ship internationally?", a: "Yes, we ship worldwide. International orders typically take 7-14 business days to arrive." },
+    { q: "How should I care for my silk garments?", a: "We recommend dry cleaning only for our pure silk and hand-embroidered pieces to maintain their luster and delicate handwork." },
+    { q: "Can I customize the fit of a garment?", a: "Yes, we offer a bespoke tailoring service. You can provide your exact measurements during checkout." },
+    { q: "What is your return policy?", a: "We accept returns within 14 days of delivery for standard items in original condition. Bespoke pieces cannot be returned." },
   ];
 
   return (
-    <div className="page-container" style={{ padding: '4rem 1rem', maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-      <h1 className="hero__title" style={{ color: 'var(--ink-brown)', marginBottom: '1rem' }}>Frequently Asked Questions</h1>
-      <div className="divider" style={{ margin: '2rem auto' }}>
-        <span className="divider__icon"><LeafIcon size={16} /></span>
+    <>
+      <div className="category-banner">
+        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/faq_banner.png" alt="Elegant boutique interior" />
+        <div className="category-banner__content">
+          <h1>FAQ</h1>
+          <p>Common questions, answered.</p>
+        </div>
       </div>
-      
-      <div style={{ textAlign: 'left', marginTop: '3rem' }}>
-        {faqs.map((faq, index) => (
-          <div key={index} style={{ borderBottom: '1px solid var(--ivory-dark)', padding: '1.5rem 0' }}>
-            <button 
-              onClick={() => setOpenIndex(openIndex === index ? null : index)}
-              style={{ 
-                width: '100%', 
-                display: 'flex', 
-                justifyContent: 'space-between', 
-                alignItems: 'center', 
-                background: 'none', 
-                border: 'none', 
-                cursor: 'pointer',
-                color: 'var(--ink-brown)',
-                fontSize: '1.1rem',
-                fontWeight: '500',
-                textAlign: 'left'
-              }}
-            >
-              {faq.question}
-              <span style={{ fontSize: '1.5rem', fontWeight: '300' }}>{openIndex === index ? '-' : '+'}</span>
-            </button>
-            {openIndex === index && (
-              <div style={{ marginTop: '1rem', color: 'var(--ink-brown-light)', lineHeight: '1.6' }}>
-                {faq.answer}
+
+      <section className="section section--ivory">
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <ScrollReveal>
+            <h2 style={{ color: 'var(--maharani-maroon)', marginBottom: '32px', textAlign: 'center' }}>
+              How can we help?
+            </h2>
+            <p style={{ color: 'var(--stone-taupe)', fontSize: '17px', lineHeight: '1.9', marginBottom: '24px', textAlign: 'center' }}>
+              We've compiled a list of our most frequently asked questions. If you can't find the answer you're looking for, our customer care team is always here to assist you at care@houseofgargi.com.
+            </p>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="section section--sand">
+        <div className="container">
+          <ScrollReveal>
+            <div className="story-split">
+              <div className="story-split__image">
+                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/returns_split.png" alt="Customer care" />
               </div>
-            )}
-          </div>
-        ))}
-      </div>
-      
-      <div style={{ marginTop: '4rem', color: 'var(--ink-brown-light)' }}>
-        <p>Still have questions? Reach out to us at <a href="mailto:hello@houseofgargi.com" style={{ color: 'var(--gold)' }}>hello@houseofgargi.com</a></p>
-      </div>
-    </div>
+              <div className="story-split__copy">
+                <h2 style={{ color: 'var(--maharani-maroon)' }}>Frequently Asked Questions</h2>
+                
+                <div style={{ marginTop: '2rem' }}>
+                  {faqs.map((faq, idx) => (
+                    <div key={idx} style={{ marginBottom: '1rem', borderBottom: '1px solid var(--soft-gold-line)' }}>
+                      <button
+                        onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
+                        style={{
+                          width: '100%',
+                          textAlign: 'left',
+                          background: 'none',
+                          border: 'none',
+                          padding: '1rem 0',
+                          fontSize: '1.1rem',
+                          color: 'var(--ink-brown)',
+                          fontFamily: 'var(--font-nav)',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {faq.q}
+                        <span>{openIndex === idx ? '−' : '+'}</span>
+                      </button>
+                      {openIndex === idx && (
+                        <div style={{ paddingBottom: '1.5rem', color: 'var(--stone-taupe)', lineHeight: '1.7' }}>
+                          {faq.a}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+    </>
   );
 }

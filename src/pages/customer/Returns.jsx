@@ -1,44 +1,56 @@
-import React from 'react';
-import { LeafIcon } from '../../components/Icons';
+import { useEffect } from 'react';
+import ScrollReveal from '../../components/ScrollReveal';
 
 export default function Returns() {
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+
   return (
-    <div className="page-container" style={{ padding: '4rem 1rem', maxWidth: '800px', margin: '0 auto', textAlign: 'left' }}>
-      <h1 className="hero__title" style={{ color: 'var(--ink-brown)', marginBottom: '1rem', textAlign: 'center' }}>Returns & Exchanges</h1>
-      <div className="divider" style={{ margin: '2rem auto' }}>
-        <span className="divider__icon"><LeafIcon size={16} /></span>
+    <>
+      <div className="category-banner">
+        <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/returns_banner.png" alt="Premium garments neatly folded" />
+        <div className="category-banner__content">
+          <h1>Returns & Exchanges</h1>
+          <p>We want you to love your Gargi piece.</p>
+        </div>
       </div>
-      
-      <div style={{ color: 'var(--ink-brown-light)', lineHeight: '1.8' }}>
-        <h3 style={{ color: 'var(--ink-brown)', marginTop: '2rem', marginBottom: '1rem' }}>Our Return Policy</h3>
-        <p>
-          We want you to be completely satisfied with your House of Gargi purchase. If for any reason you are not, 
-          we accept returns within 14 days of delivery for domestic orders. Items must be unworn, unwashed, 
-          with all original tags attached, and in their original packaging.
-        </p>
 
-        <h3 style={{ color: 'var(--ink-brown)', marginTop: '2rem', marginBottom: '1rem' }}>Non-Returnable Items</h3>
-        <p>
-          Please note that Bespoke/Custom-made items, altered items, and products purchased during clearance sales 
-          are final sale and cannot be returned or exchanged. Sarees with the blouse piece detached or fall/pico 
-          completed are also considered non-returnable.
-        </p>
+      <section className="section section--ivory">
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <ScrollReveal>
+            <h2 style={{ color: 'var(--maharani-maroon)', marginBottom: '32px', textAlign: 'center' }}>
+              Our Return Policy
+            </h2>
+            <p style={{ color: 'var(--stone-taupe)', fontSize: '17px', lineHeight: '1.9', marginBottom: '24px' }}>
+              We take immense pride in the quality and craftsmanship of our garments. 
+              If you are not entirely satisfied with your purchase, we are here to help. 
+              Returns and exchanges are accepted within 14 days of delivery, provided the item is in its original, unworn condition with all tags attached.
+            </p>
+          </ScrollReveal>
+        </div>
+      </section>
 
-        <h3 style={{ color: 'var(--ink-brown)', marginTop: '2rem', marginBottom: '1rem' }}>How to Initiate a Return</h3>
-        <ol style={{ paddingLeft: '1.5rem', marginBottom: '1rem' }}>
-          <li>Log into your account and navigate to the 'Orders' section.</li>
-          <li>Select the order containing the item(s) you wish to return and click 'Request Return'.</li>
-          <li>Follow the instructions to select a reason for return and schedule a pickup.</li>
-          <li>Pack the items securely in their original packaging. Our courier partner will collect the package.</li>
-        </ol>
-
-        <h3 style={{ color: 'var(--ink-brown)', marginTop: '2rem', marginBottom: '1rem' }}>Refunds</h3>
-        <p>
-          Once your return is received and inspected by our quality team, we will process your refund. 
-          Refunds will be issued to the original method of payment within 7-10 business days. 
-          Shipping charges are non-refundable.
-        </p>
-      </div>
-    </div>
+      <section className="section section--sand">
+        <div className="container">
+          <ScrollReveal>
+            <div className="story-split">
+              <div className="story-split__image">
+                <img src="https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/returns_split.png" alt="Inspecting garment for quality" />
+              </div>
+              <div className="story-split__copy">
+                <h2 style={{ color: 'var(--maharani-maroon)' }}>How to Return</h2>
+                <ul style={{ paddingLeft: '1.5rem', marginBottom: '1.5rem', color: 'var(--stone-taupe)', fontSize: '16px', lineHeight: '1.8' }}>
+                  <li style={{ marginBottom: '0.5rem' }}>1. Contact our support team at care@houseofgargi.com to initiate your return.</li>
+                  <li style={{ marginBottom: '0.5rem' }}>2. Pack the item securely in its original packaging.</li>
+                  <li style={{ marginBottom: '0.5rem' }}>3. Hand over the package to our scheduled courier partner.</li>
+                </ul>
+                <p className="caption" style={{ color: 'var(--ink-brown)' }}>
+                  Please note: Custom-made and bespoke pieces are crafted specifically for you and cannot be returned or exchanged unless there is a manufacturing defect.
+                </p>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+    </>
   );
 }
