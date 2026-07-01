@@ -31,9 +31,11 @@ export default function Cart() {
             <span>&larr;</span> Back
           </button>
         </div>
-        <h1 style={{ fontFamily: 'var(--font-nav)', color: 'var(--ink-brown)', marginBottom: '32px' }}>
-          Shopping Bag <span style={{ fontSize: '18px', color: 'var(--stone-taupe)', fontWeight: 'normal' }}>({itemCount} items)</span>
-        </h1>
+        <div style={{ textAlign: 'left', marginBottom: '40px' }}>
+          <h1 style={{ fontFamily: 'var(--font-nav)', color: 'var(--ink-brown)', marginBottom: '8px', fontSize: '28px' }}>
+            Shopping Bag <span style={{ fontSize: '18px', color: 'var(--stone-taupe)', fontWeight: 'normal' }}>({itemCount} items)</span>
+          </h1>
+        </div>
 
         <div style={{ display: 'grid', gap: '40px', gridTemplateColumns: '1fr 340px' }} className="cart-layout">
           {/* Cart Items */}

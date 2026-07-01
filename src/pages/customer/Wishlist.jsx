@@ -32,18 +32,20 @@ export default function Wishlist() {
             <span>&larr;</span> Back
           </button>
         </div>
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <h1 style={{ fontFamily: 'var(--font-nav)', color: 'var(--ink-brown)', marginBottom: '16px' }}>Your Wishlist</h1>
-          <p style={{ color: 'var(--stone-taupe)' }}>{wishlist.length} {wishlist.length === 1 ? 'item' : 'items'} saved for later</p>
+        <div style={{ textAlign: 'left', marginBottom: '40px' }}>
+          <h1 style={{ fontFamily: 'var(--font-nav)', color: 'var(--ink-brown)', marginBottom: '8px', fontSize: '28px' }}>Your Wishlist</h1>
+          <p style={{ color: 'var(--stone-taupe)', fontSize: '14px' }}>{wishlist.length} {wishlist.length === 1 ? 'item' : 'items'} saved for later</p>
         </div>
 
         <div className="category-grid">
           {wishlist.map(product => (
-            <div key={product.id} style={{ position: 'relative' }}>
-              <ProductCard product={product} />
+            <div key={product.id} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+              <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                <ProductCard product={product} style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }} />
+              </div>
               <button 
                 className="btn btn--outline" 
-                style={{ width: '100%', marginTop: '16px' }}
+                style={{ width: '100%', marginTop: 'auto' }}
                 onClick={() => {
                   if (product.sizes && product.sizes.length === 1) {
                     addToCart(product, 1, product.sizes[0]);
