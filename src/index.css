@@ -41,6 +41,33 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.styled-box {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--soft-gold-line);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(43,31,24,0.05);
+}
+
+.cart-item-card {
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+}
+
+@media (max-width: 600px) {
+  .cart-item-card {
+    gap: 16px;
+    padding: 16px;
+  }
+  .cart-item-card > a {
+    width: 80px !important;
+  }
+  .cart-item-card img {
+    width: 80px !important;
+    height: 106px !important;
+  }
+}
+
 body {
   font-family: var(--font-body);
   font-weight: 400;

@@ -42,7 +42,7 @@ export default function Cart() {
           <div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {cart.map((item, idx) => (
-                <div key={`${item.id}-${item.size}-${idx}`} style={{ display: 'flex', gap: '24px', padding: '24px', background: 'var(--pure-white)', border: '1px solid var(--soft-gold-line)', borderRadius: '16px', boxShadow: '0 4px 12px rgba(43,31,24,0.05)' }}>
+                <div key={`${item.id}-${item.size}-${idx}`} className="styled-box cart-item-card">
                   <Link to={`/product/${item.id}`} style={{ flexShrink: 0 }}>
                     <img src={item.images[0]} alt={item.name} style={{ width: '120px', height: '160px', objectFit: 'cover', borderRadius: '8px' }} />
                   </Link>
@@ -88,7 +88,7 @@ export default function Cart() {
 
           {/* Order Summary */}
           <div>
-            <div style={{ background: 'var(--pure-white)', padding: '32px', border: '1px solid var(--soft-gold-line)', borderRadius: '16px', boxShadow: '0 4px 12px rgba(43,31,24,0.05)' }}>
+            <div className="styled-box" style={{ padding: '32px' }}>
               <h3 style={{ fontFamily: 'var(--font-nav)', fontSize: '20px', marginBottom: '24px' }}>Order Summary</h3>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', color: 'var(--stone-taupe)' }}>
                 <span>Subtotal</span>

@@ -21,10 +21,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--pure-white);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--soft-gold-line);
   padding: 32px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(43,31,24,0.03);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(43,31,24,0.05);
   margin-bottom: 24px;
 }
 
