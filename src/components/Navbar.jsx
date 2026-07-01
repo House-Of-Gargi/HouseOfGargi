@@ -51,7 +51,16 @@ export default function Navbar() {
     <>
       <nav className={cls}>
         <div className="navbar__inner">
-          <Link to="/" className="navbar__logo">House of Gargi</Link>
+          <div className="navbar__left">
+            <button
+              className="navbar__mobile-toggle"
+              onClick={() => setMobileOpen(true)}
+              aria-label="Menu"
+            >
+              <MenuIcon size={24} />
+            </button>
+            <Link to="/" className="navbar__logo">House of Gargi</Link>
+          </div>
 
           <div className="navbar__links">
             <Link to="/category/sarees">Sarees</Link>
@@ -66,13 +75,6 @@ export default function Navbar() {
             <button aria-label="Account" title="Account" onClick={handleUserClick}><UserIcon size={20} /></button>
             <button aria-label="Wishlist" title="Wishlist"><WishlistIcon size={20} /></button>
             <button aria-label="Cart" title="Cart"><CartIcon size={20} /></button>
-            <button
-              className="navbar__mobile-toggle"
-              onClick={() => setMobileOpen(true)}
-              aria-label="Menu"
-            >
-              <MenuIcon size={24} />
-            </button>
           </div>
         </div>
       </nav>

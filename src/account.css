@@ -1,8 +1,7 @@
-/* Account Page Styles */
 .account-container {
   max-width: 600px;
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: 24px 24px 40px 24px;
 }
 
 .account-header {

@@ -69,11 +69,9 @@ export default function App() {
         } />
         <Route path="/account" element={
           <>
-            <Navbar />
             <main>
               <Account />
             </main>
-            <Footer />
           </>
         } />
         <Route path="/terms" element={
