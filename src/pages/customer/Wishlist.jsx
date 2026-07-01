@@ -26,13 +26,18 @@ export default function Wishlist() {
 
   return (
     <div className="section section--ivory" style={{ minHeight: '80vh', paddingTop: 'calc(var(--navbar-height) + 40px)' }}>
-      <div className="container">
+      <div className="container" style={{ maxWidth: '1000px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px' }}>
+          <button onClick={() => window.history.back()} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--ink-brown)', fontSize: '16px' }}>
+            <span>&larr;</span> Back
+          </button>
+        </div>
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
           <h1 style={{ fontFamily: 'var(--font-nav)', color: 'var(--ink-brown)', marginBottom: '16px' }}>Your Wishlist</h1>
           <p style={{ color: 'var(--stone-taupe)' }}>{wishlist.length} {wishlist.length === 1 ? 'item' : 'items'} saved for later</p>
         </div>
 
-        <div className="related-grid">
+        <div className="category-grid">
           {wishlist.map(product => (
             <div key={product.id} style={{ position: 'relative' }}>
               <ProductCard product={product} />

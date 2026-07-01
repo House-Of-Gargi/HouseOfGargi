@@ -413,7 +413,7 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
 .navbar--scrolled .navbar__icons button { color: var(--ink-brown); }
 .navbar__icons button:hover { color: var(--gargi-gold); }
 
-.navbar__icons .navbar__mobile-toggle {
+.navbar__mobile-toggle {
   display: none;
   background: none;
   border: none;

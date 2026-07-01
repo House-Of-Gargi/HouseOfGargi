@@ -53,7 +53,8 @@ export default function Navbar() {
     location.pathname === '/cart' ||
     location.pathname === '/wishlist' ||
     location.pathname === '/terms' ||
-    location.pathname === '/privacy';
+    location.pathname === '/privacy' ||
+    location.pathname === '/account';
 
   const cls = `navbar ${(scrolled || isDarkNavPage) ? 'navbar--scrolled' : 'navbar--hero'}`;
 

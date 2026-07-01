@@ -119,59 +119,61 @@ export default function Account() {
         </button>
       </div>
 
-      <div className="account-list-section">
-        <div className="account-list-title">Your information</div>
-        
-        <div className="account-list-item">
-          <div className="account-list-item-icon"><BookIcon /></div>
-          <div className="account-list-item-text">Address book</div>
-          <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
+      <div className="account-grid-layout">
+        <div className="account-list-section">
+          <div className="account-list-title">Your information</div>
+          
+          <div className="account-list-item">
+            <div className="account-list-item-icon"><BookIcon /></div>
+            <div className="account-list-item-text">Address book</div>
+            <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
+          </div>
+
+          <div className="account-list-item" onClick={() => navigate('/wishlist')}>
+            <div className="account-list-item-icon"><WishlistIcon /></div>
+            <div className="account-list-item-text">Your wishlist</div>
+            <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
+          </div>
+
+          <div className="account-list-item">
+            <div className="account-list-item-icon"><RulerIcon /></div>
+            <div className="account-list-item-text">Saved measurements</div>
+            <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
+          </div>
         </div>
 
-        <div className="account-list-item">
-          <div className="account-list-item-icon"><WishlistIcon /></div>
-          <div className="account-list-item-text">Your wishlist</div>
-          <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
-        </div>
+        <div className="account-list-section">
+          <div className="account-list-title">Other Information</div>
+          
+          <div className="account-list-item">
+            <div className="account-list-item-icon"><ShareIcon /></div>
+            <div className="account-list-item-text">Share the app</div>
+            <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
+          </div>
 
-        <div className="account-list-item">
-          <div className="account-list-item-icon"><RulerIcon /></div>
-          <div className="account-list-item-text">Saved measurements</div>
-          <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
-        </div>
-      </div>
+          <div className="account-list-item" onClick={() => navigate('/our-story')}>
+            <div className="account-list-item-icon"><InfoIcon /></div>
+            <div className="account-list-item-text">About us</div>
+            <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
+          </div>
 
-      <div className="account-list-section">
-        <div className="account-list-title">Other Information</div>
-        
-        <div className="account-list-item">
-          <div className="account-list-item-icon"><ShareIcon /></div>
-          <div className="account-list-item-text">Share the app</div>
-          <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
-        </div>
+          <div className="account-list-item" onClick={() => navigate('/terms')}>
+            <div className="account-list-item-icon"><FileTextIcon /></div>
+            <div className="account-list-item-text">Terms and Conditions</div>
+            <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
+          </div>
 
-        <div className="account-list-item" onClick={() => navigate('/our-story')}>
-          <div className="account-list-item-icon"><InfoIcon /></div>
-          <div className="account-list-item-text">About us</div>
-          <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
-        </div>
+          <div className="account-list-item" onClick={() => navigate('/privacy')}>
+            <div className="account-list-item-icon"><ShieldIcon /></div>
+            <div className="account-list-item-text">Privacy Policy</div>
+            <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
+          </div>
 
-        <div className="account-list-item" onClick={() => navigate('/terms')}>
-          <div className="account-list-item-icon"><FileTextIcon /></div>
-          <div className="account-list-item-text">Terms and Conditions</div>
-          <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
-        </div>
-
-        <div className="account-list-item" onClick={() => navigate('/privacy')}>
-          <div className="account-list-item-icon"><ShieldIcon /></div>
-          <div className="account-list-item-text">Privacy Policy</div>
-          <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
-        </div>
-
-        <div className="account-list-item" onClick={handleLogout} style={{ borderTop: '1px solid var(--soft-gold-line)' }}>
-          <div className="account-list-item-icon" style={{ color: 'var(--maharani-maroon)' }}><LogOutIcon /></div>
-          <div className="account-list-item-text" style={{ color: 'var(--maharani-maroon)' }}>Log out</div>
-          <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
+          <div className="account-list-item" onClick={handleLogout} style={{ borderTop: '1px solid var(--soft-gold-line)' }}>
+            <div className="account-list-item-icon" style={{ color: 'var(--maharani-maroon)' }}><LogOutIcon /></div>
+            <div className="account-list-item-text" style={{ color: 'var(--maharani-maroon)' }}>Log out</div>
+            <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
+          </div>
         </div>
       </div>
     </div>

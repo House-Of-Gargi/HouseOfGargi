@@ -26,6 +26,11 @@ export default function Cart() {
   return (
     <div className="section section--ivory" style={{ minHeight: '80vh', paddingTop: 'calc(var(--navbar-height) + 40px)' }}>
       <div className="container" style={{ maxWidth: '1000px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px' }}>
+          <button onClick={() => window.history.back()} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--ink-brown)', fontSize: '16px' }}>
+            <span>&larr;</span> Back
+          </button>
+        </div>
         <h1 style={{ fontFamily: 'var(--font-nav)', color: 'var(--ink-brown)', marginBottom: '32px' }}>
           Shopping Bag <span style={{ fontSize: '18px', color: 'var(--stone-taupe)', fontWeight: 'normal' }}>({itemCount} items)</span>
         </h1>
@@ -33,9 +38,9 @@ export default function Cart() {
         <div style={{ display: 'grid', gap: '40px', gridTemplateColumns: '1fr 340px' }} className="cart-layout">
           {/* Cart Items */}
           <div>
-            <div style={{ borderTop: '1px solid var(--sand-beige)', borderBottom: '1px solid var(--sand-beige)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {cart.map((item, idx) => (
-                <div key={`${item.id}-${item.size}-${idx}`} style={{ display: 'flex', gap: '24px', padding: '24px 0', borderBottom: idx !== cart.length - 1 ? '1px solid var(--sand-beige)' : 'none' }}>
+                <div key={`${item.id}-${item.size}-${idx}`} style={{ display: 'flex', gap: '24px', padding: '16px', background: 'white', border: '1px solid var(--sand-beige)', borderRadius: '4px' }}>
                   <Link to={`/product/${item.id}`} style={{ flexShrink: 0 }}>
                     <img src={item.images[0]} alt={item.name} style={{ width: '120px', height: '160px', objectFit: 'cover' }} />
                   </Link>
