@@ -1248,3 +1248,150 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
   font-size: 18px;
   color: var(--stone-taupe);
 }
+
+/* ── 20. Seller Portal ─────────────────────────────────────── */
+.seller-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--ivory-silk);
+}
+.seller-sidebar {
+  width: 250px;
+  background: var(--ink-brown);
+  color: var(--pure-white);
+  display: flex;
+  flex-direction: column;
+}
+.seller-sidebar__header {
+  padding: 32px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.seller-sidebar__header h2 {
+  font-family: var(--font-nav);
+  color: var(--gargi-gold);
+  font-size: 20px;
+  letter-spacing: 0.1em;
+}
+.seller-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+  flex-grow: 1;
+}
+.seller-sidebar__link {
+  padding: 12px 24px;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-family: var(--font-body);
+  transition: all 0.3s;
+}
+.seller-sidebar__link:hover,
+.seller-sidebar__link.is-active {
+  color: var(--pure-white);
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid var(--gargi-gold);
+}
+.seller-sidebar__footer {
+  padding: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.seller-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.seller-content__header {
+  background: var(--pure-white);
+  padding: 24px 40px;
+  border-bottom: 1px solid var(--soft-gold-line);
+}
+.seller-content__breadcrumb {
+  font-size: 14px;
+  color: var(--stone-taupe);
+}
+.seller-content__breadcrumb span {
+  color: var(--ink-brown);
+  font-weight: 500;
+}
+.seller-content__body {
+  padding: 40px;
+  max-width: 1200px;
+}
+
+/* Dashboard Cards */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+.dashboard-card {
+  background: var(--pure-white);
+  padding: 24px;
+  border-radius: 8px;
+  border: 1px solid var(--soft-gold-line);
+  box-shadow: 0 4px 12px rgba(43, 31, 24, 0.03);
+}
+.dashboard-card h3 {
+  font-size: 14px;
+  color: var(--stone-taupe);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+.dashboard-card__value {
+  font-size: 32px;
+  font-family: var(--font-display);
+  color: var(--maharani-maroon);
+  margin-bottom: 8px;
+}
+.dashboard-card__trend {
+  font-size: 13px;
+  color: var(--stone-taupe);
+}
+.dashboard-card__trend.positive {
+  color: var(--peacock-teal);
+}
+
+/* Data Tables */
+.data-table-container {
+  background: var(--pure-white);
+  border: 1px solid var(--soft-gold-line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.data-table th,
+.data-table td {
+  padding: 16px 24px;
+  text-align: left;
+  border-bottom: 1px solid var(--soft-gold-line);
+}
+.data-table th {
+  background: rgba(228, 211, 174, 0.1);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--stone-taupe);
+}
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+.data-table tr:hover td {
+  background: rgba(251, 246, 238, 0.5);
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.status-badge.processing { background: #E3F2FD; color: #1565C0; }
+.status-badge.shipped { background: #E8F5E9; color: #2E7D32; }
+.status-badge.bespoke-review { background: #FFF3E0; color: #E65100; }
+.status-badge.delivered { background: #F3E5F5; color: #6A1B9A; }

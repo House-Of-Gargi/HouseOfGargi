@@ -7,20 +7,70 @@ import ProductDetail from './pages/ProductDetail';
 import OurStory from './pages/OurStory';
 import Bespoke from './pages/Bespoke';
 
+// Seller Portal
+import SellerLayout from './pages/seller/SellerLayout';
+import Dashboard from './pages/seller/Dashboard';
+import Products from './pages/seller/Products';
+import Orders from './pages/seller/Orders';
+
 export default function App() {
   return (
     <BrowserRouter>
-      <Navbar />
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/category/:id" element={<Category />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/our-story" element={<OurStory />} />
-          <Route path="/bespoke" element={<Bespoke />} />
-        </Routes>
-      </main>
-      <Footer />
+      <Routes>
+        {/* Customer Facing Store Routes */}
+        <Route path="/" element={
+          <>
+            <Navbar />
+            <main>
+              <Home />
+            </main>
+            <Footer />
+          </>
+        } />
+        <Route path="/category/:id" element={
+          <>
+            <Navbar />
+            <main>
+              <Category />
+            </main>
+            <Footer />
+          </>
+        } />
+        <Route path="/product/:id" element={
+          <>
+            <Navbar />
+            <main>
+              <ProductDetail />
+            </main>
+            <Footer />
+          </>
+        } />
+        <Route path="/our-story" element={
+          <>
+            <Navbar />
+            <main>
+              <OurStory />
+            </main>
+            <Footer />
+          </>
+        } />
+        <Route path="/bespoke" element={
+          <>
+            <Navbar />
+            <main>
+              <Bespoke />
+            </main>
+            <Footer />
+          </>
+        } />
+
+        {/* Seller Portal Routes */}
+        <Route path="/seller" element={<SellerLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="products" element={<Products />} />
+          <Route path="orders" element={<Orders />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
