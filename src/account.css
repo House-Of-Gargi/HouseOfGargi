@@ -1,7 +1,7 @@
 .account-container {
   max-width: 800px;
   margin: 0 auto;
-  padding: calc(var(--navbar-height) + 40px) 24px 80px 24px;
+  padding: calc(var(--navbar-height) + 16px) 24px 80px 24px;
 }
 
 .account-header {

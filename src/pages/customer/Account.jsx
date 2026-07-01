@@ -89,11 +89,13 @@ export default function Account() {
 
   return (
     <div className="account-container">
-      <div className="account-header">
-        <button onClick={() => navigate(-1)} style={{ background: 'var(--pure-white)', border: '1px solid var(--soft-gold-line)', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--ink-brown)' }}>
-          <ArrowLeftIcon size={20} />
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px' }}>
+        <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--ink-brown)', fontSize: '16px' }}>
+          <span>&larr;</span> Back
         </button>
-        <h1>Profile</h1>
+      </div>
+      <div style={{ textAlign: 'left', marginBottom: '40px' }}>
+        <h1 style={{ fontFamily: 'var(--font-nav)', color: 'var(--ink-brown)', margin: 0, fontSize: '28px' }}>Profile</h1>
       </div>
 
       <div className="account-profile-card">

@@ -24,7 +24,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="section section--ivory" style={{ minHeight: '80vh', paddingTop: 'calc(var(--navbar-height) + 40px)' }}>
+    <div className="section section--ivory" style={{ minHeight: '80vh', paddingTop: 'calc(var(--navbar-height) + 16px)' }}>
       <div className="container" style={{ maxWidth: '1000px' }}>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px' }}>
           <button onClick={() => window.history.back()} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--ink-brown)', fontSize: '16px' }}>
@@ -42,9 +42,9 @@ export default function Cart() {
           <div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {cart.map((item, idx) => (
-                <div key={`${item.id}-${item.size}-${idx}`} style={{ display: 'flex', gap: '24px', padding: '16px', background: 'white', border: '1px solid var(--sand-beige)', borderRadius: '4px' }}>
+                <div key={`${item.id}-${item.size}-${idx}`} style={{ display: 'flex', gap: '24px', padding: '24px', background: 'var(--pure-white)', border: '1px solid var(--soft-gold-line)', borderRadius: '16px', boxShadow: '0 4px 12px rgba(43,31,24,0.05)' }}>
                   <Link to={`/product/${item.id}`} style={{ flexShrink: 0 }}>
-                    <img src={item.images[0]} alt={item.name} style={{ width: '120px', height: '160px', objectFit: 'cover' }} />
+                    <img src={item.images[0]} alt={item.name} style={{ width: '120px', height: '160px', objectFit: 'cover', borderRadius: '8px' }} />
                   </Link>
                   <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -61,7 +61,7 @@ export default function Cart() {
                     </div>
 
                     <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '16px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--sand-beige)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--soft-gold-line)', borderRadius: '4px' }}>
                         <button 
                           onClick={() => updateQuantity(item.id, item.size, item.quantity - 1)}
                           style={{ padding: '8px 12px', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-brown)' }}
@@ -88,7 +88,7 @@ export default function Cart() {
 
           {/* Order Summary */}
           <div>
-            <div style={{ background: 'white', padding: '32px', border: '1px solid var(--sand-beige)' }}>
+            <div style={{ background: 'var(--pure-white)', padding: '32px', border: '1px solid var(--soft-gold-line)', borderRadius: '16px', boxShadow: '0 4px 12px rgba(43,31,24,0.05)' }}>
               <h3 style={{ fontFamily: 'var(--font-nav)', fontSize: '20px', marginBottom: '24px' }}>Order Summary</h3>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', color: 'var(--stone-taupe)' }}>
                 <span>Subtotal</span>

@@ -25,7 +25,7 @@ export default function Wishlist() {
   }
 
   return (
-    <div className="section section--ivory" style={{ minHeight: '80vh', paddingTop: 'calc(var(--navbar-height) + 40px)' }}>
+    <div className="section section--ivory" style={{ minHeight: '80vh', paddingTop: 'calc(var(--navbar-height) + 16px)' }}>
       <div className="container" style={{ maxWidth: '1000px' }}>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px' }}>
           <button onClick={() => window.history.back()} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--ink-brown)', fontSize: '16px' }}>
