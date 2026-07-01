@@ -21,6 +21,13 @@ import Terms from './pages/customer/Terms';
 import Privacy from './pages/customer/Privacy';
 import Cart from './pages/customer/Cart';
 import Wishlist from './pages/customer/Wishlist';
+import OurArtisans from './pages/OurArtisans';
+import Sustainability from './pages/Sustainability';
+import Press from './pages/Press';
+import Shipping from './pages/customer/Shipping';
+import Returns from './pages/customer/Returns';
+import SizeGuide from './pages/customer/SizeGuide';
+import FAQ from './pages/customer/FAQ';
 
 export default function App() {
   return (
@@ -115,6 +122,69 @@ export default function App() {
             <Navbar />
             <main>
               <Wishlist />
+            </main>
+            <Footer />
+          </>
+        } />
+        <Route path="/our-artisans" element={
+          <>
+            <Navbar />
+            <main>
+              <OurArtisans />
+            </main>
+            <Footer />
+          </>
+        } />
+        <Route path="/sustainability" element={
+          <>
+            <Navbar />
+            <main>
+              <Sustainability />
+            </main>
+            <Footer />
+          </>
+        } />
+        <Route path="/press" element={
+          <>
+            <Navbar />
+            <main>
+              <Press />
+            </main>
+            <Footer />
+          </>
+        } />
+        <Route path="/shipping" element={
+          <>
+            <Navbar />
+            <main>
+              <Shipping />
+            </main>
+            <Footer />
+          </>
+        } />
+        <Route path="/returns" element={
+          <>
+            <Navbar />
+            <main>
+              <Returns />
+            </main>
+            <Footer />
+          </>
+        } />
+        <Route path="/size-guide" element={
+          <>
+            <Navbar />
+            <main>
+              <SizeGuide />
+            </main>
+            <Footer />
+          </>
+        } />
+        <Route path="/faq" element={
+          <>
+            <Navbar />
+            <main>
+              <FAQ />
             </main>
             <Footer />
           </>

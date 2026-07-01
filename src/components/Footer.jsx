@@ -17,16 +17,16 @@ export default function Footer() {
           <div>
             <h4 className="footer__heading">About</h4>
             <Link to="/our-story">Our Story</Link>
-            <a href="#">Our Artisans</a>
-            <a href="#">Sustainability</a>
-            <a href="#">Press</a>
+            <Link to="/our-artisans">Our Artisans</Link>
+            <Link to="/sustainability">Sustainability</Link>
+            <Link to="/press">Press</Link>
           </div>
           <div>
             <h4 className="footer__heading">Customer Care</h4>
-            <a href="#">Shipping & Delivery</a>
-            <a href="#">Returns & Exchanges</a>
-            <a href="#">Size Guide</a>
-            <a href="#">FAQ</a>
+            <Link to="/shipping">Shipping & Delivery</Link>
+            <Link to="/returns">Returns & Exchanges</Link>
+            <Link to="/size-guide">Size Guide</Link>
+            <Link to="/faq">FAQ</Link>
           </div>
           <div>
             <h4 className="footer__heading">Connect</h4>

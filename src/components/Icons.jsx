@@ -104,3 +104,10 @@ export const ShieldIcon = ({ size = 24, stroke = 1.5, ...props }) => (
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
   </svg>
 );
+
+export const LeafIcon = ({ size = 24, stroke = 1.5, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+    <line x1="2" y1="22" x2="11" y2="13"></line>
+  </svg>
+);

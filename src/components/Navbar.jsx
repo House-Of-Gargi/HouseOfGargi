@@ -54,7 +54,14 @@ export default function Navbar() {
     location.pathname === '/wishlist' ||
     location.pathname === '/terms' ||
     location.pathname === '/privacy' ||
-    location.pathname === '/account';
+    location.pathname === '/account' ||
+    location.pathname === '/our-artisans' ||
+    location.pathname === '/sustainability' ||
+    location.pathname === '/press' ||
+    location.pathname === '/shipping' ||
+    location.pathname === '/returns' ||
+    location.pathname === '/size-guide' ||
+    location.pathname === '/faq';
 
   const cls = `navbar ${(scrolled || isDarkNavPage) ? 'navbar--scrolled' : 'navbar--hero'}`;
 
