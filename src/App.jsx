@@ -14,6 +14,8 @@ import Products from './pages/seller/Products';
 import Orders from './pages/seller/Orders';
 import Login from './pages/seller/Login';
 import Account from './pages/customer/Account';
+import Terms from './pages/customer/Terms';
+import Privacy from './pages/customer/Privacy';
 
 export default function App() {
   return (
@@ -70,6 +72,24 @@ export default function App() {
             <Navbar />
             <main>
               <Account />
+            </main>
+            <Footer />
+          </>
+        } />
+        <Route path="/terms" element={
+          <>
+            <Navbar />
+            <main>
+              <Terms />
+            </main>
+            <Footer />
+          </>
+        } />
+        <Route path="/privacy" element={
+          <>
+            <Navbar />
+            <main>
+              <Privacy />
             </main>
             <Footer />
           </>

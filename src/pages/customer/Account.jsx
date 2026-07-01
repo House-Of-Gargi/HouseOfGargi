@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
-import { ArrowRightIcon, UserIcon, CartIcon, WishlistIcon } from '../../components/Icons';
+import { ArrowRightIcon, UserIcon, CartIcon, WishlistIcon, FileTextIcon, ShieldIcon } from '../../components/Icons';
 import '../../account.css';
 
 // SVG Icons specifically for Account Page
@@ -49,14 +49,6 @@ const InfoIcon = ({ size = 24 }) => (
     <circle cx="12" cy="12" r="10"></circle>
     <line x1="12" y1="16" x2="12" y2="12"></line>
     <line x1="12" y1="8" x2="12.01" y2="8"></line>
-  </svg>
-);
-
-const ShopIcon = ({ size = 24 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M18 8V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"></path>
-    <path d="M4 10h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10z"></path>
-    <path d="M12 14v-4"></path>
   </svg>
 );
 
@@ -164,9 +156,15 @@ export default function Account() {
           <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
         </div>
 
-        <div className="account-list-item" onClick={() => navigate('/seller/login')}>
-          <div className="account-list-item-icon"><ShopIcon /></div>
-          <div className="account-list-item-text">Seller Portal</div>
+        <div className="account-list-item" onClick={() => navigate('/terms')}>
+          <div className="account-list-item-icon"><FileTextIcon /></div>
+          <div className="account-list-item-text">Terms and Conditions</div>
+          <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
+        </div>
+
+        <div className="account-list-item" onClick={() => navigate('/privacy')}>
+          <div className="account-list-item-icon"><ShieldIcon /></div>
+          <div className="account-list-item-text">Privacy Policy</div>
           <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
         </div>
 
