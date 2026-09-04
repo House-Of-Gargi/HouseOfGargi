@@ -57,9 +57,7 @@ export default function OurStoryPage() {
         <div className="container" style={{ maxWidth: '800px' }}>
           <ScrollReveal>
             <div className="divider" role="separator" aria-label="Section Divider">
-              <span className="divider__pip" aria-hidden="true">✦</span>
-              <span className="divider__icon"><Crown size={22} strokeWidth={1.8} /></span>
-              <span className="divider__pip" aria-hidden="true">✦</span>
+              <span className="divider__icon"><Crown size={24} strokeWidth={2.2} /></span>
             </div>
             <div style={{ textAlign: 'center' }}>
               <h2 style={{ color: 'var(--maharani-maroon)', marginBottom: '24px' }}>Our Promise</h2>

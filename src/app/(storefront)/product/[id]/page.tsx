@@ -303,11 +303,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         {related.length > 0 && (
           <div style={{ marginTop: '80px' }}>
             <div className="divider" role="separator" aria-label="Section Divider">
-              <span className="divider__pip" aria-hidden="true">✦</span>
               <span className="divider__icon">
-                <Crown size={22} strokeWidth={1.8} />
+                <Crown size={24} strokeWidth={2.2} />
               </span>
-              <span className="divider__pip" aria-hidden="true">✦</span>
             </div>
             <h2 style={{ textAlign: 'center', margin: '36px 0 28px', color: 'var(--ink-brown)' }}>You May Also Cherish</h2>
             <div className="product-grid">

@@ -185,11 +185,9 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
           {/* Explore Other Categories */}
           <div style={{ marginTop: '90px', marginBottom: '30px' }}>
             <div className="divider" role="separator" aria-label="Section Divider">
-              <span className="divider__pip" aria-hidden="true">✦</span>
               <span className="divider__icon">
-                <Crown size={22} strokeWidth={1.8} />
+                <Crown size={24} strokeWidth={2.2} />
               </span>
-              <span className="divider__pip" aria-hidden="true">✦</span>
             </div>
             
             <div style={{ textAlign: 'center', margin: '36px 0 44px' }}>

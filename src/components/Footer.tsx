@@ -39,9 +39,7 @@ export default function Footer() {
         </div>
 
         <div className="divider" style={{ maxWidth: '280px', margin: '40px auto' }}>
-          <span className="divider__pip" aria-hidden="true">✦</span>
-          <span className="divider__icon"><Crown size={18} strokeWidth={1.8} /></span>
-          <span className="divider__pip" aria-hidden="true">✦</span>
+          <span className="divider__icon"><Crown size={20} strokeWidth={2.2} /></span>
         </div>
 
         <div className="footer__bottom">

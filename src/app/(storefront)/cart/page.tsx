@@ -7,7 +7,7 @@ import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
 import { PlusIcon, MinusIcon, CloseIcon } from '@/components/Icons';
-import { Crown, Sparkles } from 'lucide-react';
+import { Crown, Sparkles, ShieldCheck, Check, Copy, ArrowRight } from 'lucide-react';
 import { getProduct } from '@/data/products';
 
 export default function CartPage() {
@@ -19,6 +19,7 @@ export default function CartPage() {
   const [checkoutSuccess, setCheckoutSuccess] = useState<string | null>(null);
   const [customerName, setCustomerName] = useState(customer?.name || '');
   const [customerPhone, setCustomerPhone] = useState(customer?.phone || '');
+  const [copied, setCopied] = useState(false);
 
   if (!isLoggedIn) {
     return (
@@ -104,27 +105,114 @@ export default function CartPage() {
     }
   };
 
+  const handleCopyOrderNumber = () => {
+    if (checkoutSuccess) {
+      navigator.clipboard.writeText(checkoutSuccess);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2400);
+    }
+  };
+
   if (checkoutSuccess) {
     return (
-      <div className="section section--ivory" style={{ minHeight: '70vh', paddingTop: 'calc(var(--navbar-height) + 60px)', textAlign: 'center' }}>
-        <div className="container" style={{ maxWidth: '640px' }}>
-          <div style={{ width: '64px', height: '64px', borderRadius: '50%', border: '1.5px solid var(--gargi-gold)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--maharani-maroon)', marginBottom: '24px', background: '#FFFDF9', boxShadow: '0 6px 20px rgba(184, 142, 24, 0.2)' }}>
-            <Crown size={32} strokeWidth={1.75} />
+      <div className="section section--ivory order-success-wrap">
+        <div className="order-success-container">
+          {/* Royal Seal Emblem */}
+          <div className="order-success-crest-wrap">
+            <div className="order-success-crest-line" />
+            <div className="order-success-seal">
+              <ShieldCheck size={38} strokeWidth={1.6} />
+              <div className="order-success-seal-badge">
+                <Check size={14} strokeWidth={2.8} />
+              </div>
+            </div>
+            <div className="order-success-crest-line order-success-crest-line--right" />
           </div>
-          <h1 style={{ fontFamily: 'var(--font-display)', color: 'var(--maharani-maroon)', fontSize: '36px', fontWeight: 600, marginBottom: '16px' }}>
-            Commission Received
+
+          <div className="order-success-tag">House of Gargi • Atelier Provenance Ledger</div>
+          <h1 className="order-success-title">
+            Commission Gracefully Received
           </h1>
-          <p style={{ fontSize: '18px', color: 'var(--ink-brown)', marginBottom: '12px', lineHeight: 1.6 }}>
-            Thank you, <strong>{customerName}</strong>. Your heirloom piece is being carefully prepared by our master weavers.
+          <p className="order-success-desc">
+            With utmost honour, <strong>{customerName || 'Valued Patron'}</strong>, your heirloom curation has been formally registered with our master weavers in Varanasi &amp; Kutch.
           </p>
-          <div style={{ background: 'var(--pure-white)', padding: '28px', borderRadius: '6px', border: '1.5px solid var(--soft-gold-line)', margin: '28px 0', boxShadow: '0 8px 30px rgba(43, 31, 24, 0.04)' }}>
-            <p className="caption" style={{ textTransform: 'uppercase', letterSpacing: '0.12em', fontWeight: 700 }}>Your Order Reference</p>
-            <h2 style={{ color: 'var(--gargi-gold)', margin: '10px 0', fontSize: '28px', fontFamily: 'var(--font-display)' }}>{checkoutSuccess}</h2>
-            <p style={{ fontSize: '15px', color: 'var(--stone-taupe)', margin: 0 }}>
-              We will notify you on <strong>+91 {customerPhone}</strong> with shipment updates and artisanal progress.
+
+          {/* Royal Ledger Card */}
+          <div className="order-ledger-card">
+            <div className="order-ledger-header">Official Provenance Reference</div>
+            
+            <div 
+              className="order-ledger-number-wrap"
+              onClick={handleCopyOrderNumber}
+              title="Click to copy order reference"
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleCopyOrderNumber(); }}
+            >
+              <span className="order-ledger-number">{checkoutSuccess}</span>
+              <button 
+                type="button" 
+                className="order-ledger-copy-btn"
+                aria-label="Copy order reference"
+              >
+                {copied ? (
+                  <><Check size={15} style={{ color: 'var(--peacock-teal)' }} /> Copied</>
+                ) : (
+                  <><Copy size={15} /> Copy</>
+                )}
+              </button>
+            </div>
+
+            {/* 3-Step Handloom Journey Milestones */}
+            <div className="order-ledger-milestones">
+              <div className="order-ledger-milestone-item">
+                <span className="order-ledger-milestone-pip">✦</span>
+                <div>
+                  <div className="order-ledger-milestone-title">Master Loom Assigned</div>
+                  <div className="order-ledger-milestone-sub">Artisan cluster allocated</div>
+                </div>
+              </div>
+
+              <div className="order-ledger-milestone-item">
+                <span className="order-ledger-milestone-pip">✦</span>
+                <div>
+                  <div className="order-ledger-milestone-title">GI-Tagged Inspection</div>
+                  <div className="order-ledger-milestone-sub">Pure silk &amp; zari verified</div>
+                </div>
+              </div>
+
+              <div className="order-ledger-milestone-item">
+                <span className="order-ledger-milestone-pip">✦</span>
+                <div>
+                  <div className="order-ledger-milestone-title">White-Glove Dispatch</div>
+                  <div className="order-ledger-milestone-sub">Insured heirloom transit</div>
+                </div>
+              </div>
+            </div>
+
+            <p className="order-ledger-notice">
+              Personalized dispatch tracking and artisan weaving milestones will be relayed to{' '}
+              <strong>+91 {customerPhone || customer?.phone || '9876543210'}</strong>.
             </p>
           </div>
-          <Link href="/" className="btn btn--primary" style={{ padding: '14px 32px' }}>Return to Boutique</Link>
+
+          {/* Action CTAs */}
+          <div className="order-success-actions">
+            <Link 
+              href="/shop" 
+              className="btn btn--primary" 
+              style={{ padding: '15px 34px', fontSize: '14.5px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+            >
+              Explore Collections <ArrowRight size={16} />
+            </Link>
+            <Link 
+              href="/account" 
+              className="btn btn--outline" 
+              style={{ padding: '15px 28px', fontSize: '14.5px' }}
+            >
+              View in Patron Profile
+            </Link>
+          </div>
         </div>
       </div>
     );
