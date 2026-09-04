@@ -186,22 +186,45 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               </button>
             </div>
 
-            {/* Accordion */}
-            <div className="pdp-accordion" style={{ marginTop: '32px' }}>
+            {/* Accordions */}
+            <div className="pdp-accordion" style={{ marginTop: '24px' }}>
               <div 
                 className="pdp-accordion__header" 
                 onClick={() => setCareOpen(!careOpen)}
-                style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', padding: '16px 0', borderTop: '1px solid var(--soft-gold-line)', borderBottom: '1px solid var(--soft-gold-line)' }}
               >
-                <span style={{ fontFamily: 'var(--font-nav)', letterSpacing: '0.1em' }}>Fabric Care & Craftsmanship</span>
+                <span>Fabric Care & Craftsmanship</span>
                 <span>{careOpen ? '−' : '+'}</span>
               </div>
               {careOpen && (
-                <div style={{ padding: '16px 0', fontSize: '14px', lineHeight: '1.7', color: 'var(--stone-taupe)' }}>
+                <div className="pdp-accordion__body">
                   <p><strong>Care Instructions:</strong> {product.care}</p>
-                  <p style={{ marginTop: '8px' }}><strong>Artisan Heritage:</strong> Handwoven using authentic {product.technique} traditions in {product.region}. Small variations in weave, texture, and color are natural signatures of the handmade process.</p>
+                  <p style={{ marginTop: '8px' }}><strong>Artisan Heritage:</strong> Handwoven using authentic {product.technique} traditions in {product.region}. Small variations in weave, texture, and color are natural signatures of authentic handmade couture.</p>
                 </div>
               )}
+            </div>
+
+            {/* Luxury Trust Indicators */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '12px',
+              marginTop: '28px',
+              paddingTop: '20px',
+              borderTop: '1px dashed var(--soft-gold-line)',
+              textAlign: 'center',
+            }}>
+              <div style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)' }}>
+                <span style={{ display: 'block', fontSize: '14px', marginBottom: '2px', color: 'var(--gargi-gold)' }}>✦</span>
+                100% Handloom
+              </div>
+              <div style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)' }}>
+                <span style={{ display: 'block', fontSize: '14px', marginBottom: '2px', color: 'var(--gargi-gold)' }}>✦</span>
+                Complimentary Shipping
+              </div>
+              <div style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)' }}>
+                <span style={{ display: 'block', fontSize: '14px', marginBottom: '2px', color: 'var(--gargi-gold)' }}>✦</span>
+                Heritage Authenticated
+              </div>
             </div>
           </div>
         </div>
