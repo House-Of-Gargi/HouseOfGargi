@@ -810,48 +810,321 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
   max-width: 420px;
 }
 
-/* ── 17. Vision Strip (§8.2) ──────────────────────────────── */
+/* ── 17. Vision Strip (Atelier Heritage Pillars) ────────── */
+.vision-strip-wrapper {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid var(--soft-gold-line);
+  border-radius: 4px;
+  padding: 40px 32px;
+  box-shadow: 0 8px 24px rgba(43, 31, 24, 0.03);
+  position: relative;
+}
+.vision-strip-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(228, 211, 174, 0.35);
+  pointer-events: none;
+  border-radius: 2px;
+}
 .vision-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 992px) {
+  .vision-strip {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px 24px;
+  }
+}
+@media (max-width: 600px) {
+  .vision-strip {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+.vision-strip__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 12px;
+  position: relative;
+}
+.vision-strip__item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -14px;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: var(--soft-gold-line);
+  opacity: 0.6;
+}
+@media (max-width: 992px) {
+  .vision-strip__item:not(:last-child)::after {
+    display: none;
+  }
+}
+.vision-strip__sanskrit {
+  font-family: 'Cinzel', 'Marcellus', 'Georgia', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gargi-gold);
+  letter-spacing: 0.14em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.vision-strip__icon {
+  font-size: 26px;
+  color: var(--maharani-maroon);
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
-  text-align: center;
-}
-.vision-strip__item {
-  flex: 1;
-  max-width: 280px;
-  padding: 0 24px;
-}
-.vision-strip__icon {
-  font-size: 28px;
-  color: var(--gargi-gold);
-  margin-bottom: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(242, 232, 216, 0.4);
+  border: 1px solid rgba(228, 211, 174, 0.6);
 }
 .vision-strip__title {
   font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 21px;
+  font-weight: 600;
   color: var(--ink-brown);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+  letter-spacing: 0.01em;
 }
 .vision-strip__text {
-  font-size: 14px;
+  font-size: 13.5px;
+  line-height: 1.6;
   color: var(--stone-taupe);
-}
-.vision-strip__divider {
-  width: 1px;
-  height: 60px;
-  background: var(--soft-gold-line);
-  flex-shrink: 0;
+  max-width: 240px;
 }
 
-/* ── 18. Story Split Section ──────────────────────────────── */
+/* ── 18. Story Split Section & Provenance ──────────────────── */
 .story-split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 64px;
   align-items: center;
+}
+@media (max-width: 900px) {
+  .story-split {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+.story-split__image-wrap {
+  position: relative;
+  padding: 12px;
+  background: var(--ivory-silk);
+  border: 1px solid var(--soft-gold-line);
+  box-shadow: 0 0 0 1px #E4D3AE, 0 0 0 8px #FBF6EE, 0 0 0 9px #E4D3AE, 0 20px 40px rgba(43, 31, 24, 0.08);
+  border-radius: 4px;
+}
+.story-split__image-wrap img {
+  width: 100%;
+  aspect-ratio: 4/3.8;
+  object-fit: cover;
+  display: block;
+  border-radius: 2px;
+}
+.story-split__seal {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 90px;
+  height: 90px;
+  background: var(--pure-white);
+  border: 1.5px solid var(--gargi-gold);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(43, 31, 24, 0.12);
+  color: var(--maharani-maroon);
+}
+@media (max-width: 600px) {
+  .story-split__seal {
+    width: 72px;
+    height: 72px;
+    bottom: -12px;
+    right: -12px;
+  }
+}
+.story-epigraph {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-nav);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--gargi-gold);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.story-split__copy h2 {
+  font-size: clamp(30px, 3.8vw, 44px);
+  margin-bottom: 18px;
+  line-height: 1.15;
+}
+.story-split__copy p {
+  margin-bottom: 16px;
+  color: var(--stone-taupe);
+  font-size: 15.5px;
+  line-height: 1.8;
+}
+.provenance-ledger {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 28px 0;
+  padding: 16px;
+  background: rgba(242, 232, 216, 0.5);
+  border: 1px solid var(--soft-gold-line);
+  border-radius: 4px;
+}
+@media (max-width: 500px) {
+  .provenance-ledger {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+.provenance-ledger__item {
+  display: flex;
+  flex-direction: column;
+}
+.provenance-ledger__val {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--maharani-maroon);
+  line-height: 1.2;
+}
+.provenance-ledger__label {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-brown);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* ── 15. Newsletter Salon Card ────────────────────────────── */
+.salon-card {
+  max-width: 720px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1.5px solid var(--soft-gold-line);
+  border-radius: 4px;
+  padding: 48px 40px;
+  box-shadow: 0 15px 40px rgba(43, 31, 24, 0.05);
+  text-align: center;
+  position: relative;
+}
+@media (max-width: 600px) {
+  .salon-card {
+    padding: 36px 20px;
+  }
+}
+.salon-card::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  pointer-events: none;
+  border-radius: 2px;
+}
+.salon-card__crest {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.salon-card__crest-line {
+  height: 1px;
+  width: 40px;
+  background: var(--soft-gold-line);
+}
+.salon-card__sanskrit {
+  font-family: var(--font-nav);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gargi-gold);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.salon-card h2 {
+  font-size: clamp(26px, 3.2vw, 36px);
+  color: var(--ink-brown);
+  margin-bottom: 12px;
+}
+.salon-card p {
+  color: var(--stone-taupe);
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 540px;
+  margin: 0 auto 28px;
+}
+.salon-card__input-group {
+  display: flex;
+  gap: 0;
+  max-width: 520px;
+  margin: 0 auto;
+}
+@media (max-width: 600px) {
+  .salon-card__input-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+.salon-card__input-group input {
+  flex: 1;
+  padding: 15px 20px;
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  border: 1.5px solid var(--soft-gold-line);
+  border-right: none;
+  border-radius: 2px 0 0 2px;
+  background: var(--pure-white);
+  color: var(--ink-brown);
+  outline: none;
+  transition: border-color 200ms ease;
+}
+@media (max-width: 600px) {
+  .salon-card__input-group input {
+    border-right: 1.5px solid var(--soft-gold-line);
+    border-radius: 2px;
+  }
+}
+.salon-card__input-group input:focus {
+  border-color: var(--gargi-gold);
+}
+.salon-card__input-group .btn {
+  border-radius: 0 2px 2px 0;
+  white-space: nowrap;
+  padding: 15px 24px;
+}
+@media (max-width: 600px) {
+  .salon-card__input-group .btn {
+    border-radius: 2px;
+    width: 100%;
+  }
+}
+.salon-card__privacy {
+  font-size: 12px;
+  color: var(--stone-taupe);
+  margin-top: 14px;
+  letter-spacing: 0.02em;
 }
 .story-split__image {
   border-radius: 24px !important;

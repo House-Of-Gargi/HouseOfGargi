@@ -118,3 +118,46 @@ export const LeafIcon = ({ size = 24, strokeWidth = 1.5, ...props }: IconProps) 
     <line x1="2" y1="22" x2="11" y2="13"></line>
   </svg>
 );
+
+export const LoomShuttleIcon = ({ size = 24, strokeWidth = 1.5, ...props }: IconProps) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    {/* Traditional Weaver's Shuttle */}
+    <path d="M2 12C5 8 19 8 22 12C19 16 5 16 2 12Z" />
+    <ellipse cx="12" cy="12" rx="4" ry="2" />
+    <line x1="12" y1="10" x2="12" y2="14" />
+    <line x1="8" y1="12" x2="4" y2="12" />
+    <line x1="16" y1="12" x2="20" y2="12" />
+  </svg>
+);
+
+export const SpindleIcon = ({ size = 24, strokeWidth = 1.5, ...props }: IconProps) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    {/* Handloom Spoke & Thread Wheel */}
+    <circle cx="12" cy="12" r="9" />
+    <circle cx="12" cy="12" r="3" />
+    <line x1="12" y1="3" x2="12" y2="9" />
+    <line x1="12" y1="15" x2="12" y2="21" />
+    <line x1="3" y1="12" x2="9" y2="12" />
+    <line x1="15" y1="12" x2="21" y2="12" />
+  </svg>
+);
+
+export const PaisleyIcon = ({ size = 24, strokeWidth = 1.5, ...props }: IconProps) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    {/* Royal Buta / Kalka Motif */}
+    <path d="M12 2C7.5 2 4 6 4 10.5C4 16 9 20 14 20C18 20 20 17 20 14C20 9 14.5 9 14.5 5C14.5 3 13.5 2 12 2Z" />
+    <circle cx="12" cy="13" r="2.5" />
+  </svg>
+);
+
+export const AtelierSealIcon = ({ size = 32, strokeWidth = 1.2, ...props }: IconProps) => (
+  <svg width={size} height={size} viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    {/* Concentric Royal Seal with beaded rim */}
+    <circle cx="24" cy="24" r="22" strokeDasharray="2 3" />
+    <circle cx="24" cy="24" r="18" />
+    <circle cx="24" cy="24" r="14" strokeWidth="0.75" />
+    {/* Center Diya & Lotus flame */}
+    <path d="M17 28c0 3.5 3.1 5 7 5s7-1.5 7-5H17z" />
+    <path d="M24 28c0-3.5-2.5-5.5-2.5-8 0-1.5.8-2.8 2.5-3.8 1.7 1 2.5 2.3 2.5 3.8 0 2.5-2.5 4.5-2.5 8z" />
+  </svg>
+);

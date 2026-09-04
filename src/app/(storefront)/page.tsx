@@ -2,7 +2,7 @@ import Link from 'next/link';
 import ScrollReveal from '@/components/ScrollReveal';
 import ProductCard from '@/components/ProductCard';
 import { categories, products, featuredProductIds } from '@/data/products';
-import { DiyaIcon, ArrowRightIcon, LotusIcon } from '@/components/Icons';
+import { DiyaIcon, ArrowRightIcon, LotusIcon, LoomShuttleIcon, SpindleIcon, AtelierSealIcon } from '@/components/Icons';
 
 export default function HomePage() {
   const featured = featuredProductIds
@@ -24,29 +24,40 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════ 2. VISION STRIP ═══════ */}
-      <section className="section section--ivory">
-        <ScrollReveal>
-          <div className="container vision-strip">
-            <div className="vision-strip__item">
-              <div className="vision-strip__icon"><LotusIcon size={32} /></div>
-              <h3 className="vision-strip__title">Handmade</h3>
-              <p className="vision-strip__text">Crafted by master artisans</p>
+      {/* ═══════ 2. VISION STRIP (ATELIER HERITAGE PILLARS) ═══════ */}
+      <section className="section section--ivory" style={{ padding: '48px 0' }}>
+        <div className="container">
+          <ScrollReveal>
+            <div className="vision-strip-wrapper">
+              <div className="vision-strip">
+                <div className="vision-strip__item">
+                  <div className="vision-strip__sanskrit">हस्तशिल्प • Hastaśilpa</div>
+                  <div className="vision-strip__icon"><LoomShuttleIcon size={22} /></div>
+                  <h3 className="vision-strip__title">Pure Handloom</h3>
+                  <p className="vision-strip__text">Zero mechanized looms. Every weft and warp hand-interlocked on wooden pit looms.</p>
+                </div>
+                <div className="vision-strip__item">
+                  <div className="vision-strip__sanskrit">परम्परा • Paramparā</div>
+                  <div className="vision-strip__icon"><DiyaIcon size={22} /></div>
+                  <h3 className="vision-strip__title">Living Heritage</h3>
+                  <p className="vision-strip__text">Preserved across 7 unbroken generations of master weaving dynasties.</p>
+                </div>
+                <div className="vision-strip__item">
+                  <div className="vision-strip__sanskrit">सत्यता • Satyatā</div>
+                  <div className="vision-strip__icon"><LotusIcon size={22} /></div>
+                  <h3 className="vision-strip__title">Certified Origin</h3>
+                  <p className="vision-strip__text">100% Mulberry &amp; Ahimsa silks verified with authentic GI (Geographical Indication) tags.</p>
+                </div>
+                <div className="vision-strip__item">
+                  <div className="vision-strip__sanskrit">अलंकार • Alaṅkāra</div>
+                  <div className="vision-strip__icon"><SpindleIcon size={22} /></div>
+                  <h3 className="vision-strip__title">Heirloom Zari</h3>
+                  <p className="vision-strip__text">Electroplated real silver and 24k gold wire, dyed with organic botanical extracts.</p>
+                </div>
+              </div>
             </div>
-            <div className="vision-strip__divider" />
-            <div className="vision-strip__item">
-              <div className="vision-strip__icon"><DiyaIcon size={32} /></div>
-              <h3 className="vision-strip__title">Heritage</h3>
-              <p className="vision-strip__text">Rooted in ancient tradition</p>
-            </div>
-            <div className="vision-strip__divider" />
-            <div className="vision-strip__item">
-              <div className="vision-strip__icon"><LotusIcon size={32} /></div>
-              <h3 className="vision-strip__title">Elegance</h3>
-              <p className="vision-strip__text">Designed for the modern era</p>
-            </div>
-          </div>
-        </ScrollReveal>
+          </ScrollReveal>
+        </div>
       </section>
 
       {/* ═══════ 3. SHOP BY CATEGORY ═══════ */}
@@ -84,21 +95,47 @@ export default function HomePage() {
         <div className="container">
           <ScrollReveal>
             <div className="story-split">
-              <div className="story-split__image">
-                <img src="/assets/artisan-hands.png" alt="Artisan hand-embroidering gold zari" />
+              <div className="story-split__image-wrap">
+                <img src="/assets/artisan-hands.png" alt="Artisan hand-embroidering pure gold zari" />
+                <div className="story-split__seal">
+                  <AtelierSealIcon size={34} />
+                  <span style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', marginTop: '2px' }}>BHARAT</span>
+                </div>
               </div>
               <div className="story-split__copy">
+                <div className="story-epigraph">
+                  <span>✦ गार्गी सूत्रम्</span>
+                  <span style={{ opacity: 0.5 }}>|</span>
+                  <span>Vedic Philosophy &amp; Couture</span>
+                </div>
                 <h2 style={{ color: 'var(--maharani-maroon)' }}>The House of Gargi Story</h2>
                 <p>
-                  Named after Gargi Vachaknavi — the Vedic-era scholar who fearlessly debated the nature of the universe — our house honours the women who weave, stitch, print, and dye India&apos;s most extraordinary textiles.
+                  Named after <strong>Gargi Vachaknavi</strong> — the renowned Vedic philosopher who fearlessly debated the nature of the cosmos at the court of King Janaka — our house honours the matriarchs and master artisans who weave, stitch, and dye India&apos;s most sacred textiles.
                 </p>
                 <p>
-                  Every piece in our collection is handmade by skilled artisans using techniques that have been refined over centuries. We don&apos;t manufacture — we commission. Each saree, lehenga, and kurta set is a collaboration between our design atelier and the artisan families who&apos;ve kept these traditions alive.
+                  Every piece in our collection is crafted by hand using techniques refined over centuries. We don&apos;t mass manufacture — we commission. Each saree, lehenga, and kurta set is an intimate collaboration between our design atelier and heritage weaving families across Varanasi, Chanderi, and Kutch.
                 </p>
-                <p className="subtitle-italic" style={{ color: 'var(--ink-brown)' }}>
+
+                {/* Archival Provenance Ledger */}
+                <div className="provenance-ledger">
+                  <div className="provenance-ledger__item">
+                    <span className="provenance-ledger__val">180+ Hours</span>
+                    <span className="provenance-ledger__label">Handloom Weaving</span>
+                  </div>
+                  <div className="provenance-ledger__item">
+                    <span className="provenance-ledger__val">7 Dynasties</span>
+                    <span className="provenance-ledger__label">Weaver Families</span>
+                  </div>
+                  <div className="provenance-ledger__item">
+                    <span className="provenance-ledger__val">100% Pure Zari</span>
+                    <span className="provenance-ledger__label">Silver &amp; Gold Wire</span>
+                  </div>
+                </div>
+
+                <p className="subtitle-italic" style={{ color: 'var(--ink-brown)', fontSize: '18px', marginTop: '12px' }}>
                   Woven by hand. Worn for a lifetime.
                 </p>
-                <Link href="/our-story" className="btn btn--outline" style={{ marginTop: '16px' }}>Read Our Story</Link>
+                <Link href="/our-story" className="btn btn--outline" style={{ marginTop: '18px' }}>Read Our Story</Link>
               </div>
             </div>
           </ScrollReveal>
@@ -153,23 +190,63 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
+
+            {/* European Provenance & Authenticity Ledger */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-around',
+              flexWrap: 'wrap',
+              gap: '16px',
+              marginTop: '40px',
+              padding: '20px 24px',
+              background: 'rgba(255, 255, 255, 0.65)',
+              border: '1px solid var(--soft-gold-line)',
+              borderRadius: '4px',
+              fontSize: '12.5px',
+              fontFamily: 'var(--font-nav)',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: 'var(--stone-taupe)',
+            }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ color: 'var(--gargi-gold)' }}>✦</span> Silk Mark India Certified
+              </span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ color: 'var(--gargi-gold)' }}>✦</span> Handloom Mark GI Authenticated
+              </span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ color: 'var(--gargi-gold)' }}>✦</span> Direct Artisan Guild Patronage
+              </span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ color: 'var(--gargi-gold)' }}>✦</span> Worldwide Couture White-Glove Dispatch
+              </span>
+            </div>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* ═══════ 7. NEWSLETTER ═══════ */}
-      <section className="section section--sand">
+      {/* ═══════ 7. NEWSLETTER (ATELIER GAZETTE & PRIVATE SALON) ═══════ */}
+      <section className="section section--sand" style={{ padding: '80px 0' }}>
         <div className="container">
           <ScrollReveal>
-            <div className="divider"><span className="divider__icon"><DiyaIcon size={16} /></span></div>
-            <div className="newsletter">
-              <h2>Join the House of Gargi Family</h2>
-              <p style={{ color: 'var(--stone-taupe)', marginTop: '8px' }}>
-                Be the first to know about new collections, artisan stories, and exclusive offers.
+            <div className="salon-card">
+              <div className="salon-card__crest">
+                <span className="salon-card__crest-line"></span>
+                <DiyaIcon size={20} style={{ color: 'var(--gargi-gold)' }} />
+                <span className="salon-card__crest-line"></span>
+              </div>
+              <div className="salon-card__sanskrit">पत्रिका संवादः • Patrikā Saṁvādaḥ</div>
+              <h2>The Atelier Gazette &amp; Private Salon</h2>
+              <p>
+                Receive seasonal private monographs documenting ancient Indian textile lineages, preview bespoke bridal collections, and access private atelier appointments across Europe and India.
               </p>
-              <div className="newsletter__input-group">
-                <input type="email" placeholder="Your email address" aria-label="Email address" />
-                <button type="button" className="btn btn--primary">Subscribe</button>
+              <div className="salon-card__input-group">
+                <input type="email" placeholder="Your distinguished email address" aria-label="Email address" />
+                <button type="button" className="btn btn--primary">Request Invitation</button>
+              </div>
+              <div className="salon-card__privacy">
+                ✦ Dispatches are issued quarterly with quiet discretion. Silk Mark India authenticated.
               </div>
             </div>
           </ScrollReveal>
