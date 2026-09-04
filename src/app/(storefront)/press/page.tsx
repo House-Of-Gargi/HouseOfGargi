@@ -1,0 +1,69 @@
+import Link from 'next/link';
+import ScrollReveal from '@/components/ScrollReveal';
+
+export default function PressPage() {
+  return (
+    <>
+      <div className="category-banner">
+        <img src="/images/press_banner.png" alt="Press and media coverage" />
+        <div className="category-banner__content">
+          <h1>Press</h1>
+          <p>House of Gargi in the spotlight.</p>
+        </div>
+      </div>
+
+      <section className="section section--ivory">
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <ScrollReveal>
+            <h2 style={{ color: 'var(--maharani-maroon)', marginBottom: '32px', textAlign: 'center' }}>
+              Celebrated Craft
+            </h2>
+            <p style={{ color: 'var(--stone-taupe)', fontSize: '17px', lineHeight: '1.9', marginBottom: '24px' }}>
+              Since our inception, House of Gargi has been celebrated by leading fashion publications and tastemakers for our uncompromising dedication to Indian craftsmanship. We are proud to see our heritage pieces gracing the pages of Vogue, Harper&apos;s Bazaar, and Elle.
+            </p>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="section section--sand">
+        <div className="container">
+          <ScrollReveal>
+            <div className="story-split">
+              <div className="story-split__image">
+                <img src="/images/press_split.png" alt="Fashion editorial" />
+              </div>
+              <div className="story-split__copy">
+                <h2 style={{ color: 'var(--maharani-maroon)' }}>Editorial Features</h2>
+                <p>
+                  &ldquo;House of Gargi is quietly redefining modern luxury by looking deeply into the past, proving that true elegance is handmade.&rdquo;<br />
+                  <strong style={{ color: 'var(--ink-brown)' }}>— Vogue India</strong>
+                </p>
+                <p>
+                  &ldquo;A masterclass in reviving lost textiles, every garment feels less like a piece of clothing and more like a cherished heirloom.&rdquo;<br />
+                  <strong style={{ color: 'var(--ink-brown)' }}>— Harper&apos;s Bazaar</strong>
+                </p>
+                <p>
+                  &ldquo;The brand putting artisans back at the center of the fashion narrative.&rdquo;<br />
+                  <strong style={{ color: 'var(--ink-brown)' }}>— Elle</strong>
+                </p>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="section section--ivory">
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <ScrollReveal>
+            <div className="divider"><span className="divider__icon">❖</span></div>
+            <div style={{ textAlign: 'center', marginTop: '40px' }}>
+              <h2 style={{ color: 'var(--maharani-maroon)', marginBottom: '16px' }}>Wear the Art</h2>
+              <p style={{ color: 'var(--stone-taupe)', marginBottom: '32px' }}>Explore the pieces celebrated by fashion&apos;s finest.</p>
+              <Link href="/shop" className="btn btn--primary">Shop the Collection</Link>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+    </>
+  );
+}
