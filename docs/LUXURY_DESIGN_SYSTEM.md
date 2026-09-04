@@ -38,31 +38,33 @@ House of Gargi is positioned in the **quiet luxury** segment of traditional Indi
 
 Typography is calibrated for a **discerning 30+ international luxury clientele**. Visual hierarchy prioritizes **instant optical legibility**, generous leading, high-contrast text, and quiet stately elegance.
 
-### 3.1 Font Families
+### 3.1 Font Families & Luxury Pairings
 
-1. **Display / Headlines**: `'Cormorant Garamond', Georgia, serif`
-   - High-contrast classical serif with optical kerning. Evokes royal Indian heritage and literary depth.
-2. **Navigation & Badges**: `'Marcellus', 'Cinzel', serif`
-   - Stone-carved, all-caps styling with generous letter spacing (`0.14em–0.18em`).
-3. **Body & Functional UI**: `'Lato', 'Inter', -apple-system, sans-serif`
-   - High-legibility humanist sans-serif with spacious line-height (`1.75–1.8`) to eliminate micro-fatigue.
+1. **Display / Editorial Headlines**: `'Playfair Display', 'Cormorant Garamond', Georgia, serif`
+   - High-contrast classical editorial serif with robust weight and open counters. Overcomes thin hairline fading on non-retina displays while delivering high-fashion editorial authority.
+2. **Navigation, Roman Caps & Crests**: `'Marcellus', 'Cinzel', serif`
+   - Stately stone-carved, all-caps styling with wide letter spacing (`0.14em–0.18em`) evoking royal epigraphy.
+3. **Body, Micro-UI & Seller Portal**: `'Plus Jakarta Sans', 'Outfit', 'Inter', -apple-system, sans-serif`
+   - High x-height, generous letter apertures, and crystal-clear stroke contrast specifically chosen to prevent ocular fatigue for the 30+ demographic.
+4. **Artisanal Script Hallmark**: `'Caveat', 'Kalam', cursive, sans-serif`
+   - Hand-rendered script accent for authenticated provenance stamps (e.g., "Proudly Made in India" artisan pill).
 
 ---
 
-### 3.2 Visual Type Hierarchy Table (30+ Audience Specifications)
+### 3.2 Visual Type Hierarchy Table (30+ Demographic Standards)
 
 | Level | Element / Role | Font Family | Weight | Desktop Size | Mobile Size | Line Height | Letter Spacing | Contrast & Usage |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Display 1** | Hero Headline | Cormorant Garamond | `600` | `64px` | `36px` (`clamp(36px, 5vw, 64px)`) | `1.15` | `0.01em` | Landing page hero banner |
-| **H1** | Page Titles | Cormorant Garamond | `600` | `48px` | `34px` (`clamp(32px, 4vw, 48px)`) | `1.18` | `0.01em` | Collection titles, page headers |
-| **H2** | Section Titles | Cormorant Garamond | `500` | `38px` | `28px` (`clamp(28px, 3.5vw, 38px)`) | `1.22` | `0.01em` | Major module headings |
-| **H3** | Subsection / Card Titles | Cormorant Garamond | `600` | `26px` | `22px` (`clamp(20px, 2.5vw, 26px)`) | `1.3` | `0` | Product card titles, modal titles |
-| **Subtitle** | Editorial Tagline | Cormorant Garamond | `400 Italic` | `22px` | `18px` (`clamp(18px, 2vw, 22px)`) | `1.5` | `0.02em` | Emotive brand lines, artisan notes |
-| **Nav / CTA** | Buttons & Main Nav | Marcellus | `500` | `15px` | `14px` | `1.0` | `0.16em` | Uppercase buttons, top nav links |
-| **Body Large** | Introduction Copy | Lato | `400` | `19px` | `17px` | `1.8` | `0` | Brand story leads, editorial excerpts |
-| **Body Regular** | Standard Body / PDP | Lato | `400` | `18px` | `16px` | `1.75` | `0` | Product descriptions, policy copy |
-| **Body Bold** | Prices / Highlights | Lato / Cormorant | `700` | `28px` | `24px` | `1.3` | `0.02em` | Currency values, stock status |
-| **Caption / Meta** | Subtext, Origin, Specs | Lato | `500` | `14px` | `13.5px` | `1.6` | `0.05em` | Minimum size allowed; never below 13.5px |
+| **Display 1** | Hero Headline | Playfair Display | `600` | `64px` | `38px` (`clamp(36px, 5vw, 64px)`) | `1.15` | `0.01em` | Landing page hero banner |
+| **H1** | Page Titles | Playfair Display | `600` | `48px` | `36px` (`clamp(34px, 4vw, 48px)`) | `1.18` | `0.01em` | Collection titles, page headers |
+| **H2** | Section Titles | Playfair Display | `500` | `38px` | `28px` (`clamp(28px, 3.5vw, 38px)`) | `1.22` | `0.01em` | Major module headings |
+| **H3** | Subsection / Card Titles | Playfair Display | `600` | `26px` | `22px` (`clamp(20px, 2.5vw, 26px)`) | `1.3` | `0` | Product card titles, modal titles |
+| **Subtitle** | Editorial Tagline | Playfair Display | `500 Italic` | `22px` | `18px` (`clamp(18px, 2vw, 22px)`) | `1.5` | `0.02em` | Emotive brand lines, artisan notes |
+| **Nav / CTA** | Buttons & Main Nav | Marcellus | `600` | `16px` | `14.5px` | `1.0` | `0.16em` | Uppercase buttons, top nav links |
+| **Body Large** | Introduction Copy | Plus Jakarta Sans | `400` | `19px` | `17px` | `1.8` | `0` | Brand story leads, editorial excerpts |
+| **Body Regular** | Standard Body / PDP | Plus Jakarta Sans | `400` | `18px` | `16.5px` | `1.75` | `0` | Product descriptions, policy copy |
+| **Body Bold / Values** | Prices / KPI Numbers | Plus Jakarta Sans | `700` | `28px–32px` | `24px` | `1.2` | `0.02em` | Currency values, seller KPI cards |
+| **Caption / Meta** | Subtext, Origin, Specs | Plus Jakarta Sans | `600` | `14.5px` | `13.5px` | `1.6` | `0.05em` | Minimum size allowed; never below 13.5px |
 
 > [!IMPORTANT]
 > **30+ Readability Laws**:

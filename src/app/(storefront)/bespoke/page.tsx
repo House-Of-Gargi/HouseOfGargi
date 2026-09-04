@@ -2,6 +2,14 @@
 
 import { useState, FormEvent } from 'react';
 import ScrollReveal from '@/components/ScrollReveal';
+import CustomDropdown from '@/components/CustomDropdown';
+
+const GARMENT_OPTIONS = [
+  { value: 'Sarees', label: 'Bespoke Saree (Banarasi / Kanchipuram)' },
+  { value: 'Lehengas', label: 'Bridal / Festive Lehenga' },
+  { value: 'Kurta Sets', label: 'Handcrafted Kurta Ensemble' },
+  { value: 'Accessories', label: 'Custom Heritage Jewellery' },
+];
 
 export default function BespokePage() {
   const [formData, setFormData] = useState({
