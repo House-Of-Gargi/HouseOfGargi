@@ -1,156 +1,496 @@
-.account-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: calc(var(--navbar-height) + 16px) 24px 80px 24px;
+/* ═══════════════════════════════════════════════════════════════════
+   HOUSE OF GARGI — PATRON ATELIER PROFILE STYLES
+   Minimal Luxury • Desktop Expansive • Seamless Mobile Fluidity
+   ═══════════════════════════════════════════════════════════════════ */
+
+.account-page-wrap {
+  min-height: 85vh;
+  background: var(--ivory-silk);
 }
 
-.account-header {
+.account-container {
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+  padding: calc(var(--navbar-height) + 28px) 32px 100px 32px;
+  box-sizing: border-box;
+}
+
+/* ── Top Navigation Bar ── */
+.account-top-bar {
   display: flex;
   align-items: center;
-  margin-bottom: 32px;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.account-header h1 {
+.account-back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--stone-taupe);
+  font-family: var(--font-nav);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 0;
+  transition: color 200ms ease;
+}
+
+.account-back-btn:hover {
+  color: var(--maharani-maroon);
+}
+
+.account-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-nav);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gargi-gold);
+  background: rgba(184, 142, 24, 0.08);
+  border: 1px solid rgba(184, 142, 24, 0.25);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+/* ── Page Header ── */
+.account-header-row {
+  margin-bottom: 36px;
+  border-bottom: 1px solid var(--soft-gold-line);
+  padding-bottom: 22px;
+}
+
+.account-eyebrow {
+  font-family: var(--font-nav);
+  font-size: 11.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gargi-gold);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.account-title {
   font-family: var(--font-display);
   color: var(--ink-brown);
-  font-size: 28px;
+  margin: 0;
+  font-size: clamp(30px, 3.8vw, 40px);
   font-weight: 600;
-  margin-left: 16px;
+  letter-spacing: -0.01em;
 }
 
-.account-profile-card {
+/* ── Main 2-Column Responsive Layout ── */
+.account-layout-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* ── Left Column: Patron Identity Card (Sticky) ── */
+.account-sidebar-card {
+  background: var(--pure-white);
+  border: 1px solid var(--soft-gold-line);
+  border-radius: 8px;
+  padding: 34px 28px;
+  box-shadow: 0 6px 24px rgba(43, 31, 24, 0.03);
+  position: sticky;
+  top: calc(var(--navbar-height) + 24px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid var(--soft-gold-line);
-  padding: 36px 32px;
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(43,31,24,0.04);
-  margin-bottom: 24px;
+  text-align: center;
 }
 
 .account-avatar {
-  width: 80px;
-  height: 80px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   background: var(--ivory-silk);
+  border: 1.5px solid var(--soft-gold-line);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--stone-taupe);
-  margin-bottom: 16px;
-  border: 2px solid var(--soft-gold-line);
+  color: var(--maharani-maroon);
+  margin-bottom: 18px;
 }
 
-.account-name {
+.account-patron-name {
   font-family: var(--font-display);
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 600;
   color: var(--ink-brown);
-  margin-bottom: 4px;
+  margin: 0 0 6px 0;
 }
 
-.account-meta {
+.account-patron-phone {
   color: var(--stone-taupe);
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 500;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.account-quick-links {
-  display: flex;
+/* Patron Live Metrics in Sidebar */
+.account-sidebar-stats {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
+  padding: 18px 0;
+  border-top: 1px solid var(--soft-gold-line);
+  border-bottom: 1px solid var(--soft-gold-line);
   margin-bottom: 24px;
 }
 
-.account-quick-link-btn {
-  flex: 1;
+.account-stat-block {
+  text-decoration: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background: var(--pure-white);
-  padding: 18px 16px;
-  border-radius: 12px;
-  border: 1.5px solid var(--soft-gold-line);
-  color: var(--ink-brown);
-  font-size: 15px;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  cursor: pointer;
+  padding: 12px 8px;
+  border-radius: 6px;
+  transition: all 200ms ease;
+  background: rgba(251, 246, 238, 0.5);
+  border: 1px solid transparent;
 }
 
-.account-quick-link-btn:hover {
+.account-stat-block:hover {
   background: var(--ivory-silk);
-  border-color: var(--gargi-gold);
+  border-color: var(--soft-gold-line);
+  transform: translateY(-2px);
 }
 
-.account-quick-link-btn svg {
-  margin-bottom: 8px;
-  color: var(--stone-taupe);
+.account-stat-number {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--maharani-maroon);
+  line-height: 1;
+  margin-bottom: 4px;
 }
 
-.account-list-section {
-  background: var(--pure-white);
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 24px;
-  border: 1px solid var(--soft-gold-line);
-  box-shadow: 0 4px 12px rgba(43,31,24,0.03);
-}
-
-.account-list-title {
-  padding: 20px 24px 8px;
+.account-stat-label {
   font-family: var(--font-nav);
-  font-size: 13.5px;
-  font-weight: 700;
-  color: var(--stone-taupe);
+  font-size: 11px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  color: var(--stone-taupe);
+  font-weight: 600;
 }
 
-.account-list-item {
+/* Logout Button */
+.account-logout-btn {
+  width: 100%;
+  background: transparent;
+  border: 1.5px solid rgba(122, 35, 49, 0.25);
+  color: var(--maharani-maroon);
+  padding: 13px 20px;
+  font-family: var(--font-nav);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 200ms ease;
+}
+
+.account-logout-btn:hover {
+  background: var(--maharani-maroon);
+  color: var(--pure-white);
+  border-color: var(--maharani-maroon);
+}
+
+/* ── Right Column: Expansive Atelier Dashboard ── */
+.account-main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.account-section-header {
   display: flex;
   align-items: center;
-  padding: 18px 24px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-  border-bottom: 1px solid var(--ivory-silk);
+  justify-content: space-between;
+  margin-bottom: 16px;
 }
 
-.account-list-item:last-child {
+.account-section-tag {
+  font-family: var(--font-nav);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--stone-taupe);
+}
+
+/* 1. Primary Action Cards Grid */
+.account-curations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.account-curation-card {
+  background: var(--pure-white);
+  border: 1px solid var(--soft-gold-line);
+  border-radius: 8px;
+  padding: 26px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-decoration: none;
+  color: inherit;
+  transition: all 250ms ease;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(43, 31, 24, 0.02);
+}
+
+.account-curation-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--gargi-gold);
+  box-shadow: 0 10px 28px rgba(184, 142, 24, 0.12);
+}
+
+.account-curation-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  background: var(--ivory-silk);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--maharani-maroon);
+  margin-bottom: 16px;
+  transition: all 250ms ease;
+}
+
+.account-curation-card:hover .account-curation-icon-wrap {
+  background: var(--maharani-maroon);
+  color: var(--pure-white);
+}
+
+.account-curation-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink-brown);
+  margin: 0 0 6px 0;
+}
+
+.account-curation-desc {
+  font-size: 14.5px;
+  color: var(--stone-taupe);
+  line-height: 1.5;
+  margin: 0 0 20px 0;
+}
+
+.account-curation-action {
+  font-family: var(--font-nav);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gargi-gold);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 200ms ease;
+}
+
+.account-curation-card:hover .account-curation-action {
+  color: var(--maharani-maroon);
+  gap: 10px;
+}
+
+/* 2. Patron Guides Grid */
+.account-guides-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.account-guide-card {
+  background: var(--pure-white);
+  border: 1px solid var(--soft-gold-line);
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  gap: 18px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 250ms ease;
+  box-shadow: 0 4px 14px rgba(43, 31, 24, 0.02);
+}
+
+.account-guide-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--gargi-gold);
+  background: #FFFEFA;
+}
+
+.account-guide-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: rgba(184, 142, 24, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gargi-gold);
+}
+
+.account-guide-body {
+  flex: 1;
+}
+
+.account-guide-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink-brown);
+  margin: 0 0 6px 0;
+}
+
+.account-guide-desc {
+  font-size: 14px;
+  color: var(--stone-taupe);
+  line-height: 1.5;
+  margin: 0 0 10px 0;
+}
+
+.account-guide-link {
+  font-family: var(--font-nav);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--maharani-maroon);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 3. House Policies & Heritage List */
+.account-policies-card {
+  background: var(--pure-white);
+  border: 1px solid var(--soft-gold-line);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(43, 31, 24, 0.02);
+}
+
+.account-policy-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  text-decoration: none;
+  color: var(--ink-brown);
+  border-bottom: 1px solid rgba(228, 211, 174, 0.4);
+  transition: all 200ms ease;
+}
+
+.account-policy-item:last-child {
   border-bottom: none;
 }
 
-.account-list-item:hover {
+.account-policy-item:hover {
   background: var(--ivory-silk);
+  padding-left: 28px;
 }
 
-.account-list-item-icon {
-  margin-right: 16px;
+.account-policy-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.account-policy-icon {
   color: var(--stone-taupe);
+  display: flex;
+  align-items: center;
+  transition: color 200ms ease;
 }
 
-.account-list-item-text {
-  flex: 1;
-  font-size: 16.5px;
+.account-policy-item:hover .account-policy-icon {
+  color: var(--maharani-maroon);
+}
+
+.account-policy-title {
+  font-size: 15.5px;
   font-weight: 500;
   color: var(--ink-brown);
 }
 
-.account-list-item-arrow {
+.account-policy-arrow {
   color: var(--stone-taupe);
+  transition: transform 200ms ease, color 200ms ease;
 }
 
-.account-grid-layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
+.account-policy-item:hover .account-policy-arrow {
+  transform: translateX(3px);
+  color: var(--maharani-maroon);
 }
 
-@media (min-width: 768px) {
-  .account-grid-layout {
-    grid-template-columns: 1fr 1fr;
+/* ═══════════════════════════════════════════════════════════════════
+   RESPONSIVE MEDIA QUERIES
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 992px) {
+  .account-layout-grid {
+    grid-template-columns: 1fr;
     gap: 32px;
+  }
+
+  .account-sidebar-card {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .account-container {
+    padding: calc(var(--navbar-height) + 16px) 16px 64px 16px;
+  }
+
+  .account-top-bar {
+    margin-bottom: 20px;
+  }
+
+  .account-header-row {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+  }
+
+  .account-curations-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .account-guides-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .account-policy-item {
+    padding: 16px 18px;
   }
 }

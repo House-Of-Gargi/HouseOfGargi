@@ -1,53 +1,32 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient';
-import { ArrowRightIcon, UserIcon, CartIcon, WishlistIcon, FileTextIcon, ShieldIcon } from '@/components/Icons';
-
-const HelpIcon = ({ size = 24 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-  </svg>
-);
-
-const BookIcon = ({ size = 24 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-  </svg>
-);
-
-const RulerIcon = ({ size = 24 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21.3 15.3l-7.6 7.6a2 2 0 0 1-2.8 0l-7.6-7.6a2 2 0 0 1 0-2.8l7.6-7.6a2 2 0 0 1 2.8 0l7.6 7.6a2 2 0 0 1 0 2.8z"></path>
-    <path d="M14.5 10.5l-3 3"></path>
-    <path d="M10.5 6.5l-3 3"></path>
-    <path d="M18.5 14.5l-3 3"></path>
-  </svg>
-);
-
-const InfoIcon = ({ size = 24 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"></circle>
-    <line x1="12" y1="16" x2="12" y2="12"></line>
-    <line x1="12" y1="8" x2="12.01" y2="8"></line>
-  </svg>
-);
-
-const LogOutIcon = ({ size = 24 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-    <polyline points="16 17 21 12 16 7"></polyline>
-    <line x1="21" y1="12" x2="9" y2="12"></line>
-  </svg>
-);
-
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
+import { useCart } from '@/context/CartContext';
+import { useWishlist } from '@/context/WishlistContext';
+import { 
+  User, 
+  ShoppingBag, 
+  Heart, 
+  Sparkles, 
+  Ruler, 
+  Truck, 
+  FileText, 
+  ShieldCheck, 
+  HelpCircle, 
+  LogOut, 
+  ArrowRight, 
+  ArrowLeft, 
+  BookOpen 
+} from 'lucide-react';
 
 export default function AccountPage() {
   const router = useRouter();
   const { customer, isLoggedIn, logout } = useCustomerAuth();
+  const { itemCount } = useCart();
+  const { wishlistCount } = useWishlist();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -67,8 +46,10 @@ export default function AccountPage() {
 
   if (!mounted || !isLoggedIn || !customer) {
     return (
-      <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        Loading profile...
+      <div className="account-page-wrap" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '65vh' }}>
+        <p style={{ fontFamily: 'var(--font-nav)', fontSize: '13px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--stone-taupe)' }}>
+          Loading Patron Profile...
+        </p>
       </div>
     );
   }
@@ -78,88 +59,213 @@ export default function AccountPage() {
     : `+91 ${customer.phone}`;
 
   return (
-    <div className="account-container" style={{ paddingTop: 'calc(var(--navbar-height) + 32px)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px' }}>
-        <button type="button" onClick={() => router.back()} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--ink-brown)', fontSize: '16px' }}>
-          <span>&larr;</span> Back
-        </button>
-      </div>
-      <div style={{ textAlign: 'left', marginBottom: '40px' }}>
-        <h1 style={{ fontFamily: 'var(--font-nav)', color: 'var(--ink-brown)', margin: 0, fontSize: '28px' }}>Profile</h1>
-      </div>
-
-      <div className="account-profile-card">
-        <div className="account-avatar">
-          <UserIcon size={40} />
+    <div className="account-page-wrap">
+      <div className="account-container">
+        {/* Top Navigation & Status */}
+        <div className="account-top-bar">
+          <button 
+            type="button" 
+            onClick={() => router.back()} 
+            className="account-back-btn"
+          >
+            <ArrowLeft size={16} /> Back to Browsing
+          </button>
+          <div className="account-status-pill">
+            ✦ Verified House Patron
+          </div>
         </div>
-        <h2 className="account-name">{customer.name || 'Patron of Craft'}</h2>
-        <div className="account-meta">{formattedPhone}</div>
-      </div>
 
-      <div className="account-quick-links">
-        <button type="button" className="account-quick-link-btn" onClick={() => router.push('/cart')}>
-          <CartIcon size={24} />
-          Shopping bag
-        </button>
-        <button type="button" className="account-quick-link-btn" onClick={() => router.push('/bespoke')}>
-          <RulerIcon size={24} />
-          Bespoke
-        </button>
-        <button type="button" className="account-quick-link-btn" onClick={() => router.push('/faq')}>
-          <HelpIcon size={24} />
-          Client Care
-        </button>
-      </div>
+        {/* Page Header */}
+        <div className="account-header-row">
+          <div className="account-eyebrow">House of Gargi • Personal Client Suite</div>
+          <h1 className="account-title">Patron Atelier Profile</h1>
+        </div>
 
-      <div className="account-grid-layout">
-        <div className="account-list-section">
-          <div className="account-list-title">Your Information</div>
+        {/* Expansive 2-Column Responsive Dashboard Layout */}
+        <div className="account-layout-grid">
           
-          <div className="account-list-item" onClick={() => router.push('/wishlist')}>
-            <div className="account-list-item-icon"><WishlistIcon /></div>
-            <div className="account-list-item-text">Your Wishlist</div>
-            <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
-          </div>
+          {/* Left Column: Patron Identity & Account Actions */}
+          <aside className="account-sidebar-card">
+            <div className="account-avatar">
+              <User size={34} strokeWidth={1.3} />
+            </div>
+            <h2 className="account-patron-name">{customer.name || 'Valued Patron'}</h2>
+            <div className="account-patron-phone">
+              <span>{formattedPhone}</span>
+            </div>
 
-          <div className="account-list-item" onClick={() => router.push('/size-guide')}>
-            <div className="account-list-item-icon"><RulerIcon /></div>
-            <div className="account-list-item-text">Size Guide & Measurements</div>
-            <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
-          </div>
+            {/* Quick Live Summary Stats */}
+            <div className="account-sidebar-stats">
+              <Link href="/cart" className="account-stat-block">
+                <span className="account-stat-number">{itemCount}</span>
+                <span className="account-stat-label">In Bag</span>
+              </Link>
+              <Link href="/wishlist" className="account-stat-block">
+                <span className="account-stat-number">{wishlistCount}</span>
+                <span className="account-stat-label">Wishlist</span>
+              </Link>
+            </div>
 
-          <div className="account-list-item" onClick={() => router.push('/shipping')}>
-            <div className="account-list-item-icon"><BookIcon /></div>
-            <div className="account-list-item-text">Shipping & Logistics</div>
-            <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
-          </div>
-        </div>
+            {/* Direct Sign Out */}
+            <button 
+              type="button" 
+              onClick={handleLogout} 
+              className="account-logout-btn"
+            >
+              <LogOut size={16} strokeWidth={1.75} /> Sign Out of Atelier
+            </button>
+          </aside>
 
-        <div className="account-list-section">
-          <div className="account-list-title">Boutique & Policies</div>
+          {/* Right Column: Full-Width Atelier Services & Guides */}
+          <main className="account-main-content">
+            
+            {/* 1. Active Curations & Inquiries */}
+            <section>
+              <div className="account-section-header">
+                <span className="account-section-tag">Active Curations &amp; Commissions</span>
+              </div>
+              <div className="account-curations-grid">
+                
+                {/* Shopping Bag Card */}
+                <Link href="/cart" className="account-curation-card">
+                  <div>
+                    <div className="account-curation-icon-wrap">
+                      <ShoppingBag size={24} strokeWidth={1.3} />
+                    </div>
+                    <h3 className="account-curation-title">Shopping Bag</h3>
+                    <p className="account-curation-desc">
+                      {itemCount > 0 
+                        ? `${itemCount} handcrafted ${itemCount === 1 ? 'heirloom piece' : 'heirloom pieces'} currently reserved.`
+                        : 'Your private bag is awaiting your curation of pure silks and bridal sets.'}
+                    </p>
+                  </div>
+                  <span className="account-curation-action">
+                    Open Shopping Bag <ArrowRight size={14} />
+                  </span>
+                </Link>
 
-          <div className="account-list-item" onClick={() => router.push('/our-story')}>
-            <div className="account-list-item-icon"><InfoIcon /></div>
-            <div className="account-list-item-text">Our Story</div>
-            <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
-          </div>
+                {/* Wishlist Card */}
+                <Link href="/wishlist" className="account-curation-card">
+                  <div>
+                    <div className="account-curation-icon-wrap">
+                      <Heart size={24} strokeWidth={1.3} />
+                    </div>
+                    <h3 className="account-curation-title">Heirloom Wishlist</h3>
+                    <p className="account-curation-desc">
+                      {wishlistCount > 0
+                        ? `${wishlistCount} cherished ${wishlistCount === 1 ? 'piece' : 'pieces'} saved in your registry.`
+                        : 'Save your cherished pure silk sarees and ensembles for future review.'}
+                    </p>
+                  </div>
+                  <span className="account-curation-action">
+                    View Wishlist <ArrowRight size={14} />
+                  </span>
+                </Link>
 
-          <div className="account-list-item" onClick={() => router.push('/terms')}>
-            <div className="account-list-item-icon"><FileTextIcon /></div>
-            <div className="account-list-item-text">Terms & Conditions</div>
-            <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
-          </div>
+                {/* Bespoke Inquiry Card */}
+                <Link href="/bespoke" className="account-curation-card">
+                  <div>
+                    <div className="account-curation-icon-wrap">
+                      <Sparkles size={24} strokeWidth={1.3} />
+                    </div>
+                    <h3 className="account-curation-title">Bespoke Couture</h3>
+                    <p className="account-curation-desc">
+                      Commission bespoke bridal ensembles, custom colourways, or heirloom handloom weaves.
+                    </p>
+                  </div>
+                  <span className="account-curation-action">
+                    Commission Bespoke <ArrowRight size={14} />
+                  </span>
+                </Link>
 
-          <div className="account-list-item" onClick={() => router.push('/privacy')}>
-            <div className="account-list-item-icon"><ShieldIcon /></div>
-            <div className="account-list-item-text">Privacy Policy</div>
-            <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
-          </div>
+              </div>
+            </section>
 
-          <div className="account-list-item" onClick={handleLogout} style={{ borderTop: '1px solid var(--soft-gold-line)' }}>
-            <div className="account-list-item-icon" style={{ color: 'var(--maharani-maroon)' }}><LogOutIcon /></div>
-            <div className="account-list-item-text" style={{ color: 'var(--maharani-maroon)' }}>Sign Out</div>
-            <div className="account-list-item-arrow"><ArrowRightIcon size={16} /></div>
-          </div>
+            {/* 2. Patron Guides & Craft Specifications */}
+            <section>
+              <div className="account-section-header">
+                <span className="account-section-tag">Atelier Guidance &amp; Logistics</span>
+              </div>
+              <div className="account-guides-grid">
+                
+                {/* Size & Measurements */}
+                <Link href="/size-guide" className="account-guide-card">
+                  <div className="account-guide-icon">
+                    <Ruler size={22} strokeWidth={1.4} />
+                  </div>
+                  <div className="account-guide-body">
+                    <h4 className="account-guide-title">Measurements &amp; Fit Guide</h4>
+                    <p className="account-guide-desc">
+                      Detailed blouse tailoring, standard saree drape dimensions, and lehenga flare specifications.
+                    </p>
+                    <span className="account-guide-link">
+                      Review Fit Guide <ArrowRight size={13} />
+                    </span>
+                  </div>
+                </Link>
+
+                {/* Insured White-Glove Shipping */}
+                <Link href="/shipping" className="account-guide-card">
+                  <div className="account-guide-icon">
+                    <Truck size={22} strokeWidth={1.4} />
+                  </div>
+                  <div className="account-guide-body">
+                    <h4 className="account-guide-title">White-Glove Logistics</h4>
+                    <p className="account-guide-desc">
+                      Insured worldwide delivery, tamper-proof silk seal boxes, and verified dispatch timelines.
+                    </p>
+                    <span className="account-guide-link">
+                      Shipping Protocols <ArrowRight size={13} />
+                    </span>
+                  </div>
+                </Link>
+
+              </div>
+            </section>
+
+            {/* 3. Boutique Heritage & House Policies */}
+            <section>
+              <div className="account-section-header">
+                <span className="account-section-tag">Boutique Heritage &amp; Policies</span>
+              </div>
+              <div className="account-policies-card">
+                
+                <Link href="/our-story" className="account-policy-item">
+                  <div className="account-policy-left">
+                    <span className="account-policy-icon"><BookOpen size={18} strokeWidth={1.4} /></span>
+                    <span className="account-policy-title">Our Story &amp; Master Artisan Lineage</span>
+                  </div>
+                  <span className="account-policy-arrow"><ArrowRight size={16} /></span>
+                </Link>
+
+                <Link href="/terms" className="account-policy-item">
+                  <div className="account-policy-left">
+                    <span className="account-policy-icon"><FileText size={18} strokeWidth={1.4} /></span>
+                    <span className="account-policy-title">Terms of Commission &amp; Authenticity Guarantee</span>
+                  </div>
+                  <span className="account-policy-arrow"><ArrowRight size={16} /></span>
+                </Link>
+
+                <Link href="/privacy" className="account-policy-item">
+                  <div className="account-policy-left">
+                    <span className="account-policy-icon"><ShieldCheck size={18} strokeWidth={1.4} /></span>
+                    <span className="account-policy-title">Patron Privacy &amp; Data Sovereignty</span>
+                  </div>
+                  <span className="account-policy-arrow"><ArrowRight size={16} /></span>
+                </Link>
+
+                <Link href="/faq" className="account-policy-item">
+                  <div className="account-policy-left">
+                    <span className="account-policy-icon"><HelpCircle size={18} strokeWidth={1.4} /></span>
+                    <span className="account-policy-title">Client Concierge &amp; Frequently Asked Questions</span>
+                  </div>
+                  <span className="account-policy-arrow"><ArrowRight size={16} /></span>
+                </Link>
+
+              </div>
+            </section>
+
+          </main>
         </div>
       </div>
     </div>
