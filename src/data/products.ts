@@ -144,7 +144,7 @@ export const products: Product[] = [
     occasion: 'Festive',
     sizes: ['S', 'M', 'L', 'XL'],
     care: 'Dry clean only.',
-    images: ['/images/category-lehengas.png'],
+    images: ['/images/products/lehenga-gota-patti.jpg'],
   },
   {
     id: 'chikankari-anarkali-lehenga',
@@ -159,7 +159,7 @@ export const products: Product[] = [
     occasion: 'Wedding',
     sizes: ['XS', 'S', 'M', 'L'],
     care: 'Hand wash in cold water or dry clean.',
-    images: ['/images/category-lehengas.png'],
+    images: ['/images/products/lehenga-chikankari.jpg'],
   },
   {
     id: 'mirror-work-lehenga',
@@ -174,7 +174,7 @@ export const products: Product[] = [
     occasion: 'Festive',
     sizes: ['S', 'M', 'L', 'XL'],
     care: 'Dry clean recommended.',
-    images: ['/images/category-lehengas.png'],
+    images: ['/images/products/lehenga-mirror-work.jpg'],
   },
 
   /* ── Kurta Sets ──────────────────────── */
@@ -206,7 +206,7 @@ export const products: Product[] = [
     occasion: 'Casual',
     sizes: ['S', 'M', 'L', 'XL'],
     care: 'Hand wash in cold water. Air dry flat.',
-    images: ['/images/category-kurtas.png'],
+    images: ['/images/products/kurta-chikankari-white.jpg'],
   },
   {
     id: 'ajrakh-silk-kurta',
@@ -221,7 +221,7 @@ export const products: Product[] = [
     occasion: 'Festive',
     sizes: ['S', 'M', 'L', 'XL'],
     care: 'Dry clean recommended.',
-    images: ['/images/category-kurtas.png'],
+    images: ['/images/products/kurta-ajrakh-silk.jpg'],
   },
   {
     id: 'kalamkari-anarkali-kurta',
@@ -236,7 +236,7 @@ export const products: Product[] = [
     occasion: 'Festive',
     sizes: ['XS', 'S', 'M', 'L', 'XL'],
     care: 'Hand wash cold. Avoid bleach. Iron on reverse.',
-    images: ['/images/category-kurtas.png'],
+    images: ['/images/products/kurta-kalamkari.jpg'],
   },
   {
     id: 'bandhani-silk-kurta',
@@ -251,7 +251,7 @@ export const products: Product[] = [
     occasion: 'Festive',
     sizes: ['S', 'M', 'L', 'XL'],
     care: 'Dry clean only.',
-    images: ['/images/category-kurtas.png'],
+    images: ['/images/products/kurta-bandhani-silk.jpg'],
   },
 
   /* ── Accessories ─────────────────────── */
@@ -283,7 +283,7 @@ export const products: Product[] = [
     occasion: 'Festive',
     sizes: ['One Size'],
     care: 'Keep dry. Clean with soft cloth.',
-    images: ['/images/category-accessories.png'],
+    images: ['/images/products/accessory-meenakari-jhumka.jpg'],
   },
   {
     id: 'temple-jewellery-set',
@@ -298,7 +298,7 @@ export const products: Product[] = [
     occasion: 'Festive',
     sizes: ['One Size'],
     care: 'Store separately. Polish with dry cotton cloth.',
-    images: ['/images/category-accessories.png'],
+    images: ['/images/products/accessory-temple-jewellery.jpg'],
   },
   {
     id: 'phulkari-dupatta',
@@ -313,7 +313,7 @@ export const products: Product[] = [
     occasion: 'Festive',
     sizes: ['Free Size'],
     care: 'Dry clean recommended.',
-    images: ['/images/category-accessories.png'],
+    images: ['/images/products/accessory-phulkari-dupatta.jpg'],
   },
 ];
 

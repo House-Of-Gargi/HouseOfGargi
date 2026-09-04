@@ -20,15 +20,36 @@ const CATEGORY_OPTIONS = [
   { value: 'accessories', label: 'Heritage Jewellery' },
 ];
 
+const DEFAULT_IMAGE_BY_CATEGORY: Record<string, string> = {
+  sarees: '/images/category-sarees.png',
+  lehengas: '/images/category-lehengas.png',
+  'kurta-sets': '/images/category-kurtas.png',
+  accessories: '/images/category-accessories.png',
+};
+
 const ASSET_OPTIONS = [
-  { value: '/images/category-sarees.png', label: 'Banarasi Gold Saree' },
-  { value: '/images/products/saree-kanchipuram.jpg', label: 'Kanchipuram Temple Saree' },
-  { value: '/images/products/saree-chanderi.jpg', label: 'Chanderi Floral Jaal Saree' },
-  { value: '/images/products/saree-tussar.jpg', label: 'Tussar Block Print Saree' },
-  { value: '/images/products/saree-paithani.jpg', label: 'Paithani Peacock Saree' },
-  { value: '/images/category-lehengas.png', label: 'Lehengas Lookbook' },
-  { value: '/images/category-kurtas.png', label: 'Kurtas Lookbook' },
-  { value: '/images/category-accessories.png', label: 'Jewellery Lookbook' },
+  // Sarees
+  { value: '/images/category-sarees.png', label: 'Saree: Banarasi Gold Weave' },
+  { value: '/images/products/saree-kanchipuram.jpg', label: 'Saree: Kanchipuram Temple Border' },
+  { value: '/images/products/saree-chanderi.jpg', label: 'Saree: Chanderi Floral Jaal' },
+  { value: '/images/products/saree-tussar.jpg', label: 'Saree: Tussar Silk Block Print' },
+  { value: '/images/products/saree-paithani.jpg', label: 'Saree: Paithani Peacock Pallu' },
+  // Lehengas
+  { value: '/images/category-lehengas.png', label: 'Lehenga: Royal Zardozi Bridal' },
+  { value: '/images/products/lehenga-gota-patti.jpg', label: 'Lehenga: Gota Patti Festive' },
+  { value: '/images/products/lehenga-chikankari.jpg', label: 'Lehenga: Chikankari Ivory Anarkali' },
+  { value: '/images/products/lehenga-mirror-work.jpg', label: 'Lehenga: Mirror Work Chaniya Choli' },
+  // Kurta Sets
+  { value: '/images/category-kurtas.png', label: 'Kurta: Sanganeri Block Print' },
+  { value: '/images/products/kurta-chikankari-white.jpg', label: 'Kurta: Chikankari White-on-White' },
+  { value: '/images/products/kurta-ajrakh-silk.jpg', label: 'Kurta: Ajrakh Silk Set' },
+  { value: '/images/products/kurta-kalamkari.jpg', label: 'Kurta: Kalamkari Anarkali' },
+  { value: '/images/products/kurta-bandhani-silk.jpg', label: 'Kurta: Bandhani Silk Festival' },
+  // Accessories & Jewellery
+  { value: '/images/category-accessories.png', label: 'Jewellery: Kundan Polki Choker Set' },
+  { value: '/images/products/accessory-meenakari-jhumka.jpg', label: 'Jewellery: Meenakari Jhumka Earrings' },
+  { value: '/images/products/accessory-temple-jewellery.jpg', label: 'Jewellery: Temple Jewellery Necklace' },
+  { value: '/images/products/accessory-phulkari-dupatta.jpg', label: 'Accessory: Phulkari Silk Dupatta' },
 ];
 
 export default function SellerProductsPage() {
@@ -409,7 +430,11 @@ export default function SellerProductsPage() {
                     fullWidth
                     options={CATEGORY_OPTIONS}
                     value={newProduct.category}
-                    onChange={(val) => setNewProduct({ ...newProduct, category: val })}
+                    onChange={(val) => setNewProduct({ 
+                      ...newProduct, 
+                      category: val,
+                      image_url: DEFAULT_IMAGE_BY_CATEGORY[val] || newProduct.image_url
+                    })}
                   />
                 </div>
 
