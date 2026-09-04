@@ -67,7 +67,7 @@ export const products: Product[] = [
     occasion: 'Festive',
     sizes: ['Free Size'],
     care: 'Dry clean only. Press with cool iron on reverse side.',
-    images: ['/images/category-sarees.png'],
+    images: ['/images/products/saree-kanchipuram.jpg'],
   },
   {
     id: 'chanderi-floral-jaal',
@@ -82,7 +82,7 @@ export const products: Product[] = [
     occasion: 'Casual',
     sizes: ['Free Size'],
     care: 'Hand wash in cold water or dry clean. Air dry in shade.',
-    images: ['/images/category-sarees.png'],
+    images: ['/images/products/saree-chanderi.jpg'],
   },
   {
     id: 'tussar-block-print',
@@ -97,7 +97,7 @@ export const products: Product[] = [
     occasion: 'Casual',
     sizes: ['Free Size'],
     care: 'Dry clean recommended. Store flat.',
-    images: ['/images/category-sarees.png'],
+    images: ['/images/products/saree-tussar.jpg'],
   },
   {
     id: 'paithani-peacock',
@@ -112,7 +112,7 @@ export const products: Product[] = [
     occasion: 'Wedding',
     sizes: ['Free Size'],
     care: 'Dry clean only. Heirloom piece — store with silica gel packets.',
-    images: ['/images/category-sarees.png'],
+    images: ['/images/products/saree-paithani.jpg'],
   },
 
   /* ── Lehengas ────────────────────────── */

@@ -21,7 +21,11 @@ const CATEGORY_OPTIONS = [
 ];
 
 const ASSET_OPTIONS = [
-  { value: '/images/category-sarees.png', label: 'Sarees Lookbook' },
+  { value: '/images/category-sarees.png', label: 'Banarasi Gold Saree' },
+  { value: '/images/products/saree-kanchipuram.jpg', label: 'Kanchipuram Temple Saree' },
+  { value: '/images/products/saree-chanderi.jpg', label: 'Chanderi Floral Jaal Saree' },
+  { value: '/images/products/saree-tussar.jpg', label: 'Tussar Block Print Saree' },
+  { value: '/images/products/saree-paithani.jpg', label: 'Paithani Peacock Saree' },
   { value: '/images/category-lehengas.png', label: 'Lehengas Lookbook' },
   { value: '/images/category-kurtas.png', label: 'Kurtas Lookbook' },
   { value: '/images/category-accessories.png', label: 'Jewellery Lookbook' },
