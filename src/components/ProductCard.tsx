@@ -29,13 +29,23 @@ export default function ProductCard({ product, style }: ProductCardProps) {
   };
 
   return (
-    <div className="product-card" style={{ position: 'relative', display: 'flex', flexDirection: 'column', ...style }}>
+    <div 
+      className="product-card" 
+      style={{ 
+        position: 'relative', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        isolation: 'isolate',
+        zIndex: 1,
+        ...style 
+      }}
+    >
       <button 
         type="button"
         className="product-card__wishlist" 
         onClick={handleWishlistClick}
         aria-label={isSaved ? 'Remove from wishlist' : 'Add to wishlist'}
-        style={{ zIndex: 10 }}
+        style={{ zIndex: 2 }}
       >
         {isSaved ? <HeartFilledIcon size={20} color="var(--maharani-maroon)" /> : <WishlistIcon size={20} />}
       </button>
