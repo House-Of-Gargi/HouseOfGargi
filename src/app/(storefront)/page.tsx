@@ -227,8 +227,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════ 7. NEWSLETTER (ATELIER GAZETTE & PRIVATE SALON) ═══════ */}
-      <section className="section section--sand" style={{ padding: '80px 0' }}>
+      {/* ═══════ 7. NEWSLETTER (ATELIER JOURNAL) ═══════ */}
+      <section className="section section--sand" style={{ padding: '72px 0' }}>
         <div className="container">
           <ScrollReveal>
             <div className="salon-card">
@@ -237,17 +237,21 @@ export default function HomePage() {
                 <DiyaIcon size={20} style={{ color: 'var(--gargi-gold)' }} />
                 <span className="salon-card__crest-line"></span>
               </div>
-              <div className="salon-card__sanskrit">पत्रिका संवादः • Patrikā Saṁvādaḥ</div>
-              <h2>The Atelier Gazette &amp; Private Salon</h2>
+              <div className="salon-card__sanskrit">
+                <span className="salon-card__devanagari">पत्रिका संवादः</span>
+                <span className="salon-card__dot">•</span>
+                <span className="salon-card__translit">Patrikā Saṁvādaḥ</span>
+              </div>
+              <h2>The Atelier Journal</h2>
               <p>
-                Receive seasonal private monographs documenting ancient Indian textile lineages, preview bespoke bridal collections, and access private atelier appointments across Europe and India.
+                Get early access to new handloom arrivals, bridal previews, and private pop-up invites.
               </p>
               <div className="salon-card__input-group">
-                <input type="email" placeholder="Your distinguished email address" aria-label="Email address" />
-                <button type="button" className="btn btn--primary">Request Invitation</button>
+                <input type="email" placeholder="Enter your email address" aria-label="Email address" />
+                <button type="button" className="btn btn--primary">Subscribe</button>
               </div>
               <div className="salon-card__privacy">
-                ✦ Dispatches are issued quarterly with quiet discretion. Silk Mark India authenticated.
+                ✦ Sent once a month. No spam, unsubscribe anytime.
               </div>
             </div>
           </ScrollReveal>
