@@ -7,7 +7,7 @@ import { useWishlist } from '@/context/WishlistContext';
 import { useCart } from '@/context/CartContext';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
 import ProductCard from '@/components/ProductCard';
-import { Crown, Sparkles, Heart, ArrowRight, ShoppingBag } from 'lucide-react';
+import { Sparkles, Heart, ArrowRight, ShoppingBag } from 'lucide-react';
 import { Product } from '@/types';
 import { getProduct } from '@/data/products';
 

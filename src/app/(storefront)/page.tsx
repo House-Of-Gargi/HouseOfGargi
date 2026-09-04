@@ -236,7 +236,7 @@ export default function HomePage() {
             <div className="salon-card">
               <div className="salon-card__crest">
                 <span className="salon-card__crest-line"></span>
-                <Crown size={22} strokeWidth={1.4} style={{ color: 'var(--gargi-gold)' }} />
+                <span style={{ color: 'var(--gargi-gold)', fontSize: '14px', lineHeight: 1 }}>✦</span>
                 <span className="salon-card__crest-line"></span>
               </div>
               <div className="salon-card__sanskrit">

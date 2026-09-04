@@ -7,7 +7,7 @@ import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
 import { PlusIcon, MinusIcon, CloseIcon } from '@/components/Icons';
-import { Crown, Sparkles, ShieldCheck, Check, Copy, ArrowRight, ShoppingBag } from 'lucide-react';
+import { Sparkles, ShieldCheck, Check, Copy, ArrowRight, ShoppingBag } from 'lucide-react';
 import { getProduct } from '@/data/products';
 
 export default function CartPage() {
