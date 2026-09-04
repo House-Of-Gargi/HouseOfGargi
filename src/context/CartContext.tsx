@@ -8,6 +8,7 @@ import { useCustomerAuth } from '@/context/CustomerAuthContext';
 interface CartContextType {
   cart: CartItem[];
   addToCart: (product: Product, quantity?: number, size?: string | null) => void;
+  addMultipleToCart: (items: { product: Product; quantity?: number; size?: string | null }[]) => void;
   removeFromCart: (productId: string, size?: string | null) => void;
   updateQuantity: (productId: string, size: string | null, newQuantity: number) => void;
   clearCart: () => void;
@@ -94,6 +95,39 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const addMultipleToCart = (items: { product: Product; quantity?: number; size?: string | null }[]) => {
+    if (!isLoggedIn || !customer?.phone) {
+      openLoginModal();
+      return;
+    }
+
+    setCart(prev => {
+      let updated = [...prev];
+      for (const entry of items) {
+        const fresh = products.find(p => p.id === entry.product.id) || entry.product;
+        const qty = entry.quantity || 1;
+        const size = entry.size ?? (fresh.sizes && fresh.sizes.length > 0 ? fresh.sizes[0] : null);
+        const existingIndex = updated.findIndex(item => item.id === fresh.id && item.size === size);
+        if (existingIndex > -1) {
+          updated[existingIndex] = {
+            ...updated[existingIndex],
+            ...fresh,
+            images: fresh.images,
+            quantity: updated[existingIndex].quantity + qty,
+          };
+        } else {
+          updated.push({
+            ...fresh,
+            images: fresh.images,
+            quantity: qty,
+            size,
+          });
+        }
+      }
+      return updated;
+    });
+  };
+
   const removeFromCart = (productId: string, size: string | null = null) => {
     setCart(prev => prev.filter(item => !(item.id === productId && item.size === size)));
   };
@@ -125,6 +159,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     <CartContext.Provider value={{
       cart,
       addToCart,
+      addMultipleToCart,
       removeFromCart,
       updateQuantity,
       clearCart,

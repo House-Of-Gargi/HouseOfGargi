@@ -9,6 +9,8 @@ interface WishlistContextType {
   wishlist: Product[];
   isInWishlist: (productId: string) => boolean;
   toggleWishlist: (product: Product) => void;
+  removeFromWishlist: (productId: string) => void;
+  clearWishlist: () => void;
   wishlistCount: number;
 }
 
@@ -91,6 +93,21 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const removeFromWishlist = (productId: string) => {
+    if (!isLoggedIn || !customer?.phone) return;
+    setWishlist(prev => prev.filter(item => item.id !== productId));
+  };
+
+  const clearWishlist = () => {
+    if (!isLoggedIn || !customer?.phone) return;
+    setWishlist([]);
+    try {
+      localStorage.removeItem(`gargi_wishlist_${customer.phone}`);
+    } catch (e) {
+      console.error('Failed to clear wishlist storage', e);
+    }
+  };
+
   const wishlistCount = isLoggedIn ? wishlist.length : 0;
 
   return (
@@ -98,6 +115,8 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
       wishlist,
       isInWishlist,
       toggleWishlist,
+      removeFromWishlist,
+      clearWishlist,
       wishlistCount
     }}>
       {children}
