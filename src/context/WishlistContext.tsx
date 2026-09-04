@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Product } from '@/types';
 import { products } from '@/data/products';
+import { useCustomerAuth } from '@/context/CustomerAuthContext';
 
 interface WishlistContextType {
   wishlist: Product[];
@@ -14,12 +15,33 @@ interface WishlistContextType {
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
 
 export function WishlistProvider({ children }: { children: ReactNode }) {
+  const { customer, isLoggedIn, openLoginModal } = useCustomerAuth();
   const [wishlist, setWishlist] = useState<Product[]>([]);
-  const [initialized, setInitialized] = useState(false);
+  const [currentLoadedPhone, setCurrentLoadedPhone] = useState<string | null>(null);
 
+  // Load wishlist uniquely keyed to the logged-in customer's phone number
   useEffect(() => {
+    if (!isLoggedIn || !customer?.phone) {
+      setWishlist([]);
+      setCurrentLoadedPhone(null);
+      return;
+    }
+
+    const phone = customer.phone;
     try {
-      const saved = localStorage.getItem('gargi_wishlist');
+      const storageKey = `gargi_wishlist_${phone}`;
+      let saved = localStorage.getItem(storageKey);
+
+      // Migrate legacy global wishlist if existing
+      if (!saved) {
+        const legacy = localStorage.getItem('gargi_wishlist');
+        if (legacy) {
+          saved = legacy;
+          localStorage.setItem(storageKey, legacy);
+          localStorage.removeItem('gargi_wishlist');
+        }
+      }
+
       if (saved) {
         const parsed: Product[] = JSON.parse(saved);
         // Hydrate items with fresh catalog so latest product images are always used
@@ -28,27 +50,36 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
           return fresh ? { ...fresh } : item;
         });
         setWishlist(refreshed);
+      } else {
+        setWishlist([]);
       }
     } catch {
-      // ignore
+      setWishlist([]);
     }
-    setInitialized(true);
-  }, []);
+    setCurrentLoadedPhone(phone);
+  }, [isLoggedIn, customer?.phone]);
 
+  // Persist wishlist uniquely to the logged-in customer's storage key
   useEffect(() => {
-    if (!initialized) return;
+    if (!isLoggedIn || !customer?.phone || currentLoadedPhone !== customer.phone) return;
     try {
-      localStorage.setItem('gargi_wishlist', JSON.stringify(wishlist));
+      localStorage.setItem(`gargi_wishlist_${customer.phone}`, JSON.stringify(wishlist));
     } catch (e) {
-      console.error('Failed to sync wishlist to localStorage', e);
+      console.error('Failed to sync user wishlist to localStorage', e);
     }
-  }, [wishlist, initialized]);
+  }, [wishlist, isLoggedIn, customer?.phone, currentLoadedPhone]);
 
   const isInWishlist = (productId: string) => {
+    if (!isLoggedIn || !customer?.phone) return false;
     return wishlist.some(item => item.id === productId);
   };
 
   const toggleWishlist = (product: Product) => {
+    if (!isLoggedIn || !customer?.phone) {
+      openLoginModal();
+      return;
+    }
+
     const fresh = products.find(p => p.id === product.id) || product;
     setWishlist(prev => {
       const exists = prev.some(item => item.id === fresh.id);
@@ -60,7 +91,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const wishlistCount = wishlist.length;
+  const wishlistCount = isLoggedIn ? wishlist.length : 0;
 
   return (
     <WishlistContext.Provider value={{

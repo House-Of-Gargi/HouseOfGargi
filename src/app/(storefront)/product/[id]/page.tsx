@@ -11,6 +11,7 @@ import { Crown } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCurrency } from '@/context/CurrencyContext';
+import { useCustomerAuth } from '@/context/CustomerAuthContext';
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -29,21 +30,34 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const { addToCart, cart, updateQuantity } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { currency, setCurrency, formatPrice } = useCurrency();
+  const { isLoggedIn, openLoginModal } = useCustomerAuth();
 
   const related = getRelatedProducts(id, 4);
   const categoryName = categories.find(c => c.id === product.category)?.name || 'Collection';
-  const saved = isInWishlist(product.id);
+  const saved = isLoggedIn && isInWishlist(product.id);
   
   const sizeToCart = product.sizes.length > 1 ? selectedSize : product.sizes[0];
   const cartItem = cart.find(item => item.id === product.id && item.size === sizeToCart);
 
   const handleAddToCart = () => {
+    if (!isLoggedIn) {
+      openLoginModal();
+      return;
+    }
     if (product.sizes.length > 1 && !selectedSize) {
       setError('Please select a size before adding to your bag.');
       return;
     }
     setError('');
     addToCart(product, 1, sizeToCart);
+  };
+
+  const handleToggleWishlist = () => {
+    if (!isLoggedIn) {
+      openLoginModal();
+      return;
+    }
+    toggleWishlist(product);
   };
 
   return (
@@ -256,7 +270,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               <button
                 type="button"
                 className="btn btn--outline"
-                onClick={() => toggleWishlist(product)}
+                onClick={handleToggleWishlist}
                 style={{ minWidth: '52px', padding: '15px 16px' }}
                 aria-label={saved ? 'Remove from wishlist' : 'Save to wishlist'}
                 title={saved ? 'Remove from wishlist' : 'Save to wishlist'}

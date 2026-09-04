@@ -8,33 +8,21 @@ import CustomerLoginModal from './CustomerLoginModal';
 import { SearchIcon, UserIcon, WishlistIcon, CartIcon, MenuIcon, CloseIcon } from './Icons';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
+import { useCustomerAuth } from '@/context/CustomerAuthContext';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [session, setSession] = useState<any>(null);
   const [mounted, setMounted] = useState(false);
 
   const pathname = usePathname();
   const router = useRouter();
   const { itemCount } = useCart();
   const { wishlistCount } = useWishlist();
+  const { isLoggedIn, openLoginModal } = useCustomerAuth();
 
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -44,11 +32,10 @@ export default function Navbar() {
   }, []);
 
   const handleUserClick = () => {
-    const isDemo = typeof window !== 'undefined' && localStorage.getItem('customer_auth_demo') === 'true';
-    if (session || isDemo) {
+    if (isLoggedIn) {
       router.push('/account');
     } else {
-      setLoginModalOpen(true);
+      openLoginModal('/account');
     }
   };
 
@@ -118,7 +105,13 @@ export default function Navbar() {
               type="button" 
               aria-label="Wishlist" 
               title="Wishlist" 
-              onClick={() => router.push('/wishlist')}
+              onClick={() => {
+                if (!isLoggedIn) {
+                  openLoginModal('/wishlist');
+                } else {
+                  router.push('/wishlist');
+                }
+              }}
               style={{ position: 'relative' }}
             >
               <WishlistIcon size={20} />
@@ -130,7 +123,13 @@ export default function Navbar() {
               type="button" 
               aria-label="Cart" 
               title="Cart" 
-              onClick={() => router.push('/cart')}
+              onClick={() => {
+                if (!isLoggedIn) {
+                  openLoginModal('/cart');
+                } else {
+                  router.push('/cart');
+                }
+              }}
               style={{ position: 'relative' }}
             >
               <CartIcon size={20} />
@@ -142,7 +141,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      <CustomerLoginModal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
+      <CustomerLoginModal />
 
       {/* Mobile drawer overlay */}
       <div 

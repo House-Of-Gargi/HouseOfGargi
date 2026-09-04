@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import '@/index.css';
 import '@/account.css';
 import { CurrencyProvider } from '@/context/CurrencyContext';
+import { CustomerAuthProvider } from '@/context/CustomerAuthContext';
 import { CartProvider } from '@/context/CartContext';
 import { WishlistProvider } from '@/context/WishlistContext';
 
@@ -42,11 +43,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <CurrencyProvider>
-          <CartProvider>
-            <WishlistProvider>
-              {children}
-            </WishlistProvider>
-          </CartProvider>
+          <CustomerAuthProvider>
+            <CartProvider>
+              <WishlistProvider>
+                {children}
+              </WishlistProvider>
+            </CartProvider>
+          </CustomerAuthProvider>
         </CurrencyProvider>
       </body>
     </html>

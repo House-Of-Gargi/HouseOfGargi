@@ -7,6 +7,7 @@ import { getProduct } from '@/data/products';
 import { WishlistIcon, HeartFilledIcon } from './Icons';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCurrency } from '@/context/CurrencyContext';
+import { useCustomerAuth } from '@/context/CustomerAuthContext';
 
 interface ProductCardProps {
   product: Product;
@@ -17,17 +18,22 @@ export default function ProductCard({ product, style }: ProductCardProps) {
   const currentProduct = getProduct(product.id) || product;
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { formatPrice } = useCurrency();
+  const { isLoggedIn, openLoginModal } = useCustomerAuth();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const isSaved = mounted && isInWishlist(currentProduct.id);
+  const isSaved = mounted && isLoggedIn && isInWishlist(currentProduct.id);
 
   const handleWishlistClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    if (!isLoggedIn) {
+      openLoginModal();
+      return;
+    }
     toggleWishlist(currentProduct);
   };
 
