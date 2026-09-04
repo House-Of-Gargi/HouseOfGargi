@@ -1,5 +1,19 @@
+import type { Metadata } from 'next';
 import ScrollReveal from '@/components/ScrollReveal';
 import { LotusIcon, WishlistIcon, StarIcon } from '@/components/Icons';
+
+export const metadata: Metadata = {
+  title: 'Our Story & Generational Artisan Lineage',
+  description: 'Learn how House of Gargi honors India\'s master artisans, preserving centuries of handloom weaving, raw mulberry silks, and slow luxury fashion.',
+  alternates: {
+    canonical: 'https://www.gargisaha.com/our-story',
+  },
+  openGraph: {
+    title: 'Our Story | House of Gargi',
+    description: 'Honoring the hands that weave India\'s heritage.',
+    url: 'https://www.gargisaha.com/our-story',
+  },
+};
 
 export default function OurStoryPage() {
   return (

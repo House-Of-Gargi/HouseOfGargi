@@ -1,9 +1,26 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import ScrollReveal from '@/components/ScrollReveal';
 import ProductCard from '@/components/ProductCard';
+import AtelierNewsletter from '@/components/AtelierNewsletter';
 import { categories, products, featuredProductIds } from '@/data/products';
 import { ArrowRightIcon, LotusIcon } from '@/components/Icons';
 import { ShieldCheck } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'House of Gargi | Handcrafted Luxury Indian Fashion',
+  description: 'House of Gargi offers luxury, handcrafted traditional Indian fashion. Explore our curated collections of pure silk sarees, bridal lehengas, block-printed kurta sets, and heritage jewellery. Handcrafted Heritage, Worn Today.',
+  alternates: {
+    canonical: 'https://www.gargisaha.com',
+  },
+  openGraph: {
+    title: 'House of Gargi | Handcrafted Luxury Indian Fashion',
+    description: 'House of Gargi offers luxury, handcrafted traditional Indian fashion. Explore our curated collections of pure silk sarees, bridal lehengas, block-printed kurta sets, and heritage jewellery.',
+    url: 'https://www.gargisaha.com',
+    siteName: 'House of Gargi',
+    images: [{ url: '/images/hero-desktop.png', width: 1200, height: 630, alt: 'House of Gargi Luxury Fashion' }],
+  },
+};
 
 export default function HomePage() {
   const featured = featuredProductIds
@@ -186,32 +203,10 @@ export default function HomePage() {
       </section>
 
       {/* ═══════ 7. NEWSLETTER (ATELIER JOURNAL) ═══════ */}
-      <section className="section section--sand" style={{ padding: '72px 0' }}>
-        <div className="container">
+      <section className="section section--sand" style={{ padding: '80px 0' }}>
+        <div className="container" style={{ maxWidth: '1240px' }}>
           <ScrollReveal>
-            <div className="salon-card">
-              <div className="salon-card__crest">
-                <span className="salon-card__crest-line"></span>
-                <span style={{ color: 'var(--gargi-gold)', fontSize: '14px', lineHeight: 1 }}>✦</span>
-                <span className="salon-card__crest-line"></span>
-              </div>
-              <div className="salon-card__sanskrit">
-                <span className="salon-card__devanagari">पत्रिका संवादः</span>
-                <span className="salon-card__dot">•</span>
-                <span className="salon-card__translit">Patrikā Saṁvādaḥ</span>
-              </div>
-              <h2>The Atelier Journal</h2>
-              <p>
-                Get early access to new handloom arrivals, bridal previews, and private pop-up invites.
-              </p>
-              <div className="salon-card__input-group">
-                <input type="email" placeholder="Enter your email address" aria-label="Email address" />
-                <button type="button" className="btn btn--primary">Subscribe</button>
-              </div>
-              <div className="salon-card__privacy">
-                ✦ Sent once a month. No spam, unsubscribe anytime.
-              </div>
-            </div>
+            <AtelierNewsletter />
           </ScrollReveal>
         </div>
       </section>

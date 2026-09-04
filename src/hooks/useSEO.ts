@@ -13,7 +13,7 @@ export default function useSEO({ title, description }: SEOProps) {
     const defaultDesc =
       'House of Gargi offers luxury, handcrafted traditional Indian fashion. Explore our curated collections of pure silk sarees, bridal lehengas, block-printed kurta sets, and heritage jewellery. Handcrafted Heritage, Worn Today.';
 
-    if (title) {
+    if (title && title.trim().toLowerCase() !== 'home') {
       document.title = `${title} | House of Gargi`;
       const ogTitle = document.querySelector('meta[property="og:title"]');
       if (ogTitle) ogTitle.setAttribute('content', `${title} | House of Gargi`);
