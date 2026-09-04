@@ -127,7 +127,7 @@ export default function Navbar() {
               )}
             </button>
             <button 
-              type="button"
+              type="button" 
               aria-label="Cart" 
               title="Cart" 
               onClick={() => router.push('/cart')}

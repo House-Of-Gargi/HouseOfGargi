@@ -1672,15 +1672,15 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 .pdp-layout,
 .pdp {
   display: grid;
-  grid-template-columns: 1.05fr 1fr;
-  gap: 48px;
+  grid-template-columns: 1fr 1.08fr;
+  gap: 56px;
   align-items: start;
 }
 @media (max-width: 900px) {
   .pdp-layout,
   .pdp {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 36px;
   }
 }
 
@@ -1691,17 +1691,39 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   top: calc(var(--navbar-height) + 20px);
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 .pdp-gallery__main,
 .pdp__main-image {
-  aspect-ratio: 4/5;
+  aspect-ratio: 3/4;
+  position: relative;
   width: 100%;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 4px;
   background: #F5EFE6;
-  border: 1px solid rgba(228, 211, 174, 0.4);
-  box-shadow: 0 10px 30px rgba(43, 31, 24, 0.05);
+  border: 1px solid var(--soft-gold-line);
+  box-shadow: 0 16px 40px rgba(43, 31, 24, 0.08);
+}
+.pdp-gallery__badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(251, 246, 238, 0.94);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--soft-gold-line);
+  border-radius: 2px;
+  padding: 6px 12px;
+  font-family: var(--font-nav);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--maharani-maroon);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(43, 31, 24, 0.08);
 }
 .pdp-gallery__main img,
 .pdp__main-image img {
@@ -1724,9 +1746,9 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 }
 .pdp-gallery__thumb,
 .pdp__thumb {
-  width: 76px;
-  height: 95px;
-  border-radius: 6px;
+  width: 80px;
+  height: 106px;
+  border-radius: 3px;
   overflow: hidden;
   border: 1.5px solid var(--soft-gold-line);
   background: #FFFFFF;
@@ -1762,29 +1784,131 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 .pdp-info h1,
 .pdp__info h1 {
   font-family: var(--font-display);
-  font-size: clamp(28px, 3.2vw, 38px);
+  font-size: clamp(30px, 3.6vw, 42px);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.22;
   color: var(--ink-brown);
-  margin: 6px 0 12px;
+  margin: 6px 0 14px;
+  letter-spacing: -0.01em;
 }
+
+/* 30+ Persona High-Legibility Price Section */
 .pdp-price,
 .pdp__price {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-weight: 700;
-  font-size: 28px;
   color: var(--maharani-maroon);
-  margin-bottom: 12px;
+  font-variant-numeric: tabular-nums lining-nums;
+  margin-bottom: 4px;
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 10px;
+  line-height: 1.15;
 }
+
+.pdp-price__number {
+  font-size: clamp(34px, 4.2vw, 42px);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: #5A121E;
+}
+
+.pdp-price__code-badge {
+  font-size: 13px;
+  font-family: var(--font-nav);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gargi-gold);
+  background: rgba(184, 142, 24, 0.12);
+  padding: 3px 8px;
+  border-radius: 2px;
+  border: 1px solid rgba(184, 142, 24, 0.3);
+  align-self: center;
+}
+
+.pdp-price__approx {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--stone-taupe);
+  font-family: var(--font-body);
+}
+
+.pdp-price__reassurance {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  color: var(--stone-taupe);
+  font-weight: 600;
+  margin: 4px 0 16px 0;
+  letter-spacing: 0.01em;
+}
+
+/* Swift Currency Switcher Ribbon */
+.pdp-currency-ribbon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.pdp-currency-ribbon__label {
+  font-size: 12px;
+  font-family: var(--font-nav);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--stone-taupe);
+}
+
+.pdp-currency-pills {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 3px 5px;
+  border-radius: 3px;
+  border: 1px solid var(--soft-gold-line);
+}
+
+.pdp-currency-pill {
+  border: none;
+  background: transparent;
+  padding: 5px 10px;
+  border-radius: 2px;
+  font-size: 12.5px;
+  font-family: var(--font-nav);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--stone-taupe);
+  cursor: pointer;
+  transition: all 180ms ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pdp-currency-pill.is-active {
+  background: var(--maharani-maroon);
+  color: var(--ivory-silk);
+  box-shadow: 0 2px 6px rgba(122, 35, 49, 0.2);
+}
+
+.pdp-currency-pill:hover:not(.is-active) {
+  background: rgba(184, 142, 24, 0.12);
+  color: var(--ink-brown);
+}
+
 .pdp-artisan-note,
 .pdp__artisan-note {
-  background: rgba(242, 232, 216, 0.6);
-  border-left: 3px solid var(--gargi-gold);
-  padding: 14px 20px;
-  border-radius: 0 6px 6px 0;
+  background: rgba(255, 253, 249, 0.95);
+  border: 1px solid var(--soft-gold-line);
+  border-left: 3.5px solid var(--gargi-gold);
+  padding: 14px 18px;
+  border-radius: 2px;
   margin-bottom: 20px;
   font-family: var(--font-body);
   font-style: normal;
@@ -1793,48 +1917,148 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   line-height: 1.6;
   color: var(--ink-brown);
 }
+
 .pdp-desc,
 .pdp__description {
   font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.8;
+  font-size: 15.5px;
+  line-height: 1.75;
   color: var(--stone-taupe);
   margin-bottom: 24px;
 }
 
-/* Specs */
-.pdp-specs {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.65);
-  border: 1px solid var(--soft-gold-line);
-  border-radius: 8px;
-  margin-bottom: 24px;
+/* Gilded Provenance Ledger */
+.pdp-ledger {
+  background: #FFFDF9;
+  border: 1.5px solid var(--soft-gold-line);
+  border-radius: 3px;
+  padding: 18px 22px;
+  margin-bottom: 26px;
+  box-shadow: 0 4px 16px rgba(43, 31, 24, 0.03);
 }
-@media (max-width: 500px) {
-  .pdp-specs {
-    grid-template-columns: 1fr;
-    gap: 8px;
+
+.pdp-ledger__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+  border-bottom: 1px dashed var(--soft-gold-line);
+}
+
+.pdp-ledger__title {
+  font-family: var(--font-nav);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--gargi-gold);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pdp-ledger__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .pdp-ledger__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 }
-.pdp-spec {
+
+.pdp-ledger__item {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
-.pdp-spec__label {
-  font-size: 13.5px;
+
+.pdp-ledger__label {
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--stone-taupe);
   font-weight: 700;
+  font-family: var(--font-nav);
 }
-.pdp-spec span:not(.pdp-spec__label) {
-  font-size: 16px;
+
+.pdp-ledger__value {
+  font-size: 15.5px;
   font-weight: 600;
   color: var(--ink-brown);
+  line-height: 1.4;
+}
+
+/* Concierge Consultation Button */
+.pdp-concierge-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 20px;
+  border: 1.5px solid var(--soft-gold-line);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--ink-brown);
+  font-family: var(--font-nav);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 250ms ease;
+  margin-top: 10px;
+}
+
+.pdp-concierge-btn:hover {
+  border-color: var(--gargi-gold);
+  background: rgba(184, 142, 24, 0.08);
+  color: var(--maharani-maroon);
+}
+
+/* Luxury Trust Medallions */
+.pdp-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 28px;
+  padding: 18px;
+  background: #FFFFFF;
+  border: 1px solid var(--soft-gold-line);
+  border-radius: 3px;
+  text-align: center;
+}
+
+.pdp-trust-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.pdp-trust-item__crest {
+  color: var(--gargi-gold);
+  font-size: 16px;
+}
+
+.pdp-trust-item__title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-brown);
+  font-family: var(--font-nav);
+}
+
+.pdp-trust-item__sub {
+  font-size: 12px;
+  color: var(--stone-taupe);
+  line-height: 1.35;
 }
 
 /* Sizes */

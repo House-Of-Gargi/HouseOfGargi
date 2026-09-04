@@ -4,11 +4,12 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
-import { formatPrice } from '@/data/products';
+import { useCurrency } from '@/context/CurrencyContext';
 import { DiyaIcon, PlusIcon, MinusIcon, CloseIcon } from '@/components/Icons';
 
 export default function CartPage() {
   const { cart, updateQuantity, removeFromCart, subtotal, itemCount, clearCart } = useCart();
+  const { formatPrice, config } = useCurrency();
   const router = useRouter();
   const [checkingOut, setCheckingOut] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState<string | null>(null);

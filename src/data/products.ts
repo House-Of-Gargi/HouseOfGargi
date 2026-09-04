@@ -355,5 +355,6 @@ export function getRelatedProducts(productId: string, count = 4): Product[] {
 }
 
 export function formatPrice(price: number): string {
-  return '₹' + price.toLocaleString('en-IN');
+  const usd = Math.round(price / 83);
+  return '$' + usd.toLocaleString('en-US');
 }

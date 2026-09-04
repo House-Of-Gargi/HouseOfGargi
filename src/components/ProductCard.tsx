@@ -3,9 +3,9 @@
 import Link from 'next/link';
 import { CSSProperties, MouseEvent, useState, useEffect } from 'react';
 import { Product } from '@/types';
-import { formatPrice } from '@/data/products';
 import { WishlistIcon, HeartFilledIcon } from './Icons';
 import { useWishlist } from '@/context/WishlistContext';
+import { useCurrency } from '@/context/CurrencyContext';
 
 interface ProductCardProps {
   product: Product;
@@ -14,6 +14,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, style }: ProductCardProps) {
   const { isInWishlist, toggleWishlist } = useWishlist();
+  const { formatPrice } = useCurrency();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
