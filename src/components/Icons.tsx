@@ -173,3 +173,15 @@ export const AtelierSealIcon = ({ size = 32, strokeWidth = 1.2, ...props }: Icon
     <path d="M24 28c0-3.5-2.5-5.5-2.5-8 0-1.5.8-2.8 2.5-3.8 1.7 1 2.5 2.3 2.5 3.8 0 2.5-2.5 4.5-2.5 8z" />
   </svg>
 );
+
+export const FilterIcon = ({ size = 20, strokeWidth = 1.5, ...props }: IconProps) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <line x1="4" y1="6" x2="20" y2="6" />
+    <circle cx="8" cy="6" r="2.5" fill="var(--pure-white)" stroke="currentColor" strokeWidth={strokeWidth} />
+    <line x1="4" y1="12" x2="20" y2="12" />
+    <circle cx="16" cy="12" r="2.5" fill="var(--pure-white)" stroke="currentColor" strokeWidth={strokeWidth} />
+    <line x1="4" y1="18" x2="20" y2="18" />
+    <circle cx="10" cy="18" r="2.5" fill="var(--pure-white)" stroke="currentColor" strokeWidth={strokeWidth} />
+  </svg>
+);
+

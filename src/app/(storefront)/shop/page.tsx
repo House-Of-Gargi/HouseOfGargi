@@ -6,7 +6,7 @@ import ProductCard from '@/components/ProductCard';
 import ScrollReveal from '@/components/ScrollReveal';
 import CustomDropdown from '@/components/CustomDropdown';
 import { products, categories } from '@/data/products';
-import { DiyaIcon } from '@/components/Icons';
+import { DiyaIcon, FilterIcon, CloseIcon } from '@/components/Icons';
 
 export default function ShopPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -31,7 +31,7 @@ export default function ShopPage() {
 
   return (
     <>
-      <div className="category-banner" style={{ height: '360px' }}>
+      <div className="category-banner" style={{ height: '380px' }}>
         <img src="/images/banner-sarees-wide.png" alt="House of Gargi Complete Catalog" />
         <div className="category-banner__content">
           <h1>The Complete Collection</h1>
@@ -39,70 +39,130 @@ export default function ShopPage() {
         </div>
       </div>
 
-      <section className="section section--ivory" style={{ minHeight: '80vh' }}>
+      <section className="section section--ivory section--category" style={{ minHeight: '80vh' }}>
         <div className="container">
-          {/* Category Tabs */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '32px' }}>
+          {/* Breadcrumb Navigation */}
+          <div className="breadcrumb" style={{ marginBottom: '22px' }}>
+            <Link href="/">Home</Link>
+            <span>/</span>
+            <span style={{ color: 'var(--ink-brown)', fontWeight: 600 }}>The Atelier Catalog</span>
+          </div>
+
+          {/* Category Filter Tabs Rail */}
+          <div className="category-tabs-rail">
             <button
               type="button"
-              className={`btn ${selectedCategory === 'all' ? 'btn--primary' : 'btn--outline'}`}
+              className={`category-tab-btn ${selectedCategory === 'all' ? 'is-active' : ''}`}
               onClick={() => setSelectedCategory('all')}
-              style={{ padding: '10px 22px', fontSize: '14.5px', fontWeight: 600 }}
             >
-              All Items ({products.length})
+              All Pieces ({products.length})
             </button>
             {categories.map(cat => (
               <button
                 key={cat.id}
                 type="button"
-                className={`btn ${selectedCategory === cat.id ? 'btn--primary' : 'btn--outline'}`}
+                className={`category-tab-btn ${selectedCategory === cat.id ? 'is-active' : ''}`}
                 onClick={() => setSelectedCategory(cat.id)}
-                style={{ padding: '10px 22px', fontSize: '14.5px', fontWeight: 600 }}
               >
                 {cat.name}
               </button>
             ))}
           </div>
 
-          {/* Filter & Sort Bar */}
-          <div className="filter-bar" style={{ marginBottom: '36px' }}>
-            <div className="filter-bar__group">
-              <span className="filter-bar__label">Fabric:</span>
-              <CustomDropdown
-                options={fabrics.map(f => ({ value: f, label: f }))}
-                value={selectedFabric}
-                onChange={setSelectedFabric}
-                placeholder="All Fabrics"
-                showEmptyOption
-              />
+          {/* Atelier Filter & Sort Bar */}
+          <div className="filter-bar">
+            <div className="filter-bar__header">
+              <div className="filter-bar__title">
+                <FilterIcon size={18} style={{ color: 'var(--gargi-gold)' }} />
+                <span>Refine Collection</span>
+              </div>
+              <div className="filter-bar__summary">
+                Showing <strong>{filtered.length}</strong> {filtered.length === 1 ? 'Piece' : 'Pieces'}
+              </div>
             </div>
 
-            <div className="filter-bar__group">
-              <span className="filter-bar__label">Sort By:</span>
-              <CustomDropdown
-                options={[
-                  { value: 'price-asc', label: 'Price: Low to High' },
-                  { value: 'price-desc', label: 'Price: High to Low' },
-                ]}
-                value={sort}
-                onChange={setSort}
-                placeholder="Featured"
-                showEmptyOption
-              />
+            <div className="filter-bar__controls">
+              <div className="filter-bar__group">
+                <span className="filter-bar__label">Fabric</span>
+                <CustomDropdown
+                  options={fabrics.map(f => ({ value: f, label: f }))}
+                  value={selectedFabric}
+                  onChange={setSelectedFabric}
+                  placeholder="All Fabrics"
+                  showEmptyOption
+                  fullWidth
+                />
+              </div>
+
+              <div className="filter-bar__group">
+                <span className="filter-bar__label">Sort By</span>
+                <CustomDropdown
+                  options={[
+                    { value: 'price-asc', label: 'Price: Low to High' },
+                    { value: 'price-desc', label: 'Price: High to Low' },
+                  ]}
+                  value={sort}
+                  onChange={setSort}
+                  placeholder="Featured Curation"
+                  showEmptyOption
+                  fullWidth
+                />
+              </div>
             </div>
+
+            {/* Active Filter Chips */}
+            {(selectedFabric || sort || selectedCategory !== 'all') && (
+              <div className="filter-bar__active-chips">
+                <span className="filter-bar__active-label">Active:</span>
+                {selectedCategory !== 'all' && (
+                  <button type="button" className="filter-chip" onClick={() => setSelectedCategory('all')}>
+                    Category: {categories.find(c => c.id === selectedCategory)?.name || selectedCategory} <CloseIcon size={12} />
+                  </button>
+                )}
+                {selectedFabric && (
+                  <button type="button" className="filter-chip" onClick={() => setSelectedFabric('')}>
+                    Fabric: {selectedFabric} <CloseIcon size={12} />
+                  </button>
+                )}
+                {sort && (
+                  <button type="button" className="filter-chip" onClick={() => setSort('')}>
+                    Sort: {sort === 'price-asc' ? 'Low to High' : 'High to Low'} <CloseIcon size={12} />
+                  </button>
+                )}
+                <button 
+                  type="button" 
+                  className="filter-bar__clear-btn" 
+                  onClick={() => { setSelectedCategory('all'); setSelectedFabric(''); setSort(''); }}
+                >
+                  Clear All Filters
+                </button>
+              </div>
+            )}
           </div>
 
+          {/* Product Grid */}
           {filtered.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '60px 0' }}>
-              <DiyaIcon size={40} style={{ color: 'var(--gargi-gold)', marginBottom: '16px' }} />
-              <h3>No items match your selected filters.</h3>
+            <div style={{ 
+              textAlign: 'center', 
+              padding: '60px 24px', 
+              background: 'var(--pure-white)', 
+              borderRadius: '8px', 
+              border: '1px solid var(--soft-gold-line)',
+              boxShadow: '0 4px 16px rgba(43, 31, 24, 0.03)'
+            }}>
+              <DiyaIcon size={44} style={{ color: 'var(--gargi-gold)', marginBottom: '16px' }} />
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: 'var(--ink-brown)', marginBottom: '8px' }}>
+                No items match your selected filters.
+              </h3>
+              <p style={{ color: 'var(--stone-taupe)', fontSize: '15px', maxWidth: '420px', margin: '0 auto 20px' }}>
+                Try selecting &ldquo;All Pieces&rdquo; or clearing your fabric filter to see more handcrafted treasures.
+              </p>
               <button 
                 type="button" 
                 className="btn btn--primary" 
-                style={{ marginTop: '20px' }}
                 onClick={() => { setSelectedCategory('all'); setSelectedFabric(''); setSort(''); }}
               >
-                Reset Filters
+                Reset All Filters
               </button>
             </div>
           ) : (

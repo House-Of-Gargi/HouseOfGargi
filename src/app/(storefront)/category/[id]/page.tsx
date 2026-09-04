@@ -7,7 +7,7 @@ import ProductCard from '@/components/ProductCard';
 import ScrollReveal from '@/components/ScrollReveal';
 import CustomDropdown from '@/components/CustomDropdown';
 import { getCategory, getProductsByCategory, categories } from '@/data/products';
-import { DiyaIcon, ArrowRightIcon } from '@/components/Icons';
+import { DiyaIcon, ArrowRightIcon, FilterIcon, CloseIcon } from '@/components/Icons';
 
 export default function CategoryPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -52,59 +52,123 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
         </div>
       </div>
 
-      <section className="section section--ivory">
+      <section className="section section--ivory section--category">
         <div className="container">
-          {/* Filters */}
+          {/* Breadcrumb Navigation */}
+          <div className="breadcrumb" style={{ marginBottom: '22px' }}>
+            <Link href="/">Home</Link>
+            <span>/</span>
+            <Link href="/shop">Collections</Link>
+            <span>/</span>
+            <span style={{ color: 'var(--ink-brown)', fontWeight: 600 }}>{category.name}</span>
+          </div>
+
+          {/* Atelier Filter & Sort Bar */}
           <div className="filter-bar">
-            <div className="filter-bar__group">
-              <span className="filter-bar__label">Fabric:</span>
-              <CustomDropdown
-                options={fabrics.map(f => ({ value: f, label: f }))}
-                value={fabric}
-                onChange={setFabric}
-                placeholder="All Fabrics"
-                showEmptyOption
-              />
+            <div className="filter-bar__header">
+              <div className="filter-bar__title">
+                <FilterIcon size={18} style={{ color: 'var(--gargi-gold)' }} />
+                <span>Refine Collection</span>
+              </div>
+              <div className="filter-bar__summary">
+                Showing <strong>{items.length}</strong> {items.length === 1 ? 'Piece' : 'Pieces'}
+              </div>
             </div>
 
-            <div className="filter-bar__group">
-              <span className="filter-bar__label">Occasion:</span>
-              <CustomDropdown
-                options={occasions.map(o => ({ value: o, label: o }))}
-                value={occasion}
-                onChange={setOccasion}
-                placeholder="All Occasions"
-                showEmptyOption
-              />
+            <div className="filter-bar__controls">
+              <div className="filter-bar__group">
+                <span className="filter-bar__label">Fabric</span>
+                <CustomDropdown
+                  options={fabrics.map(f => ({ value: f, label: f }))}
+                  value={fabric}
+                  onChange={setFabric}
+                  placeholder="All Fabrics"
+                  showEmptyOption
+                  fullWidth
+                />
+              </div>
+
+              <div className="filter-bar__group">
+                <span className="filter-bar__label">Occasion</span>
+                <CustomDropdown
+                  options={occasions.map(o => ({ value: o, label: o }))}
+                  value={occasion}
+                  onChange={setOccasion}
+                  placeholder="All Occasions"
+                  showEmptyOption
+                  fullWidth
+                />
+              </div>
+
+              <div className="filter-bar__group">
+                <span className="filter-bar__label">Sort By</span>
+                <CustomDropdown
+                  options={[
+                    { value: 'price-asc', label: 'Price: Low to High' },
+                    { value: 'price-desc', label: 'Price: High to Low' },
+                  ]}
+                  value={sort}
+                  onChange={setSort}
+                  placeholder="Featured Curation"
+                  showEmptyOption
+                  fullWidth
+                />
+              </div>
             </div>
 
-            <div className="filter-bar__group">
-              <span className="filter-bar__label">Sort:</span>
-              <CustomDropdown
-                options={[
-                  { value: 'price-asc', label: 'Price: Low to High' },
-                  { value: 'price-desc', label: 'Price: High to Low' },
-                ]}
-                value={sort}
-                onChange={setSort}
-                placeholder="Featured"
-                showEmptyOption
-              />
-            </div>
+            {/* Active Filters Strip */}
+            {(fabric || occasion || sort) && (
+              <div className="filter-bar__active-chips">
+                <span className="filter-bar__active-label">Active:</span>
+                {fabric && (
+                  <button type="button" className="filter-chip" onClick={() => setFabric('')}>
+                    Fabric: {fabric} <CloseIcon size={12} />
+                  </button>
+                )}
+                {occasion && (
+                  <button type="button" className="filter-chip" onClick={() => setOccasion('')}>
+                    Occasion: {occasion} <CloseIcon size={12} />
+                  </button>
+                )}
+                {sort && (
+                  <button type="button" className="filter-chip" onClick={() => setSort('')}>
+                    Sort: {sort === 'price-asc' ? 'Price: Low-High' : 'Price: High-Low'} <CloseIcon size={12} />
+                  </button>
+                )}
+                <button 
+                  type="button" 
+                  className="filter-bar__clear-btn" 
+                  onClick={() => { setFabric(''); setOccasion(''); setSort(''); }}
+                >
+                  Clear All Filters
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Product Grid */}
           {items.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '60px 0' }}>
-              <DiyaIcon size={40} style={{ color: 'var(--gargi-gold)', marginBottom: '16px' }} />
-              <h3>No pieces match your selected filters.</h3>
+            <div style={{ 
+              textAlign: 'center', 
+              padding: '60px 24px', 
+              background: 'var(--pure-white)', 
+              borderRadius: '8px', 
+              border: '1px solid var(--soft-gold-line)',
+              boxShadow: '0 4px 16px rgba(43, 31, 24, 0.03)'
+            }}>
+              <DiyaIcon size={44} style={{ color: 'var(--gargi-gold)', marginBottom: '16px' }} />
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: 'var(--ink-brown)', marginBottom: '8px' }}>
+                No pieces match your selected filters.
+              </h3>
+              <p style={{ color: 'var(--stone-taupe)', fontSize: '15px', maxWidth: '420px', margin: '0 auto 20px' }}>
+                Try relaxing your fabric or occasion criteria to explore more handcrafted treasures.
+              </p>
               <button 
                 type="button" 
                 className="btn btn--primary" 
-                style={{ marginTop: '20px' }}
                 onClick={() => { setFabric(''); setOccasion(''); setSort(''); }}
               >
-                Clear Filters
+                Clear All Filters
               </button>
             </div>
           ) : (
@@ -147,8 +211,8 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
 
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
-              gap: '36px',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
+              gap: '28px',
               alignItems: 'stretch'
             }}>
               {otherCategories.map(cat => (
