@@ -1,5 +1,6 @@
 import ScrollReveal from '@/components/ScrollReveal';
-import { DiyaIcon, LotusIcon, WishlistIcon, StarIcon } from '@/components/Icons';
+import { LotusIcon, WishlistIcon, StarIcon } from '@/components/Icons';
+import { Crown } from 'lucide-react';
 
 export default function OurStoryPage() {
   return (
@@ -55,7 +56,11 @@ export default function OurStoryPage() {
       <section className="section section--ivory">
         <div className="container" style={{ maxWidth: '800px' }}>
           <ScrollReveal>
-            <div className="divider"><span className="divider__icon"><DiyaIcon size={16} /></span></div>
+            <div className="divider" role="separator" aria-label="Section Divider">
+              <span className="divider__pip" aria-hidden="true">✦</span>
+              <span className="divider__icon"><Crown size={22} strokeWidth={1.8} /></span>
+              <span className="divider__pip" aria-hidden="true">✦</span>
+            </div>
             <div style={{ textAlign: 'center' }}>
               <h2 style={{ color: 'var(--maharani-maroon)', marginBottom: '24px' }}>Our Promise</h2>
               <div className="product-grid" style={{ marginTop: '40px' }}>

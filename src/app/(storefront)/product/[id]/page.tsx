@@ -6,7 +6,8 @@ import { notFound } from 'next/navigation';
 import ScrollReveal from '@/components/ScrollReveal';
 import ProductCard from '@/components/ProductCard';
 import { getProduct, getRelatedProducts, categories } from '@/data/products';
-import { DiyaIcon, WishlistIcon, HeartFilledIcon, PlusIcon, MinusIcon } from '@/components/Icons';
+import { WishlistIcon, HeartFilledIcon, PlusIcon, MinusIcon } from '@/components/Icons';
+import { Crown } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCurrency } from '@/context/CurrencyContext';
@@ -287,7 +288,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         {/* Related Products */}
         {related.length > 0 && (
           <div style={{ marginTop: '80px' }}>
-            <div className="divider"><span className="divider__icon"><DiyaIcon size={16} /></span></div>
+            <div className="divider" role="separator" aria-label="Section Divider">
+              <span className="divider__pip" aria-hidden="true">✦</span>
+              <span className="divider__icon">
+                <Crown size={22} strokeWidth={1.8} />
+              </span>
+              <span className="divider__pip" aria-hidden="true">✦</span>
+            </div>
             <h2 style={{ textAlign: 'center', margin: '36px 0 28px', color: 'var(--ink-brown)' }}>You May Also Cherish</h2>
             <div className="product-grid">
               {related.map(p => (

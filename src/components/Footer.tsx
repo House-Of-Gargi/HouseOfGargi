@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { DiyaIcon } from './Icons';
+import { Crown } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -38,8 +38,10 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="divider" style={{ maxWidth: '200px', margin: '40px auto' }}>
-          <span className="divider__icon"><DiyaIcon size={16} /></span>
+        <div className="divider" style={{ maxWidth: '280px', margin: '40px auto' }}>
+          <span className="divider__pip" aria-hidden="true">✦</span>
+          <span className="divider__icon"><Crown size={18} strokeWidth={1.8} /></span>
+          <span className="divider__pip" aria-hidden="true">✦</span>
         </div>
 
         <div className="footer__bottom">

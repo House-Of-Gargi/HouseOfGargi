@@ -202,10 +202,10 @@ export default function HomePage() {
               alignItems: 'center',
               justifyContent: 'space-around',
               flexWrap: 'wrap',
-              gap: '16px',
+              gap: '24px',
               marginTop: '40px',
-              padding: '22px 24px',
-              background: 'rgba(255, 255, 255, 0.65)',
+              padding: '20px 28px',
+              background: 'rgba(255, 255, 255, 0.75)',
               border: '1px solid var(--soft-gold-line)',
               borderRadius: '4px',
               fontSize: '13.5px',
@@ -223,9 +223,6 @@ export default function HomePage() {
               </span>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                 <span style={{ color: 'var(--gargi-gold)' }}>✦</span> Direct Artisan Partnerships
-              </span>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ color: 'var(--gargi-gold)' }}>✦</span> Worldwide Couture White-Glove Dispatch
               </span>
             </div>
           </ScrollReveal>
