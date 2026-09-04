@@ -7,7 +7,7 @@ import { useWishlist } from '@/context/WishlistContext';
 import { useCart } from '@/context/CartContext';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
 import ProductCard from '@/components/ProductCard';
-import { Crown, Sparkles } from 'lucide-react';
+import { Crown, Sparkles, Heart, ArrowRight } from 'lucide-react';
 import { Product } from '@/types';
 import { getProduct } from '@/data/products';
 
@@ -31,24 +31,25 @@ export default function WishlistPage() {
 
   if (!isLoggedIn) {
     return (
-      <div className="section section--ivory" style={{ minHeight: '65vh', paddingTop: 'calc(var(--navbar-height) + 60px)', textAlign: 'center' }}>
-        <div className="container" style={{ maxWidth: '600px' }}>
-          <div style={{ width: '58px', height: '58px', borderRadius: '50%', border: '1.5px solid var(--gargi-gold)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--maharani-maroon)', marginBottom: '22px', background: '#FFFDF9', boxShadow: '0 4px 16px rgba(184, 142, 24, 0.18)' }}>
-            <Crown size={28} strokeWidth={1.6} />
+      <div className="section section--ivory" style={{ minHeight: '68vh', paddingTop: 'calc(var(--navbar-height) + 64px)', paddingBottom: '80px', textAlign: 'center' }}>
+        <div className="container" style={{ maxWidth: '560px' }}>
+          <Heart size={46} strokeWidth={1.3} style={{ color: 'var(--maharani-maroon)', marginBottom: '18px' }} />
+          <div style={{ fontFamily: 'var(--font-nav)', fontSize: '11px', letterSpacing: '0.24em', textTransform: 'uppercase', color: 'var(--gargi-gold)', marginBottom: '12px', fontWeight: 600 }}>
+            Private Atelier Curation
           </div>
-          <h1 style={{ fontFamily: 'var(--font-display)', color: 'var(--ink-brown)', fontSize: '32px', fontWeight: 600, marginBottom: '14px' }}>
+          <h1 style={{ fontFamily: 'var(--font-display)', color: 'var(--ink-brown)', fontSize: 'clamp(28px, 3.5vw, 38px)', fontWeight: 600, letterSpacing: '-0.01em', marginBottom: '14px' }}>
             Private Atelier Wishlist
           </h1>
-          <p style={{ color: 'var(--stone-taupe)', fontSize: '16px', lineHeight: 1.7, marginBottom: '32px' }}>
-            Sign in with your mobile number to access and curate your personal heirloom collection.
+          <p style={{ color: 'var(--stone-taupe)', fontSize: '16px', lineHeight: 1.7, maxWidth: '480px', margin: '0 auto 34px' }}>
+            Sign in with your mobile number to access, save, and review your personal heirloom collection across all your devices.
           </p>
           <button 
             type="button" 
             onClick={() => openLoginModal('/wishlist')}
             className="btn btn--primary" 
-            style={{ padding: '15px 36px', fontSize: '15px' }}
+            style={{ padding: '16px 38px', fontSize: '14px', letterSpacing: '0.14em', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
           >
-            Sign In to Access Wishlist →
+            Sign In to Access Wishlist <ArrowRight size={16} />
           </button>
         </div>
       </div>
@@ -57,20 +58,30 @@ export default function WishlistPage() {
 
   if (wishlist.length === 0) {
     return (
-      <div className="section section--ivory" style={{ minHeight: '65vh', paddingTop: 'calc(var(--navbar-height) + 60px)', textAlign: 'center' }}>
-        <div className="container" style={{ maxWidth: '640px' }}>
-          <div style={{ width: '58px', height: '58px', borderRadius: '50%', border: '1.5px solid var(--soft-gold-line)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gargi-gold)', marginBottom: '22px', background: '#FFFDF9' }}>
-            <Sparkles size={28} strokeWidth={1.6} />
+      <div className="section section--ivory" style={{ minHeight: '68vh', paddingTop: 'calc(var(--navbar-height) + 64px)', paddingBottom: '80px', textAlign: 'center' }}>
+        <div className="container" style={{ maxWidth: '560px' }}>
+          <Heart size={46} strokeWidth={1.3} style={{ color: 'var(--maharani-maroon)', marginBottom: '18px' }} />
+          <div style={{ fontFamily: 'var(--font-nav)', fontSize: '11px', letterSpacing: '0.24em', textTransform: 'uppercase', color: 'var(--gargi-gold)', marginBottom: '12px', fontWeight: 600 }}>
+            Curated Heirloom Registry
           </div>
-          <h1 style={{ fontFamily: 'var(--font-display)', color: 'var(--ink-brown)', fontSize: '34px', fontWeight: 600, marginBottom: '16px' }}>
+          <h1 style={{ fontFamily: 'var(--font-display)', color: 'var(--ink-brown)', fontSize: 'clamp(28px, 3.5vw, 38px)', fontWeight: 600, letterSpacing: '-0.01em', marginBottom: '14px' }}>
             Your Wishlist is Empty
           </h1>
-          <p style={{ color: 'var(--stone-taupe)', fontSize: '16px', lineHeight: 1.7, marginBottom: '32px' }}>
-            Save your favorite handcrafted sarees, bridal ensembles, and heritage jewellery to review them in your private curation.
+          <p style={{ color: 'var(--stone-taupe)', fontSize: '16px', lineHeight: 1.7, maxWidth: '480px', margin: '0 auto 34px' }}>
+            Save your cherished pure silk sarees, bridal ensembles, and handwoven jewellery to review them in your private curation.
           </p>
-          <Link href="/shop" className="btn btn--primary" style={{ padding: '15px 36px', fontSize: '15px' }}>
-            Discover Collections
+          <Link href="/shop" className="btn btn--primary" style={{ padding: '16px 38px', fontSize: '14px', letterSpacing: '0.14em', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            Discover Collections <ArrowRight size={16} />
           </Link>
+
+          {/* Minimal Luxury Quick Links */}
+          <div style={{ marginTop: '44px', paddingTop: '28px', borderTop: '1px solid rgba(228, 211, 174, 0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '22px', flexWrap: 'wrap', fontSize: '13px', fontFamily: 'var(--font-nav)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+            <span style={{ color: 'var(--stone-taupe)', opacity: 0.7 }}>Curated Lines:</span>
+            <Link href="/category/sarees" style={{ color: 'var(--ink-brown)', textDecoration: 'none', borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '2px' }}>Sarees</Link>
+            <Link href="/category/lehengas" style={{ color: 'var(--ink-brown)', textDecoration: 'none', borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '2px' }}>Lehengas</Link>
+            <Link href="/category/kurta-sets" style={{ color: 'var(--ink-brown)', textDecoration: 'none', borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '2px' }}>Kurta Sets</Link>
+            <Link href="/bespoke" style={{ color: 'var(--ink-brown)', textDecoration: 'none', borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '2px' }}>Bespoke</Link>
+          </div>
         </div>
       </div>
     );

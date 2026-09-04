@@ -5,8 +5,8 @@ import Link from 'next/link';
 import ProductCard from '@/components/ProductCard';
 import ScrollReveal from '@/components/ScrollReveal';
 import CustomDropdown from '@/components/CustomDropdown';
-import { products, categories } from '@/data/products';
-import { DiyaIcon, FilterIcon, CloseIcon } from '@/components/Icons';
+import { FilterIcon, CloseIcon } from '@/components/Icons';
+import { Sparkles } from 'lucide-react';
 
 export default function ShopPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
