@@ -43,40 +43,39 @@ const LogOutIcon = ({ size = 24 }) => (
   </svg>
 );
 
+import { useCustomerAuth } from '@/context/CustomerAuthContext';
+
 export default function AccountPage() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const { customer, isLoggedIn, logout } = useCustomerAuth();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const isDemo = typeof window !== 'undefined' && localStorage.getItem('customer_auth_demo') === 'true';
-      if (isDemo) {
-        setUser({ phone: '+91 98765 43210', name: 'Valued Patron' });
-        setLoading(false);
-        return;
-      }
+    setMounted(true);
+  }, []);
 
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        router.push('/');
-      } else {
-        setUser(session.user);
-      }
-      setLoading(false);
-    };
-    fetchUser();
-  }, [router]);
+  useEffect(() => {
+    if (mounted && !isLoggedIn) {
+      router.push('/');
+    }
+  }, [mounted, isLoggedIn, router]);
 
   const handleLogout = async () => {
-    localStorage.removeItem('customer_auth_demo');
-    await supabase.auth.signOut();
+    await logout();
     router.push('/');
   };
 
-  if (loading || !user) {
-    return <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading profile...</div>;
+  if (!mounted || !isLoggedIn || !customer) {
+    return (
+      <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        Loading profile...
+      </div>
+    );
   }
+
+  const formattedPhone = customer.phone.length === 10
+    ? `+91 ${customer.phone.slice(0, 5)} ${customer.phone.slice(5)}`
+    : `+91 ${customer.phone}`;
 
   return (
     <div className="account-container" style={{ paddingTop: 'calc(var(--navbar-height) + 32px)' }}>
@@ -93,8 +92,8 @@ export default function AccountPage() {
         <div className="account-avatar">
           <UserIcon size={40} />
         </div>
-        <h2 className="account-name">{user.name || 'Patron of Craft'}</h2>
-        <div className="account-meta">{user.phone || '+91 98765 43210'}</div>
+        <h2 className="account-name">{customer.name || 'Patron of Craft'}</h2>
+        <div className="account-meta">{formattedPhone}</div>
       </div>
 
       <div className="account-quick-links">

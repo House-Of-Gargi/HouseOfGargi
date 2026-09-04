@@ -5,27 +5,58 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
-import { DiyaIcon, PlusIcon, MinusIcon, CloseIcon } from '@/components/Icons';
+import { useCustomerAuth } from '@/context/CustomerAuthContext';
+import { PlusIcon, MinusIcon, CloseIcon } from '@/components/Icons';
+import { Crown, Sparkles } from 'lucide-react';
 import { getProduct } from '@/data/products';
 
 export default function CartPage() {
   const { cart, updateQuantity, removeFromCart, subtotal, itemCount, clearCart } = useCart();
   const { formatPrice, config } = useCurrency();
+  const { isLoggedIn, openLoginModal, customer } = useCustomerAuth();
   const router = useRouter();
   const [checkingOut, setCheckingOut] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState<string | null>(null);
-  const [customerName, setCustomerName] = useState('');
-  const [customerPhone, setCustomerPhone] = useState('');
+  const [customerName, setCustomerName] = useState(customer?.name || '');
+  const [customerPhone, setCustomerPhone] = useState(customer?.phone || '');
+
+  if (!isLoggedIn) {
+    return (
+      <div className="section section--ivory" style={{ minHeight: '65vh', paddingTop: 'calc(var(--navbar-height) + 60px)', textAlign: 'center' }}>
+        <div className="container" style={{ maxWidth: '600px' }}>
+          <div style={{ width: '58px', height: '58px', borderRadius: '50%', border: '1.5px solid var(--gargi-gold)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--maharani-maroon)', marginBottom: '22px', background: '#FFFDF9', boxShadow: '0 4px 16px rgba(184, 142, 24, 0.18)' }}>
+            <Crown size={28} strokeWidth={1.6} />
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', color: 'var(--ink-brown)', fontSize: '32px', fontWeight: 600, marginBottom: '14px' }}>
+            Private Shopping Bag
+          </h1>
+          <p style={{ color: 'var(--stone-taupe)', fontSize: '16px', lineHeight: 1.7, marginBottom: '32px' }}>
+            Sign in with your mobile number to view and manage your selected handcrafted pieces.
+          </p>
+          <button 
+            type="button" 
+            onClick={() => openLoginModal('/cart')}
+            className="btn btn--primary" 
+            style={{ padding: '15px 36px', fontSize: '15px' }}
+          >
+            Sign In to Access Bag →
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (cart.length === 0 && !checkoutSuccess) {
     return (
       <div className="section section--ivory" style={{ minHeight: '65vh', paddingTop: 'calc(var(--navbar-height) + 60px)', textAlign: 'center' }}>
         <div className="container" style={{ maxWidth: '640px' }}>
-          <DiyaIcon size={48} style={{ color: 'var(--gargi-gold)', marginBottom: '24px' }} />
-          <h1 style={{ fontFamily: 'var(--font-display)', color: 'var(--ink-brown)', fontSize: '36px', fontWeight: 600, marginBottom: '16px' }}>
+          <div style={{ width: '58px', height: '58px', borderRadius: '50%', border: '1.5px solid var(--soft-gold-line)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gargi-gold)', marginBottom: '22px', background: '#FFFDF9' }}>
+            <Sparkles size={28} strokeWidth={1.6} />
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', color: 'var(--ink-brown)', fontSize: '34px', fontWeight: 600, marginBottom: '16px' }}>
             Your Shopping Bag is Empty
           </h1>
-          <p style={{ color: 'var(--stone-taupe)', fontSize: '16.5px', lineHeight: 1.7, marginBottom: '32px' }}>
+          <p style={{ color: 'var(--stone-taupe)', fontSize: '16px', lineHeight: 1.7, marginBottom: '32px' }}>
             Explore our curated collections of pure silk sarees, bridal lehengas, and handcrafted jewellery.
           </p>
           <Link href="/shop" className="btn btn--primary" style={{ padding: '15px 36px', fontSize: '15px' }}>
@@ -77,7 +108,9 @@ export default function CartPage() {
     return (
       <div className="section section--ivory" style={{ minHeight: '70vh', paddingTop: 'calc(var(--navbar-height) + 60px)', textAlign: 'center' }}>
         <div className="container" style={{ maxWidth: '640px' }}>
-          <DiyaIcon size={56} style={{ color: 'var(--gargi-gold)', marginBottom: '24px' }} />
+          <div style={{ width: '64px', height: '64px', borderRadius: '50%', border: '1.5px solid var(--gargi-gold)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--maharani-maroon)', marginBottom: '24px', background: '#FFFDF9', boxShadow: '0 6px 20px rgba(184, 142, 24, 0.2)' }}>
+            <Crown size={32} strokeWidth={1.75} />
+          </div>
           <h1 style={{ fontFamily: 'var(--font-display)', color: 'var(--maharani-maroon)', fontSize: '36px', fontWeight: 600, marginBottom: '16px' }}>
             Commission Received
           </h1>
