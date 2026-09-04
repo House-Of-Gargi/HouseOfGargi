@@ -47,21 +47,24 @@ export default function Navbar() {
     }
   };
 
-  const isDarkNavPage = 
-    pathname.startsWith('/product') ||
-    pathname === '/cart' ||
-    pathname === '/wishlist' ||
-    pathname === '/terms' ||
-    pathname === '/privacy' ||
-    pathname === '/account' ||
-    pathname === '/our-artisans' ||
-    pathname === '/sustainability' ||
-    pathname === '/press' ||
-    pathname === '/shipping' ||
-    pathname === '/returns' ||
-    pathname === '/size-guide' ||
-    pathname === '/faq' ||
-    pathname === '/shop';
+  const isDarkNavPage = Boolean(
+    pathname && (
+      pathname.startsWith('/product') ||
+      pathname === '/cart' ||
+      pathname === '/wishlist' ||
+      pathname === '/terms' ||
+      pathname === '/privacy' ||
+      pathname === '/account' ||
+      pathname === '/our-artisans' ||
+      pathname === '/sustainability' ||
+      pathname === '/press' ||
+      pathname === '/shipping' ||
+      pathname === '/returns' ||
+      pathname === '/size-guide' ||
+      pathname === '/faq' ||
+      pathname === '/shop'
+    )
+  );
 
   const cls = `navbar ${(scrolled || isDarkNavPage) ? 'navbar--scrolled' : 'navbar--hero'}`;
 
