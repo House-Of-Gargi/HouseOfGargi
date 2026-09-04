@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Product } from '@/types';
+import { products } from '@/data/products';
 
 interface WishlistContextType {
   wishlist: Product[];
@@ -20,7 +21,13 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     try {
       const saved = localStorage.getItem('gargi_wishlist');
       if (saved) {
-        setWishlist(JSON.parse(saved));
+        const parsed: Product[] = JSON.parse(saved);
+        // Hydrate items with fresh catalog so latest product images are always used
+        const refreshed = parsed.map(item => {
+          const fresh = products.find(p => p.id === item.id);
+          return fresh ? { ...fresh } : item;
+        });
+        setWishlist(refreshed);
       }
     } catch {
       // ignore
@@ -42,12 +49,13 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
   };
 
   const toggleWishlist = (product: Product) => {
+    const fresh = products.find(p => p.id === product.id) || product;
     setWishlist(prev => {
-      const exists = prev.some(item => item.id === product.id);
+      const exists = prev.some(item => item.id === fresh.id);
       if (exists) {
-        return prev.filter(item => item.id !== product.id);
+        return prev.filter(item => item.id !== fresh.id);
       } else {
-        return [...prev, product];
+        return [...prev, fresh];
       }
     });
   };

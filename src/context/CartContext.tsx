@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Product, CartItem } from '@/types';
+import { products } from '@/data/products';
 
 interface CartContextType {
   cart: CartItem[];
@@ -23,7 +24,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
     try {
       const saved = localStorage.getItem('gargi_cart');
       if (saved) {
-        setCart(JSON.parse(saved));
+        const parsed: CartItem[] = JSON.parse(saved);
+        // Hydrate items with fresh catalog so latest product images, prices, and specs are always current
+        const refreshed = parsed.map(item => {
+          const fresh = products.find(p => p.id === item.id);
+          return fresh 
+            ? { ...item, ...fresh, images: fresh.images, quantity: item.quantity, size: item.size } 
+            : item;
+        });
+        setCart(refreshed);
       }
     } catch {
       // ignore
@@ -41,16 +50,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [cart, initialized]);
 
   const addToCart = (product: Product, quantity = 1, size: string | null = null) => {
+    const fresh = products.find(p => p.id === product.id) || product;
     setCart(prev => {
-      const existing = prev.find(item => item.id === product.id && item.size === size);
+      const existing = prev.find(item => item.id === fresh.id && item.size === size);
       if (existing) {
         return prev.map(item => 
-          item.id === product.id && item.size === size
-            ? { ...item, quantity: item.quantity + quantity }
+          item.id === fresh.id && item.size === size
+            ? { ...item, ...fresh, images: fresh.images, quantity: item.quantity + quantity }
             : item
         );
       }
-      return [...prev, { ...product, quantity, size }];
+      return [...prev, { ...fresh, images: fresh.images, quantity, size }];
     });
   };
 

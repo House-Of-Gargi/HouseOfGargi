@@ -8,6 +8,7 @@ import { useCart } from '@/context/CartContext';
 import ProductCard from '@/components/ProductCard';
 import { DiyaIcon } from '@/components/Icons';
 import { Product } from '@/types';
+import { getProduct } from '@/data/products';
 
 export default function WishlistPage() {
   const { wishlist } = useWishlist();
@@ -16,12 +17,13 @@ export default function WishlistPage() {
   const [addedId, setAddedId] = useState<string | null>(null);
 
   const handleMoveToBag = (product: Product) => {
-    if (product.sizes && product.sizes.length === 1) {
-      addToCart(product, 1, product.sizes[0]);
-      setAddedId(product.id);
+    const fresh = getProduct(product.id) || product;
+    if (fresh.sizes && fresh.sizes.length === 1) {
+      addToCart(fresh, 1, fresh.sizes[0]);
+      setAddedId(fresh.id);
       setTimeout(() => setAddedId(null), 2400);
     } else {
-      router.push(`/product/${product.id}`);
+      router.push(`/product/${fresh.id}`);
     }
   };
 
@@ -98,6 +100,7 @@ export default function WishlistPage() {
               {wishlist.length} {wishlist.length === 1 ? 'handcrafted piece' : 'handcrafted pieces'} saved in your private curation
             </p>
           </div>
+
           <Link 
             href="/shop" 
             className="btn btn--outline"
@@ -118,38 +121,41 @@ export default function WishlistPage() {
           gap: '48px 36px',
           alignItems: 'stretch',
         }}>
-          {wishlist.map(product => (
-            <div 
-              key={product.id} 
-              style={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
-                height: '100%',
-                position: 'relative',
-              }}
-            >
-              <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                <ProductCard product={product} style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }} />
-              </div>
-              <button 
-                type="button"
-                className={`btn ${addedId === product.id ? 'btn--primary' : 'btn--outline'}`} 
+          {wishlist.map(product => {
+            const currentProduct = getProduct(product.id) || product;
+            return (
+              <div 
+                key={currentProduct.id} 
                 style={{ 
-                  width: '100%', 
-                  marginTop: '18px', 
-                  padding: '14px 20px', 
-                  fontSize: '14px', 
-                  fontWeight: 700,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  transition: 'all 250ms ease',
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  height: '100%',
+                  position: 'relative',
                 }}
-                onClick={() => handleMoveToBag(product)}
               >
-                {addedId === product.id ? '✓ Added to Shopping Bag' : 'Move to Shopping Bag'}
-              </button>
-            </div>
-          ))}
+                <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                  <ProductCard product={currentProduct} style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }} />
+                </div>
+                <button 
+                  type="button"
+                  className={`btn ${addedId === currentProduct.id ? 'btn--primary' : 'btn--outline'}`} 
+                  style={{ 
+                    width: '100%', 
+                    marginTop: '18px', 
+                    padding: '14px 20px', 
+                    fontSize: '14px', 
+                    fontWeight: 700,
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                    transition: 'all 250ms ease',
+                  }}
+                  onClick={() => handleMoveToBag(currentProduct)}
+                >
+                  {addedId === currentProduct.id ? '✓ Added to Shopping Bag' : 'Move to Shopping Bag'}
+                </button>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { CSSProperties, MouseEvent, useState, useEffect } from 'react';
 import { Product } from '@/types';
+import { getProduct } from '@/data/products';
 import { WishlistIcon, HeartFilledIcon } from './Icons';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCurrency } from '@/context/CurrencyContext';
@@ -13,6 +14,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, style }: ProductCardProps) {
+  const currentProduct = getProduct(product.id) || product;
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { formatPrice } = useCurrency();
   const [mounted, setMounted] = useState(false);
@@ -21,12 +23,12 @@ export default function ProductCard({ product, style }: ProductCardProps) {
     setMounted(true);
   }, []);
 
-  const isSaved = mounted && isInWishlist(product.id);
+  const isSaved = mounted && isInWishlist(currentProduct.id);
 
   const handleWishlistClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    toggleWishlist(product);
+    toggleWishlist(currentProduct);
   };
 
   return (
@@ -50,14 +52,14 @@ export default function ProductCard({ product, style }: ProductCardProps) {
       >
         {isSaved ? <HeartFilledIcon size={20} color="var(--maharani-maroon)" /> : <WishlistIcon size={20} />}
       </button>
-      <Link href={`/product/${product.id}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Link href={`/product/${currentProduct.id}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', height: '100%' }}>
         <div className="product-card__image-wrap">
-          <img src={product.images[0]} alt={product.name} loading="lazy" />
+          <img src={currentProduct.images[0]} alt={currentProduct.name} loading="lazy" />
         </div>
         <div className="product-card__body" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-          <div className="product-card__name">{product.name}</div>
-          <div className="product-card__artisan">{product.artisanNote}</div>
-          <div className="product-card__price" style={{ marginTop: 'auto' }}>{formatPrice(product.price)}</div>
+          <div className="product-card__name">{currentProduct.name}</div>
+          <div className="product-card__artisan">{currentProduct.artisanNote}</div>
+          <div className="product-card__price" style={{ marginTop: 'auto' }}>{formatPrice(currentProduct.price)}</div>
         </div>
       </Link>
     </div>
