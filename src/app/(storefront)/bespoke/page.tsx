@@ -110,15 +110,13 @@ export default function BespokePage() {
                   </div>
                   <div className="form-group">
                     <label>Garment Type</label>
-                    <select 
+                    <CustomDropdown 
+                      options={GARMENT_OPTIONS}
                       value={formData.category} 
-                      onChange={e => setFormData({ ...formData, category: e.target.value })}
-                    >
-                      <option value="Sarees">Bespoke Saree (Banarasi / Kanchipuram)</option>
-                      <option value="Lehengas">Bridal / Festive Lehenga</option>
-                      <option value="Kurta Sets">Handcrafted Kurta Ensemble</option>
-                      <option value="Accessories">Custom Heritage Jewellery</option>
-                    </select>
+                      onChange={val => setFormData({ ...formData, category: val })}
+                      placeholder="Select Garment Type"
+                      fullWidth
+                    />
                   </div>
                 </div>
 

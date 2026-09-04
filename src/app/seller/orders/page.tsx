@@ -7,6 +7,14 @@ import {
   Search, 
   Loader2 
 } from 'lucide-react';
+import CustomDropdown from '@/components/CustomDropdown';
+
+const STATUS_OPTIONS = [
+  { value: 'Processing', label: 'Processing' },
+  { value: 'Bespoke Review', label: 'Bespoke Review' },
+  { value: 'Shipped', label: 'Shipped' },
+  { value: 'Delivered', label: 'Delivered' },
+];
 
 export default function SellerOrdersPage() {
   const [orders, setOrders] = useState<any[]>([]);
@@ -224,29 +232,15 @@ export default function SellerOrdersPage() {
                         ₹ {Number(o.total_rupees || 0).toLocaleString('en-IN')}
                       </td>
                       <td>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <select
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: '170px' }}>
+                          <CustomDropdown
+                            options={STATUS_OPTIONS}
                             value={o.status || 'Processing'}
+                            onChange={(val) => handleStatusChange(o.id, val)}
                             disabled={isUpdating}
-                            onChange={(e) => handleStatusChange(o.id, e.target.value)}
-                            style={{
-                              padding: '0.45rem 0.75rem',
-                              borderRadius: '2px',
-                              border: '1px solid var(--soft-gold-line)',
-                              fontSize: '0.9rem',
-                              fontFamily: 'var(--font-sans)',
-                              background: 'var(--pure-white)',
-                              color: 'var(--ink-brown)',
-                              fontWeight: 500,
-                              outline: 'none',
-                              cursor: isUpdating ? 'not-allowed' : 'pointer',
-                            }}
-                          >
-                            <option value="Processing">Processing</option>
-                            <option value="Bespoke Review">Bespoke Review</option>
-                            <option value="Shipped">Shipped</option>
-                            <option value="Delivered">Delivered</option>
-                          </select>
+                            triggerStyle={{ padding: '0.4rem 0.7rem', fontSize: '0.88rem' }}
+                            menuStyle={{ minWidth: '175px' }}
+                          />
                           {isUpdating && <Loader2 style={{ width: 14, height: 14, animation: 'spin 1s linear infinite', color: 'var(--maharani-maroon)' }} />}
                         </div>
                       </td>

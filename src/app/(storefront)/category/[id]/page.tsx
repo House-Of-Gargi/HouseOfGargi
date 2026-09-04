@@ -63,6 +63,7 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
                 value={fabric}
                 onChange={setFabric}
                 placeholder="All Fabrics"
+                showEmptyOption
               />
             </div>
 
@@ -73,6 +74,7 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
                 value={occasion}
                 onChange={setOccasion}
                 placeholder="All Occasions"
+                showEmptyOption
               />
             </div>
 
@@ -86,6 +88,7 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
                 value={sort}
                 onChange={setSort}
                 placeholder="Featured"
+                showEmptyOption
               />
             </div>
           </div>

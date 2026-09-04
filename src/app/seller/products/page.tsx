@@ -8,9 +8,24 @@ import {
   Search, 
   Loader2, 
   Check, 
-  X,
-  PackageCheck
+  X, 
+  PackageCheck 
 } from 'lucide-react';
+import CustomDropdown from '@/components/CustomDropdown';
+
+const CATEGORY_OPTIONS = [
+  { value: 'sarees', label: 'Banarasi Sarees' },
+  { value: 'lehengas', label: 'Bridal Lehengas' },
+  { value: 'kurta-sets', label: 'Kurta Sets' },
+  { value: 'accessories', label: 'Heritage Jewellery' },
+];
+
+const ASSET_OPTIONS = [
+  { value: '/images/category-sarees.png', label: 'Sarees Lookbook' },
+  { value: '/images/category-lehengas.png', label: 'Lehengas Lookbook' },
+  { value: '/images/category-kurtas.png', label: 'Kurtas Lookbook' },
+  { value: '/images/category-accessories.png', label: 'Jewellery Lookbook' },
+];
 
 export default function SellerProductsPage() {
   const [products, setProducts] = useState<any[]>([]);
@@ -386,16 +401,12 @@ export default function SellerProductsPage() {
                   <label style={{ display: 'block', fontSize: '0.82rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
                     Collection
                   </label>
-                  <select
+                  <CustomDropdown
+                    fullWidth
+                    options={CATEGORY_OPTIONS}
                     value={newProduct.category}
-                    onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
-                    style={{ width: '100%', padding: '0.75rem 0.95rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.95rem', background: 'var(--pure-white)', color: 'var(--ink-brown)' }}
-                  >
-                    <option value="sarees">Banarasi Sarees</option>
-                    <option value="lehengas">Bridal Lehengas</option>
-                    <option value="kurta-sets">Kurta Sets</option>
-                    <option value="accessories">Heritage Jewellery</option>
-                  </select>
+                    onChange={(val) => setNewProduct({ ...newProduct, category: val })}
+                  />
                 </div>
 
                 <div>
@@ -432,16 +443,12 @@ export default function SellerProductsPage() {
                   <label style={{ display: 'block', fontSize: '0.82rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
                     Curated Asset
                   </label>
-                  <select
+                  <CustomDropdown
+                    fullWidth
+                    options={ASSET_OPTIONS}
                     value={newProduct.image_url}
-                    onChange={(e) => setNewProduct({ ...newProduct, image_url: e.target.value })}
-                    style={{ width: '100%', padding: '0.75rem 0.95rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.95rem', background: 'var(--pure-white)', color: 'var(--ink-brown)' }}
-                  >
-                    <option value="/images/category-sarees.png">Sarees Lookbook</option>
-                    <option value="/images/category-lehengas.png">Lehengas Lookbook</option>
-                    <option value="/images/category-kurtas.png">Kurtas Lookbook</option>
-                    <option value="/images/category-accessories.png">Jewellery Lookbook</option>
-                  </select>
+                    onChange={(val) => setNewProduct({ ...newProduct, image_url: val })}
+                  />
                 </div>
               </div>
 

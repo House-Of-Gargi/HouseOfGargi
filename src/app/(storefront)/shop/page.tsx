@@ -73,6 +73,7 @@ export default function ShopPage() {
                 value={selectedFabric}
                 onChange={setSelectedFabric}
                 placeholder="All Fabrics"
+                showEmptyOption
               />
             </div>
 
@@ -86,6 +87,7 @@ export default function ShopPage() {
                 value={sort}
                 onChange={setSort}
                 placeholder="Featured"
+                showEmptyOption
               />
             </div>
           </div>
