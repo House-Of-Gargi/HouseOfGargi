@@ -34,22 +34,30 @@ const ASSET_OPTIONS = [
   { value: '/images/products/saree-chanderi.jpg', label: 'Saree: Chanderi Floral Jaal' },
   { value: '/images/products/saree-tussar.jpg', label: 'Saree: Tussar Silk Block Print' },
   { value: '/images/products/saree-paithani.jpg', label: 'Saree: Paithani Peacock Pallu' },
+  { value: '/images/collections/collection-sarees.jpg', label: 'Saree: Master Loom Archive' },
+  { value: '/images/collections/explore-sarees.jpg', label: 'Saree: Udaipur Palace Jharokha' },
   // Lehengas
   { value: '/images/category-lehengas.png', label: 'Lehenga: Royal Zardozi Bridal' },
   { value: '/images/products/lehenga-gota-patti.jpg', label: 'Lehenga: Gota Patti Festive' },
   { value: '/images/products/lehenga-chikankari.jpg', label: 'Lehenga: Chikankari Ivory Anarkali' },
   { value: '/images/products/lehenga-mirror-work.jpg', label: 'Lehenga: Mirror Work Chaniya Choli' },
+  { value: '/images/collections/collection-lehengas.jpg', label: 'Lehenga: Rajputana Bridal Suite' },
+  { value: '/images/collections/explore-lehengas.jpg', label: 'Lehenga: Jaipur Courtyard Atelier' },
   // Kurta Sets
   { value: '/images/category-kurtas.png', label: 'Kurta: Sanganeri Block Print' },
   { value: '/images/products/kurta-chikankari-white.jpg', label: 'Kurta: Chikankari White-on-White' },
   { value: '/images/products/kurta-ajrakh-silk.jpg', label: 'Kurta: Ajrakh Silk Set' },
   { value: '/images/products/kurta-kalamkari.jpg', label: 'Kurta: Kalamkari Anarkali' },
   { value: '/images/products/kurta-bandhani-silk.jpg', label: 'Kurta: Bandhani Silk Festival' },
+  { value: '/images/collections/collection-kurtas.jpg', label: 'Kurta: Silk Summer Atelier' },
+  { value: '/images/collections/explore-kurtas.jpg', label: 'Kurta: Limestone Colonnade Pavilion' },
   // Accessories & Jewellery
   { value: '/images/category-accessories.png', label: 'Jewellery: Kundan Polki Choker Set' },
   { value: '/images/products/accessory-meenakari-jhumka.jpg', label: 'Jewellery: Meenakari Jhumka Earrings' },
   { value: '/images/products/accessory-temple-jewellery.jpg', label: 'Jewellery: Temple Jewellery Necklace' },
   { value: '/images/products/accessory-phulkari-dupatta.jpg', label: 'Accessory: Phulkari Silk Dupatta' },
+  { value: '/images/collections/collection-accessories.jpg', label: 'Jewellery: Forest Marble Suite' },
+  { value: '/images/collections/explore-accessories.jpg', label: 'Jewellery: Mughal Casket Vault' },
 ];
 
 export default function SellerProductsPage() {
