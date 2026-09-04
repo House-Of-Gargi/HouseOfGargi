@@ -1,11 +1,25 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { products } from '../data/products';
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState(() => {
-    const saved = localStorage.getItem('gargi_cart');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem('gargi_cart');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return parsed.map(item => {
+          const fresh = products.find(p => p.id === item.id);
+          return fresh
+            ? { ...item, ...fresh, images: fresh.images, quantity: item.quantity, size: item.size }
+            : item;
+        });
+      }
+    } catch {
+      // ignore
+    }
+    return [];
   });
 
   useEffect(() => {
@@ -13,16 +27,17 @@ export function CartProvider({ children }) {
   }, [cart]);
 
   const addToCart = (product, quantity = 1, size = null) => {
+    const fresh = products.find(p => p.id === product.id) || product;
     setCart(prev => {
-      const existing = prev.find(item => item.id === product.id && item.size === size);
+      const existing = prev.find(item => item.id === fresh.id && item.size === size);
       if (existing) {
         return prev.map(item => 
-          item.id === product.id && item.size === size
-            ? { ...item, quantity: item.quantity + quantity }
+          item.id === fresh.id && item.size === size
+            ? { ...item, ...fresh, images: fresh.images, quantity: item.quantity + quantity }
             : item
         );
       }
-      return [...prev, { ...product, quantity, size }];
+      return [...prev, { ...fresh, images: fresh.images, quantity, size }];
     });
   };
 

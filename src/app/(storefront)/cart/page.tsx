@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import { DiyaIcon, PlusIcon, MinusIcon, CloseIcon } from '@/components/Icons';
+import { getProduct } from '@/data/products';
 
 export default function CartPage() {
   const { cart, updateQuantity, removeFromCart, subtotal, itemCount, clearCart } = useCart();
@@ -149,7 +150,12 @@ export default function CartPage() {
         <div className="cart-layout-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 420px', gap: '48px', alignItems: 'start' }}>
           {/* Left Column: Cart Items List */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            {cart.map((item) => (
+            {cart.map((item) => {
+              const fresh = getProduct(item.id);
+              const displayImage = fresh?.images?.[0] || item.images?.[0];
+              const displayName = fresh?.name || item.name;
+              const displayFabric = fresh?.fabric || item.fabric;
+              return (
               <div 
                 key={`${item.id}-${item.size}`} 
                 className="cart-item-card"
@@ -158,8 +164,8 @@ export default function CartPage() {
                 {/* Product Image Thumbnail — Generous 130px x 170px luxury presentation */}
                 <Link href={`/product/${item.id}`} style={{ width: '130px', flexShrink: 0 }}>
                   <img 
-                    src={item.images[0]} 
-                    alt={item.name} 
+                    src={displayImage} 
+                    alt={displayName} 
                     style={{ 
                       width: '130px', 
                       height: '170px', 
@@ -187,10 +193,10 @@ export default function CartPage() {
                           display: 'inline-block'
                         }}
                       >
-                        {item.name}
+                        {displayName}
                       </Link>
                       <p style={{ margin: '6px 0 0', fontSize: '14.5px', color: 'var(--stone-taupe)', fontWeight: 500 }}>
-                        Size: <strong style={{ color: 'var(--ink-brown)' }}>{item.size || 'Free Size'}</strong> • {item.fabric}
+                        Size: <strong style={{ color: 'var(--ink-brown)' }}>{item.size || 'Free Size'}</strong> • {displayFabric}
                       </p>
                     </div>
 
@@ -282,7 +288,8 @@ export default function CartPage() {
                   <CloseIcon size={18} />
                 </button>
               </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Right Column: Sticky Order Summary & Checkout Card */}

@@ -1,11 +1,23 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { products } from '../data/products';
 
 const WishlistContext = createContext();
 
 export function WishlistProvider({ children }) {
   const [wishlist, setWishlist] = useState(() => {
-    const saved = localStorage.getItem('gargi_wishlist');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem('gargi_wishlist');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return parsed.map(item => {
+          const fresh = products.find(p => p.id === item.id);
+          return fresh ? { ...fresh } : item;
+        });
+      }
+    } catch {
+      // ignore
+    }
+    return [];
   });
 
   useEffect(() => {
@@ -13,12 +25,13 @@ export function WishlistProvider({ children }) {
   }, [wishlist]);
 
   const toggleWishlist = (product) => {
+    const fresh = products.find(p => p.id === product.id) || product;
     setWishlist(prev => {
-      const exists = prev.some(item => item.id === product.id);
+      const exists = prev.some(item => item.id === fresh.id);
       if (exists) {
-        return prev.filter(item => item.id !== product.id);
+        return prev.filter(item => item.id !== fresh.id);
       }
-      return [...prev, product];
+      return [...prev, fresh];
     });
   };
 

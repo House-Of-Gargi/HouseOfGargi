@@ -668,7 +668,6 @@ export default function SellerLoginPage() {
               fontWeight: 700,
               fontStyle: 'italic',
               color: '#000000',
-              textShadow: '-1.2px -0.8px 0 #EA580C, 1.2px 1.2px 0 #0284C7',
               letterSpacing: '0.02em',
               lineHeight: 1.1,
               display: 'inline-block',
