@@ -88,7 +88,7 @@ export default function CartPage() {
   return (
     <div className="section section--ivory" style={{ minHeight: '80vh', paddingTop: 'calc(var(--navbar-height) + 24px)' }}>
       <div className="container">
-        <h1 style={{ fontFamily: 'var(--font-nav)', marginBottom: '32px' }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 3.5vw, 38px)', fontWeight: 600, color: 'var(--ink-brown)', marginBottom: '32px' }}>
           Shopping Bag ({itemCount} {itemCount === 1 ? 'item' : 'items'})
         </h1>
 
@@ -111,31 +111,31 @@ export default function CartPage() {
 
                 <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', paddingRight: '32px' }}>
-                    <Link href={`/product/${item.id}`} style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 600 }}>
+                    <Link href={`/product/${item.id}`} style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 600, color: 'var(--ink-brown)' }}>
                       {item.name}
                     </Link>
-                    <span style={{ fontWeight: 600 }}>{formatPrice(item.price * item.quantity)}</span>
+                    <span style={{ fontWeight: 700, fontSize: '18px', color: 'var(--maharani-maroon)' }}>{formatPrice(item.price * item.quantity)}</span>
                   </div>
 
-                  <p className="caption" style={{ margin: '4px 0 12px' }}>
+                  <p className="caption" style={{ margin: '6px 0 14px', fontSize: '14.5px' }}>
                     Size: <strong>{item.size || 'Free Size'}</strong> • {item.fabric}
                   </p>
 
                   <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', border: '1px solid var(--soft-gold-line)', borderRadius: '2px', background: 'var(--pure-white)' }}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', border: '1.5px solid var(--soft-gold-line)', borderRadius: '4px', background: 'var(--pure-white)' }}>
                       <button 
-                        type="button"
+                        type="button" 
                         onClick={() => updateQuantity(item.id, item.size, item.quantity - 1)}
-                        style={{ padding: '6px 12px', background: 'none', border: 'none', cursor: 'pointer' }}
+                        style={{ padding: '8px 14px', background: 'none', border: 'none', cursor: 'pointer' }}
                         aria-label="Decrease quantity"
                       >
                         <MinusIcon size={14} />
                       </button>
-                      <span style={{ padding: '0 8px', fontSize: '14px', fontWeight: 600 }}>{item.quantity}</span>
+                      <span style={{ padding: '0 10px', fontSize: '15px', fontWeight: 600 }}>{item.quantity}</span>
                       <button 
-                        type="button"
+                        type="button" 
                         onClick={() => updateQuantity(item.id, item.size, item.quantity + 1)}
-                        style={{ padding: '6px 12px', background: 'none', border: 'none', cursor: 'pointer' }}
+                        style={{ padding: '8px 14px', background: 'none', border: 'none', cursor: 'pointer' }}
                         aria-label="Increase quantity"
                       >
                         <PlusIcon size={14} />
@@ -145,7 +145,7 @@ export default function CartPage() {
                     <button
                       type="button"
                       onClick={() => removeFromCart(item.id, item.size)}
-                      style={{ background: 'none', border: 'none', color: 'var(--stone-taupe)', fontSize: '13px', textDecoration: 'underline', cursor: 'pointer' }}
+                      style={{ background: 'none', border: 'none', color: 'var(--stone-taupe)', fontSize: '14px', textDecoration: 'underline', cursor: 'pointer', fontWeight: 500 }}
                     >
                       Remove
                     </button>
@@ -166,28 +166,28 @@ export default function CartPage() {
 
           {/* Order Summary & Checkout Card */}
           <div className="styled-box" style={{ padding: '32px' }}>
-            <h3 style={{ fontFamily: 'var(--font-nav)', marginBottom: '24px', fontSize: '20px' }}>Order Summary</h3>
+            <h3 style={{ fontFamily: 'var(--font-display)', marginBottom: '24px', fontSize: '24px', fontWeight: 600 }}>Order Summary</h3>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '14px', fontSize: '16px' }}>
               <span style={{ color: 'var(--stone-taupe)' }}>Subtotal</span>
               <span style={{ fontWeight: 600 }}>{formatPrice(subtotal)}</span>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', paddingBottom: '16px', borderBottom: '1px solid var(--soft-gold-line)' }}>
-              <span style={{ color: 'var(--stone-taupe)' }}>Shipping (India & Global)</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '18px', paddingBottom: '16px', borderBottom: '1px solid var(--soft-gold-line)', fontSize: '16px' }}>
+              <span style={{ color: 'var(--stone-taupe)' }}>Shipping (India &amp; Global)</span>
               <span style={{ color: 'var(--peacock-teal)', fontWeight: 600 }}>Complimentary</span>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px' }}>
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 600 }}>Total</span>
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 600 }}>Total</span>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: '26px', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
                 {formatPrice(subtotal)}
               </span>
             </div>
 
             <form onSubmit={handleCheckout}>
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontSize: '13px', color: 'var(--stone-taupe)', marginBottom: '6px' }}>
+              <div style={{ marginBottom: '18px' }}>
+                <label style={{ display: 'block', fontSize: '14.5px', fontWeight: 600, color: 'var(--ink-brown)', marginBottom: '8px' }}>
                   Full Name
                 </label>
                 <input
@@ -196,12 +196,12 @@ export default function CartPage() {
                   value={customerName}
                   onChange={e => setCustomerName(e.target.value)}
                   placeholder="e.g. Priya Sharma"
-                  style={{ width: '100%', padding: '12px', border: '1px solid var(--soft-gold-line)', borderRadius: '4px', outline: 'none' }}
+                  style={{ width: '100%', padding: '14px', fontSize: '15px', border: '1.5px solid var(--soft-gold-line)', borderRadius: '4px', outline: 'none' }}
                 />
               </div>
 
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{ display: 'block', fontSize: '13px', color: 'var(--stone-taupe)', marginBottom: '6px' }}>
+              <div style={{ marginBottom: '24px' }}>
+                <label style={{ display: 'block', fontSize: '14.5px', fontWeight: 600, color: 'var(--ink-brown)', marginBottom: '8px' }}>
                   Phone Number
                 </label>
                 <input
@@ -210,21 +210,21 @@ export default function CartPage() {
                   value={customerPhone}
                   onChange={e => setCustomerPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
                   placeholder="9876543210"
-                  style={{ width: '100%', padding: '12px', border: '1px solid var(--soft-gold-line)', borderRadius: '4px', outline: 'none' }}
+                  style={{ width: '100%', padding: '14px', fontSize: '15px', border: '1.5px solid var(--soft-gold-line)', borderRadius: '4px', outline: 'none' }}
                 />
               </div>
 
               <button 
                 type="submit" 
                 className="btn btn--primary" 
-                style={{ width: '100%', padding: '16px' }}
+                style={{ width: '100%', padding: '16px', fontSize: '15px', letterSpacing: '0.14em' }}
                 disabled={checkingOut}
               >
                 {checkingOut ? 'Securing Order...' : 'Proceed to Checkout'}
               </button>
             </form>
 
-            <p className="caption" style={{ textAlign: 'center', marginTop: '16px', fontSize: '12px' }}>
+            <p className="caption" style={{ textAlign: 'center', marginTop: '18px', fontSize: '13.5px' }}>
               🔒 256-bit encrypted secure checkout. Authentic heirloom guarantee.
             </p>
           </div>

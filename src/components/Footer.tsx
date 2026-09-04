@@ -34,7 +34,7 @@ export default function Footer() {
             <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer">Pinterest</a>
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
             <a href="mailto:hello@houseofgargi.com">hello@houseofgargi.com</a>
-            <Link href="/seller/login" style={{ opacity: 0.6, fontSize: '12px', marginTop: '8px' }}>Seller Portal</Link>
+            <Link href="/seller/login" style={{ opacity: 0.85, fontSize: '14.5px', marginTop: '12px', fontWeight: 600, color: 'var(--gargi-gold)' }}>Seller Atelier Portal →</Link>
           </div>
         </div>
 

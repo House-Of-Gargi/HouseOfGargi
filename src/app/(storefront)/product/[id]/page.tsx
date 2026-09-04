@@ -132,7 +132,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             )}
 
             {error && (
-              <div style={{ color: 'var(--maharani-maroon)', fontSize: '13px', marginBottom: '16px' }}>
+              <div style={{ color: 'var(--maharani-maroon)', fontSize: '14.5px', fontWeight: 600, marginBottom: '16px' }}>
                 {error}
               </div>
             )}
@@ -143,16 +143,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px', width: '100%' }}>
                   <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--soft-gold-line)', borderRadius: '2px' }}>
                     <button 
-                      type="button"
+                      type="button" 
                       onClick={() => updateQuantity(product.id, sizeToCart, cartItem.quantity - 1)}
                       style={{ padding: '12px 16px', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-brown)' }}
                       aria-label="Decrease quantity"
                     >
                       <MinusIcon size={16} />
                     </button>
-                    <span style={{ padding: '0 16px', fontWeight: 600 }}>{cartItem.quantity}</span>
+                    <span style={{ padding: '0 16px', fontWeight: 600, fontSize: '16px' }}>{cartItem.quantity}</span>
                     <button 
-                      type="button"
+                      type="button" 
                       onClick={() => updateQuantity(product.id, sizeToCart, cartItem.quantity + 1)}
                       style={{ padding: '12px 16px', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-brown)' }}
                       aria-label="Increase quantity"
@@ -160,15 +160,15 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                       <PlusIcon size={16} />
                     </button>
                   </div>
-                  <Link href="/cart" className="btn btn--primary" style={{ flex: 1 }}>
+                  <Link href="/cart" className="btn btn--primary" style={{ flex: 1, padding: '14px 24px', fontSize: '15px' }}>
                     View in Bag
                   </Link>
                 </div>
               ) : (
                 <button 
-                  type="button"
+                  type="button" 
                   className="btn btn--primary" 
-                  style={{ width: '100%' }}
+                  style={{ width: '100%', padding: '14px 24px', fontSize: '15px' }}
                   onClick={handleAddToCart}
                 >
                   Add to Shopping Bag
@@ -192,7 +192,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 className="pdp-accordion__header" 
                 onClick={() => setCareOpen(!careOpen)}
               >
-                <span>Fabric Care & Craftsmanship</span>
+                <span>Fabric Care &amp; Craftsmanship</span>
                 <span>{careOpen ? '−' : '+'}</span>
               </div>
               {careOpen && (
@@ -213,16 +213,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               borderTop: '1px dashed var(--soft-gold-line)',
               textAlign: 'center',
             }}>
-              <div style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)' }}>
-                <span style={{ display: 'block', fontSize: '14px', marginBottom: '2px', color: 'var(--gargi-gold)' }}>✦</span>
+              <div style={{ fontSize: '13.5px', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', fontWeight: 600 }}>
+                <span style={{ display: 'block', fontSize: '16px', marginBottom: '2px', color: 'var(--gargi-gold)' }}>✦</span>
                 100% Handloom
               </div>
-              <div style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)' }}>
-                <span style={{ display: 'block', fontSize: '14px', marginBottom: '2px', color: 'var(--gargi-gold)' }}>✦</span>
+              <div style={{ fontSize: '13.5px', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', fontWeight: 600 }}>
+                <span style={{ display: 'block', fontSize: '16px', marginBottom: '2px', color: 'var(--gargi-gold)' }}>✦</span>
                 Complimentary Shipping
               </div>
-              <div style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)' }}>
-                <span style={{ display: 'block', fontSize: '14px', marginBottom: '2px', color: 'var(--gargi-gold)' }}>✦</span>
+              <div style={{ fontSize: '13.5px', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', fontWeight: 600 }}>
+                <span style={{ display: 'block', fontSize: '16px', marginBottom: '2px', color: 'var(--gargi-gold)' }}>✦</span>
                 Heritage Authenticated
               </div>
             </div>

@@ -104,15 +104,15 @@ export default function CustomerLoginModal({ isOpen, onClose }: CustomerLoginMod
           &times;
         </button>
         
-        <h2 style={{ textAlign: 'center', fontFamily: 'var(--font-nav)', color: 'var(--ink-brown)', marginBottom: '8px' }}>
+        <h2 style={{ textAlign: 'center', fontFamily: 'var(--font-display)', fontSize: '28px', fontWeight: 600, color: 'var(--ink-brown)', marginBottom: '8px' }}>
           Customer Login
         </h2>
-        <p style={{ textAlign: 'center', fontSize: '13px', color: 'var(--stone-taupe)', marginBottom: '24px' }}>
+        <p style={{ textAlign: 'center', fontSize: '15px', color: 'var(--stone-taupe)', marginBottom: '24px' }}>
           Access your bespoke commissions & orders
         </p>
         
         {error && (
-          <div style={{ background: '#FFF3F3', color: '#D32F2F', padding: '12px', borderRadius: '4px', marginBottom: '20px', fontSize: '14px', textAlign: 'center' }}>
+          <div style={{ background: '#FFF3F3', color: '#D32F2F', padding: '12px', borderRadius: '4px', marginBottom: '20px', fontSize: '14.5px', fontWeight: 500, textAlign: 'center' }}>
             {error}
           </div>
         )}
@@ -120,46 +120,46 @@ export default function CustomerLoginModal({ isOpen, onClose }: CustomerLoginMod
         {step === 1 ? (
           <form onSubmit={handleSendOtp}>
             <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', color: 'var(--stone-taupe)' }}>Phone Number</label>
-              <div style={{ display: 'flex', border: '1px solid var(--soft-gold-line)', borderRadius: '4px', overflow: 'hidden' }}>
-                <span style={{ padding: '12px', background: 'var(--ivory-silk)', color: 'var(--stone-taupe)', borderRight: '1px solid var(--soft-gold-line)' }}>+91</span>
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14.5px', fontWeight: 600, color: 'var(--ink-brown)' }}>Phone Number</label>
+              <div style={{ display: 'flex', border: '1.5px solid var(--soft-gold-line)', borderRadius: '4px', overflow: 'hidden' }}>
+                <span style={{ padding: '12px 14px', background: 'var(--ivory-silk)', color: 'var(--stone-taupe)', fontWeight: 600, borderRight: '1px solid var(--soft-gold-line)' }}>+91</span>
                 <input 
                   type="tel" 
                   value={phone} 
                   onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
                   placeholder="9876543210"
-                  style={{ flex: 1, padding: '12px', border: 'none', outline: 'none', fontSize: '16px' }}
+                  style={{ flex: 1, padding: '12px 14px', border: 'none', outline: 'none', fontSize: '16px', fontWeight: 500 }}
                   required
                 />
               </div>
             </div>
-            <button type="submit" className="btn btn--primary" style={{ width: '100%' }} disabled={loading || phone.length < 10}>
-              {loading ? 'Sending...' : 'Send OTP'}
+            <button type="submit" className="btn btn--primary" style={{ width: '100%', padding: '14px', fontSize: '15px', fontWeight: 600 }} disabled={loading || phone.length < 10}>
+              {loading ? 'Sending...' : 'Send Verification OTP'}
             </button>
-            <p style={{ fontSize: '12px', color: 'var(--stone-taupe)', marginTop: '12px', textAlign: 'center' }}>
+            <p style={{ fontSize: '14px', color: 'var(--stone-taupe)', marginTop: '14px', textAlign: 'center' }}>
               Test demo number: <strong>9876543210</strong>
             </p>
           </form>
         ) : (
           <form onSubmit={handleVerifyOtp}>
             <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', color: 'var(--stone-taupe)' }}>Enter 6-digit OTP sent to +91 {phone}</label>
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14.5px', fontWeight: 600, color: 'var(--ink-brown)' }}>Enter 6-digit OTP sent to +91 {phone}</label>
               <input 
                 type="text" 
                 value={otp} 
                 onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
                 placeholder="123456"
-                style={{ width: '100%', padding: '12px', border: '1px solid var(--soft-gold-line)', borderRadius: '4px', outline: 'none', fontSize: '16px', letterSpacing: '4px', textAlign: 'center' }}
+                style={{ width: '100%', padding: '14px', border: '1.5px solid var(--soft-gold-line)', borderRadius: '4px', outline: 'none', fontSize: '18px', fontWeight: 600, letterSpacing: '6px', textAlign: 'center' }}
                 required
               />
             </div>
-            <button type="submit" className="btn btn--primary" style={{ width: '100%', marginBottom: '12px' }} disabled={loading || otp.length < 6}>
-              {loading ? 'Verifying...' : 'Verify & Login'}
+            <button type="submit" className="btn btn--primary" style={{ width: '100%', padding: '14px', fontSize: '15px', fontWeight: 600, marginBottom: '14px' }} disabled={loading || otp.length < 6}>
+              {loading ? 'Verifying...' : 'Verify & Sign In'}
             </button>
-            <p style={{ fontSize: '12px', color: 'var(--stone-taupe)', marginBottom: '12px', textAlign: 'center' }}>
+            <p style={{ fontSize: '14px', color: 'var(--stone-taupe)', marginBottom: '14px', textAlign: 'center' }}>
               Test demo OTP: <strong>123456</strong>
             </p>
-            <button type="button" onClick={() => setStep(1)} style={{ width: '100%', background: 'none', border: 'none', color: 'var(--stone-taupe)', cursor: 'pointer', textDecoration: 'underline' }}>
+            <button type="button" onClick={() => setStep(1)} style={{ width: '100%', background: 'none', border: 'none', color: 'var(--stone-taupe)', fontSize: '14.5px', cursor: 'pointer', textDecoration: 'underline' }}>
               Change Phone Number
             </button>
           </form>

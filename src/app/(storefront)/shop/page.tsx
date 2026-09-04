@@ -47,7 +47,7 @@ export default function ShopPage() {
               type="button"
               className={`btn ${selectedCategory === 'all' ? 'btn--primary' : 'btn--outline'}`}
               onClick={() => setSelectedCategory('all')}
-              style={{ padding: '8px 20px', fontSize: '12px' }}
+              style={{ padding: '10px 22px', fontSize: '14.5px', fontWeight: 600 }}
             >
               All Items ({products.length})
             </button>
@@ -57,7 +57,7 @@ export default function ShopPage() {
                 type="button"
                 className={`btn ${selectedCategory === cat.id ? 'btn--primary' : 'btn--outline'}`}
                 onClick={() => setSelectedCategory(cat.id)}
-                style={{ padding: '8px 20px', fontSize: '12px' }}
+                style={{ padding: '10px 22px', fontSize: '14.5px', fontWeight: 600 }}
               >
                 {cat.name}
               </button>

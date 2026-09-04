@@ -330,12 +330,12 @@ export default function SellerLoginPage() {
             </Link>
 
             <span style={{
-              fontSize: '0.65rem',
+              fontSize: '0.82rem',
               fontFamily: 'var(--font-nav)',
               fontWeight: 700,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              padding: '0.35rem 0.75rem',
+              padding: '0.4rem 0.85rem',
               borderRadius: '9999px',
               background: 'var(--pure-white)',
               color: 'var(--stone-taupe)',
@@ -353,12 +353,12 @@ export default function SellerLoginPage() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.45rem',
-              padding: '0.45rem 0.85rem',
+              padding: '0.5rem 0.95rem',
               borderRadius: '8px',
               background: 'var(--pure-white)',
               border: '1.2px solid #111827',
               color: 'var(--ink-brown)',
-              fontSize: '0.78rem',
+              fontSize: '0.85rem',
               fontFamily: 'var(--font-nav)',
               fontWeight: 700,
               textTransform: 'uppercase',
@@ -398,10 +398,10 @@ export default function SellerLoginPage() {
                 Atelier Seller Portal
               </h1>
               <p style={{
-                fontSize: '0.85rem',
+                fontSize: '0.98rem',
                 color: 'var(--stone-taupe)',
                 margin: '0.45rem 0 1.5rem 0',
-                lineHeight: 1.5,
+                lineHeight: 1.55,
               }}>
                 Sign in with your registered phone number to manage handcrafted couture orders and loom inventory.
               </p>
@@ -412,9 +412,9 @@ export default function SellerLoginPage() {
                 background: '#FEF2F2',
                 border: '1px solid #FECDD3',
                 color: 'var(--maharani-maroon)',
-                padding: '0.65rem 0.85rem',
+                padding: '0.75rem 0.95rem',
                 borderRadius: '6px',
-                fontSize: '0.78rem',
+                fontSize: '0.9rem',
                 marginBottom: '1.25rem',
                 fontWeight: 500,
               }}>
@@ -427,7 +427,7 @@ export default function SellerLoginPage() {
                 <div>
                   <label style={{
                     display: 'block',
-                    fontSize: '0.72rem',
+                    fontSize: '0.82rem',
                     fontFamily: 'var(--font-nav)',
                     fontWeight: 700,
                     textTransform: 'uppercase',
@@ -486,9 +486,9 @@ export default function SellerLoginPage() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  fontSize: '0.8rem',
+                  fontSize: '0.92rem',
                 }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', cursor: 'pointer', color: 'var(--stone-taupe)' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', cursor: 'pointer', color: 'var(--stone-taupe)', fontWeight: 500 }}>
                     <input
                       type="checkbox"
                       checked={rememberMe}
@@ -500,7 +500,7 @@ export default function SellerLoginPage() {
 
                   <a
                     href="mailto:artisan@houseofgargi.com"
-                    style={{ color: 'var(--maharani-maroon)', textDecoration: 'none', fontWeight: 600, fontSize: '0.78rem' }}
+                    style={{ color: 'var(--maharani-maroon)', textDecoration: 'none', fontWeight: 600, fontSize: '0.9rem' }}
                   >
                     Need assistance?
                   </a>
@@ -515,8 +515,8 @@ export default function SellerLoginPage() {
                     color: 'var(--ivory-silk)',
                     border: 'none',
                     borderRadius: '8px',
-                    padding: '0.9rem',
-                    fontSize: '0.88rem',
+                    padding: '0.95rem',
+                    fontSize: '0.98rem',
                     fontFamily: 'var(--font-nav)',
                     fontWeight: 700,
                     textTransform: 'uppercase',
@@ -548,7 +548,7 @@ export default function SellerLoginPage() {
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                     <label style={{
-                      fontSize: '0.72rem',
+                      fontSize: '0.82rem',
                       fontFamily: 'var(--font-nav)',
                       fontWeight: 700,
                       textTransform: 'uppercase',
@@ -563,7 +563,7 @@ export default function SellerLoginPage() {
                       style={{
                         background: 'transparent',
                         border: 'none',
-                        fontSize: '0.72rem',
+                        fontSize: '0.85rem',
                         color: 'var(--maharani-maroon)',
                         fontWeight: 700,
                         cursor: 'pointer',
@@ -592,7 +592,7 @@ export default function SellerLoginPage() {
                     ))}
                   </div>
 
-                  <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--stone-taupe)', marginTop: '0.5rem', textAlign: 'center' }}>
+                  <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--stone-taupe)', marginTop: '0.5rem', textAlign: 'center', fontWeight: 500 }}>
                     Code sent to +91 {verifiedPhone}
                   </span>
                 </div>
@@ -606,8 +606,8 @@ export default function SellerLoginPage() {
                     color: 'var(--ivory-silk)',
                     border: 'none',
                     borderRadius: '8px',
-                    padding: '0.9rem',
-                    fontSize: '0.88rem',
+                    padding: '0.95rem',
+                    fontSize: '0.98rem',
                     fontFamily: 'var(--font-nav)',
                     fontWeight: 700,
                     textTransform: 'uppercase',
@@ -635,7 +635,7 @@ export default function SellerLoginPage() {
               </form>
             )}
 
-            <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.78rem', color: 'var(--stone-taupe)' }}>
+            <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.9rem', color: 'var(--stone-taupe)' }}>
               Need artisan partner onboarding?{' '}
               <a href="mailto:support@houseofgargi.com" style={{ color: 'var(--maharani-maroon)', fontWeight: 700, textDecoration: 'none' }}>
                 Request Atelier Registration

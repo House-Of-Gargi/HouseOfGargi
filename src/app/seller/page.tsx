@@ -151,7 +151,7 @@ export default function SellerDashboardPage() {
                 SUPABASE LIVE
               </span>
             </div>
-            <p style={{ fontSize: '0.85rem', color: 'var(--stone-taupe)', margin: '0.35rem 0 0 0', fontWeight: 400 }}>
+            <p style={{ fontSize: '0.98rem', color: 'var(--stone-taupe)', margin: '0.35rem 0 0 0', fontWeight: 500 }}>
               Handcrafted Indian Couture &bull; Live Order Fulfillment &amp; Catalog Management
             </p>
           </div>
@@ -167,8 +167,8 @@ export default function SellerDashboardPage() {
               background: 'var(--pure-white)',
               border: '1px solid var(--soft-gold-line)',
               borderRadius: '2px',
-              padding: '0.55rem 0.85rem',
-              fontSize: '0.75rem',
+              padding: '0.65rem 1rem',
+              fontSize: '0.85rem',
               fontFamily: 'var(--font-nav)',
               fontWeight: 700,
               textTransform: 'uppercase',
@@ -180,7 +180,7 @@ export default function SellerDashboardPage() {
               cursor: 'pointer',
             }}
           >
-            <RefreshCw style={{ width: 13, height: 13, animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
+            <RefreshCw style={{ width: 14, height: 14, animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
             Sync
           </button>
 
@@ -190,8 +190,8 @@ export default function SellerDashboardPage() {
               background: 'var(--maharani-maroon)',
               border: '1.5px solid var(--maharani-maroon)',
               borderRadius: '2px',
-              padding: '0.55rem 1rem',
-              fontSize: '0.75rem',
+              padding: '0.65rem 1.15rem',
+              fontSize: '0.85rem',
               fontFamily: 'var(--font-nav)',
               fontWeight: 700,
               textTransform: 'uppercase',
@@ -203,7 +203,7 @@ export default function SellerDashboardPage() {
               textDecoration: 'none',
             }}
           >
-            <Plus style={{ width: 14, height: 14 }} />
+            <Plus style={{ width: 15, height: 15 }} />
             Add New Piece
           </Link>
 
@@ -215,8 +215,8 @@ export default function SellerDashboardPage() {
               background: 'transparent',
               border: '1.5px solid var(--gargi-gold)',
               borderRadius: '2px',
-              padding: '0.55rem 0.95rem',
-              fontSize: '0.75rem',
+              padding: '0.65rem 1.1rem',
+              fontSize: '0.85rem',
               fontFamily: 'var(--font-nav)',
               fontWeight: 700,
               textTransform: 'uppercase',
@@ -228,7 +228,7 @@ export default function SellerDashboardPage() {
               textDecoration: 'none',
             }}
           >
-            <ExternalLink style={{ width: 13, height: 13 }} />
+            <ExternalLink style={{ width: 14, height: 14 }} />
             Preview Boutique
           </Link>
 
@@ -240,8 +240,8 @@ export default function SellerDashboardPage() {
               background: '#FFF1F2',
               border: '1px solid #FECDD3',
               borderRadius: '2px',
-              padding: '0.55rem 0.85rem',
-              fontSize: '0.75rem',
+              padding: '0.65rem 1rem',
+              fontSize: '0.85rem',
               fontFamily: 'var(--font-nav)',
               fontWeight: 700,
               textTransform: 'uppercase',
@@ -348,7 +348,7 @@ export default function SellerDashboardPage() {
             <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--ink-brown)', margin: 0 }}>
               Collection Portfolio &amp; Loom Inventory
             </h3>
-            <p style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', margin: '0.2rem 0 0 0' }}>
+            <p style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)', margin: '0.2rem 0 0 0' }}>
               Live inventory distribution across House of Gargi couture lines
             </p>
           </div>
@@ -357,7 +357,7 @@ export default function SellerDashboardPage() {
             href="/seller/products"
             style={{
               fontFamily: 'var(--font-nav)',
-              fontSize: '0.75rem',
+              fontSize: '0.85rem',
               fontWeight: 700,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
@@ -377,7 +377,7 @@ export default function SellerDashboardPage() {
             <div key={key} className="category-cell">
               <div>
                 <span className="category-cell-title">{data.label}</span>
-                <div className="category-cell-count">{data.count} <span style={{ fontSize: '0.8rem', color: 'var(--stone-taupe)', fontWeight: 400 }}>styles</span></div>
+                <div className="category-cell-count">{data.count} <span style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)', fontWeight: 500 }}>styles</span></div>
               </div>
               <div className="category-cell-stock">
                 <strong>{data.stock}</strong> units in atelier stock
@@ -390,14 +390,14 @@ export default function SellerDashboardPage() {
         {metrics.lowStockItems.length > 0 && (
           <div style={{
             marginTop: '1.25rem',
-            padding: '0.75rem 1rem',
+            padding: '0.85rem 1.15rem',
             background: '#FFFBEB',
             border: '1px solid #FDE68A',
             borderRadius: '4px',
             display: 'flex',
             alignItems: 'center',
             gap: '0.65rem',
-            fontSize: '0.8rem',
+            fontSize: '0.92rem',
             color: '#92400E',
           }}>
             <AlertTriangle style={{ width: 16, height: 16, color: '#D97706', flexShrink: 0 }} />
@@ -418,7 +418,7 @@ export default function SellerDashboardPage() {
             <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--ink-brown)', margin: 0 }}>
               Live Client Orders &amp; Fulfillment
             </h3>
-            <p style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', margin: '0.2rem 0 0 0' }}>
+            <p style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)', margin: '0.2rem 0 0 0' }}>
               Connected live to Supabase table &apos;orders&apos; &bull; Update status to sync tracking
             </p>
           </div>
@@ -426,7 +426,7 @@ export default function SellerDashboardPage() {
           {/* Controls: Search and Status filter */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
             {/* Filter pills */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: 'var(--ivory-silk)', padding: '0.25rem', borderRadius: '4px', border: '1px solid var(--soft-gold-line)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: 'var(--ivory-silk)', padding: '0.3rem', borderRadius: '4px', border: '1px solid var(--soft-gold-line)' }}>
               {[
                 { id: 'all', label: 'All' },
                 { id: 'processing', label: 'Processing' },
@@ -443,8 +443,8 @@ export default function SellerDashboardPage() {
                     color: statusFilter === f.id ? 'var(--ivory-silk)' : 'var(--stone-taupe)',
                     border: 'none',
                     borderRadius: '2px',
-                    padding: '0.35rem 0.65rem',
-                    fontSize: '0.72rem',
+                    padding: '0.45rem 0.85rem',
+                    fontSize: '0.85rem',
                     fontFamily: 'var(--font-nav)',
                     fontWeight: 700,
                     textTransform: 'uppercase',
@@ -465,9 +465,9 @@ export default function SellerDashboardPage() {
               background: 'var(--pure-white)',
               border: '1px solid var(--soft-gold-line)',
               borderRadius: '2px',
-              padding: '0.35rem 0.65rem',
+              padding: '0.45rem 0.85rem',
             }}>
-              <Search style={{ width: 14, height: 14, color: 'var(--stone-taupe)', marginRight: '0.4rem' }} />
+              <Search style={{ width: 15, height: 15, color: 'var(--stone-taupe)', marginRight: '0.4rem' }} />
               <input
                 type="text"
                 value={searchQuery}
@@ -476,10 +476,10 @@ export default function SellerDashboardPage() {
                 style={{
                   border: 'none',
                   outline: 'none',
-                  fontSize: '0.8rem',
+                  fontSize: '0.92rem',
                   fontFamily: 'var(--font-sans)',
                   color: 'var(--ink-brown)',
-                  width: '160px',
+                  width: '180px',
                   background: 'transparent',
                 }}
               />
@@ -525,19 +525,19 @@ export default function SellerDashboardPage() {
                         {order.order_number || `#HG-${order.id.slice(0, 4)}`}
                       </td>
                       <td>
-                        <strong style={{ display: 'block', color: 'var(--ink-brown)' }}>
+                        <strong style={{ display: 'block', color: 'var(--ink-brown)', fontSize: '1rem' }}>
                           {order.customer_name}
                         </strong>
                         {order.customer_phone && (
-                          <span style={{ fontSize: '0.72rem', color: 'var(--stone-taupe)' }}>
+                          <span style={{ fontSize: '0.85rem', color: 'var(--stone-taupe)', fontWeight: 500 }}>
                             {order.customer_phone}
                           </span>
                         )}
                       </td>
-                      <td style={{ color: 'var(--stone-taupe)', fontSize: '0.82rem' }}>
+                      <td style={{ color: 'var(--stone-taupe)', fontSize: '0.92rem' }}>
                         {order.created_at ? new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Recent'}
                       </td>
-                      <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--ink-brown)' }}>
+                      <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--ink-brown)', fontSize: '1rem' }}>
                         ₹ {Number(order.total_rupees || 0).toLocaleString('en-IN')}
                       </td>
                       <td>
@@ -547,13 +547,14 @@ export default function SellerDashboardPage() {
                             disabled={isUpdating}
                             onChange={(e) => handleUpdateOrderStatus(order.id, e.target.value)}
                             style={{
-                              padding: '0.35rem 0.65rem',
+                              padding: '0.45rem 0.75rem',
                               borderRadius: '2px',
                               border: '1px solid var(--soft-gold-line)',
                               background: 'var(--pure-white)',
                               color: 'var(--ink-brown)',
                               fontFamily: 'var(--font-sans)',
-                              fontSize: '0.78rem',
+                              fontSize: '0.9rem',
+                              fontWeight: 500,
                               outline: 'none',
                               cursor: isUpdating ? 'not-allowed' : 'pointer',
                             }}

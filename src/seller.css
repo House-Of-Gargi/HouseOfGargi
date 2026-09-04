@@ -19,9 +19,9 @@
   --peacock-teal: #1F6F6B;
   --marigold: #E08A1E;
 
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-serif: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
   --font-nav: 'Marcellus', 'Cinzel', serif;
-  --font-sans: 'Lato', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   --seller-rail-width: 72px;
   --seller-expanded-width: 264px;
@@ -173,11 +173,12 @@
 }
 
 .seller-brand-text .brand-sub {
-  font-size: 0.65rem;
+  font-size: 0.82rem;
   font-family: var(--font-nav);
   color: var(--gargi-gold);
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.12em;
   margin-top: 2px;
 }
 
@@ -194,11 +195,11 @@
 
 .seller-nav-group-title {
   padding: 0 0.85rem;
-  font-size: 0.65rem;
+  font-size: 0.82rem;
   font-family: var(--font-nav);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   color: var(--stone-taupe);
   white-space: nowrap;
   overflow: hidden;
@@ -281,7 +282,7 @@
 
 /* Nav Badge */
 .seller-nav-badge {
-  font-size: 0.62rem;
+  font-size: 0.78rem;
   font-family: var(--font-nav);
   font-weight: 700;
   text-transform: uppercase;
@@ -289,7 +290,7 @@
   color: var(--maharani-maroon);
   background: var(--ivory-silk);
   border: 1px solid var(--soft-gold-line);
-  padding: 0.15rem 0.45rem;
+  padding: 0.2rem 0.55rem;
   border-radius: 2px;
   white-space: nowrap;
 }
@@ -411,12 +412,12 @@
 }
 
 .atelier-live-pill {
-  font-size: 0.65rem;
+  font-size: 0.82rem;
   font-family: var(--font-nav);
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 0.2rem 0.6rem;
+  padding: 0.3rem 0.75rem;
   border-radius: 2px;
   background: #F0FDF4;
   color: #166534;
@@ -488,9 +489,9 @@
 
 .metric-label {
   font-family: var(--font-nav);
-  font-size: 0.72rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   color: var(--stone-taupe);
   font-weight: 700;
 }
@@ -518,8 +519,9 @@
 }
 
 .metric-subtext {
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   color: var(--stone-taupe);
+  font-weight: 500;
   margin: 0;
   display: flex;
   align-items: center;
@@ -563,7 +565,7 @@
 
 .category-cell-title {
   font-family: var(--font-nav);
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--ink-brown);
@@ -579,7 +581,7 @@
 }
 
 .category-cell-stock {
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   color: var(--stone-taupe);
   font-weight: 500;
 }
@@ -626,10 +628,10 @@
 .luxury-table th {
   padding: 0.95rem 1rem;
   font-family: var(--font-nav);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   color: var(--stone-taupe);
 }
 
@@ -648,10 +650,10 @@
 /* Order Status Tags */
 .status-pill {
   display: inline-block;
-  padding: 0.25rem 0.65rem;
+  padding: 0.35rem 0.75rem;
   border-radius: 2px;
   font-family: var(--font-nav);
-  font-size: 0.68rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
