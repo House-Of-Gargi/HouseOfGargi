@@ -5,6 +5,7 @@ import Link from 'next/link';
 import ProductCard from '@/components/ProductCard';
 import ScrollReveal from '@/components/ScrollReveal';
 import CustomDropdown from '@/components/CustomDropdown';
+import { products, categories } from '@/data/products';
 import { FilterIcon, CloseIcon } from '@/components/Icons';
 import { Sparkles } from 'lucide-react';
 
@@ -150,7 +151,7 @@ export default function ShopPage() {
               border: '1px solid var(--soft-gold-line)',
               boxShadow: '0 4px 16px rgba(43, 31, 24, 0.03)'
             }}>
-              <DiyaIcon size={44} style={{ color: 'var(--gargi-gold)', marginBottom: '16px' }} />
+              <Sparkles size={40} strokeWidth={1.4} style={{ color: 'var(--maharani-maroon)', marginBottom: '16px' }} />
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: 'var(--ink-brown)', marginBottom: '8px' }}>
                 No items match your selected filters.
               </h3>

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import ScrollReveal from '@/components/ScrollReveal';
 import ProductCard from '@/components/ProductCard';
 import { categories, products, featuredProductIds } from '@/data/products';
-import { DiyaIcon, ArrowRightIcon, LotusIcon } from '@/components/Icons';
+import { ArrowRightIcon, LotusIcon } from '@/components/Icons';
 import { Layers, Crown, ShieldCheck, Sparkles } from 'lucide-react';
 
 export default function HomePage() {
@@ -185,7 +185,7 @@ export default function HomePage() {
                     <p><strong>100% Handmade:</strong> Every piece is crafted by skilled artisans, preserving techniques passed down through generations.</p>
                   </div>
                   <div className="craft-points__item">
-                    <span className="craft-points__icon"><DiyaIcon size={18} /></span>
+                    <span className="craft-points__icon"><ShieldCheck size={18} strokeWidth={1.6} /></span>
                     <p><strong>Ethically Sourced:</strong> We partner directly with weaving families across India to ensure fair wages and sustainable practices.</p>
                   </div>
                   <div className="craft-points__item">
@@ -236,7 +236,7 @@ export default function HomePage() {
             <div className="salon-card">
               <div className="salon-card__crest">
                 <span className="salon-card__crest-line"></span>
-                <DiyaIcon size={20} style={{ color: 'var(--gargi-gold)' }} />
+                <Crown size={22} strokeWidth={1.4} style={{ color: 'var(--gargi-gold)' }} />
                 <span className="salon-card__crest-line"></span>
               </div>
               <div className="salon-card__sanskrit">

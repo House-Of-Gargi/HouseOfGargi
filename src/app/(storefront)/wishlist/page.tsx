@@ -51,6 +51,15 @@ export default function WishlistPage() {
           >
             Sign In to Access Wishlist <ArrowRight size={16} />
           </button>
+
+          {/* Minimal Luxury Quick Links */}
+          <div style={{ marginTop: '44px', paddingTop: '28px', borderTop: '1px solid rgba(228, 211, 174, 0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '22px', flexWrap: 'wrap', fontSize: '13px', fontFamily: 'var(--font-nav)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+            <span style={{ color: 'var(--stone-taupe)', opacity: 0.7 }}>Curated Lines:</span>
+            <Link href="/category/sarees" style={{ color: 'var(--ink-brown)', textDecoration: 'none', borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '2px' }}>Sarees</Link>
+            <Link href="/category/lehengas" style={{ color: 'var(--ink-brown)', textDecoration: 'none', borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '2px' }}>Lehengas</Link>
+            <Link href="/category/kurta-sets" style={{ color: 'var(--ink-brown)', textDecoration: 'none', borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '2px' }}>Kurta Sets</Link>
+            <Link href="/bespoke" style={{ color: 'var(--ink-brown)', textDecoration: 'none', borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '2px' }}>Bespoke</Link>
+          </div>
         </div>
       </div>
     );

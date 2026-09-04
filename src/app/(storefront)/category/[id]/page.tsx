@@ -7,8 +7,8 @@ import ProductCard from '@/components/ProductCard';
 import ScrollReveal from '@/components/ScrollReveal';
 import CustomDropdown from '@/components/CustomDropdown';
 import { getCategory, getProductsByCategory, categories } from '@/data/products';
-import { DiyaIcon, ArrowRightIcon, FilterIcon, CloseIcon } from '@/components/Icons';
-import { Crown } from 'lucide-react';
+import { ArrowRightIcon, FilterIcon, CloseIcon } from '@/components/Icons';
+import { Crown, Sparkles } from 'lucide-react';
 
 export default function CategoryPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -157,7 +157,7 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
               border: '1px solid var(--soft-gold-line)',
               boxShadow: '0 4px 16px rgba(43, 31, 24, 0.03)'
             }}>
-              <DiyaIcon size={44} style={{ color: 'var(--gargi-gold)', marginBottom: '16px' }} />
+              <Sparkles size={40} strokeWidth={1.4} style={{ color: 'var(--maharani-maroon)', marginBottom: '16px' }} />
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: 'var(--ink-brown)', marginBottom: '8px' }}>
                 No pieces match your selected filters.
               </h3>
