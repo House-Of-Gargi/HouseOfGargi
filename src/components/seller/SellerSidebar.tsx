@@ -211,10 +211,10 @@ export function SellerSidebar({
           {isHovered && (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flex: 1, minWidth: 0, marginLeft: '0.75rem' }}>
               <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--ink-brown)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--ink-brown)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {sellerPhone}
                 </span>
-                <span style={{ fontSize: '0.65rem', fontFamily: 'var(--font-nav)', color: 'var(--peacock-teal)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                <span style={{ fontSize: '0.78rem', fontFamily: 'var(--font-nav)', color: 'var(--peacock-teal)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                   Verified Artisan
                 </span>
               </div>
@@ -286,19 +286,19 @@ export function SellerSidebar({
         {/* Mobile Profile Footer */}
         <div style={{ padding: '1rem', borderTop: '1px solid var(--soft-gold-line)', background: 'var(--ivory-silk)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--ink-brown)' }}>
+            <span style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--ink-brown)' }}>
               {sellerPhone}
             </span>
-            <span style={{ fontSize: '0.65rem', fontFamily: 'var(--font-nav)', color: 'var(--peacock-teal)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            <span style={{ fontSize: '0.78rem', fontFamily: 'var(--font-nav)', color: 'var(--peacock-teal)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               Verified Artisan
             </span>
           </div>
           <button
             type="button"
             onClick={handleSignOut}
-            style={{ background: '#FFF1F2', color: 'var(--maharani-maroon)', border: '1px solid #FECDD3', borderRadius: '2px', padding: '0.45rem 0.75rem', fontSize: '0.72rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+            style={{ background: '#FFF1F2', color: 'var(--maharani-maroon)', border: '1px solid #FECDD3', borderRadius: '2px', padding: '0.55rem 0.95rem', fontSize: '0.82rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
           >
-            <LogOut style={{ width: 14, height: 14 }} />
+            <LogOut style={{ width: 15, height: 15 }} />
             Sign Out
           </button>
         </div>

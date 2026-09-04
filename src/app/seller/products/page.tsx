@@ -122,7 +122,7 @@ export default function SellerProductsPage() {
                 {products.length} MASTER PIECES
               </span>
             </div>
-            <p style={{ fontSize: '0.85rem', color: 'var(--stone-taupe)', margin: '0.35rem 0 0 0' }}>
+            <p style={{ fontSize: '0.98rem', color: 'var(--stone-taupe)', margin: '0.35rem 0 0 0', fontWeight: 500 }}>
               Real-time catalog pieces stored in Supabase &bull; Zero placeholder data
             </p>
           </div>
@@ -136,12 +136,12 @@ export default function SellerProductsPage() {
             color: 'var(--ivory-silk)',
             border: '1.5px solid var(--maharani-maroon)',
             borderRadius: '2px',
-            padding: '0.65rem 1.25rem',
-            fontSize: '0.78rem',
+            padding: '0.75rem 1.4rem',
+            fontSize: '0.85rem',
             fontFamily: 'var(--font-nav)',
             fontWeight: 700,
             textTransform: 'uppercase',
-            letterSpacing: '0.16em',
+            letterSpacing: '0.14em',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.45rem',
@@ -149,7 +149,7 @@ export default function SellerProductsPage() {
             boxShadow: '0 4px 12px rgba(122, 35, 49, 0.15)',
           }}
         >
-          <Plus style={{ width: 14, height: 14 }} />
+          <Plus style={{ width: 15, height: 15 }} />
           Add Handcrafted Piece
         </button>
       </div>
@@ -173,8 +173,8 @@ export default function SellerProductsPage() {
                 color: selectedCategory === tab.id ? 'var(--ivory-silk)' : 'var(--stone-taupe)',
                 border: '1px solid var(--soft-gold-line)',
                 borderRadius: '2px',
-                padding: '0.4rem 0.75rem',
-                fontSize: '0.72rem',
+                padding: '0.45rem 0.85rem',
+                fontSize: '0.85rem',
                 fontFamily: 'var(--font-nav)',
                 fontWeight: 700,
                 textTransform: 'uppercase',
@@ -195,9 +195,9 @@ export default function SellerProductsPage() {
           background: 'var(--pure-white)',
           border: '1px solid var(--soft-gold-line)',
           borderRadius: '2px',
-          padding: '0.4rem 0.75rem',
+          padding: '0.45rem 0.85rem',
         }}>
-          <Search style={{ width: 14, height: 14, color: 'var(--stone-taupe)', marginRight: '0.45rem' }} />
+          <Search style={{ width: 15, height: 15, color: 'var(--stone-taupe)', marginRight: '0.45rem' }} />
           <input
             type="text"
             value={searchQuery}
@@ -206,7 +206,7 @@ export default function SellerProductsPage() {
             style={{
               border: 'none',
               outline: 'none',
-              fontSize: '0.8rem',
+              fontSize: '0.92rem',
               fontFamily: 'var(--font-sans)',
               color: 'var(--ink-brown)',
               width: '180px',
@@ -223,11 +223,11 @@ export default function SellerProductsPage() {
             <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--ink-brown)', margin: 0 }}>
               Atelier Master Catalog
             </h3>
-            <p style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', margin: '0.2rem 0 0 0' }}>
+            <p style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)', margin: '0.2rem 0 0 0' }}>
               Connected live to Supabase table &apos;products&apos;
             </p>
           </div>
-          <span style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)' }}>
+          <span style={{ fontSize: '0.88rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)', fontWeight: 600 }}>
             Showing {filteredProducts.length} items
           </span>
         </div>
@@ -269,19 +269,19 @@ export default function SellerProductsPage() {
                       />
                     </td>
                     <td>
-                      <strong style={{ color: 'var(--ink-brown)', display: 'block', fontSize: '0.88rem' }}>
+                      <strong style={{ color: 'var(--ink-brown)', display: 'block', fontSize: '1rem' }}>
                         {p.name}
                       </strong>
-                      <span style={{ fontSize: '0.7rem', fontFamily: 'var(--font-nav)', color: 'var(--stone-taupe)' }}>
+                      <span style={{ fontSize: '0.82rem', fontFamily: 'var(--font-nav)', color: 'var(--stone-taupe)', fontWeight: 500 }}>
                         SKU: {p.id.slice(0, 8).toUpperCase()}
                       </span>
                     </td>
                     <td>
                       <span style={{
                         display: 'inline-block',
-                        padding: '0.2rem 0.55rem',
+                        padding: '0.25rem 0.65rem',
                         borderRadius: '2px',
-                        fontSize: '0.72rem',
+                        fontSize: '0.82rem',
                         fontFamily: 'var(--font-nav)',
                         fontWeight: 700,
                         textTransform: 'uppercase',
@@ -292,20 +292,20 @@ export default function SellerProductsPage() {
                         {p.category}
                       </span>
                     </td>
-                    <td style={{ fontWeight: 700, color: 'var(--ink-brown)' }}>
+                    <td style={{ fontWeight: 700, color: 'var(--ink-brown)', fontSize: '1rem' }}>
                       ₹ {Number(p.price_in_rupees || 0).toLocaleString('en-IN')}
                     </td>
                     <td>
-                      <span style={{ fontWeight: 700, color: Number(p.stock) > 5 ? '#166534' : 'var(--maharani-maroon)' }}>
+                      <span style={{ fontWeight: 700, fontSize: '0.95rem', color: Number(p.stock) > 5 ? '#166534' : 'var(--maharani-maroon)' }}>
                         {p.stock} units
                       </span>
                     </td>
                     <td style={{ textAlign: 'center' }}>
                       <span style={{
                         display: 'inline-block',
-                        padding: '0.2rem 0.55rem',
+                        padding: '0.3rem 0.7rem',
                         borderRadius: '2px',
-                        fontSize: '0.68rem',
+                        fontSize: '0.82rem',
                         fontFamily: 'var(--font-nav)',
                         fontWeight: 700,
                         letterSpacing: '0.08em',
@@ -361,14 +361,14 @@ export default function SellerProductsPage() {
             </div>
 
             {formError && (
-              <div style={{ background: '#FEF2F2', border: '1px solid #FECDD3', color: 'var(--maharani-maroon)', padding: '0.65rem', borderRadius: '2px', fontSize: '0.75rem', marginBottom: '1rem', textAlign: 'center' }}>
+              <div style={{ background: '#FEF2F2', border: '1px solid #FECDD3', color: 'var(--maharani-maroon)', padding: '0.75rem', borderRadius: '2px', fontSize: '0.88rem', marginBottom: '1rem', textAlign: 'center' }}>
                 {formError}
               </div>
             )}
 
             <form onSubmit={handleCreateProduct} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
                   Artisan Piece Title
                 </label>
                 <input
@@ -377,19 +377,19 @@ export default function SellerProductsPage() {
                   value={newProduct.name}
                   onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
                   placeholder="e.g., Katan Silk Brocade Saree"
-                  style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.85rem', color: 'var(--ink-brown)' }}
+                  style={{ width: '100%', padding: '0.75rem 0.95rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.95rem', color: 'var(--ink-brown)' }}
                 />
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
                     Collection
                   </label>
                   <select
                     value={newProduct.category}
                     onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
-                    style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.85rem', background: 'var(--pure-white)', color: 'var(--ink-brown)' }}
+                    style={{ width: '100%', padding: '0.75rem 0.95rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.95rem', background: 'var(--pure-white)', color: 'var(--ink-brown)' }}
                   >
                     <option value="sarees">Banarasi Sarees</option>
                     <option value="lehengas">Bridal Lehengas</option>
@@ -399,7 +399,7 @@ export default function SellerProductsPage() {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
                     Price (INR ₹)
                   </label>
                   <input
@@ -408,14 +408,14 @@ export default function SellerProductsPage() {
                     value={newProduct.price_in_rupees}
                     onChange={(e) => setNewProduct({ ...newProduct, price_in_rupees: e.target.value })}
                     placeholder="32000"
-                    style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.85rem', color: 'var(--ink-brown)' }}
+                    style={{ width: '100%', padding: '0.75rem 0.95rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.95rem', color: 'var(--ink-brown)' }}
                   />
                 </div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
                     Initial Loom Stock
                   </label>
                   <input
@@ -424,18 +424,18 @@ export default function SellerProductsPage() {
                     value={newProduct.stock}
                     onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })}
                     placeholder="10"
-                    style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.85rem', color: 'var(--ink-brown)' }}
+                    style={{ width: '100%', padding: '0.75rem 0.95rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.95rem', color: 'var(--ink-brown)' }}
                   />
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
                     Curated Asset
                   </label>
                   <select
                     value={newProduct.image_url}
                     onChange={(e) => setNewProduct({ ...newProduct, image_url: e.target.value })}
-                    style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.85rem', background: 'var(--pure-white)', color: 'var(--ink-brown)' }}
+                    style={{ width: '100%', padding: '0.75rem 0.95rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.95rem', background: 'var(--pure-white)', color: 'var(--ink-brown)' }}
                   >
                     <option value="/images/category-sarees.png">Sarees Lookbook</option>
                     <option value="/images/category-lehengas.png">Lehengas Lookbook</option>
@@ -449,16 +449,16 @@ export default function SellerProductsPage() {
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  style={{ padding: '0.65rem 1.25rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', background: 'transparent', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.12em', cursor: 'pointer' }}
+                  style={{ padding: '0.75rem 1.4rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', background: 'transparent', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.12em', cursor: 'pointer' }}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  style={{ padding: '0.65rem 1.5rem', borderRadius: '2px', border: '1.5px solid var(--maharani-maroon)', background: 'var(--maharani-maroon)', color: 'var(--ivory-silk)', fontFamily: 'var(--font-nav)', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.16em', cursor: submitting ? 'not-allowed' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
+                  style={{ padding: '0.75rem 1.6rem', borderRadius: '2px', border: '1.5px solid var(--maharani-maroon)', background: 'var(--maharani-maroon)', color: 'var(--ivory-silk)', fontFamily: 'var(--font-nav)', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.14em', cursor: submitting ? 'not-allowed' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
                 >
-                  {submitting ? <Loader2 style={{ width: 14, height: 14, animation: 'spin 1s linear infinite' }} /> : <Check style={{ width: 14, height: 14 }} />}
+                  {submitting ? <Loader2 style={{ width: 15, height: 15, animation: 'spin 1s linear infinite' }} /> : <Check style={{ width: 15, height: 15 }} />}
                   Save to Supabase
                 </button>
               </div>

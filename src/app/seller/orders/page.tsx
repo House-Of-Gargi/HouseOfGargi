@@ -86,7 +86,7 @@ export default function SellerOrdersPage() {
                 {orders.length} LIVE ORDERS
               </span>
             </div>
-            <p style={{ fontSize: '0.85rem', color: 'var(--stone-taupe)', margin: '0.35rem 0 0 0' }}>
+            <p style={{ fontSize: '0.98rem', color: 'var(--stone-taupe)', margin: '0.35rem 0 0 0', fontWeight: 500 }}>
               Direct live sync with Supabase table &apos;orders&apos; &bull; Manage bespoke commissions &amp; courier manifests
             </p>
           </div>
@@ -112,8 +112,8 @@ export default function SellerOrdersPage() {
                 color: statusFilter === tab.id ? 'var(--ivory-silk)' : 'var(--stone-taupe)',
                 border: '1px solid var(--soft-gold-line)',
                 borderRadius: '2px',
-                padding: '0.4rem 0.75rem',
-                fontSize: '0.72rem',
+                padding: '0.45rem 0.85rem',
+                fontSize: '0.85rem',
                 fontFamily: 'var(--font-nav)',
                 fontWeight: 700,
                 textTransform: 'uppercase',
@@ -134,9 +134,9 @@ export default function SellerOrdersPage() {
           background: 'var(--pure-white)',
           border: '1px solid var(--soft-gold-line)',
           borderRadius: '2px',
-          padding: '0.4rem 0.75rem',
+          padding: '0.45rem 0.85rem',
         }}>
-          <Search style={{ width: 14, height: 14, color: 'var(--stone-taupe)', marginRight: '0.45rem' }} />
+          <Search style={{ width: 15, height: 15, color: 'var(--stone-taupe)', marginRight: '0.45rem' }} />
           <input
             type="text"
             value={searchQuery}
@@ -145,7 +145,7 @@ export default function SellerOrdersPage() {
             style={{
               border: 'none',
               outline: 'none',
-              fontSize: '0.8rem',
+              fontSize: '0.92rem',
               fontFamily: 'var(--font-sans)',
               color: 'var(--ink-brown)',
               width: '180px',
@@ -162,11 +162,11 @@ export default function SellerOrdersPage() {
             <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--ink-brown)', margin: 0 }}>
               Live Order Pipeline
             </h3>
-            <p style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', margin: '0.2rem 0 0 0' }}>
+            <p style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)', margin: '0.2rem 0 0 0' }}>
               Update workflow stage directly to sync with Supabase and client tracking
             </p>
           </div>
-          <span style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)' }}>
+          <span style={{ fontSize: '0.88rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)', fontWeight: 600 }}>
             Showing {filteredOrders.length} orders
           </span>
         </div>
@@ -208,19 +208,19 @@ export default function SellerOrdersPage() {
                         {o.order_number || `#HG-${o.id.slice(0, 4)}`}
                       </td>
                       <td>
-                        <strong style={{ color: 'var(--ink-brown)', display: 'block' }}>
+                        <strong style={{ color: 'var(--ink-brown)', display: 'block', fontSize: '1rem' }}>
                           {o.customer_name}
                         </strong>
                         {o.customer_phone && (
-                          <span style={{ fontSize: '0.72rem', color: 'var(--stone-taupe)' }}>
+                          <span style={{ fontSize: '0.85rem', color: 'var(--stone-taupe)', fontWeight: 500 }}>
                             {o.customer_phone}
                           </span>
                         )}
                       </td>
-                      <td style={{ color: 'var(--stone-taupe)', fontSize: '0.82rem' }}>
+                      <td style={{ color: 'var(--stone-taupe)', fontSize: '0.92rem' }}>
                         {o.created_at ? new Date(o.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Recent'}
                       </td>
-                      <td style={{ fontWeight: 700, color: 'var(--ink-brown)' }}>
+                      <td style={{ fontWeight: 700, color: 'var(--ink-brown)', fontSize: '1rem' }}>
                         ₹ {Number(o.total_rupees || 0).toLocaleString('en-IN')}
                       </td>
                       <td>
@@ -230,13 +230,14 @@ export default function SellerOrdersPage() {
                             disabled={isUpdating}
                             onChange={(e) => handleStatusChange(o.id, e.target.value)}
                             style={{
-                              padding: '0.35rem 0.65rem',
+                              padding: '0.45rem 0.75rem',
                               borderRadius: '2px',
                               border: '1px solid var(--soft-gold-line)',
-                              fontSize: '0.78rem',
+                              fontSize: '0.9rem',
                               fontFamily: 'var(--font-sans)',
                               background: 'var(--pure-white)',
                               color: 'var(--ink-brown)',
+                              fontWeight: 500,
                               outline: 'none',
                               cursor: isUpdating ? 'not-allowed' : 'pointer',
                             }}

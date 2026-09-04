@@ -94,7 +94,7 @@ export function SellerShell({
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '0.72rem',
+              fontSize: '0.82rem',
               fontFamily: 'var(--font-nav)',
               fontWeight: 700,
             }}>
@@ -105,12 +105,12 @@ export function SellerShell({
 
           <span
             style={{
-              fontSize: '0.625rem',
+              fontSize: '0.78rem',
               fontFamily: 'var(--font-nav)',
               fontWeight: 700,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              padding: '0.25rem 0.55rem',
+              padding: '0.3rem 0.65rem',
               borderRadius: 2,
               background: 'var(--warm-sand)',
               color: 'var(--maharani-maroon)',
