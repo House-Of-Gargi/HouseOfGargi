@@ -83,6 +83,17 @@ a { color: inherit; text-decoration: none; }
 button { cursor: pointer; font-family: inherit; }
 ul, ol { list-style: none; }
 
+/* Global Form Controls Reset — Crisp, Upright, High Legibility (30+ Luxury) */
+input, textarea, select {
+  font-family: var(--font-body);
+  font-style: normal;
+  color: var(--ink-brown);
+}
+input::placeholder, textarea::placeholder {
+  font-family: var(--font-body);
+  font-style: normal;
+}
+
 /* ── 3. Typography Scale (30+ International Standards) ───── */
 h1, h2, h3 {
   font-family: var(--font-display);
@@ -95,16 +106,17 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 
 .serif-italic {
   font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 400;
+  font-style: normal;
+  font-weight: 500;
 }
 
 .subtitle-italic {
-  font-family: var(--font-display);
-  font-style: italic;
+  font-family: var(--font-body);
+  font-style: normal;
   font-weight: 400;
-  font-size: clamp(18px, 2.2vw, 22px);
-  line-height: 1.5;
+  font-size: clamp(16px, 2vw, 19px);
+  line-height: 1.6;
+  color: var(--stone-taupe);
 }
 
 .caption {
@@ -254,7 +266,8 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 .product-card__artisan {
   font-size: 14.5px;
   color: var(--stone-taupe);
-  font-style: italic;
+  font-style: normal;
+  font-weight: 500;
   margin-bottom: 8px;
 }
 .caption {
@@ -954,12 +967,15 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   margin-bottom: 12px;
 }
 .hero__subtitle {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: clamp(18px, 2.5vw, 24px);
-  color: rgba(255, 255, 255, 0.8);
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(19px, 2.5vw, 24px);
+  color: rgba(255, 255, 255, 0.95);
   margin-bottom: 36px;
-  max-width: 420px;
+  max-width: 480px;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* ── 17. Vision Strip (Atelier Heritage Pillars) ────────── */
@@ -1391,10 +1407,12 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   margin-bottom: 8px;
 }
 .category-banner__content p {
-  color: rgba(255,255,255,0.85);
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: clamp(18px, 2.5vw, 22px);
+  color: rgba(255, 255, 255, 0.95);
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(17px, 2.2vw, 20px);
+  letter-spacing: 0.01em;
 }
 
 /* ── Breadcrumb ───────────────────────────────────────────── */
@@ -1536,12 +1554,14 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 .pdp__artisan-note {
   background: rgba(242, 232, 216, 0.6);
   border-left: 3px solid var(--gargi-gold);
-  padding: 12px 18px;
+  padding: 14px 20px;
   border-radius: 0 6px 6px 0;
   margin-bottom: 20px;
-  font-family: var(--font-display);
-  font-style: italic;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 500;
   font-size: 15px;
+  line-height: 1.6;
   color: var(--ink-brown);
 }
 .pdp-desc,
@@ -1809,38 +1829,39 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 /* ── 23. Bespoke Form ───────────────────────────────────────── */
 .bespoke-container {
   background: var(--ivory-silk);
-  border: 4px double var(--gargi-gold);
+  border: 2px solid var(--soft-gold-line);
   padding: 48px;
-  border-radius: 4px;
-  box-shadow: 0 8px 32px rgba(43, 31, 24, 0.08);
+  border-radius: 8px;
+  box-shadow: 0 16px 48px rgba(43, 31, 24, 0.08);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 .bespoke-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 40px;
 }
 .bespoke-header h2 {
   font-family: var(--font-display);
-  font-size: clamp(32px, 5vw, 48px);
-  color: var(--maharani-maroon);
-  margin-bottom: 16px;
+  font-size: clamp(32px, 5vw, 44px);
+  color: var(--ink-brown);
+  font-weight: 600;
+  margin-bottom: 12px;
 }
 .bespoke-header p {
   font-family: var(--font-body);
-  font-size: 18px;
+  font-size: 16.5px;
   color: var(--stone-taupe);
-  max-width: 600px;
+  max-width: 620px;
   margin: 0 auto;
-  line-height: 1.8;
+  line-height: 1.75;
 }
 .bespoke-form .form-group {
-  margin-bottom: 24px;
+  margin-bottom: 8px;
 }
 .bespoke-form .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 20px;
 }
 @media (max-width: 600px) {
   .bespoke-container {
@@ -1852,58 +1873,68 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   .bespoke-submit {
     width: 100%;
     padding: 16px 20px;
-    font-size: 14px;
+    font-size: 14.5px;
     letter-spacing: 0.1em;
   }
 }
 .bespoke-form label {
   display: block;
   font-family: var(--font-nav);
-  font-size: 14px;
-  color: var(--maharani-maroon);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--stone-taupe);
   margin-bottom: 8px;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
 }
 .bespoke-form input,
-.bespoke-form select,
 .bespoke-form textarea {
   width: 100%;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--soft-gold-line);
-  padding: 12px 0;
-  font-family: var(--font-display);
-  font-size: 20px;
+  background: var(--pure-white);
+  border: 1.5px solid var(--soft-gold-line);
+  border-radius: 4px;
+  padding: 12px 16px;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: 15.5px;
+  font-weight: 500;
   color: var(--ink-brown);
-  transition: border-color 300ms;
+  box-shadow: 0 2px 6px rgba(43, 31, 24, 0.03);
+  transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+.bespoke-form input:hover,
+.bespoke-form textarea:hover {
+  border-color: var(--gargi-gold);
+  background: #FFFCF7;
+  box-shadow: 0 3px 10px rgba(43, 31, 24, 0.06);
 }
 .bespoke-form input:focus,
-.bespoke-form select:focus,
 .bespoke-form textarea:focus {
   outline: none;
-  border-bottom-color: var(--gargi-gold);
+  border-color: var(--gargi-gold);
+  background: #FFFCF7;
+  box-shadow: 0 0 0 3px rgba(184, 142, 24, 0.15), 0 4px 14px rgba(43, 31, 24, 0.06);
 }
 .bespoke-form input::placeholder,
 .bespoke-form textarea::placeholder {
-  color: var(--ink-brown);
-  font-style: italic;
-  opacity: 0.7;
+  color: var(--stone-taupe);
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: 15px;
+  font-weight: 400;
+  opacity: 0.8;
 }
 .bespoke-form textarea {
   resize: vertical;
-  min-height: 100px;
+  min-height: 110px;
+  line-height: 1.6;
 }
 .bespoke-form select {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238B7E6F'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0 center;
-  padding-right: 24px;
-  cursor: pointer;
+  display: none;
 }
 .form-actions {
-  margin-top: 48px;
+  margin-top: 40px;
   text-align: center;
 }
 .bespoke-submit {

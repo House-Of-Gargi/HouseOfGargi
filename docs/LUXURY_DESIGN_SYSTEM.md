@@ -72,6 +72,7 @@ Typography is calibrated for a **discerning 30+ international luxury clientele**
 > 2. **Comfortable Leading**: Body copy must maintain `line-height: 1.75` to `1.8` to prevent ocular strain.
 > 3. **High Contrast**: Always set captions in `--stone-taupe` (`#5C5043`) or darker. Washed-out light grays are strictly prohibited.
 > 4. **Grounded Authenticity**: Avoid ungrounded marketing hyperbole (e.g. "7th generation dynasties", "10 generations", "fearlessly debated the universe"). Employ dignified, grounded terminology: *Generational Weaving Families*, *Partner Artisan Collectives*, *Centuries-old Pit Loom Traditions*.
+> 5. **Zero Cursive/Italics in Functional Elements**: Form inputs, placeholders, telephone numbers, email fields, and technical specifications must NEVER use cursive or italic script. They must always use upright, high-contrast typography (`Plus Jakarta Sans` / `Outfit`) at `≥ 15.5px` for effortless, instantaneous readability.
 
 ---
 
@@ -146,3 +147,30 @@ Typography is calibrated for a **discerning 30+ international luxury clientele**
 ## 6. Imagery Standards
 - **Tone**: Warm golden-hour natural sunlight, authentic Indian textures (sandstone courtyards, handlooms, silk sheen).
 - **Prohibited**: Cold studio white lighting, oversaturated clipart, cartoon emojis, or low-resolution compressed banners.
+
+---
+
+## 7. Custom Quiet Luxury Dropdown System (`CustomDropdown.tsx`)
+
+Native browser `<select>` elements invoke default operating system dialogs (e.g. Windows classic electric-blue menus), which severely degrade the quiet luxury experience. 
+
+All selection interfaces across the entire House of Gargi platform must use the unified `CustomDropdown` component.
+
+### 7.1 Visual & Interactive Specification
+- **Trigger Canvas**: `var(--pure-white)` `#FFFFFF` with warm cream hover `#FFFCF7`.
+- **Border**: `1.5px solid var(--soft-gold-line)` (`#E4D3AE`), elevating to `var(--gargi-gold)` (`#B88E18`) on focus / active state.
+- **Focus Glow**: `0 0 0 3px rgba(184, 142, 24, 0.15), 0 4px 14px rgba(43, 31, 24, 0.06)`.
+- **Chevron**: 14px refined geometric SVG arrow in Gargi Gold that smoothly rotates 180° upon opening.
+- **Floating Menu**:
+  - Shadow: Floating atelier depth `0 16px 40px rgba(43, 31, 24, 0.12), 0 4px 12px rgba(43, 31, 24, 0.04)`.
+  - Entrance: Keyframe slide-fade (`luxuryDropdownOpen` 220ms bezier curve).
+  - Maximum height: `280px` with custom subtle scrollbar.
+- **Menu Items**:
+  - Typography: 15px+ Cormorant / Garamond text with high contrast for the 30+ luxury clientele.
+  - Hover: Shifts smoothly right (`padding-left: 22px`), highlighting with an authentic gold indicator bar (`::before`) and soft Ivory Silk wash.
+  - Active / Selected: Highlighted in subtle Maharani tint (`rgba(122, 35, 49, 0.05)`), dark maroon bold text, and a Gargi Gold checkmark `✓`.
+- **Accessibility & Touch**:
+  - Full keyboard control: `Enter`, `Space`, `ArrowUp`, `ArrowDown`, `Escape`.
+  - Minimum 48px touch-friendly hit areas.
+  - ARIA attributes: `role="listbox"`, `role="option"`, `aria-expanded`, `aria-selected`.
+

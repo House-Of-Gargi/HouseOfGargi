@@ -85,7 +85,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </div>
             <h1>{product.name}</h1>
             <div className="pdp-price">{formatPrice(product.price)}</div>
-            <div className="caption" style={{ fontStyle: 'italic', marginBottom: '24px' }}>
+            <div className="caption" style={{ fontStyle: 'normal', fontWeight: 500, color: 'var(--stone-taupe)', marginBottom: '24px' }}>
               ✦ {product.artisanNote}
             </div>
 
