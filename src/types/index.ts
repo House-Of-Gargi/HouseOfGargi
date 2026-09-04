@@ -21,6 +21,8 @@ export interface Category {
   tagline: string;
   image: string;
   bannerImage: string;
+  exploreImage?: string;
+  collectionTileImage?: string;
 }
 
 export interface CartItem extends Product {

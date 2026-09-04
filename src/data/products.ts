@@ -9,6 +9,8 @@ export const categories: Category[] = [
     pronunciation: 'saa-reez',
     tagline: 'Handwoven across the looms of Banaras and Kanchipuram.',
     image: '/images/category-sarees.png',
+    exploreImage: '/images/collections/explore-sarees.jpg',
+    collectionTileImage: '/images/collections/collection-sarees.jpg',
     bannerImage: '/images/banner-sarees-wide.png',
   },
   {
@@ -17,6 +19,8 @@ export const categories: Category[] = [
     pronunciation: 'leh-hen-gaas',
     tagline: 'Bridal silhouettes embroidered with centuries of tradition.',
     image: '/images/category-lehengas.png',
+    exploreImage: '/images/collections/explore-lehengas.jpg',
+    collectionTileImage: '/images/collections/collection-lehengas.jpg',
     bannerImage: '/images/banner-lehengas-wide.png',
   },
   {
@@ -25,6 +29,8 @@ export const categories: Category[] = [
     pronunciation: 'kur-tah sets',
     tagline: 'Block-printed cottons and silks for everyday grace.',
     image: '/images/category-kurtas.png',
+    exploreImage: '/images/collections/explore-kurtas.jpg',
+    collectionTileImage: '/images/collections/collection-kurtas.jpg',
     bannerImage: '/images/banner-kurtas-wide.png',
   },
   {
@@ -33,6 +39,8 @@ export const categories: Category[] = [
     pronunciation: 'ak-ses-uh-reez',
     tagline: 'Jadau, kundan, and heritage jewellery to complete the look.',
     image: '/images/category-accessories.png',
+    exploreImage: '/images/collections/explore-accessories.jpg',
+    collectionTileImage: '/images/collections/collection-accessories.jpg',
     bannerImage: '/images/banner-accessories-wide.png',
   },
 ];

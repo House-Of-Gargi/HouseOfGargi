@@ -222,7 +222,7 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
                   className="category-tile" 
                   style={{ minHeight: '420px', height: 'auto' }}
                 >
-                  <img src={cat.image} alt={cat.name} loading="lazy" />
+                  <img src={cat.exploreImage || cat.image} alt={cat.name} loading="lazy" />
                   <div className="category-tile__border" />
                   <div className="category-tile__label">
                     <h3 style={{ fontSize: '26px', marginBottom: '6px' }}>{cat.name}</h3>

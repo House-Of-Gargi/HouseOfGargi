@@ -156,17 +156,122 @@ Ultra-luxury studio flatlay of an authentic heirloom Phulkari silk dupatta from 
 
 ---
 
-## Quick Checklist
+---
 
-| # | Name | Category | Filename |
-|---|---|---|---|
-| **1** | Gota Patti Festive Lehenga | Lehengas | `1.png` → `lehenga-gota-patti.jpg` |
-| **2** | Chikankari Ivory Anarkali | Lehengas | `2.png` → `lehenga-chikankari.jpg` |
-| **3** | Mirror Work Chaniya Choli | Lehengas | `3.png` → `lehenga-mirror-work.jpg` |
-| **4** | Chikankari White-on-White Kurta | Kurta Sets | `4.png` → `kurta-chikankari-white.jpg` |
-| **5** | Ajrakh Silk Kurta Set | Kurta Sets | `5.png` → `kurta-ajrakh-silk.jpg` |
-| **6** | Kalamkari Anarkali Kurta | Kurta Sets | `6.png` → `kurta-kalamkari.jpg` |
-| **7** | Bandhani Silk Festival Kurta | Kurta Sets | `7.png` → `kurta-bandhani-silk.jpg` |
-| **8** | Meenakari Jhumka Earrings | Accessories | `8.png` → `accessory-meenakari-jhumka.jpg` |
-| **9** | Temple Jewellery Necklace Set | Accessories | `9.png` → `accessory-temple-jewellery.jpg` |
-| **10** | Phulkari Silk Dupatta | Accessories | `10.png` → `accessory-phulkari-dupatta.jpg` |
+## Part 2: Distinct Collection & Lookbook Imagery (Items 11 to 17)
+
+> [!TIP]
+> **Workflow:** Copy each prompt into the Gemini web app, generate the image in 3:4 portrait, download and rename to `11.png`, `12.png`, etc., and paste them into `public/images/products/` or `public/images/collections/`. Then run `npm run sync:images`.
+
+---
+
+### 🏛️ Section A: "Explore More Collections" Cards (Screenshot 1)
+
+These 3 prompts replace the category lookbook cards in the **"Explore More Collections"** section so they feature architectural, cinematic palace curation distinct from any single product flatlay.
+
+#### Item 11: Explore Collection — Sarees Lookbook
+- **Your Simple Filename:** `11.png` (or `11.jpg`)
+- **Final Target File:** `public/images/collections/explore-sarees.jpg`
+- **Category:** Sarees Lookbook | **Target Aspect Ratio:** `3:4` (Portrait)
+- **Gemini Web App Prompt:**
+```text
+High-fashion architectural editorial of royal Indian handloom silks cascading gracefully through the carved sandstone archway of an ancient Udaipur palace jharokha. Layers of rich royal sapphire blue and liquid molten gold tissue Banarasi and Kanchipuram silk textiles spilling down historic hand-chiseled white marble palace steps into warm golden hour morning light. The intricate golden korvai temple borders and real silver zari pallav motifs gleam softly, complemented by an antique carved brass rosewater vessel and scattered crimson rose petals resting nearby on the steps. Regal, cinematic high-fashion lookbook photography, shot on medium format Hasselblad, 8k resolution.
+```
+
+---
+
+#### Item 12: Explore Collection — Lehengas Couture Lookbook
+- **Your Simple Filename:** `12.png` (or `12.jpg`)
+- **Final Target File:** `public/images/collections/explore-lehengas.jpg`
+- **Category:** Lehengas Lookbook | **Target Aspect Ratio:** `3:4` (Portrait)
+- **Gemini Web App Prompt:**
+```text
+Haute couture bridal atelier installation inside a grand sunlit heritage Jaipur haveli courtyard. A majestic midnight plum-wine and burnished antique gold bridal couture lehenga with a sweeping 18-kali circular flare, heavily encrusted with hand-embroidered zardozi peacocks and scrolling floral arabesques, displayed on an antique carved wooden dress form. Soft, atmospheric shafts of afternoon sunlight pour through a pierced Rajasthani stone jali lattice screen in the background, illuminating thousands of hand-stitched micro-pearls and dabka wire bullion embroidery. The polished limestone courtyard floor is decorated with fresh white mogra jasmine garlands and glowing antique brass floor lamps. Vogue India couture bridal lookbook aesthetic.
+```
+
+---
+
+#### Item 13: Explore Collection — Accessories & Imperial Jewels Lookbook
+- **Your Simple Filename:** `13.png` (or `13.jpg`)
+- **Final Target File:** `public/images/collections/explore-accessories.jpg`
+- **Category:** Accessories Lookbook | **Target Aspect Ratio:** `3:4` (Portrait)
+- **Gemini Web App Prompt:**
+```text
+Imperial royal jewellery treasury still life. An antique Mughal mother-of-pearl and brass-fitted carved wooden jewellery casket sits open on crushed emerald green royal velvet cloth. Spilling gracefully from the velvet interior is a grand royal Navratna multi-gemstone collar necklace, accompanied by Colombian emerald-drop chandbali earrings, an uncut syndicate diamond polki matha patti, and solid 22k gold filigree bangles. In the soft-focus background, an antique brass diya softly glows alongside a delicate porcelain bowl with fresh white champak blossoms. Chiaroscuro royal jewel vault lighting, museum-grade luxury jewellery campaign photography.
+```
+
+---
+
+### 🛍️ Section B: "Shop by Collection" Homepage Tiles (Screenshot 2)
+
+These 4 prompts replace the cards in the **"Shop by Collection"** section on the homepage with completely new, craft-focused atelier vignettes.
+
+#### Item 14: Shop Collection — Sarees Craft Vignette
+- **Your Simple Filename:** `14.png` (or `14.jpg`)
+- **Final Target File:** `public/images/collections/collection-sarees.jpg`
+- **Category:** Sarees Collection | **Target Aspect Ratio:** `3:4` (Portrait)
+- **Gemini Web App Prompt:**
+```text
+Atmospheric master weaver's silk archive still life. A rich, textural curation of folded raw handloom silk sarees in shades of imperial turmeric saffron, deep vermilion red, and peacock teal, stacked beside an unfolded antique gold brocade pallav draped over a weathered dark teakwood weaving shuttle bench. Hand-turned wooden spools wound with pure metallic gold and silver zari thread and hand-carved rosewood border stamps rest naturally nearby. Warm golden hour morning light streaming across the raw silk weaves and authentic loom textures, high-end textile editorial photography.
+```
+
+---
+
+#### Item 15: Shop Collection — Lehengas Bridal Heritage
+- **Your Simple Filename:** `15.png` (or `15.jpg`)
+- **Final Target File:** `public/images/collections/collection-lehengas.jpg`
+- **Category:** Lehengas Collection | **Target Aspect Ratio:** `3:4` (Portrait)
+- **Gemini Web App Prompt:**
+```text
+Royal Rajputana bridal atelier vignette. An exquisite burnt-terracotta and antique champagne gold heritage bridal lehenga skirt and matching hand-embroidered blouse displayed on a tailored linen mannequin inside a sunlit Rajasthan palace chamber. The lehenga skirt features masterfully executed Gota Patti appliqué, raised Dabka wirework, and micro-pearl borders. Draped over one shoulder is a featherlight tissue organza dupatta veil with scalloped gold fringe. Antique arched niches with warm oil lamps and vintage carved brass mirrors in the soft-focus background. Cinematic luxury couture lookbook portraiture.
+```
+
+---
+
+#### Item 16: Shop Collection — Kurta Sets Loom Atelier
+- **Your Simple Filename:** `16.png` (or `16.jpg`)
+- **Final Target File:** `public/images/collections/collection-kurtas.jpg`
+- **Category:** Kurta Sets Collection | **Target Aspect Ratio:** `3:4` (Portrait)
+- **Gemini Web App Prompt:**
+```text
+Refined luxury artisanal kurta ensemble presentation. An imperial forest green mulberry silk kurta with intricate gold zardozi neck embroidery, styled alongside an airy ivory chanderi silk kurta with delicate shadow-work chikankari and natural indigo hand-blocked dupatta, draped with quiet elegance over a minimalist sculptural brass stand. Setting features a warm textured sand-lime plaster wall, terracotta water vessels, and morning sunlight filtering through wooden louvered shutters. Architectural Digest quiet luxury menswear and womenswear fashion editorial.
+```
+
+---
+
+#### Item 17: Shop Collection — Heritage Jewellery Treasury
+- **Your Simple Filename:** `17.png` (or `17.jpg`)
+- **Final Target File:** `public/images/collections/collection-accessories.jpg`
+- **Category:** Accessories Collection | **Target Aspect Ratio:** `3:4` (Portrait)
+- **Gemini Web App Prompt:**
+```text
+High jewellery editorial flatlay on a slab of dark forest green Indian marble. A breathtaking bridal jewellery suite featuring an elaborate Jadau choker necklace set with untreated uncut syndicate polki diamonds, lustrous Basra seed pearls, and carved pigeon-blood ruby beads, paired with matching statement jhumkas and a delicate gold hathphool ring. Soft, diffused natural daylight accentuating the dimensional foil-backed stones and hand-painted miniature Meenakari enamel on the jewelry borders. High-end luxury jewelry catalog editorial.
+```
+
+---
+
+#### Item 18 (Bonus Complete Coverage): Explore Collection — Kurta Sets Lookbook
+- **Your Simple Filename:** `18.png` (or `18.jpg`)
+- **Final Target File:** `public/images/collections/explore-kurtas.jpg`
+- **Category:** Kurta Sets Lookbook | **Target Aspect Ratio:** `3:4` (Portrait)
+- **Gemini Web App Prompt:**
+```text
+Handloom textile pavilion fashion editorial. Royal angrakha-cut and asymmetric pure silk kurtas in royal saffron and slate indigo, displayed on sculptural dark iron pedestals against an ivory limestone colonnade. Accented by handwoven tussar silk stoles and carved wooden block-printing stamps resting on an antique stone bench. Warm ambient courtyard glow, quiet luxury Indian couture styling.
+```
+
+---
+
+## Complete Quick Reference Checklist
+
+| # | Item Name | Section | Filename | Target Destination |
+|---|---|---|---|---|
+| **1–10** | *Products 1 to 10* | Product Catalog | `1.png` – `10.png` | `public/images/products/*.jpg` *(Complete & Live)* |
+| **11** | Explore Sarees Lookbook | Explore More Collections (SS 1) | `11.png` | `public/images/collections/explore-sarees.jpg` |
+| **12** | Explore Lehengas Lookbook | Explore More Collections (SS 1) | `12.png` | `public/images/collections/explore-lehengas.jpg` |
+| **13** | Explore Accessories Lookbook | Explore More Collections (SS 1) | `13.png` | `public/images/collections/explore-accessories.jpg` |
+| **14** | Shop Sarees Tile | Shop by Collection (SS 2) | `14.png` | `public/images/collections/collection-sarees.jpg` |
+| **15** | Shop Lehengas Tile | Shop by Collection (SS 2) | `15.png` | `public/images/collections/collection-lehengas.jpg` |
+| **16** | Shop Kurta Sets Tile | Shop by Collection (SS 2) | `16.png` | `public/images/collections/collection-kurtas.jpg` |
+| **17** | Shop Accessories Tile | Shop by Collection (SS 2) | `17.png` | `public/images/collections/collection-accessories.jpg` |
+| **18** | *(Bonus)* Explore Kurta Sets | Explore More Collections | `18.png` | `public/images/collections/explore-kurtas.jpg` |
+

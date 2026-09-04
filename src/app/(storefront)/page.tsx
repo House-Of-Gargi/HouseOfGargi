@@ -75,7 +75,7 @@ export default function HomePage() {
             {categories.map((cat, i) => (
               <ScrollReveal key={cat.id} style={{ transitionDelay: `${i * 100}ms` }}>
                 <Link href={`/category/${cat.id}`} className="category-tile">
-                  <img src={cat.image} alt={cat.name} loading="lazy" />
+                  <img src={cat.collectionTileImage || cat.image} alt={cat.name} loading="lazy" />
                   <div className="category-tile__border" />
                   <div className="category-tile__label">
                     <h3>{cat.name}</h3>
