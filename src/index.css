@@ -812,98 +812,92 @@ h3 { font-size: clamp(22px, 3vw, 28px); }
 
 /* ── 17. Vision Strip (Atelier Heritage Pillars) ────────── */
 .vision-strip-wrapper {
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--soft-gold-line);
   border-radius: 4px;
-  padding: 40px 32px;
-  box-shadow: 0 8px 24px rgba(43, 31, 24, 0.03);
+  padding: 32px 20px;
+  box-shadow: 0 4px 20px rgba(43, 31, 24, 0.03);
   position: relative;
-}
-.vision-strip-wrapper::before {
-  content: '';
-  position: absolute;
-  inset: 6px;
-  border: 1px solid rgba(228, 211, 174, 0.35);
-  pointer-events: none;
-  border-radius: 2px;
 }
 .vision-strip {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 28px;
+  gap: 20px;
   text-align: center;
   position: relative;
   z-index: 1;
 }
-@media (max-width: 992px) {
+@media (max-width: 900px) {
   .vision-strip {
     grid-template-columns: repeat(2, 1fr);
-    gap: 32px 24px;
+    gap: 28px 16px;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 520px) {
   .vision-strip {
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: 24px;
   }
 }
 .vision-strip__item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 12px;
+  padding: 0 10px;
   position: relative;
 }
 .vision-strip__item:not(:last-child)::after {
   content: '';
   position: absolute;
-  right: -14px;
-  top: 15%;
-  height: 70%;
+  right: -10px;
+  top: 20%;
+  height: 60%;
   width: 1px;
   background: var(--soft-gold-line);
-  opacity: 0.6;
+  opacity: 0.5;
 }
-@media (max-width: 992px) {
+@media (max-width: 900px) {
   .vision-strip__item:not(:last-child)::after {
     display: none;
   }
 }
 .vision-strip__sanskrit {
-  font-family: 'Cinzel', 'Marcellus', 'Georgia', serif;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--gargi-gold);
-  letter-spacing: 0.14em;
-  margin-bottom: 6px;
-  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
 }
 .vision-strip__icon {
-  font-size: 26px;
   color: var(--maharani-maroon);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: rgba(242, 232, 216, 0.4);
-  border: 1px solid rgba(228, 211, 174, 0.6);
+  background: #FAF5ED;
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  transition: transform 300ms ease;
+}
+.vision-strip__item:hover .vision-strip__icon {
+  transform: translateY(-2px);
+  border-color: var(--gargi-gold);
 }
 .vision-strip__title {
   font-family: var(--font-display);
-  font-size: 21px;
+  font-size: 19px;
   font-weight: 600;
   color: var(--ink-brown);
-  margin-bottom: 6px;
-  letter-spacing: 0.01em;
+  margin-bottom: 4px;
+  line-height: 1.25;
 }
 .vision-strip__text {
-  font-size: 13.5px;
-  line-height: 1.6;
+  font-size: 12.5px;
+  line-height: 1.5;
   color: var(--stone-taupe);
-  max-width: 240px;
+  max-width: 200px;
 }
 
 /* ── 18. Story Split Section & Provenance ──────────────────── */

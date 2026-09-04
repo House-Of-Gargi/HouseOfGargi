@@ -2,7 +2,7 @@ import Link from 'next/link';
 import ScrollReveal from '@/components/ScrollReveal';
 import ProductCard from '@/components/ProductCard';
 import { categories, products, featuredProductIds } from '@/data/products';
-import { DiyaIcon, ArrowRightIcon, LotusIcon, LoomShuttleIcon, SpindleIcon, AtelierSealIcon } from '@/components/Icons';
+import { DiyaIcon, ArrowRightIcon, LotusIcon, HandloomIcon, HeritageDiyaIcon, SilkOriginIcon, GoldZariIcon, AtelierSealIcon } from '@/components/Icons';
 
 export default function HomePage() {
   const featured = featuredProductIds
@@ -25,34 +25,34 @@ export default function HomePage() {
       </section>
 
       {/* ═══════ 2. VISION STRIP (ATELIER HERITAGE PILLARS) ═══════ */}
-      <section className="section section--ivory" style={{ padding: '48px 0' }}>
+      <section className="section section--ivory" style={{ padding: '36px 0' }}>
         <div className="container">
           <ScrollReveal>
             <div className="vision-strip-wrapper">
               <div className="vision-strip">
                 <div className="vision-strip__item">
-                  <div className="vision-strip__sanskrit">हस्तशिल्प • Hastaśilpa</div>
-                  <div className="vision-strip__icon"><LoomShuttleIcon size={22} /></div>
-                  <h3 className="vision-strip__title">Pure Handloom</h3>
-                  <p className="vision-strip__text">Zero mechanized looms. Every weft and warp hand-interlocked on wooden pit looms.</p>
+                  <div className="vision-strip__sanskrit">हस्तशिल्प</div>
+                  <div className="vision-strip__icon"><HandloomIcon size={22} /></div>
+                  <h3 className="vision-strip__title">Pure Pit Loom</h3>
+                  <p className="vision-strip__text">Hand-interlocked weft &amp; warp</p>
                 </div>
                 <div className="vision-strip__item">
-                  <div className="vision-strip__sanskrit">परम्परा • Paramparā</div>
-                  <div className="vision-strip__icon"><DiyaIcon size={22} /></div>
-                  <h3 className="vision-strip__title">Living Heritage</h3>
-                  <p className="vision-strip__text">Preserved across 7 unbroken generations of master weaving dynasties.</p>
+                  <div className="vision-strip__sanskrit">परम्परा</div>
+                  <div className="vision-strip__icon"><HeritageDiyaIcon size={22} /></div>
+                  <h3 className="vision-strip__title">7th-Gen Lineage</h3>
+                  <p className="vision-strip__text">Master weaving dynasties</p>
                 </div>
                 <div className="vision-strip__item">
-                  <div className="vision-strip__sanskrit">सत्यता • Satyatā</div>
-                  <div className="vision-strip__icon"><LotusIcon size={22} /></div>
-                  <h3 className="vision-strip__title">Certified Origin</h3>
-                  <p className="vision-strip__text">100% Mulberry &amp; Ahimsa silks verified with authentic GI (Geographical Indication) tags.</p>
+                  <div className="vision-strip__sanskrit">सत्यता</div>
+                  <div className="vision-strip__icon"><SilkOriginIcon size={22} /></div>
+                  <h3 className="vision-strip__title">GI-Tagged Silk</h3>
+                  <p className="vision-strip__text">100% Ahimsa &amp; Mulberry</p>
                 </div>
                 <div className="vision-strip__item">
-                  <div className="vision-strip__sanskrit">अलंकार • Alaṅkāra</div>
-                  <div className="vision-strip__icon"><SpindleIcon size={22} /></div>
-                  <h3 className="vision-strip__title">Heirloom Zari</h3>
-                  <p className="vision-strip__text">Electroplated real silver and 24k gold wire, dyed with organic botanical extracts.</p>
+                  <div className="vision-strip__sanskrit">अलंकार</div>
+                  <div className="vision-strip__icon"><GoldZariIcon size={22} /></div>
+                  <h3 className="vision-strip__title">Precious Zari</h3>
+                  <p className="vision-strip__text">Real silver &amp; 24k gold wire</p>
                 </div>
               </div>
             </div>
