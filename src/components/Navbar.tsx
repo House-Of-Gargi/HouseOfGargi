@@ -14,11 +14,16 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [session, setSession] = useState<any>(null);
+  const [mounted, setMounted] = useState(false);
 
   const pathname = usePathname();
   const router = useRouter();
   const { itemCount } = useCart();
   const { wishlistCount } = useWishlist();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -110,14 +115,14 @@ export default function Navbar() {
               <UserIcon size={20} />
             </button>
             <button 
-              type="button"
+              type="button" 
               aria-label="Wishlist" 
               title="Wishlist" 
               onClick={() => router.push('/wishlist')}
               style={{ position: 'relative' }}
             >
               <WishlistIcon size={20} />
-              {wishlistCount > 0 && (
+              {mounted && wishlistCount > 0 && (
                 <span className="navbar__badge">{wishlistCount}</span>
               )}
             </button>
@@ -129,7 +134,7 @@ export default function Navbar() {
               style={{ position: 'relative' }}
             >
               <CartIcon size={20} />
-              {itemCount > 0 && (
+              {mounted && itemCount > 0 && (
                 <span className="navbar__badge">{itemCount}</span>
               )}
             </button>

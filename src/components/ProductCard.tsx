@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { CSSProperties, MouseEvent } from 'react';
+import { CSSProperties, MouseEvent, useState, useEffect } from 'react';
 import { Product } from '@/types';
 import { formatPrice } from '@/data/products';
 import { WishlistIcon, HeartFilledIcon } from './Icons';
@@ -14,7 +14,13 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, style }: ProductCardProps) {
   const { isInWishlist, toggleWishlist } = useWishlist();
-  const saved = isInWishlist(product.id);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isSaved = mounted && isInWishlist(product.id);
 
   const handleWishlistClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -23,23 +29,25 @@ export default function ProductCard({ product, style }: ProductCardProps) {
   };
 
   return (
-    <Link href={`/product/${product.id}`} className="product-card" style={{ textDecoration: 'none', ...style }}>
+    <div className="product-card" style={{ position: 'relative', display: 'flex', flexDirection: 'column', ...style }}>
       <button 
         type="button"
         className="product-card__wishlist" 
         onClick={handleWishlistClick}
-        aria-label={saved ? 'Remove from wishlist' : 'Add to wishlist'}
+        aria-label={isSaved ? 'Remove from wishlist' : 'Add to wishlist'}
       >
-        {saved ? <HeartFilledIcon size={20} color="var(--maharani-maroon)" /> : <WishlistIcon size={20} />}
+        {isSaved ? <HeartFilledIcon size={20} color="var(--maharani-maroon)" /> : <WishlistIcon size={20} />}
       </button>
-      <div className="product-card__image-wrap">
-        <img src={product.images[0]} alt={product.name} loading="lazy" />
-      </div>
-      <div className="product-card__body" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-        <div className="product-card__name">{product.name}</div>
-        <div className="product-card__artisan">{product.artisanNote}</div>
-        <div className="product-card__price" style={{ marginTop: 'auto' }}>{formatPrice(product.price)}</div>
-      </div>
-    </Link>
+      <Link href={`/product/${product.id}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div className="product-card__image-wrap">
+          <img src={product.images[0]} alt={product.name} loading="lazy" />
+        </div>
+        <div className="product-card__body" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+          <div className="product-card__name">{product.name}</div>
+          <div className="product-card__artisan">{product.artisanNote}</div>
+          <div className="product-card__price" style={{ marginTop: 'auto' }}>{formatPrice(product.price)}</div>
+        </div>
+      </Link>
+    </div>
   );
 }

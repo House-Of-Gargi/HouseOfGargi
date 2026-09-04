@@ -38,7 +38,7 @@ export default function OurStoryPage() {
               <div className="story-split__copy">
                 <h2 style={{ color: 'var(--maharani-maroon)' }}>Our Artisans</h2>
                 <p>
-                  Every piece in the House of Gargi collection is made by skilled artisans — many from families who have practised their craft for five, six, even ten generations. From the zari weavers of Varanasi to the block printers of Jaipur, from the chikankari embroiderers of Lucknow to the jadau jewellers of Rajasthan.
+                  Every piece in the House of Gargi collection is made by skilled artisans from established weaving and embroidery communities across India. From the zari weavers of Varanasi to the block printers of Jaipur, from the chikankari embroiderers of Lucknow to the jadau jewellers of Rajasthan.
                 </p>
                 <p>
                   We work directly with these artisan communities — no middlemen, no factories. This means fair wages, safe working conditions, and the creative freedom for each artisan to bring their own signature to the work.

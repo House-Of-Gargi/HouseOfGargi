@@ -39,8 +39,8 @@ export default function HomePage() {
                 <div className="vision-strip__item">
                   <div className="vision-strip__sanskrit">परम्परा</div>
                   <div className="vision-strip__icon"><HeritageDiyaIcon size={22} /></div>
-                  <h3 className="vision-strip__title">7th-Gen Lineage</h3>
-                  <p className="vision-strip__text">Master weaving dynasties</p>
+                  <h3 className="vision-strip__title">Artisan Lineage</h3>
+                  <p className="vision-strip__text">Centuries-old weaving families</p>
                 </div>
                 <div className="vision-strip__item">
                   <div className="vision-strip__sanskrit">सत्यता</div>
@@ -110,10 +110,10 @@ export default function HomePage() {
                 </div>
                 <h2 style={{ color: 'var(--maharani-maroon)' }}>The House of Gargi Story</h2>
                 <p>
-                  Named after <strong>Gargi Vachaknavi</strong> — the renowned Vedic philosopher who fearlessly debated the nature of the cosmos at the court of King Janaka — our house honours the matriarchs and master artisans who weave, stitch, and dye India&apos;s most sacred textiles.
+                  Named after <strong>Gargi Vachaknavi</strong> — the renowned philosopher of ancient Vedic lore — our house honours the master weavers, dyers, and embroiderers who preserve India&apos;s heritage textile traditions.
                 </p>
                 <p>
-                  Every piece in our collection is crafted by hand using techniques refined over centuries. We don&apos;t mass manufacture — we commission. Each saree, lehenga, and kurta set is an intimate collaboration between our design atelier and heritage weaving families across Varanasi, Chanderi, and Kutch.
+                  Every piece in our collection is crafted by hand using techniques refined over centuries. We partner directly with established weaving families across Varanasi, Chanderi, and Kutch — ensuring unhurried craftsmanship and timeless heirloom quality.
                 </p>
 
                 {/* Archival Provenance Ledger */}
@@ -123,8 +123,8 @@ export default function HomePage() {
                     <span className="provenance-ledger__label">Handloom Weaving</span>
                   </div>
                   <div className="provenance-ledger__item">
-                    <span className="provenance-ledger__val">7 Dynasties</span>
-                    <span className="provenance-ledger__label">Weaver Families</span>
+                    <span className="provenance-ledger__val">Varanasi &amp; Kutch</span>
+                    <span className="provenance-ledger__label">Partner Clusters</span>
                   </div>
                   <div className="provenance-ledger__item">
                     <span className="provenance-ledger__val">100% Pure Zari</span>
@@ -199,15 +199,16 @@ export default function HomePage() {
               flexWrap: 'wrap',
               gap: '16px',
               marginTop: '40px',
-              padding: '20px 24px',
+              padding: '22px 24px',
               background: 'rgba(255, 255, 255, 0.65)',
               border: '1px solid var(--soft-gold-line)',
               borderRadius: '4px',
-              fontSize: '12.5px',
+              fontSize: '13.5px',
               fontFamily: 'var(--font-nav)',
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
               color: 'var(--stone-taupe)',
+              fontWeight: 500,
             }}>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                 <span style={{ color: 'var(--gargi-gold)' }}>✦</span> Silk Mark India Certified
@@ -216,7 +217,7 @@ export default function HomePage() {
                 <span style={{ color: 'var(--gargi-gold)' }}>✦</span> Handloom Mark GI Authenticated
               </span>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ color: 'var(--gargi-gold)' }}>✦</span> Direct Artisan Guild Patronage
+                <span style={{ color: 'var(--gargi-gold)' }}>✦</span> Direct Artisan Partnerships
               </span>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                 <span style={{ color: 'var(--gargi-gold)' }}>✦</span> Worldwide Couture White-Glove Dispatch

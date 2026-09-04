@@ -11,9 +11,10 @@
 }
 
 .account-header h1 {
-  font-family: var(--font-nav);
+  font-family: var(--font-display);
   color: var(--ink-brown);
-  font-size: 24px;
+  font-size: 28px;
+  font-weight: 600;
   margin-left: 16px;
 }
 
@@ -21,11 +22,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--soft-gold-line);
-  padding: 32px;
+  padding: 36px 32px;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(43,31,24,0.05);
+  box-shadow: 0 4px 16px rgba(43,31,24,0.04);
   margin-bottom: 24px;
 }
 
@@ -43,15 +44,17 @@
 }
 
 .account-name {
-  font-size: 24px;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 600;
   color: var(--ink-brown);
   margin-bottom: 4px;
 }
 
 .account-meta {
   color: var(--stone-taupe);
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .account-quick-links {
@@ -67,12 +70,12 @@
   align-items: center;
   justify-content: center;
   background: var(--pure-white);
-  padding: 16px;
+  padding: 18px 16px;
   border-radius: 12px;
-  border: 1px solid var(--soft-gold-line);
+  border: 1.5px solid var(--soft-gold-line);
   color: var(--ink-brown);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 600;
   transition: all 0.2s ease;
   cursor: pointer;
 }
@@ -92,22 +95,24 @@
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 24px;
+  border: 1px solid var(--soft-gold-line);
   box-shadow: 0 4px 12px rgba(43,31,24,0.03);
 }
 
 .account-list-title {
   padding: 20px 24px 8px;
-  font-size: 14px;
+  font-family: var(--font-nav);
+  font-size: 13.5px;
   font-weight: 700;
-  color: var(--ink-brown);
+  color: var(--stone-taupe);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.14em;
 }
 
 .account-list-item {
   display: flex;
   align-items: center;
-  padding: 16px 24px;
+  padding: 18px 24px;
   cursor: pointer;
   transition: background 0.2s ease;
   border-bottom: 1px solid var(--ivory-silk);
@@ -128,7 +133,8 @@
 
 .account-list-item-text {
   flex: 1;
-  font-size: 16px;
+  font-size: 16.5px;
+  font-weight: 500;
   color: var(--ink-brown);
 }
 

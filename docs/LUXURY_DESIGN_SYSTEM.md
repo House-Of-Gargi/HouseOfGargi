@@ -24,48 +24,52 @@ House of Gargi is positioned in the **quiet luxury** segment of traditional Indi
 | **Ivory Silk** | `--ivory-silk` | `#FBF6EE` | `251, 246, 238` | **Dominant Base**. Main page background, modal canvas, breathing space. | 50% |
 | **Warm Sand** | `--warm-sand` | `#F2E8D8` | `242, 232, 216` | **Secondary Base**. Alternating sections, card surfaces, subtle contrast. | 20% |
 | **Pure White** | `--pure-white` | `#FFFFFF` | `255, 255, 255` | **Catalog Isolation**. Product image tiles only, keeping garment colors true. | Contextual |
-| **Ink Brown** | `--ink-brown` | `#2B1F18` | `43, 31, 24` | **Primary Text**. Body copy, dark headers, highest legibility & warmth. | 15% |
-| **Stone Taupe** | `--stone-taupe` | `#786C5E` | `120, 108, 94` | **Secondary Text**. Captions, artisan origin blurbs, breadcrumbs, borders. | 5% |
+| **Ink Brown** | `--ink-brown` | `#231812` | `35, 24, 18` | **Primary Text**. Deep espresso ink, highest contrast & warmth (WCAG AAA). | 15% |
+| **Stone Taupe** | `--stone-taupe` | `#5C5043` | `92, 80, 67` | **Secondary Text**. Darkened for 30+ visual accommodation, captions, origins. | 5% |
 | **Soft Gold Line** | `--soft-gold-line` | `#E4D3AE` | `228, 211, 174` | **Hairlines**. Delicate dividers, input outlines, table rows, card borders. | Accents |
-| **Gargi Gold** | `--gargi-gold` | `#C9A227` | `201, 162, 39` | **Primary Accent**. Foil accents, active indicators, luxury CTAs, diya glows. | 5% |
+| **Gargi Gold** | `--gargi-gold` | `#B88E18` | `184, 142, 24` | **Primary Accent**. Foil accents, active indicators, luxury CTAs, diya glows. | 5% |
 | **Maharani Maroon** | `--maharani-maroon` | `#7A2331` | `122, 35, 49` | **Deep Regal Accent**. Key headlines, primary buy buttons, hero hover states. | 4% |
 | **Peacock Teal** | `--peacock-teal` | `#1F6F6B` | `31, 111, 107` | **Supporting Accent**. Festive tags, sustainable craft badges, secondary links. | 1% |
 | **Marigold** | `--marigold` | `#E08A1E` | `224, 138, 30` | **Highlight Accent**. Limited edition badges, notification dots. | Rare (<1%) |
 
 ---
 
-## 3. Typography Hierarchy & Sizing Rules
+## 3. Typography Hierarchy & Sizing Rules (30+ International Standards)
 
-Typography must always balance **stately royal elegance** with **modern digital legibility**.
+Typography is calibrated for a **discerning 30+ international luxury clientele**. Visual hierarchy prioritizes **instant optical legibility**, generous leading, high-contrast text, and quiet stately elegance.
 
 ### 3.1 Font Families
 
 1. **Display / Headlines**: `'Cormorant Garamond', Georgia, serif`
-   - High-contrast classic serif. Evokes royal Indian heritage and literary depth.
+   - High-contrast classical serif with optical kerning. Evokes royal Indian heritage and literary depth.
 2. **Navigation & Badges**: `'Marcellus', 'Cinzel', serif`
-   - Clean, stone-carved, all-caps styling with generous letter spacing.
+   - Stone-carved, all-caps styling with generous letter spacing (`0.14em–0.18em`).
 3. **Body & Functional UI**: `'Lato', 'Inter', -apple-system, sans-serif`
-   - High-legibility humanist sans-serif with comfortable line height for product specs and pricing.
+   - High-legibility humanist sans-serif with spacious line-height (`1.75–1.8`) to eliminate micro-fatigue.
 
 ---
 
-### 3.2 Visual Type Hierarchy Table
+### 3.2 Visual Type Hierarchy Table (30+ Audience Specifications)
 
-| Level | Element / Role | Font Family | Weight | Desktop Size | Mobile Size | Line Height | Letter Spacing | Context / Usage |
+| Level | Element / Role | Font Family | Weight | Desktop Size | Mobile Size | Line Height | Letter Spacing | Contrast & Usage |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Display 1** | Hero Headline | Cormorant Garamond | `600` | `64px` | `36px` (`clamp(30px, 5vw, 64px)`) | `1.1` | `0.01em` | Landing page hero banner |
-| **H1** | Page Titles | Cormorant Garamond | `600` | `48px` | `32px` (`clamp(28px, 4vw, 48px)`) | `1.15` | `0.01em` | Collection titles, page headers |
-| **H2** | Section Titles | Cormorant Garamond | `500` | `36px` | `26px` (`clamp(24px, 3.5vw, 36px)`) | `1.2` | `0.01em` | Major module headings |
-| **H3** | Subsection / Card Titles | Cormorant Garamond | `500` | `26px` | `20px` (`clamp(18px, 2.5vw, 24px)`) | `1.25` | `0` | Product card titles, modal titles |
-| **Subtitle** | Editorial Tagline | Cormorant Garamond | `400 Italic` | `20px` | `17px` (`clamp(16px, 2vw, 20px)`) | `1.4` | `0.02em` | Emotive brand lines, artisan notes |
-| **Nav / CTA** | Buttons & Main Nav | Marcellus | `400` | `14px` | `13px` | `1.0` | `0.16em–0.18em` | Upper-case buttons, top nav links |
-| **Body Large** | Introduction Copy | Lato | `400` | `18px` | `16px` | `1.8` | `0` | Brand story leads, editorial excerpts |
-| **Body Regular** | Standard Body / PDP | Lato | `400` | `16px` | `15px` | `1.7` | `0` | Product descriptions, policy copy |
-| **Body Bold** | Prices / Highlights | Lato | `700` | `18px` | `16px` | `1.4` | `0.02em` | Currency values, stock status |
-| **Caption** | Meta, Subtext, Origin | Lato | `400` | `13px` | `12px` | `1.5` | `0.04em` | "Handloom in Varanasi", care labels |
+| **Display 1** | Hero Headline | Cormorant Garamond | `600` | `64px` | `36px` (`clamp(36px, 5vw, 64px)`) | `1.15` | `0.01em` | Landing page hero banner |
+| **H1** | Page Titles | Cormorant Garamond | `600` | `48px` | `34px` (`clamp(32px, 4vw, 48px)`) | `1.18` | `0.01em` | Collection titles, page headers |
+| **H2** | Section Titles | Cormorant Garamond | `500` | `38px` | `28px` (`clamp(28px, 3.5vw, 38px)`) | `1.22` | `0.01em` | Major module headings |
+| **H3** | Subsection / Card Titles | Cormorant Garamond | `600` | `26px` | `22px` (`clamp(20px, 2.5vw, 26px)`) | `1.3` | `0` | Product card titles, modal titles |
+| **Subtitle** | Editorial Tagline | Cormorant Garamond | `400 Italic` | `22px` | `18px` (`clamp(18px, 2vw, 22px)`) | `1.5` | `0.02em` | Emotive brand lines, artisan notes |
+| **Nav / CTA** | Buttons & Main Nav | Marcellus | `500` | `15px` | `14px` | `1.0` | `0.16em` | Uppercase buttons, top nav links |
+| **Body Large** | Introduction Copy | Lato | `400` | `19px` | `17px` | `1.8` | `0` | Brand story leads, editorial excerpts |
+| **Body Regular** | Standard Body / PDP | Lato | `400` | `18px` | `16px` | `1.75` | `0` | Product descriptions, policy copy |
+| **Body Bold** | Prices / Highlights | Lato / Cormorant | `700` | `28px` | `24px` | `1.3` | `0.02em` | Currency values, stock status |
+| **Caption / Meta** | Subtext, Origin, Specs | Lato | `500` | `14px` | `13.5px` | `1.6` | `0.05em` | Minimum size allowed; never below 13.5px |
 
 > [!IMPORTANT]
-> **Typography Law**: Never set functional body text or forms in Cormorant Garamond. Keep decorative serifs strictly for titles, quotes, and story headings. All numeric, filter, form, and checkout text must use Lato for clarity.
+> **30+ Readability Laws**:
+> 1. **No Micro-Text**: Never use fonts smaller than `13.5px` on any screen.
+> 2. **Comfortable Leading**: Body copy must maintain `line-height: 1.75` to `1.8` to prevent ocular strain.
+> 3. **High Contrast**: Always set captions in `--stone-taupe` (`#5C5043`) or darker. Washed-out light grays are strictly prohibited.
+> 4. **Grounded Authenticity**: Avoid ungrounded marketing hyperbole (e.g. "7th generation dynasties", "10 generations", "fearlessly debated the universe"). Employ dignified, grounded terminology: *Generational Weaving Families*, *Partner Artisan Collectives*, *Centuries-old Pit Loom Traditions*.
 
 ---
 

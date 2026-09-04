@@ -13,23 +13,29 @@ interface WishlistContextType {
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
 
 export function WishlistProvider({ children }: { children: ReactNode }) {
-  const [wishlist, setWishlist] = useState<Product[]>(() => {
-    if (typeof window === 'undefined') return [];
-    try {
-      const saved = localStorage.getItem('gargi_wishlist');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
+  const [wishlist, setWishlist] = useState<Product[]>([]);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
+    try {
+      const saved = localStorage.getItem('gargi_wishlist');
+      if (saved) {
+        setWishlist(JSON.parse(saved));
+      }
+    } catch {
+      // ignore
+    }
+    setInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (!initialized) return;
     try {
       localStorage.setItem('gargi_wishlist', JSON.stringify(wishlist));
     } catch (e) {
       console.error('Failed to sync wishlist to localStorage', e);
     }
-  }, [wishlist]);
+  }, [wishlist, initialized]);
 
   const isInWishlist = (productId: string) => {
     return wishlist.some(item => item.id === productId);

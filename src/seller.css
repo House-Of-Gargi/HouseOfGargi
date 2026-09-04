@@ -11,10 +11,10 @@
   --ivory-silk: #FBF6EE;
   --warm-sand: #F2E8D8;
   --pure-white: #FFFFFF;
-  --ink-brown: #2B1F18;
-  --stone-taupe: #786C5E;
+  --ink-brown: #231812;
+  --stone-taupe: #5C5043;
   --soft-gold-line: #E4D3AE;
-  --gargi-gold: #C9A227;
+  --gargi-gold: #B88E18;
   --maharani-maroon: #7A2331;
   --peacock-teal: #1F6F6B;
   --marigold: #E08A1E;
@@ -563,7 +563,7 @@
 
 .category-cell-title {
   font-family: var(--font-nav);
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--ink-brown);
@@ -572,15 +572,16 @@
 
 .category-cell-count {
   font-family: var(--font-sans);
-  font-size: 1.4rem;
+  font-size: 1.55rem;
   font-weight: 700;
   color: var(--maharani-maroon);
   margin: 0.5rem 0 0.2rem 0;
 }
 
 .category-cell-stock {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   color: var(--stone-taupe);
+  font-weight: 500;
 }
 
 /* ==========================================================================
@@ -614,7 +615,7 @@
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
 }
 
 .luxury-table thead tr {
@@ -623,20 +624,21 @@
 }
 
 .luxury-table th {
-  padding: 0.85rem 1rem;
+  padding: 0.95rem 1rem;
   font-family: var(--font-nav);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   color: var(--stone-taupe);
 }
 
 .luxury-table td {
-  padding: 1rem;
+  padding: 1.1rem 1rem;
   border-bottom: 1px solid var(--soft-gold-line);
   color: var(--ink-brown);
   vertical-align: middle;
+  font-size: 0.95rem;
 }
 
 .luxury-table tbody tr:hover {

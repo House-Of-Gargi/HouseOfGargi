@@ -16,23 +16,29 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    if (typeof window === 'undefined') return [];
-    try {
-      const saved = localStorage.getItem('gargi_cart');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
+    try {
+      const saved = localStorage.getItem('gargi_cart');
+      if (saved) {
+        setCart(JSON.parse(saved));
+      }
+    } catch {
+      // ignore
+    }
+    setInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (!initialized) return;
     try {
       localStorage.setItem('gargi_cart', JSON.stringify(cart));
     } catch (e) {
       console.error('Failed to sync cart to localStorage', e);
     }
-  }, [cart]);
+  }, [cart, initialized]);
 
   const addToCart = (product: Product, quantity = 1, size: string | null = null) => {
     setCart(prev => {
