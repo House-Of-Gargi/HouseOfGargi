@@ -2,7 +2,8 @@ import Link from 'next/link';
 import ScrollReveal from '@/components/ScrollReveal';
 import ProductCard from '@/components/ProductCard';
 import { categories, products, featuredProductIds } from '@/data/products';
-import { DiyaIcon, ArrowRightIcon, LotusIcon, HandloomIcon, HeritageDiyaIcon, SilkOriginIcon, GoldZariIcon, AtelierSealIcon } from '@/components/Icons';
+import { DiyaIcon, ArrowRightIcon, LotusIcon } from '@/components/Icons';
+import { Layers, Crown, ShieldCheck, Sparkles } from 'lucide-react';
 
 export default function HomePage() {
   const featured = featuredProductIds
@@ -31,26 +32,34 @@ export default function HomePage() {
             <div className="vision-strip-wrapper">
               <div className="vision-strip">
                 <div className="vision-strip__item">
+                  <div className="vision-strip__icon">
+                    <Layers size={28} strokeWidth={1.4} />
+                  </div>
                   <div className="vision-strip__sanskrit">हस्तशिल्प</div>
-                  <div className="vision-strip__icon"><HandloomIcon size={22} /></div>
                   <h3 className="vision-strip__title">Pure Pit Loom</h3>
                   <p className="vision-strip__text">Hand-interlocked weft &amp; warp</p>
                 </div>
                 <div className="vision-strip__item">
+                  <div className="vision-strip__icon">
+                    <Crown size={28} strokeWidth={1.4} />
+                  </div>
                   <div className="vision-strip__sanskrit">परम्परा</div>
-                  <div className="vision-strip__icon"><HeritageDiyaIcon size={22} /></div>
                   <h3 className="vision-strip__title">Artisan Lineage</h3>
                   <p className="vision-strip__text">Centuries-old weaving families</p>
                 </div>
                 <div className="vision-strip__item">
+                  <div className="vision-strip__icon">
+                    <ShieldCheck size={28} strokeWidth={1.4} />
+                  </div>
                   <div className="vision-strip__sanskrit">सत्यता</div>
-                  <div className="vision-strip__icon"><SilkOriginIcon size={22} /></div>
                   <h3 className="vision-strip__title">GI-Tagged Silk</h3>
                   <p className="vision-strip__text">100% Ahimsa &amp; Mulberry</p>
                 </div>
                 <div className="vision-strip__item">
+                  <div className="vision-strip__icon">
+                    <Sparkles size={28} strokeWidth={1.4} />
+                  </div>
                   <div className="vision-strip__sanskrit">अलंकार</div>
-                  <div className="vision-strip__icon"><GoldZariIcon size={22} /></div>
                   <h3 className="vision-strip__title">Precious Zari</h3>
                   <p className="vision-strip__text">Real silver &amp; 24k gold wire</p>
                 </div>
@@ -97,10 +106,6 @@ export default function HomePage() {
             <div className="story-split">
               <div className="story-split__image-wrap">
                 <img src="/assets/artisan-hands.png" alt="Artisan hand-embroidering pure gold zari" />
-                <div className="story-split__seal">
-                  <AtelierSealIcon size={34} />
-                  <span style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', marginTop: '2px' }}>BHARAT</span>
-                </div>
               </div>
               <div className="story-split__copy">
                 <div className="story-epigraph">

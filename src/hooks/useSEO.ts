@@ -1,18 +1,22 @@
+'use client';
+
 import { useEffect } from 'react';
 
-export default function useSEO({ title, description }) {
+interface SEOProps {
+  title?: string;
+  description?: string;
+}
+
+export default function useSEO({ title, description }: SEOProps) {
   useEffect(() => {
-    // Save the original title/description so we can restore it if needed,
-    // though in an SPA we usually just overwrite it per page.
     const defaultTitle = 'House of Gargi | Handcrafted Luxury Indian Fashion';
-    const defaultDesc = 'House of Gargi offers luxury, handcrafted traditional Indian fashion. Explore our curated collections of pure silk sarees, bridal lehengas, block-printed kurta sets, and heritage jewellery. Handcrafted Heritage, Worn Today.';
+    const defaultDesc =
+      'House of Gargi offers luxury, handcrafted traditional Indian fashion. Explore our curated collections of pure silk sarees, bridal lehengas, block-printed kurta sets, and heritage jewellery. Handcrafted Heritage, Worn Today.';
 
     if (title) {
       document.title = `${title} | House of Gargi`;
-      // Update og:title
       const ogTitle = document.querySelector('meta[property="og:title"]');
       if (ogTitle) ogTitle.setAttribute('content', `${title} | House of Gargi`);
-      // Update twitter:title
       const twTitle = document.querySelector('meta[property="twitter:title"]');
       if (twTitle) twTitle.setAttribute('content', `${title} | House of Gargi`);
     } else {
