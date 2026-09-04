@@ -35,6 +35,7 @@ export default function ProductCard({ product, style }: ProductCardProps) {
         className="product-card__wishlist" 
         onClick={handleWishlistClick}
         aria-label={isSaved ? 'Remove from wishlist' : 'Add to wishlist'}
+        style={{ zIndex: 10 }}
       >
         {isSaved ? <HeartFilledIcon size={20} color="var(--maharani-maroon)" /> : <WishlistIcon size={20} />}
       </button>
