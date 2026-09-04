@@ -118,18 +118,67 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
           )}
 
           {/* Explore Other Categories */}
-          <div style={{ marginTop: '80px' }}>
+          <div style={{ marginTop: '90px', marginBottom: '30px' }}>
             <div className="divider"><span className="divider__icon"><DiyaIcon size={16} /></span></div>
-            <h3 style={{ textAlign: 'center', margin: '32px 0 24px', color: 'var(--ink-brown)' }}>Explore More Collections</h3>
-            <div className="category-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+            
+            <div style={{ textAlign: 'center', margin: '36px 0 44px' }}>
+              <h2 style={{ 
+                fontFamily: 'var(--font-display)', 
+                fontSize: 'clamp(28px, 3.5vw, 38px)', 
+                fontWeight: 600, 
+                color: 'var(--ink-brown)',
+                margin: 0
+              }}>
+                Explore More Collections
+              </h2>
+              <p style={{ 
+                fontFamily: 'var(--font-body)', 
+                fontSize: '16.5px', 
+                color: 'var(--stone-taupe)', 
+                marginTop: '10px',
+                maxWidth: '560px',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                lineHeight: 1.6
+              }}>
+                Discover the timeless artistry, master craftsmanship, and pure fabrics woven across our accompanying ateliers.
+              </p>
+            </div>
+
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
+              gap: '36px',
+              alignItems: 'stretch'
+            }}>
               {otherCategories.map(cat => (
-                <Link href={`/category/${cat.id}`} key={cat.id} className="category-tile" style={{ height: '260px' }}>
+                <Link 
+                  href={`/category/${cat.id}`} 
+                  key={cat.id} 
+                  className="category-tile" 
+                  style={{ minHeight: '420px', height: 'auto' }}
+                >
                   <img src={cat.image} alt={cat.name} loading="lazy" />
                   <div className="category-tile__border" />
                   <div className="category-tile__label">
-                    <h3>{cat.name}</h3>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      Explore <ArrowRightIcon size={14} />
+                    <h3 style={{ fontSize: '26px', marginBottom: '6px' }}>{cat.name}</h3>
+                    {cat.tagline && (
+                      <p style={{ fontSize: '14.5px', color: 'rgba(255, 255, 255, 0.88)', lineHeight: 1.5, marginBottom: '14px' }}>
+                        {cat.tagline}
+                      </p>
+                    )}
+                    <span style={{ 
+                      display: 'inline-flex', 
+                      alignItems: 'center', 
+                      gap: '8px',
+                      fontFamily: 'var(--font-nav)',
+                      fontSize: '13.5px',
+                      fontWeight: 700,
+                      letterSpacing: '0.12em',
+                      textTransform: 'uppercase',
+                      color: 'var(--gargi-gold)'
+                    }}>
+                      Explore Collection <ArrowRightIcon size={14} />
                     </span>
                   </div>
                 </Link>
