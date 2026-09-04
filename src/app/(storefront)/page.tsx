@@ -3,7 +3,7 @@ import ScrollReveal from '@/components/ScrollReveal';
 import ProductCard from '@/components/ProductCard';
 import { categories, products, featuredProductIds } from '@/data/products';
 import { ArrowRightIcon, LotusIcon } from '@/components/Icons';
-import { Layers, Crown, ShieldCheck, Sparkles } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 
 export default function HomePage() {
   const featured = featuredProductIds
@@ -25,51 +25,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════ 2. VISION STRIP (ATELIER HERITAGE PILLARS) ═══════ */}
-      <section className="section section--ivory" style={{ padding: '36px 0' }}>
-        <div className="container">
-          <ScrollReveal>
-            <div className="vision-strip-wrapper">
-              <div className="vision-strip">
-                <div className="vision-strip__item">
-                  <div className="vision-strip__icon">
-                    <Layers size={28} strokeWidth={1.4} />
-                  </div>
-                  <div className="vision-strip__sanskrit">हस्तशिल्प</div>
-                  <h3 className="vision-strip__title">Pure Pit Loom</h3>
-                  <p className="vision-strip__text">Hand-interlocked weft &amp; warp</p>
-                </div>
-                <div className="vision-strip__item">
-                  <div className="vision-strip__icon">
-                    <Crown size={28} strokeWidth={1.4} />
-                  </div>
-                  <div className="vision-strip__sanskrit">परम्परा</div>
-                  <h3 className="vision-strip__title">Artisan Lineage</h3>
-                  <p className="vision-strip__text">Centuries-old weaving families</p>
-                </div>
-                <div className="vision-strip__item">
-                  <div className="vision-strip__icon">
-                    <ShieldCheck size={28} strokeWidth={1.4} />
-                  </div>
-                  <div className="vision-strip__sanskrit">सत्यता</div>
-                  <h3 className="vision-strip__title">GI-Tagged Silk</h3>
-                  <p className="vision-strip__text">100% Ahimsa &amp; Mulberry</p>
-                </div>
-                <div className="vision-strip__item">
-                  <div className="vision-strip__icon">
-                    <Sparkles size={28} strokeWidth={1.4} />
-                  </div>
-                  <div className="vision-strip__sanskrit">अलंकार</div>
-                  <h3 className="vision-strip__title">Precious Zari</h3>
-                  <p className="vision-strip__text">Real silver &amp; 24k gold wire</p>
-                </div>
-              </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* ═══════ 3. SHOP BY CATEGORY ═══════ */}
+      {/* ═══════ 2. SHOP BY CATEGORY ═══════ */}
       <section className="section section--sand">
         <div className="container">
           <ScrollReveal>

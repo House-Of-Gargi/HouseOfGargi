@@ -151,7 +151,28 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
           &times;
         </button>
 
-        <div className="customer-modal-tag" style={{ marginTop: '8px' }}>House of Gargi • Atelier Access</div>
+        {/* Strictly Outline Icon Crest - No Circles, No Circle Outlines */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '14px',
+          marginBottom: '14px',
+        }}>
+          <div style={{
+            flex: 1,
+            height: '1px',
+            background: 'linear-gradient(90deg, transparent, rgba(184, 142, 24, 0.45))',
+          }} />
+          <Sparkles size={22} strokeWidth={1.3} style={{ color: 'var(--maharani-maroon)' }} />
+          <div style={{
+            flex: 1,
+            height: '1px',
+            background: 'linear-gradient(270deg, transparent, rgba(184, 142, 24, 0.45))',
+          }} />
+        </div>
+
+        <div className="customer-modal-tag">House of Gargi • Atelier Access</div>
         <h2 id="customer-modal-title" className="customer-modal-title">
           {step === 1 ? 'Patron Sign In' : 'Verify Patron Code'}
         </h2>

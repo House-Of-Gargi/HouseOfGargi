@@ -137,14 +137,11 @@ export default function CartPage() {
     return (
       <div className="section section--ivory order-success-wrap">
         <div className="order-success-container">
-          {/* Royal Seal Emblem */}
+          {/* Royal Seal Emblem - Strictly Outline, No Circles */}
           <div className="order-success-crest-wrap">
             <div className="order-success-crest-line" />
             <div className="order-success-seal">
-              <ShieldCheck size={38} strokeWidth={1.6} />
-              <div className="order-success-seal-badge">
-                <Check size={14} strokeWidth={2.8} />
-              </div>
+              <ShieldCheck size={38} strokeWidth={1.3} />
             </div>
             <div className="order-success-crest-line order-success-crest-line--right" />
           </div>
