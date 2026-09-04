@@ -61,7 +61,7 @@ export default function AccountPage() {
   return (
     <div className="account-page-wrap">
       <div className="account-container">
-        {/* Top Navigation & Status */}
+        {/* Top Navigation & Back */}
         <div className="account-top-bar">
           <button 
             type="button" 
@@ -70,9 +70,6 @@ export default function AccountPage() {
           >
             <ArrowLeft size={16} /> Back to Browsing
           </button>
-          <div className="account-status-pill">
-            ✦ Verified House Patron
-          </div>
         </div>
 
         {/* Page Header */}
@@ -135,8 +132,8 @@ export default function AccountPage() {
                     <h3 className="account-curation-title">Shopping Bag</h3>
                     <p className="account-curation-desc">
                       {itemCount > 0 
-                        ? `${itemCount} handcrafted ${itemCount === 1 ? 'heirloom piece' : 'heirloom pieces'} currently reserved.`
-                        : 'Your private bag is awaiting your curation of pure silks and bridal sets.'}
+                        ? `${itemCount} ${itemCount === 1 ? 'piece' : 'pieces'} reserved for checkout.`
+                        : 'Your reserved pieces and checkout bag.'}
                     </p>
                   </div>
                   <span className="account-curation-action">
@@ -153,8 +150,8 @@ export default function AccountPage() {
                     <h3 className="account-curation-title">Heirloom Wishlist</h3>
                     <p className="account-curation-desc">
                       {wishlistCount > 0
-                        ? `${wishlistCount} cherished ${wishlistCount === 1 ? 'piece' : 'pieces'} saved in your registry.`
-                        : 'Save your cherished pure silk sarees and ensembles for future review.'}
+                        ? `${wishlistCount} saved ${wishlistCount === 1 ? 'piece' : 'pieces'} in your registry.`
+                        : 'Saved favorites and curated registry.'}
                     </p>
                   </div>
                   <span className="account-curation-action">
@@ -170,7 +167,7 @@ export default function AccountPage() {
                     </div>
                     <h3 className="account-curation-title">Bespoke Couture</h3>
                     <p className="account-curation-desc">
-                      Commission bespoke bridal ensembles, custom colourways, or heirloom handloom weaves.
+                      Custom bridal commissions and private atelier tailoring.
                     </p>
                   </div>
                   <span className="account-curation-action">
@@ -196,7 +193,7 @@ export default function AccountPage() {
                   <div className="account-guide-body">
                     <h4 className="account-guide-title">Measurements &amp; Fit Guide</h4>
                     <p className="account-guide-desc">
-                      Detailed blouse tailoring, standard saree drape dimensions, and lehenga flare specifications.
+                      Sizing charts for blouses, lehengas, and drape lengths.
                     </p>
                     <span className="account-guide-link">
                       Review Fit Guide <ArrowRight size={13} />
@@ -212,7 +209,7 @@ export default function AccountPage() {
                   <div className="account-guide-body">
                     <h4 className="account-guide-title">White-Glove Logistics</h4>
                     <p className="account-guide-desc">
-                      Insured worldwide delivery, tamper-proof silk seal boxes, and verified dispatch timelines.
+                      Insured global delivery, luxury packaging, and tracking.
                     </p>
                     <span className="account-guide-link">
                       Shipping Protocols <ArrowRight size={13} />
