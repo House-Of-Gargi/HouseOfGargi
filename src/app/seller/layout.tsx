@@ -1,37 +1,60 @@
 'use client';
 
 import { ReactNode, useEffect, useState } from 'react';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
+import { SellerShell } from '@/components/seller/SellerShell';
+import '@/seller.css';
 
 export default function SellerLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
+  const [sellerPhone, setSellerPhone] = useState<string>('+91 98765 43210');
 
   useEffect(() => {
-    // If on login page, don't gate
+    // If on login page, do not gate
     if (pathname === '/seller/login') {
       setAuthorized(true);
       return;
     }
 
     const checkAuth = async () => {
-      const isBypass = typeof window !== 'undefined' && localStorage.getItem('seller_auth_bypass') === 'true';
-      if (isBypass) {
-        setAuthorized(true);
-        return;
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          router.push('/seller/login');
+        } else {
+          if (session.user?.phone) {
+            setSellerPhone(session.user.phone.startsWith('+91') ? session.user.phone : `+91 ${session.user.phone}`);
+          } else if (session.user?.email) {
+            setSellerPhone(session.user.email);
+          }
+          setAuthorized(true);
+        }
+      } catch {
+        router.push('/seller/login');
       }
+    };
 
-      const { data: { session } } = await supabase.auth.getSession();
+    checkAuth();
+
+    // Listen for auth state changes (e.g. sign in or sign out)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (pathname === '/seller/login') return;
       if (!session) {
         router.push('/seller/login');
       } else {
+        if (session.user?.phone) {
+          setSellerPhone(session.user.phone.startsWith('+91') ? session.user.phone : `+91 ${session.user.phone}`);
+        }
         setAuthorized(true);
       }
+    });
+
+    return () => {
+      subscription.unsubscribe();
     };
-    checkAuth();
   }, [pathname, router]);
 
   if (pathname === '/seller/login') {
@@ -40,51 +63,42 @@ export default function SellerLayout({ children }: { children: ReactNode }) {
 
   if (!authorized) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--ivory-silk)' }}>
-        <p style={{ color: 'var(--stone-taupe)' }}>Verifying atelier credentials...</p>
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#FAFAF8',
+        color: '#3A3564',
+        gap: '1rem',
+        fontFamily: 'sans-serif'
+      }}>
+        <div style={{
+          width: 44,
+          height: 44,
+          borderRadius: 12,
+          background: '#3A3564',
+          color: '#FFFFFF',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontWeight: 800,
+          fontSize: '1rem',
+          boxShadow: '0 4px 12px rgba(58,53,100,0.2)'
+        }}>
+          HG
+        </div>
+        <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#64748B' }}>
+          Verifying artisan atelier session...
+        </p>
       </div>
     );
   }
 
-  const handleLogout = async () => {
-    localStorage.removeItem('seller_auth_bypass');
-    await supabase.auth.signOut();
-    router.push('/seller/login');
-  };
-
   return (
-    <div className="seller-dashboard-container">
-      <aside className="seller-sidebar">
-        <div className="seller-sidebar__logo">
-          <h2>House of Gargi</h2>
-          <span className="seller-badge">Seller Atelier</span>
-        </div>
-
-        <nav className="seller-nav">
-          <Link href="/seller" className={`seller-nav__link ${pathname === '/seller' ? 'active' : ''}`}>
-            Overview
-          </Link>
-          <Link href="/seller/products" className={`seller-nav__link ${pathname === '/seller/products' ? 'active' : ''}`}>
-            Products
-          </Link>
-          <Link href="/seller/orders" className={`seller-nav__link ${pathname === '/seller/orders' ? 'active' : ''}`}>
-            Orders
-          </Link>
-          <Link href="/" target="_blank" className="seller-nav__link" style={{ marginTop: '20px', borderTop: '1px solid var(--soft-gold-line)', paddingTop: '16px' }}>
-            Preview Boutique ↗
-          </Link>
-        </nav>
-
-        <div className="seller-sidebar__footer">
-          <button type="button" onClick={handleLogout} className="btn btn--outline" style={{ width: '100%', borderColor: 'var(--maharani-maroon)', color: 'var(--maharani-maroon)' }}>
-            Sign Out
-          </button>
-        </div>
-      </aside>
-
-      <main className="seller-main-content">
-        {children}
-      </main>
-    </div>
+    <SellerShell sellerPhone={sellerPhone} sellerName="House of Gargi">
+      {children}
+    </SellerShell>
   );
 }

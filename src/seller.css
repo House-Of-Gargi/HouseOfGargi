@@ -1,0 +1,806 @@
+/* ==========================================================================
+   HOUSE OF GARGI — EXECUTIVE SELLER ATELIER STYLES
+   Inspired by Zigza Admin Dashboard Architecture & Interaction Physics
+   ========================================================================== */
+
+:root {
+  --seller-bg: #FAFAF8;
+  --seller-card-bg: #FFFFFF;
+  --seller-sidebar-bg: #FFFFFF;
+  --seller-border: rgba(0, 0, 0, 0.08);
+  --seller-border-hover: rgba(58, 53, 100, 0.35);
+  --seller-brand: #3A3564;
+  --seller-brand-tint: #FAF7F0;
+  --seller-brand-dark: #2A2649;
+  --seller-text-main: #0F172A;
+  --seller-text-muted: #64748B;
+  --seller-text-sub: #94A3B8;
+  --seller-rail-width: 72px;
+  --seller-expanded-width: 264px;
+}
+
+/* Base Dashboard Wrapper */
+.seller-shell {
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--seller-bg);
+  color: var(--seller-text-main);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+  .seller-shell {
+    flex-direction: row;
+  }
+}
+
+/* ==========================================================================
+   ZERO-SHIFT MAIN CONTAINER
+   Permanent 72px left padding guarantees that floating sidebar expands
+   over the page without displacing central tables or charts by even 1 pixel.
+   ========================================================================== */
+.seller-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+@media (min-width: 1024px) {
+  .seller-main {
+    padding-left: var(--seller-rail-width);
+  }
+}
+
+.seller-container {
+  flex: 1;
+  padding: 1rem 1.25rem 2.5rem;
+  max-width: 88rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .seller-container {
+    padding: 1.5rem 1.75rem 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .seller-container {
+    padding: 2rem 2.25rem 3.5rem;
+  }
+}
+
+/* ==========================================================================
+   DESKTOP FLOATING RAIL SIDEBAR (lg:)
+   Physics: 200ms eager expand, 280ms grace buffer on leave, 700ms smooth cubic exit
+   ========================================================================== */
+.seller-sidebar-desktop {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  z-index: 40;
+  background: var(--seller-sidebar-bg);
+  border-right: 1px solid var(--seller-border);
+  flex-direction: column;
+  justify-content: space-between;
+  user-select: none;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .seller-sidebar-desktop {
+    display: flex;
+  }
+}
+
+/* Rail Collapsed State */
+.seller-sidebar-desktop.collapsed {
+  width: var(--seller-rail-width);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  transition: width 700ms cubic-bezier(0.25, 1, 0.5, 1), box-shadow 700ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Rail Hovered / Expanded State (HUD Overlay) */
+.seller-sidebar-desktop.expanded {
+  width: var(--seller-expanded-width);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transition: width 200ms ease-out, box-shadow 200ms ease-out;
+}
+
+/* Header inside sidebar */
+.seller-sidebar-header {
+  border-bottom: 1px solid var(--seller-border);
+  height: 65px;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  overflow: hidden;
+}
+
+/* Collapsed Avatar HG Icon */
+.seller-avatar-mini {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--seller-brand);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+  margin: 0 auto;
+}
+
+/* Expanded Brand Reveal */
+.seller-brand-text {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-left: 0.75rem;
+}
+
+.seller-brand-text .brand-name {
+  font-weight: 800;
+  color: var(--seller-text-main);
+  font-size: 0.95rem;
+  letter-spacing: -0.02em;
+}
+
+.seller-brand-text .brand-sub {
+  font-size: 0.65rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: var(--seller-text-sub);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Navigation Items */
+.seller-nav-scroll {
+  padding: 1rem 0.65rem;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.seller-nav-group-title {
+  padding: 0 0.75rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--seller-text-sub);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.seller-nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* Collapsed Item: Square Icon centered */
+.seller-sidebar-desktop.collapsed .seller-nav-item {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto;
+  justify-content: center;
+  transition: all 500ms ease-in-out;
+}
+
+/* Expanded Item: Full Row with Label and Badges */
+.seller-sidebar-desktop.expanded .seller-nav-item {
+  width: 100%;
+  padding: 0.625rem 0.85rem;
+  justify-content: space-between;
+  transition: all 200ms ease-out;
+}
+
+/* Active State */
+.seller-nav-item.active {
+  font-weight: 700;
+  color: var(--seller-brand);
+  background: var(--seller-brand-tint);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+}
+
+/* Active Vertical Accent Bar */
+.seller-nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border-top-right-radius: 9999px;
+  border-bottom-right-radius: 9999px;
+  background: var(--seller-brand);
+  width: 3.5px;
+  height: 22px;
+}
+
+.seller-nav-item.inactive {
+  font-weight: 500;
+  color: #475569;
+  border: 1px solid transparent;
+}
+
+.seller-nav-item.inactive:hover {
+  color: #020617;
+  background: rgba(241, 245, 249, 0.7);
+}
+
+/* Sub-Element Micro-Morphing (No Text Wrapping Glitches) */
+.seller-nav-label {
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+
+.seller-sidebar-desktop.collapsed .seller-nav-label {
+  max-width: 0;
+  opacity: 0;
+  transition: max-width 400ms ease-in-out, opacity 300ms ease-in-out;
+}
+
+.seller-sidebar-desktop.expanded .seller-nav-label {
+  max-width: 170px;
+  opacity: 1;
+  transition: max-width 200ms ease-out, opacity 200ms ease-out;
+}
+
+/* Nav Badge */
+.seller-nav-badge {
+  font-size: 0.65rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--seller-brand);
+  background: var(--seller-brand-tint);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.seller-sidebar-desktop.collapsed .seller-nav-badge {
+  display: none;
+}
+
+/* Sidebar Profile Footer */
+.seller-sidebar-footer {
+  padding: 0.85rem;
+  border-top: 1px solid var(--seller-border);
+  background: var(--seller-bg);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 65px;
+}
+
+/* ==========================================================================
+   MOBILE TOP BAR & SLIDE DRAWER (< lg)
+   ========================================================================== */
+.seller-mobile-header {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  width: 100%;
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--seller-border);
+  padding: 0.65rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+@media (min-width: 1024px) {
+  .seller-mobile-header {
+    display: none;
+  }
+}
+
+.seller-mobile-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  transition: opacity 300ms ease-in-out;
+}
+
+.seller-mobile-drawer {
+  position: fixed;
+  inset-block: 0;
+  left: 0;
+  z-index: 51;
+  width: 280px;
+  max-width: 85vw;
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   ATELIER OPERATIONS CONTROL CENTER
+   Header Banner, Filter Bar, 6 Stage Cards, Flow Stepper, Tables
+   ========================================================================== */
+
+/* Header Card */
+.atelier-header-card {
+  background: #FFFFFF;
+  border-radius: 1.25rem;
+  border: 1px solid var(--seller-border);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .atelier-header-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.atelier-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.atelier-title-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--seller-brand-tint);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: var(--seller-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+}
+
+.atelier-live-pill {
+  font-size: 0.65rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  background: #ECFDF5;
+  color: #047857;
+  border: 1px solid #A7F3D0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: 0.5rem;
+}
+
+.atelier-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10B981;
+  animation: atelierPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes atelierPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* Secondary Filter Bar */
+.atelier-filter-bar {
+  background: #FFFFFF;
+  border-radius: 1rem;
+  border: 1px solid var(--seller-border);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.atelier-filter-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.atelier-filter-btn {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--seller-text-muted);
+  transition: all 150ms ease;
+}
+
+.atelier-filter-btn.active {
+  background: var(--seller-brand);
+  color: #FFFFFF;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.atelier-filter-btn:not(.active):hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--seller-text-main);
+}
+
+.atelier-timeframe-group {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: #F1F5F9;
+  padding: 0.2rem;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.atelier-timeframe-btn {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.3rem 0.65rem;
+  border-radius: 7px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--seller-text-muted);
+  transition: all 150ms ease;
+}
+
+.atelier-timeframe-btn.active {
+  background: #FFFFFF;
+  color: var(--seller-brand);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  font-weight: 800;
+}
+
+/* ==========================================================================
+   6-STAGE KPI CARDS GRID
+   ========================================================================== */
+.stages-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .stages-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .stages-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.stage-card {
+  background: #FFFFFF;
+  border-radius: 1.15rem;
+  padding: 1.1rem;
+  border: 1px solid var(--seller-border);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.stage-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--seller-border-hover);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+.stage-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stage-card-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--seller-brand-tint);
+  color: var(--seller-brand);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 180ms ease, color 180ms ease;
+}
+
+.stage-card:hover .stage-card-icon {
+  background: var(--seller-brand);
+  color: #FFFFFF;
+}
+
+.stage-card-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.625rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 700;
+  color: var(--seller-text-sub);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stage-card:hover .stage-card-badge {
+  color: var(--seller-brand);
+}
+
+.stage-card-title {
+  margin-top: 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--seller-text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stage-card-subtitle {
+  font-size: 0.68rem;
+  color: var(--seller-text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 0.15rem;
+}
+
+.stage-card-bottom {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.stage-card-val {
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--seller-text-main);
+  line-height: 1;
+}
+
+.stage-card-pill {
+  margin-top: 0.6rem;
+  display: inline-block;
+  font-size: 0.625rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  background: var(--seller-brand-tint);
+  color: var(--seller-brand);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  letter-spacing: 0.04em;
+}
+
+/* ==========================================================================
+   LIVE ATELIER CONVERSION FLOW STEPPER
+   ========================================================================== */
+.conversion-flow-card {
+  background: #FFFFFF;
+  border-radius: 1.25rem;
+  border: 1px solid var(--seller-border);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.conversion-flow-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+@media (min-width: 640px) {
+  .conversion-flow-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.conversion-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+}
+
+@media (min-width: 640px) {
+  .conversion-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .conversion-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.conversion-step-card {
+  background: #FFFFFF;
+  border: 1px solid var(--seller-border);
+  border-radius: 0.85rem;
+  padding: 0.95rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.conversion-step-card.border-step-1 { border-left: 4px solid #6366F1; }
+.conversion-step-card.border-step-2 { border-left: 4px solid #F59E0B; }
+.conversion-step-card.border-step-3 { border-left: 4px solid #10B981; }
+.conversion-step-card.border-step-4 { border-left: 4px solid var(--seller-brand); }
+
+.conversion-progress-track {
+  width: 100%;
+  background: #F1F5F9;
+  height: 4px;
+  border-radius: 9999px;
+  margin-top: 0.75rem;
+  overflow: hidden;
+}
+
+.conversion-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 500ms ease;
+}
+
+/* ==========================================================================
+   LOWER SECTION: DATA TABLE & ACTIVITY STREAM
+   ========================================================================== */
+.atelier-lower-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .atelier-lower-grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.atelier-table-card {
+  background: #FFFFFF;
+  border-radius: 1.25rem;
+  border: 1px solid var(--seller-border);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  padding: 1.25rem 1.5rem;
+}
+
+.table-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.executive-table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.executive-table thead tr {
+  background: var(--seller-brand-tint);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.executive-table th {
+  padding: 0.65rem 0.85rem;
+  font-size: 0.68rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--seller-text-muted);
+}
+
+.executive-table td {
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.executive-table tbody tr:hover {
+  background: #FAFAF8;
+}
+
+/* Activity Stream */
+.activity-stream-card {
+  background: #FFFFFF;
+  border-radius: 1.25rem;
+  border: 1px solid var(--seller-border);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-item {
+  display: flex;
+  gap: 0.85rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-icon-bubble {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
