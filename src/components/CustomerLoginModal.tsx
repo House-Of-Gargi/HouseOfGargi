@@ -2,7 +2,7 @@
 
 import { useState, FormEvent, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Crown, Sparkles, ArrowRight, ShieldCheck, ArrowLeft } from 'lucide-react';
+import { Sparkles, ArrowRight, ShieldCheck, ArrowLeft } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
 
@@ -151,16 +151,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
           &times;
         </button>
 
-        {/* Royal Crest Header */}
-        <div className="customer-modal-crest">
-          <div className="customer-modal-crest-line" />
-          <div className="customer-modal-crest-icon">
-            <Crown size={22} strokeWidth={1.75} />
-          </div>
-          <div className="customer-modal-crest-line customer-modal-crest-line--right" />
-        </div>
-
-        <div className="customer-modal-tag">House of Gargi • Atelier Access</div>
+        <div className="customer-modal-tag" style={{ marginTop: '8px' }}>House of Gargi • Atelier Access</div>
         <h2 id="customer-modal-title" className="customer-modal-title">
           {step === 1 ? 'Patron Sign In' : 'Verify Patron Code'}
         </h2>

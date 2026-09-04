@@ -8,7 +8,7 @@ import ScrollReveal from '@/components/ScrollReveal';
 import CustomDropdown from '@/components/CustomDropdown';
 import { getCategory, getProductsByCategory, categories } from '@/data/products';
 import { ArrowRightIcon, FilterIcon, CloseIcon } from '@/components/Icons';
-import { Crown, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 export default function CategoryPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -183,14 +183,8 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
           )}
 
           {/* Explore Other Categories */}
-          <div style={{ marginTop: '90px', marginBottom: '30px' }}>
-            <div className="divider" role="separator" aria-label="Section Divider">
-              <span className="divider__icon">
-                <Crown size={24} strokeWidth={2.2} />
-              </span>
-            </div>
-            
-            <div style={{ textAlign: 'center', margin: '36px 0 44px' }}>
+          <div style={{ marginTop: '70px', marginBottom: '30px' }}>
+            <div style={{ textAlign: 'center', margin: '0 0 44px' }}>
               <h2 style={{ 
                 fontFamily: 'var(--font-display)', 
                 fontSize: 'clamp(28px, 3.5vw, 38px)', 

@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { Crown } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -38,11 +37,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="divider" style={{ maxWidth: '280px', margin: '40px auto' }}>
-          <span className="divider__icon"><Crown size={20} strokeWidth={2.2} /></span>
-        </div>
-
-        <div className="footer__bottom">
+        <div className="footer__bottom" style={{ marginTop: '48px' }}>
           © {new Date().getFullYear()} House of Gargi. All rights reserved. Handcrafted with love in India.
         </div>
       </div>
