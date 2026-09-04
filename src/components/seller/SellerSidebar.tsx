@@ -50,7 +50,7 @@ const sellerNavGroups: SellerNavGroup[] = [
     items: [
       { label: 'Master Catalog', href: '/seller/products', icon: Shirt },
       { label: 'Saree & Loom Matrix', href: '/seller/products?tab=sarees', icon: Layers },
-      { label: 'Bespoke In-Weave', href: '/seller/orders?filter=bespoke', icon: Sparkles },
+      { label: 'Bespoke Orders', href: '/seller/orders?filter=bespoke', icon: Sparkles },
     ],
   },
   {
@@ -133,9 +133,9 @@ export function SellerSidebar({
       >
         <div style={{ display: 'flex', alignItems: 'center', minWidth: 0, gap: isExpanded ? '0.75rem' : 0, justifyContent: isExpanded ? 'flex-start' : 'center', flex: 1 }}>
           {isLoading ? (
-            <Loader2 style={{ width: 18, height: 18, color: 'var(--seller-brand)', animation: 'spin 1s linear infinite', flexShrink: 0 }} />
+            <Loader2 style={{ width: 18, height: 18, color: 'var(--maharani-maroon)', animation: 'spin 1s linear infinite', flexShrink: 0 }} />
           ) : (
-            <Icon style={{ width: 18, height: 18, flexShrink: 0, color: isActive ? 'var(--seller-brand)' : '#64748B' }} />
+            <Icon style={{ width: 18, height: 18, flexShrink: 0, color: isActive ? 'var(--maharani-maroon)' : 'var(--stone-taupe)' }} />
           )}
 
           <span className="seller-nav-label" style={{ fontWeight: isActive ? 700 : 500 }}>
@@ -181,7 +181,7 @@ export function SellerSidebar({
                 </div>
                 <div className="seller-brand-text">
                   <span className="brand-name">{sellerName}</span>
-                  <span className="brand-sub">Seller Atelier Hub</span>
+                  <span className="brand-sub">Seller Atelier</span>
                 </div>
               </div>
             )}
@@ -204,17 +204,17 @@ export function SellerSidebar({
 
         {/* Profile / Sign Out Footer */}
         <div className="seller-sidebar-footer">
-          <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--seller-brand)', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.78rem', flexShrink: 0, margin: !isHovered ? '0 auto' : '0' }}>
+          <div style={{ width: 36, height: 36, borderRadius: '4px', background: 'var(--maharani-maroon)', border: '1px solid var(--gargi-gold)', color: 'var(--ivory-silk)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-nav)', fontWeight: 700, fontSize: '0.8rem', flexShrink: 0, margin: !isHovered ? '0 auto' : '0' }}>
             HG
           </div>
 
           {isHovered && (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flex: 1, minWidth: 0, marginLeft: '0.75rem' }}>
               <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--seller-text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--ink-brown)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {sellerPhone}
                 </span>
-                <span style={{ fontSize: '0.62rem', fontFamily: 'ui-monospace, monospace', color: '#059669', fontWeight: 700 }}>
+                <span style={{ fontSize: '0.65rem', fontFamily: 'var(--font-nav)', color: 'var(--peacock-teal)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                   Verified Artisan
                 </span>
               </div>
@@ -223,9 +223,9 @@ export function SellerSidebar({
                 type="button"
                 onClick={handleSignOut}
                 title="Sign Out"
-                style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '0.35rem', borderRadius: '6px', color: '#94A3B8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#DC2626')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#94A3B8')}
+                style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '0.35rem', borderRadius: '4px', color: 'var(--stone-taupe)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--maharani-maroon)')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--stone-taupe)')}
               >
                 <LogOut style={{ width: 16, height: 16 }} />
               </button>
@@ -252,28 +252,28 @@ export function SellerSidebar({
       >
         <div>
           {/* Mobile Drawer Header */}
-          <div style={{ padding: '1rem', borderBottom: '1px solid var(--seller-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ padding: '1.25rem 1rem', borderBottom: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
               <div className="seller-avatar-mini" style={{ margin: 0 }}>
                 HG
               </div>
-              <span style={{ fontWeight: 800, fontSize: '0.95rem', color: 'var(--seller-text-main)' }}>
+              <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, fontSize: '1.1rem', color: 'var(--ink-brown)' }}>
                 {sellerName}
               </span>
             </div>
             <button
               type="button"
               onClick={onMobileClose}
-              style={{ background: 'transparent', border: '1px solid var(--seller-border)', borderRadius: '8px', padding: '0.35rem', cursor: 'pointer', color: '#64748B' }}
+              style={{ background: 'transparent', border: '1px solid var(--soft-gold-line)', borderRadius: '2px', padding: '0.35rem', cursor: 'pointer', color: 'var(--stone-taupe)' }}
             >
               <X style={{ width: 18, height: 18 }} />
             </button>
           </div>
 
           {/* Mobile Nav */}
-          <nav style={{ padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <nav style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             {sellerNavGroups.map((group) => (
-              <div key={group.section} style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+              <div key={group.section} style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                 <div className="seller-nav-group-title">
                   {group.section}
                 </div>
@@ -284,19 +284,19 @@ export function SellerSidebar({
         </div>
 
         {/* Mobile Profile Footer */}
-        <div style={{ padding: '1rem', borderTop: '1px solid var(--seller-border)', background: 'var(--seller-bg)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ padding: '1rem', borderTop: '1px solid var(--soft-gold-line)', background: 'var(--ivory-silk)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--seller-text-main)' }}>
+            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--ink-brown)' }}>
               {sellerPhone}
             </span>
-            <span style={{ fontSize: '0.65rem', fontFamily: 'ui-monospace, monospace', color: '#059669', fontWeight: 700 }}>
+            <span style={{ fontSize: '0.65rem', fontFamily: 'var(--font-nav)', color: 'var(--peacock-teal)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               Verified Artisan
             </span>
           </div>
           <button
             type="button"
             onClick={handleSignOut}
-            style={{ background: '#FEE2E2', color: '#DC2626', border: 'none', borderRadius: '8px', padding: '0.45rem 0.75rem', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+            style={{ background: '#FFF1F2', color: 'var(--maharani-maroon)', border: '1px solid #FECDD3', borderRadius: '2px', padding: '0.45rem 0.75rem', fontSize: '0.72rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
           >
             <LogOut style={{ width: 14, height: 14 }} />
             Sign Out

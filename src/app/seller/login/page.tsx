@@ -28,9 +28,7 @@ export default function SellerLoginPage() {
 
   const cleanPhoneNumber = (input: string) => {
     const digits = input.replace(/\D/g, '');
-    // If standard 10 digit Indian mobile number, return clean 10 digits
     if (digits.length === 10) return digits;
-    // If entered with 91 prefix (12 digits), strip country code for Supabase test phone match
     if (digits.length === 12 && digits.startsWith('91')) return digits.slice(2);
     return digits;
   };
@@ -48,12 +46,10 @@ export default function SellerLoginPage() {
     setLoading(true);
 
     try {
-      // First try configured test number format (10 digits)
       let { error: otpErr } = await supabase.auth.signInWithOtp({
         phone: targetPhone,
       });
 
-      // If Supabase expects international format (+91), try fallback
       if (otpErr && otpErr.message?.toLowerCase().includes('format')) {
         const intlRes = await supabase.auth.signInWithOtp({
           phone: `+91${targetPhone}`,
@@ -61,14 +57,12 @@ export default function SellerLoginPage() {
         otpErr = intlRes.error;
       }
 
-      if (otpErr) {
-        throw otpErr;
-      }
+      if (otpErr) throw otpErr;
 
       setVerifiedPhone(targetPhone);
       setStep(2);
     } catch (err: any) {
-      setError(err.message || 'Failed to dispatch security code. Please check your connection.');
+      setError(err.message || 'Failed to dispatch security code. Please verify credentials.');
     } finally {
       setLoading(false);
     }
@@ -87,14 +81,12 @@ export default function SellerLoginPage() {
     setLoading(true);
 
     try {
-      // Authenticate natively with Supabase Auth
       let { data, error: verifyErr } = await supabase.auth.verifyOtp({
         phone: targetPhone,
         token: otp,
         type: 'sms',
       });
 
-      // If first attempt fails, attempt with +91 international prefix
       if (verifyErr && verifyErr.message?.toLowerCase().includes('invalid')) {
         const intlRes = await supabase.auth.verifyOtp({
           phone: `+91${targetPhone}`,
@@ -107,14 +99,12 @@ export default function SellerLoginPage() {
         }
       }
 
-      if (verifyErr) {
-        throw verifyErr;
-      }
+      if (verifyErr) throw verifyErr;
 
       if (data?.session) {
         router.push('/seller');
       } else {
-        setError('Verification successful, but session could not be established.');
+        setError('Verification succeeded, but session could not be established.');
       }
     } catch (err: any) {
       setError(err.message || 'The verification code entered is invalid or has expired.');
@@ -129,77 +119,80 @@ export default function SellerLoginPage() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#FAFAF8',
+      backgroundColor: 'var(--ivory-silk)',
       padding: '1.5rem',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+      fontFamily: 'var(--font-sans)'
     }}>
       <div style={{
-        background: '#FFFFFF',
-        borderRadius: '1.25rem',
-        border: '1px solid rgba(0, 0, 0, 0.08)',
-        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03)',
+        background: 'var(--pure-white)',
+        borderRadius: '4px',
+        border: '1px solid var(--soft-gold-line)',
+        boxShadow: '0 12px 36px rgba(43, 31, 24, 0.06)',
         width: '100%',
-        maxWidth: '440px',
-        padding: '2.25rem 2rem',
+        maxWidth: '420px',
+        padding: '2.5rem 2.25rem',
         position: 'relative',
         overflow: 'hidden'
       }}>
-        {/* Subtle Brand Accent Bar */}
+        {/* Subtle Heritage Gold/Maroon Accent Line */}
         <div style={{
           position: 'absolute',
           top: 0,
           left: 0,
           right: 0,
-          height: '4px',
-          background: 'linear-gradient(90deg, #3A3564, #B38E5D, #3A3564)'
+          height: '3px',
+          background: 'linear-gradient(90deg, var(--maharani-maroon), var(--gargi-gold), var(--maharani-maroon))'
         }} />
 
-        {/* Header Badge */}
-        <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
+        {/* Brand Header */}
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div style={{
             width: 48,
             height: 48,
-            borderRadius: 14,
-            background: '#3A3564',
-            color: '#FFFFFF',
+            borderRadius: '4px',
+            background: 'var(--maharani-maroon)',
+            border: '1px solid var(--gargi-gold)',
+            color: 'var(--ivory-silk)',
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '1.15rem',
-            fontWeight: 800,
-            boxShadow: '0 4px 14px rgba(58,53,100,0.25)',
+            fontFamily: 'var(--font-nav)',
+            fontSize: '1.1rem',
+            fontWeight: 700,
+            letterSpacing: '1px',
             marginBottom: '1rem'
           }}>
             HG
           </div>
           <h1 style={{
-            fontSize: '1.35rem',
-            fontWeight: 800,
-            color: '#0F172A',
-            letterSpacing: '-0.02em',
+            fontFamily: 'var(--font-serif)',
+            fontSize: '1.75rem',
+            fontWeight: 600,
+            color: 'var(--ink-brown)',
+            letterSpacing: '0.01em',
             margin: '0 0 0.35rem 0'
           }}>
             Atelier Seller Portal
           </h1>
           <p style={{
-            fontSize: '0.8rem',
-            color: '#64748B',
+            fontSize: '0.82rem',
+            color: 'var(--stone-taupe)',
             margin: 0,
-            fontWeight: 500
+            fontWeight: 400
           }}>
-            House of Gargi Luxury Handloom & Artisan Management
+            House of Gargi &bull; Artisan &amp; Couture Atelier Access
           </p>
         </div>
 
         {error && (
           <div style={{
             background: '#FEF2F2',
-            border: '1px solid #FCA5A5',
-            color: '#B91C1C',
+            border: '1px solid #FECDD3',
+            color: 'var(--maharani-maroon)',
             padding: '0.75rem 1rem',
-            borderRadius: '10px',
-            fontSize: '0.8rem',
-            marginBottom: '1.25rem',
+            borderRadius: '2px',
+            fontSize: '0.78rem',
+            marginBottom: '1.5rem',
             fontWeight: 500,
             textAlign: 'center'
           }}>
@@ -212,35 +205,36 @@ export default function SellerLoginPage() {
             <div>
               <label style={{
                 display: 'block',
-                fontSize: '0.75rem',
+                fontSize: '0.72rem',
+                fontFamily: 'var(--font-nav)',
                 fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-                color: '#475569',
+                letterSpacing: '0.14em',
+                color: 'var(--stone-taupe)',
                 marginBottom: '0.5rem'
               }}>
-                Registered Artisan Phone
+                Registered Phone Number
               </label>
 
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                border: '1px solid rgba(0, 0, 0, 0.12)',
-                borderRadius: '10px',
-                background: '#FFFFFF',
-                overflow: 'hidden',
-                transition: 'border-color 150ms ease'
+                border: '1px solid var(--soft-gold-line)',
+                borderRadius: '2px',
+                background: 'var(--pure-white)',
+                overflow: 'hidden'
               }}>
                 <div style={{
                   padding: '0.75rem 0.85rem',
-                  background: '#FAF7F0',
-                  borderRight: '1px solid rgba(0, 0, 0, 0.08)',
+                  background: 'var(--ivory-silk)',
+                  borderRight: '1px solid var(--soft-gold-line)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.35rem',
-                  fontSize: '0.85rem',
+                  fontSize: '0.82rem',
+                  fontFamily: 'var(--font-nav)',
                   fontWeight: 700,
-                  color: '#3A3564'
+                  color: 'var(--maharani-maroon)'
                 }}>
                   <Phone style={{ width: 14, height: 14 }} />
                   +91
@@ -258,13 +252,13 @@ export default function SellerLoginPage() {
                     border: 'none',
                     outline: 'none',
                     fontSize: '0.95rem',
-                    color: '#0F172A',
+                    color: 'var(--ink-brown)',
                     fontWeight: 600,
-                    letterSpacing: '0.02em'
+                    letterSpacing: '0.04em'
                   }}
                 />
               </div>
-              <span style={{ display: 'block', fontSize: '0.7rem', color: '#94A3B8', marginTop: '0.4rem' }}>
+              <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--stone-taupe)', marginTop: '0.4rem' }}>
                 Secure OTP verification powered by Supabase Auth
               </span>
             </div>
@@ -274,31 +268,33 @@ export default function SellerLoginPage() {
               disabled={loading || phone.length < 10}
               style={{
                 width: '100%',
-                background: phone.length === 10 ? '#3A3564' : '#94A3B8',
-                color: '#FFFFFF',
+                background: phone.length === 10 ? 'var(--maharani-maroon)' : '#D6D3D1',
+                color: 'var(--ivory-silk)',
                 border: 'none',
-                borderRadius: '10px',
-                padding: '0.85rem',
-                fontSize: '0.9rem',
+                borderRadius: '2px',
+                padding: '0.9rem',
+                fontSize: '0.85rem',
+                fontFamily: 'var(--font-nav)',
                 fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.16em',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '0.5rem',
                 cursor: phone.length === 10 && !loading ? 'pointer' : 'not-allowed',
-                transition: 'background 180ms ease, transform 180ms ease',
-                boxShadow: phone.length === 10 ? '0 4px 12px rgba(58,53,100,0.2)' : 'none'
+                transition: 'background 200ms ease',
               }}
             >
               {loading ? (
                 <>
-                  <Loader2 style={{ width: 18, height: 18, animation: 'spin 1s linear infinite' }} />
-                  Sending Security Code...
+                  <Loader2 style={{ width: 16, height: 16, animation: 'spin 1s linear infinite' }} />
+                  Dispatching Code...
                 </>
               ) : (
                 <>
                   Request Atelier OTP
-                  <ArrowRight style={{ width: 16, height: 16 }} />
+                  <ArrowRight style={{ width: 15, height: 15 }} />
                 </>
               )}
             </button>
@@ -313,11 +309,12 @@ export default function SellerLoginPage() {
                 marginBottom: '0.5rem'
               }}>
                 <label style={{
-                  fontSize: '0.75rem',
+                  fontSize: '0.72rem',
+                  fontFamily: 'var(--font-nav)',
                   fontWeight: 700,
                   textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                  color: '#475569'
+                  letterSpacing: '0.14em',
+                  color: 'var(--stone-taupe)'
                 }}>
                   Enter 6-Digit Code
                 </label>
@@ -328,7 +325,7 @@ export default function SellerLoginPage() {
                     background: 'transparent',
                     border: 'none',
                     fontSize: '0.72rem',
-                    color: '#3A3564',
+                    color: 'var(--maharani-maroon)',
                     fontWeight: 700,
                     cursor: 'pointer',
                     textDecoration: 'underline'
@@ -341,16 +338,16 @@ export default function SellerLoginPage() {
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                border: '1px solid rgba(0, 0, 0, 0.12)',
-                borderRadius: '10px',
-                background: '#FFFFFF',
+                border: '1px solid var(--soft-gold-line)',
+                borderRadius: '2px',
+                background: 'var(--pure-white)',
                 overflow: 'hidden'
               }}>
                 <div style={{
                   padding: '0.75rem 0.85rem',
-                  background: '#FAF7F0',
-                  borderRight: '1px solid rgba(0, 0, 0, 0.08)',
-                  color: '#3A3564'
+                  background: 'var(--ivory-silk)',
+                  borderRight: '1px solid var(--soft-gold-line)',
+                  color: 'var(--maharani-maroon)'
                 }}>
                   <KeyRound style={{ width: 16, height: 16 }} />
                 </div>
@@ -367,16 +364,16 @@ export default function SellerLoginPage() {
                     padding: '0.75rem 1rem',
                     border: 'none',
                     outline: 'none',
-                    fontSize: '1.15rem',
-                    color: '#0F172A',
-                    fontWeight: 800,
+                    fontSize: '1.2rem',
+                    color: 'var(--ink-brown)',
+                    fontWeight: 700,
                     letterSpacing: '0.35em',
                     textAlign: 'center'
                   }}
                 />
               </div>
-              <span style={{ display: 'block', fontSize: '0.7rem', color: '#94A3B8', marginTop: '0.4rem', textAlign: 'center' }}>
-                Code sent to +91 {verifiedPhone}
+              <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--stone-taupe)', marginTop: '0.4rem', textAlign: 'center' }}>
+                Verification code sent to +91 {verifiedPhone}
               </span>
             </div>
 
@@ -385,30 +382,33 @@ export default function SellerLoginPage() {
               disabled={loading || otp.length < 6}
               style={{
                 width: '100%',
-                background: otp.length === 6 ? '#3A3564' : '#94A3B8',
-                color: '#FFFFFF',
+                background: otp.length === 6 ? 'var(--maharani-maroon)' : '#D6D3D1',
+                color: 'var(--ivory-silk)',
                 border: 'none',
-                borderRadius: '10px',
-                padding: '0.85rem',
-                fontSize: '0.9rem',
+                borderRadius: '2px',
+                padding: '0.9rem',
+                fontSize: '0.85rem',
+                fontFamily: 'var(--font-nav)',
                 fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.16em',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '0.5rem',
                 cursor: otp.length === 6 && !loading ? 'pointer' : 'not-allowed',
-                boxShadow: otp.length === 6 ? '0 4px 12px rgba(58,53,100,0.2)' : 'none'
+                transition: 'background 200ms ease',
               }}
             >
               {loading ? (
                 <>
-                  <Loader2 style={{ width: 18, height: 18, animation: 'spin 1s linear infinite' }} />
-                  Verifying Credentials...
+                  <Loader2 style={{ width: 16, height: 16, animation: 'spin 1s linear infinite' }} />
+                  Verifying Session...
                 </>
               ) : (
                 <>
-                  <ShieldCheck style={{ width: 18, height: 18 }} />
-                  Verify & Access Atelier
+                  <ShieldCheck style={{ width: 16, height: 16 }} />
+                  Verify &amp; Access Atelier
                 </>
               )}
             </button>
@@ -419,16 +419,16 @@ export default function SellerLoginPage() {
         <div style={{
           marginTop: '2rem',
           paddingTop: '1.25rem',
-          borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+          borderTop: '1px solid var(--soft-gold-line)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           gap: '0.4rem',
-          color: '#94A3B8',
-          fontSize: '0.72rem'
+          color: 'var(--stone-taupe)',
+          fontSize: '0.75rem'
         }}>
-          <Sparkles style={{ width: 13, height: 13, color: '#B38E5D' }} />
-          <span>Exclusive to verified House of Gargi master weavers & sellers</span>
+          <Sparkles style={{ width: 13, height: 13, color: 'var(--gargi-gold)' }} />
+          <span>Exclusive to verified House of Gargi artisans &amp; sellers</span>
         </div>
       </div>
     </div>

@@ -6,13 +6,10 @@ import {
   Shirt, 
   Plus, 
   Search, 
-  Filter, 
-  Layers, 
   Loader2, 
   Check, 
-  X, 
-  Image as ImageIcon,
-  Tag
+  X,
+  PackageCheck
 } from 'lucide-react';
 
 export default function SellerProductsPage() {
@@ -91,7 +88,7 @@ export default function SellerProductsPage() {
         });
       }
     } catch (err: any) {
-      setFormError(err.message || 'Failed to register new product.');
+      setFormError(err.message || 'Failed to register new product in database.');
     } finally {
       setSubmitting(false);
     }
@@ -116,17 +113,17 @@ export default function SellerProductsPage() {
             <Shirt style={{ width: 22, height: 22 }} />
           </div>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <h1 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--seller-text-main)', margin: 0 }}>
-                Master Apparel & Catalog Management
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
+              <h1 className="atelier-page-title">
+                Artisan Catalog &amp; Loom Inventory
               </h1>
               <span className="atelier-live-pill">
                 <span className="atelier-live-dot" />
-                {products.length} ATELIER PIECES
+                {products.length} MASTER PIECES
               </span>
             </div>
-            <p style={{ fontSize: '0.78rem', color: 'var(--seller-text-muted)', margin: '0.2rem 0 0 0', fontWeight: 500 }}>
-              Live inventory tracking and bespoke SKU registration in Supabase
+            <p style={{ fontSize: '0.85rem', color: 'var(--stone-taupe)', margin: '0.35rem 0 0 0' }}>
+              Real-time catalog pieces stored in Supabase &bull; Zero placeholder data
             </p>
           </div>
         </div>
@@ -135,40 +132,56 @@ export default function SellerProductsPage() {
           type="button"
           onClick={() => setIsAddModalOpen(true)}
           style={{
-            background: 'var(--seller-brand)',
-            color: '#FFFFFF',
-            border: 'none',
-            borderRadius: '10px',
-            padding: '0.55rem 1rem',
-            fontSize: '0.8rem',
+            background: 'var(--maharani-maroon)',
+            color: 'var(--ivory-silk)',
+            border: '1.5px solid var(--maharani-maroon)',
+            borderRadius: '2px',
+            padding: '0.65rem 1.25rem',
+            fontSize: '0.78rem',
+            fontFamily: 'var(--font-nav)',
             fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.16em',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.45rem',
             cursor: 'pointer',
-            boxShadow: '0 4px 12px rgba(58,53,100,0.18)',
+            boxShadow: '0 4px 12px rgba(122, 35, 49, 0.15)',
           }}
         >
-          <Plus style={{ width: 16, height: 16 }} />
-          Add Master Piece
+          <Plus style={{ width: 14, height: 14 }} />
+          Add Handcrafted Piece
         </button>
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="atelier-filter-bar">
-        <div className="atelier-filter-tabs">
+      <div className="table-top-bar" style={{ background: 'var(--pure-white)', padding: '1rem 1.5rem', border: '1px solid var(--soft-gold-line)', borderRadius: '4px', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
           {[
             { id: 'all', label: 'All Catalog' },
             { id: 'sarees', label: 'Banarasi Sarees' },
             { id: 'lehengas', label: 'Bridal Lehengas' },
             { id: 'kurta-sets', label: 'Kurta Sets' },
-            { id: 'accessories', label: 'Jewellery & Acc' },
+            { id: 'accessories', label: 'Heritage Jewellery' },
           ].map(tab => (
             <button
               key={tab.id}
               type="button"
               onClick={() => setSelectedCategory(tab.id)}
-              className={`atelier-filter-btn ${selectedCategory === tab.id ? 'active' : ''}`}
+              style={{
+                background: selectedCategory === tab.id ? 'var(--maharani-maroon)' : 'var(--ivory-silk)',
+                color: selectedCategory === tab.id ? 'var(--ivory-silk)' : 'var(--stone-taupe)',
+                border: '1px solid var(--soft-gold-line)',
+                borderRadius: '2px',
+                padding: '0.4rem 0.75rem',
+                fontSize: '0.72rem',
+                fontFamily: 'var(--font-nav)',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+                cursor: 'pointer',
+                transition: 'all 150ms ease',
+              }}
             >
               {tab.label}
             </button>
@@ -177,71 +190,71 @@ export default function SellerProductsPage() {
 
         {/* Search */}
         <div style={{
-          position: 'relative',
           display: 'flex',
           alignItems: 'center',
-          background: '#F8FAFC',
-          border: '1px solid var(--seller-border)',
-          borderRadius: '8px',
-          padding: '0.25rem 0.75rem',
+          background: 'var(--pure-white)',
+          border: '1px solid var(--soft-gold-line)',
+          borderRadius: '2px',
+          padding: '0.4rem 0.75rem',
         }}>
-          <Search style={{ width: 14, height: 14, color: '#94A3B8', marginRight: '0.45rem' }} />
+          <Search style={{ width: 14, height: 14, color: 'var(--stone-taupe)', marginRight: '0.45rem' }} />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search piece name..."
+            placeholder="Search piece title..."
             style={{
-              background: 'transparent',
               border: 'none',
               outline: 'none',
-              fontSize: '0.78rem',
-              color: 'var(--seller-text-main)',
+              fontSize: '0.8rem',
+              fontFamily: 'var(--font-sans)',
+              color: 'var(--ink-brown)',
               width: '180px',
+              background: 'transparent',
             }}
           />
         </div>
       </div>
 
       {/* Products Data Table */}
-      <div className="atelier-table-card">
-        <div className="table-header-row">
+      <div className="luxury-table-card">
+        <div className="table-top-bar" style={{ paddingBottom: '1rem' }}>
           <div>
-            <h3 style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--seller-text-main)', margin: 0 }}>
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--ink-brown)', margin: 0 }}>
               Atelier Master Catalog
             </h3>
-            <p style={{ fontSize: '0.72rem', color: 'var(--seller-text-muted)', margin: '0.15rem 0 0 0' }}>
-              Fetched real-time from Supabase table &apos;products&apos;
+            <p style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', margin: '0.2rem 0 0 0' }}>
+              Connected live to Supabase table &apos;products&apos;
             </p>
           </div>
-          <span style={{ fontSize: '0.75rem', color: '#64748B', fontWeight: 600 }}>
+          <span style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)' }}>
             Showing {filteredProducts.length} items
           </span>
         </div>
 
-        <div style={{ overflowX: 'auto', marginTop: '1rem' }}>
-          <table className="executive-table">
+        <div style={{ overflowX: 'auto', marginTop: '0.75rem' }}>
+          <table className="luxury-table">
             <thead>
               <tr>
                 <th style={{ width: '60px' }}>Preview</th>
-                <th>Artisan Piece Name</th>
-                <th>Category</th>
+                <th>Artisan Piece Title</th>
+                <th>Collection</th>
                 <th>Price (INR)</th>
                 <th>Godown Stock</th>
-                <th style={{ textAlign: 'center' }}>Loom Status</th>
+                <th style={{ textAlign: 'center' }}>Loom State</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: '#94A3B8' }}>
+                  <td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--stone-taupe)' }}>
                     <Loader2 style={{ width: 20, height: 20, animation: 'spin 1s linear infinite', display: 'inline-block', verticalAlign: 'middle', marginRight: '0.5rem' }} />
                     Loading catalog pieces from Supabase...
                   </td>
                 </tr>
               ) : filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: '#94A3B8' }}>
+                  <td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--stone-taupe)' }}>
                     No products found matching your filter.
                   </td>
                 </tr>
@@ -252,14 +265,14 @@ export default function SellerProductsPage() {
                       <img
                         src={p.image_url || '/images/category-sarees.png'}
                         alt={p.name}
-                        style={{ width: 44, height: 52, objectFit: 'cover', borderRadius: '6px', border: '1px solid var(--seller-border)' }}
+                        style={{ width: 44, height: 52, objectFit: 'cover', borderRadius: '2px', border: '1px solid var(--soft-gold-line)' }}
                       />
                     </td>
                     <td>
-                      <strong style={{ color: 'var(--seller-text-main)', display: 'block', fontSize: '0.88rem' }}>
+                      <strong style={{ color: 'var(--ink-brown)', display: 'block', fontSize: '0.88rem' }}>
                         {p.name}
                       </strong>
-                      <span style={{ fontSize: '0.68rem', fontFamily: 'ui-monospace, monospace', color: '#94A3B8' }}>
+                      <span style={{ fontSize: '0.7rem', fontFamily: 'var(--font-nav)', color: 'var(--stone-taupe)' }}>
                         SKU: {p.id.slice(0, 8).toUpperCase()}
                       </span>
                     </td>
@@ -267,21 +280,23 @@ export default function SellerProductsPage() {
                       <span style={{
                         display: 'inline-block',
                         padding: '0.2rem 0.55rem',
-                        borderRadius: '6px',
-                        fontSize: '0.7rem',
+                        borderRadius: '2px',
+                        fontSize: '0.72rem',
+                        fontFamily: 'var(--font-nav)',
                         fontWeight: 700,
-                        textTransform: 'capitalize',
-                        background: '#F1F5F9',
-                        color: '#475569',
+                        textTransform: 'uppercase',
+                        background: 'var(--ivory-silk)',
+                        border: '1px solid var(--soft-gold-line)',
+                        color: 'var(--stone-taupe)',
                       }}>
                         {p.category}
                       </span>
                     </td>
-                    <td style={{ fontWeight: 800, color: 'var(--seller-text-main)' }}>
+                    <td style={{ fontWeight: 700, color: 'var(--ink-brown)' }}>
                       ₹ {Number(p.price_in_rupees || 0).toLocaleString('en-IN')}
                     </td>
                     <td>
-                      <span style={{ fontWeight: 700, color: p.stock > 5 ? '#047857' : '#D97706' }}>
+                      <span style={{ fontWeight: 700, color: Number(p.stock) > 5 ? '#166534' : 'var(--maharani-maroon)' }}>
                         {p.stock} units
                       </span>
                     </td>
@@ -289,12 +304,15 @@ export default function SellerProductsPage() {
                       <span style={{
                         display: 'inline-block',
                         padding: '0.2rem 0.55rem',
-                        borderRadius: '9999px',
+                        borderRadius: '2px',
                         fontSize: '0.68rem',
+                        fontFamily: 'var(--font-nav)',
                         fontWeight: 700,
-                        background: '#ECFDF5',
-                        color: '#047857',
-                        border: '1px solid #A7F3D0',
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase',
+                        background: '#F0FDF4',
+                        color: '#166534',
+                        border: '1px solid #BBF7D0',
                       }}>
                         In Atelier
                       </span>
@@ -312,7 +330,7 @@ export default function SellerProductsPage() {
         <div style={{
           position: 'fixed',
           inset: 0,
-          background: 'rgba(0, 0, 0, 0.5)',
+          background: 'rgba(43, 31, 24, 0.5)',
           backdropFilter: 'blur(3px)',
           zIndex: 60,
           display: 'flex',
@@ -321,72 +339,67 @@ export default function SellerProductsPage() {
           padding: '1rem',
         }}>
           <div style={{
-            background: '#FFFFFF',
-            borderRadius: '1.25rem',
-            padding: '2rem',
+            background: 'var(--pure-white)',
+            borderRadius: '4px',
+            padding: '2.25rem 2rem',
             width: '100%',
             maxWidth: '480px',
-            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-            border: '1px solid var(--seller-border)',
+            boxShadow: '0 20px 40px rgba(43, 31, 24, 0.15)',
+            border: '1px solid var(--soft-gold-line)',
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <div style={{ width: 32, height: 32, borderRadius: 8, background: 'var(--seller-brand-tint)', color: 'var(--seller-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Plus style={{ width: 18, height: 18 }} />
-                </div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 800, margin: 0, color: 'var(--seller-text-main)' }}>
-                  Register Handcrafted Piece
-                </h3>
-              </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '0.85rem' }}>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.35rem', fontWeight: 600, margin: 0, color: 'var(--ink-brown)' }}>
+                Register Handcrafted Piece
+              </h3>
               <button
                 type="button"
                 onClick={() => setIsAddModalOpen(false)}
-                style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#94A3B8' }}
+                style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--stone-taupe)' }}
               >
                 <X style={{ width: 20, height: 20 }} />
               </button>
             </div>
 
             {formError && (
-              <div style={{ background: '#FEF2F2', color: '#B91C1C', padding: '0.65rem', borderRadius: '8px', fontSize: '0.75rem', marginBottom: '1rem', textAlign: 'center' }}>
+              <div style={{ background: '#FEF2F2', border: '1px solid #FECDD3', color: 'var(--maharani-maroon)', padding: '0.65rem', borderRadius: '2px', fontSize: '0.75rem', marginBottom: '1rem', textAlign: 'center' }}>
                 {formError}
               </div>
             )}
 
-            <form onSubmit={handleCreateProduct} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <form onSubmit={handleCreateProduct} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', color: '#475569', marginBottom: '0.35rem' }}>
-                  Piece Title / Style
+                <label style={{ display: 'block', fontSize: '0.72rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
+                  Artisan Piece Title
                 </label>
                 <input
                   type="text"
                   required
                   value={newProduct.name}
                   onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-                  placeholder="e.g., Royal Tussar Silk Saree"
-                  style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '8px', border: '1px solid var(--seller-border)', outline: 'none', fontSize: '0.85rem' }}
+                  placeholder="e.g., Katan Silk Brocade Saree"
+                  style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.85rem', color: 'var(--ink-brown)' }}
                 />
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', color: '#475569', marginBottom: '0.35rem' }}>
-                    Category
+                  <label style={{ display: 'block', fontSize: '0.72rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
+                    Collection
                   </label>
                   <select
                     value={newProduct.category}
                     onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
-                    style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '8px', border: '1px solid var(--seller-border)', outline: 'none', fontSize: '0.85rem', background: '#FFFFFF' }}
+                    style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.85rem', background: 'var(--pure-white)', color: 'var(--ink-brown)' }}
                   >
                     <option value="sarees">Banarasi Sarees</option>
                     <option value="lehengas">Bridal Lehengas</option>
                     <option value="kurta-sets">Kurta Sets</option>
-                    <option value="accessories">Jewellery & Acc</option>
+                    <option value="accessories">Heritage Jewellery</option>
                   </select>
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', color: '#475569', marginBottom: '0.35rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.72rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
                     Price (INR ₹)
                   </label>
                   <input
@@ -394,16 +407,16 @@ export default function SellerProductsPage() {
                     required
                     value={newProduct.price_in_rupees}
                     onChange={(e) => setNewProduct({ ...newProduct, price_in_rupees: e.target.value })}
-                    placeholder="28500"
-                    style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '8px', border: '1px solid var(--seller-border)', outline: 'none', fontSize: '0.85rem' }}
+                    placeholder="32000"
+                    style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.85rem', color: 'var(--ink-brown)' }}
                   />
                 </div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', color: '#475569', marginBottom: '0.35rem' }}>
-                    Initial Godown Stock
+                  <label style={{ display: 'block', fontSize: '0.72rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
+                    Initial Loom Stock
                   </label>
                   <input
                     type="number"
@@ -411,39 +424,39 @@ export default function SellerProductsPage() {
                     value={newProduct.stock}
                     onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })}
                     placeholder="10"
-                    style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '8px', border: '1px solid var(--seller-border)', outline: 'none', fontSize: '0.85rem' }}
+                    style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.85rem', color: 'var(--ink-brown)' }}
                   />
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', color: '#475569', marginBottom: '0.35rem' }}>
-                    Image Preset
+                  <label style={{ display: 'block', fontSize: '0.72rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
+                    Curated Asset
                   </label>
                   <select
                     value={newProduct.image_url}
                     onChange={(e) => setNewProduct({ ...newProduct, image_url: e.target.value })}
-                    style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '8px', border: '1px solid var(--seller-border)', outline: 'none', fontSize: '0.85rem', background: '#FFFFFF' }}
+                    style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.85rem', background: 'var(--pure-white)', color: 'var(--ink-brown)' }}
                   >
-                    <option value="/images/category-sarees.png">Sarees Asset</option>
-                    <option value="/images/category-lehengas.png">Lehengas Asset</option>
-                    <option value="/images/category-kurtas.png">Kurtas Asset</option>
-                    <option value="/images/category-accessories.png">Jewellery Asset</option>
+                    <option value="/images/category-sarees.png">Sarees Lookbook</option>
+                    <option value="/images/category-lehengas.png">Lehengas Lookbook</option>
+                    <option value="/images/category-kurtas.png">Kurtas Lookbook</option>
+                    <option value="/images/category-accessories.png">Jewellery Lookbook</option>
                   </select>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.65rem', marginTop: '0.75rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.65rem', marginTop: '1rem', borderTop: '1px solid var(--soft-gold-line)', paddingTop: '1rem' }}>
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  style={{ padding: '0.65rem 1rem', borderRadius: '8px', border: '1px solid var(--seller-border)', background: '#FFFFFF', color: '#475569', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer' }}
+                  style={{ padding: '0.65rem 1.25rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', background: 'transparent', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.12em', cursor: 'pointer' }}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  style={{ padding: '0.65rem 1.25rem', borderRadius: '8px', border: 'none', background: 'var(--seller-brand)', color: '#FFFFFF', fontWeight: 700, fontSize: '0.8rem', cursor: submitting ? 'not-allowed' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
+                  style={{ padding: '0.65rem 1.5rem', borderRadius: '2px', border: '1.5px solid var(--maharani-maroon)', background: 'var(--maharani-maroon)', color: 'var(--ivory-silk)', fontFamily: 'var(--font-nav)', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.16em', cursor: submitting ? 'not-allowed' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
                 >
                   {submitting ? <Loader2 style={{ width: 14, height: 14, animation: 'spin 1s linear infinite' }} /> : <Check style={{ width: 14, height: 14 }} />}
                   Save to Supabase

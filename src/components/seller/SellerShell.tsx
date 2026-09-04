@@ -57,13 +57,13 @@ export function SellerShell({
             style={{
               width: 38,
               height: 38,
-              borderRadius: 10,
-              border: '1px solid var(--seller-border)',
-              background: '#FFFFFF',
+              borderRadius: 2,
+              border: '1px solid var(--soft-gold-line)',
+              background: 'var(--pure-white)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: 'var(--seller-text-main)',
+              color: 'var(--ink-brown)',
               cursor: 'pointer',
             }}
             aria-label="Open navigation menu"
@@ -74,10 +74,10 @@ export function SellerShell({
           <Link
             href="/seller"
             style={{
-              fontWeight: 800,
-              letterSpacing: '-0.02em',
-              fontSize: '1rem',
-              color: 'var(--seller-text-main)',
+              fontFamily: 'var(--font-serif)',
+              fontWeight: 700,
+              fontSize: '1.15rem',
+              color: 'var(--ink-brown)',
               textDecoration: 'none',
               display: 'flex',
               alignItems: 'center',
@@ -87,13 +87,15 @@ export function SellerShell({
             <span style={{
               width: 28,
               height: 28,
-              borderRadius: 6,
-              background: 'var(--seller-brand)',
-              color: '#FFFFFF',
+              borderRadius: 2,
+              background: 'var(--maharani-maroon)',
+              border: '1px solid var(--gargi-gold)',
+              color: 'var(--ivory-silk)',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '0.7rem',
+              fontSize: '0.72rem',
+              fontFamily: 'var(--font-nav)',
               fontWeight: 700,
             }}>
               HG
@@ -104,15 +106,15 @@ export function SellerShell({
           <span
             style={{
               fontSize: '0.625rem',
-              fontFamily: 'ui-monospace, monospace',
-              fontWeight: 800,
-              letterSpacing: '0.08em',
+              fontFamily: 'var(--font-nav)',
+              fontWeight: 700,
+              letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              padding: '0.25rem 0.6rem',
-              borderRadius: 9999,
-              background: 'var(--seller-brand-tint)',
-              color: 'var(--seller-brand)',
-              border: '1px solid rgba(0, 0, 0, 0.1)',
+              padding: '0.25rem 0.55rem',
+              borderRadius: 2,
+              background: 'var(--warm-sand)',
+              color: 'var(--maharani-maroon)',
+              border: '1px solid var(--soft-gold-line)',
             }}
           >
             Seller Hub

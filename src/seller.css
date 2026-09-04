@@ -1,31 +1,39 @@
 /* ==========================================================================
-   HOUSE OF GARGI — EXECUTIVE SELLER ATELIER STYLES
-   Inspired by Zigza Admin Dashboard Architecture & Interaction Physics
+   HOUSE OF GARGI — LUXURY SELLER ATELIER STYLES
+   Adhering to LUXURY_DESIGN_SYSTEM.md
+   Colors: Ivory Silk (#FBF6EE), Warm Sand (#F2E8D8), Ink Brown (#2B1F18),
+           Stone Taupe (#786C5E), Soft Gold Line (#E4D3AE), Gargi Gold (#C9A227),
+           Maharani Maroon (#7A2331), Peacock Teal (#1F6F6B)
+   Typography: Cormorant Garamond (display), Marcellus (nav/caps), Lato (body/numbers)
    ========================================================================== */
 
 :root {
-  --seller-bg: #FAFAF8;
-  --seller-card-bg: #FFFFFF;
-  --seller-sidebar-bg: #FFFFFF;
-  --seller-border: rgba(0, 0, 0, 0.08);
-  --seller-border-hover: rgba(58, 53, 100, 0.35);
-  --seller-brand: #3A3564;
-  --seller-brand-tint: #FAF7F0;
-  --seller-brand-dark: #2A2649;
-  --seller-text-main: #0F172A;
-  --seller-text-muted: #64748B;
-  --seller-text-sub: #94A3B8;
+  --ivory-silk: #FBF6EE;
+  --warm-sand: #F2E8D8;
+  --pure-white: #FFFFFF;
+  --ink-brown: #2B1F18;
+  --stone-taupe: #786C5E;
+  --soft-gold-line: #E4D3AE;
+  --gargi-gold: #C9A227;
+  --maharani-maroon: #7A2331;
+  --peacock-teal: #1F6F6B;
+  --marigold: #E08A1E;
+
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-nav: 'Marcellus', 'Cinzel', serif;
+  --font-sans: 'Lato', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
   --seller-rail-width: 72px;
   --seller-expanded-width: 264px;
 }
 
-/* Base Dashboard Wrapper */
+/* Base Layout Wrapper */
 .seller-shell {
   min-height: 100vh;
   width: 100%;
-  background-color: var(--seller-bg);
-  color: var(--seller-text-main);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--ivory-silk);
+  color: var(--ink-brown);
+  font-family: var(--font-sans);
   display: flex;
   flex-direction: column;
 }
@@ -38,8 +46,8 @@
 
 /* ==========================================================================
    ZERO-SHIFT MAIN CONTAINER
-   Permanent 72px left padding guarantees that floating sidebar expands
-   over the page without displacing central tables or charts by even 1 pixel.
+   Permanent 72px left padding on desktop guarantees that floating sidebar
+   expands smoothly above the page without shifting content.
    ========================================================================== */
 .seller-main {
   flex: 1;
@@ -59,21 +67,21 @@
 
 .seller-container {
   flex: 1;
-  padding: 1rem 1.25rem 2.5rem;
-  max-width: 88rem;
+  padding: 1.5rem 1.25rem 3.5rem;
+  max-width: 1320px;
   width: 100%;
   margin: 0 auto;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .seller-container {
-    padding: 1.5rem 1.75rem 3rem;
+    padding: 2rem 2rem 4rem;
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1200px) {
   .seller-container {
-    padding: 2rem 2.25rem 3.5rem;
+    padding: 2.5rem 2.5rem 5rem;
   }
 }
 
@@ -88,8 +96,8 @@
   top: 0;
   height: 100vh;
   z-index: 40;
-  background: var(--seller-sidebar-bg);
-  border-right: 1px solid var(--seller-border);
+  background: var(--pure-white);
+  border-right: 1px solid var(--soft-gold-line);
   flex-direction: column;
   justify-content: space-between;
   user-select: none;
@@ -102,44 +110,46 @@
   }
 }
 
-/* Rail Collapsed State */
+/* Collapsed State: 72px icon rail */
 .seller-sidebar-desktop.collapsed {
   width: var(--seller-rail-width);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 2px 0 12px rgba(43, 31, 24, 0.03);
   transition: width 700ms cubic-bezier(0.25, 1, 0.5, 1), box-shadow 700ms cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Rail Hovered / Expanded State (HUD Overlay) */
+/* Expanded State: 264px floating overlay */
 .seller-sidebar-desktop.expanded {
   width: var(--seller-expanded-width);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  box-shadow: 12px 0 36px rgba(43, 31, 24, 0.12);
   transition: width 200ms ease-out, box-shadow 200ms ease-out;
 }
 
 /* Header inside sidebar */
 .seller-sidebar-header {
-  border-bottom: 1px solid var(--seller-border);
-  height: 65px;
+  border-bottom: 1px solid var(--soft-gold-line);
+  height: 70px;
   display: flex;
   align-items: center;
   padding: 0 1rem;
   overflow: hidden;
+  background: var(--pure-white);
 }
 
 /* Collapsed Avatar HG Icon */
 .seller-avatar-mini {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: var(--seller-brand);
-  color: #FFFFFF;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  background: var(--maharani-maroon);
+  color: var(--ivory-silk);
+  border: 1px solid var(--gargi-gold);
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: var(--font-nav);
   font-weight: 700;
-  font-size: 0.82rem;
-  letter-spacing: 0.5px;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
   flex-shrink: 0;
   margin: 0 auto;
 }
@@ -154,39 +164,42 @@
 }
 
 .seller-brand-text .brand-name {
-  font-weight: 800;
-  color: var(--seller-text-main);
-  font-size: 0.95rem;
-  letter-spacing: -0.02em;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: var(--ink-brown);
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
 }
 
 .seller-brand-text .brand-sub {
   font-size: 0.65rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  color: var(--seller-text-sub);
+  font-family: var(--font-nav);
+  color: var(--gargi-gold);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.18em;
+  margin-top: 2px;
 }
 
-/* Navigation Items */
+/* Navigation List */
 .seller-nav-scroll {
-  padding: 1rem 0.65rem;
+  padding: 1.25rem 0.65rem;
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  gap: 1.15rem;
+  gap: 1.25rem;
 }
 
 .seller-nav-group-title {
-  padding: 0 0.75rem;
+  padding: 0 0.85rem;
   font-size: 0.65rem;
+  font-family: var(--font-nav);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--seller-text-sub);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  letter-spacing: 0.18em;
+  color: var(--stone-taupe);
   white-space: nowrap;
   overflow: hidden;
 }
@@ -195,37 +208,33 @@
   position: relative;
   display: flex;
   align-items: center;
-  border-radius: 12px;
-  font-size: 0.875rem;
+  border-radius: 4px;
   outline: none;
   cursor: pointer;
   text-decoration: none;
+  transition: background 200ms ease, color 200ms ease;
 }
 
-/* Collapsed Item: Square Icon centered */
+/* Collapsed Item: Centered square */
 .seller-sidebar-desktop.collapsed .seller-nav-item {
   width: 42px;
   height: 42px;
   margin: 0 auto;
   justify-content: center;
-  transition: all 500ms ease-in-out;
 }
 
-/* Expanded Item: Full Row with Label and Badges */
+/* Expanded Item: Full Row */
 .seller-sidebar-desktop.expanded .seller-nav-item {
   width: 100%;
-  padding: 0.625rem 0.85rem;
+  padding: 0.65rem 0.85rem;
   justify-content: space-between;
-  transition: all 200ms ease-out;
 }
 
 /* Active State */
 .seller-nav-item.active {
+  background: var(--warm-sand);
+  color: var(--maharani-maroon);
   font-weight: 700;
-  color: var(--seller-brand);
-  background: var(--seller-brand-tint);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
 }
 
 /* Active Vertical Accent Bar */
@@ -233,37 +242,35 @@
   content: '';
   position: absolute;
   left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  border-top-right-radius: 9999px;
-  border-bottom-right-radius: 9999px;
-  background: var(--seller-brand);
-  width: 3.5px;
-  height: 22px;
+  top: 15%;
+  bottom: 15%;
+  width: 3px;
+  background: var(--gargi-gold);
+  border-radius: 0 2px 2px 0;
 }
 
 .seller-nav-item.inactive {
+  color: var(--stone-taupe);
   font-weight: 500;
-  color: #475569;
-  border: 1px solid transparent;
 }
 
 .seller-nav-item.inactive:hover {
-  color: #020617;
-  background: rgba(241, 245, 249, 0.7);
+  background: var(--warm-sand);
+  color: var(--ink-brown);
 }
 
-/* Sub-Element Micro-Morphing (No Text Wrapping Glitches) */
+/* Sub-Element Micro-Morphing */
 .seller-nav-label {
   overflow: hidden;
   white-space: nowrap;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
+  font-family: var(--font-sans);
 }
 
 .seller-sidebar-desktop.collapsed .seller-nav-label {
   max-width: 0;
   opacity: 0;
-  transition: max-width 400ms ease-in-out, opacity 300ms ease-in-out;
+  transition: max-width 400ms ease-in-out, opacity 250ms ease-in-out;
 }
 
 .seller-sidebar-desktop.expanded .seller-nav-label {
@@ -274,15 +281,16 @@
 
 /* Nav Badge */
 .seller-nav-badge {
-  font-size: 0.65rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-weight: 800;
+  font-size: 0.62rem;
+  font-family: var(--font-nav);
+  font-weight: 700;
   text-transform: uppercase;
-  color: var(--seller-brand);
-  background: var(--seller-brand-tint);
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  padding: 0.15rem 0.5rem;
-  border-radius: 6px;
+  letter-spacing: 0.08em;
+  color: var(--maharani-maroon);
+  background: var(--ivory-silk);
+  border: 1px solid var(--soft-gold-line);
+  padding: 0.15rem 0.45rem;
+  border-radius: 2px;
   white-space: nowrap;
 }
 
@@ -290,11 +298,11 @@
   display: none;
 }
 
-/* Sidebar Profile Footer */
+/* Sidebar Profile / Sign Out Footer */
 .seller-sidebar-footer {
   padding: 0.85rem;
-  border-top: 1px solid var(--seller-border);
-  background: var(--seller-bg);
+  border-top: 1px solid var(--soft-gold-line);
+  background: var(--ivory-silk);
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -310,12 +318,12 @@
   top: 0;
   z-index: 30;
   width: 100%;
-  background: #FFFFFF;
-  border-bottom: 1px solid var(--seller-border);
-  padding: 0.65rem 1rem;
+  background: var(--pure-white);
+  border-bottom: 1px solid var(--soft-gold-line);
+  padding: 0.75rem 1rem;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px rgba(43, 31, 24, 0.04);
 }
 
 @media (min-width: 1024px) {
@@ -328,7 +336,7 @@
   position: fixed;
   inset: 0;
   z-index: 50;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(43, 31, 24, 0.5);
   backdrop-filter: blur(2px);
   transition: opacity 300ms ease-in-out;
 }
@@ -338,32 +346,31 @@
   inset-block: 0;
   left: 0;
   z-index: 51;
-  width: 280px;
+  width: 290px;
   max-width: 85vw;
-  background: #FFFFFF;
+  background: var(--pure-white);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  box-shadow: 12px 0 36px rgba(43, 31, 24, 0.2);
   transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ==========================================================================
-   ATELIER OPERATIONS CONTROL CENTER
-   Header Banner, Filter Bar, 6 Stage Cards, Flow Stepper, Tables
+   LUXURY ATELIER CONTROL CENTER (SELLER DASHBOARD)
    ========================================================================== */
 
 /* Header Card */
 .atelier-header-card {
-  background: #FFFFFF;
-  border-radius: 1.25rem;
-  border: 1px solid var(--seller-border);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
-  padding: 1.25rem 1.5rem;
+  background: var(--pure-white);
+  border: 1px solid var(--soft-gold-line);
+  box-shadow: 0 4px 18px rgba(43, 31, 24, 0.04);
+  padding: 1.5rem 1.75rem;
+  border-radius: 4px;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
 }
 
 @media (min-width: 768px) {
@@ -377,430 +384,298 @@
 .atelier-title-group {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 1rem;
 }
 
 .atelier-title-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: var(--seller-brand-tint);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  color: var(--seller-brand);
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  background: var(--ivory-silk);
+  border: 1px solid var(--soft-gold-line);
+  color: var(--maharani-maroon);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+}
+
+.atelier-page-title {
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  font-weight: 600;
+  color: var(--ink-brown);
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+  margin: 0;
 }
 
 .atelier-live-pill {
   font-size: 0.65rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-family: var(--font-nav);
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 0.2rem 0.55rem;
-  border-radius: 9999px;
-  background: #ECFDF5;
-  color: #047857;
-  border: 1px solid #A7F3D0;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  background: #F0FDF4;
+  color: #166534;
+  border: 1px solid #BBF7D0;
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  margin-left: 0.5rem;
+  gap: 0.4rem;
 }
 
 .atelier-live-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #10B981;
-  animation: atelierPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  background: #16A34A;
+  animation: pulseGlow 2s infinite ease-in-out;
 }
 
-@keyframes atelierPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.85); }
-}
-
-/* Secondary Filter Bar */
-.atelier-filter-bar {
-  background: #FFFFFF;
-  border-radius: 1rem;
-  border: 1px solid var(--seller-border);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-  padding: 0.75rem 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-bottom: 1.25rem;
-}
-
-.atelier-filter-tabs {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  flex-wrap: wrap;
-}
-
-.atelier-filter-btn {
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 0.4rem 0.75rem;
-  border-radius: 8px;
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  color: var(--seller-text-muted);
-  transition: all 150ms ease;
-}
-
-.atelier-filter-btn.active {
-  background: var(--seller-brand);
-  color: #FFFFFF;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
-}
-
-.atelier-filter-btn:not(.active):hover {
-  background: rgba(0, 0, 0, 0.04);
-  color: var(--seller-text-main);
-}
-
-.atelier-timeframe-group {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  background: #F1F5F9;
-  padding: 0.2rem;
-  border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-.atelier-timeframe-btn {
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 0.3rem 0.65rem;
-  border-radius: 7px;
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  color: var(--seller-text-muted);
-  transition: all 150ms ease;
-}
-
-.atelier-timeframe-btn.active {
-  background: #FFFFFF;
-  color: var(--seller-brand);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  font-weight: 800;
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.85); opacity: 0.4; }
 }
 
 /* ==========================================================================
-   6-STAGE KPI CARDS GRID
+   4 LUXURY METRIC SUMMARY CARDS
    ========================================================================== */
-.stages-grid {
+.luxury-metrics-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.85rem;
-  margin-bottom: 1.25rem;
-}
-
-@media (min-width: 768px) {
-  .stages-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-  }
-}
-
-@media (min-width: 1280px) {
-  .stages-grid {
-    grid-template-columns: repeat(6, 1fr);
-  }
-}
-
-.stage-card {
-  background: #FFFFFF;
-  border-radius: 1.15rem;
-  padding: 1.1rem;
-  border: 1px solid var(--seller-border);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-  user-select: none;
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
-}
-
-.stage-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--seller-border-hover);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
-}
-
-.stage-card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.stage-card-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: var(--seller-brand-tint);
-  color: var(--seller-brand);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: background 180ms ease, color 180ms ease;
-}
-
-.stage-card:hover .stage-card-icon {
-  background: var(--seller-brand);
-  color: #FFFFFF;
-}
-
-.stage-card-badge {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.625rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-weight: 700;
-  color: var(--seller-text-sub);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.stage-card:hover .stage-card-badge {
-  color: var(--seller-brand);
-}
-
-.stage-card-title {
-  margin-top: 0.85rem;
-  font-size: 0.78rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--seller-text-main);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.stage-card-subtitle {
-  font-size: 0.68rem;
-  color: var(--seller-text-muted);
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-top: 0.15rem;
-}
-
-.stage-card-bottom {
-  margin-top: 1rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-.stage-card-val {
-  font-size: 1.55rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: var(--seller-text-main);
-  line-height: 1;
-}
-
-.stage-card-pill {
-  margin-top: 0.6rem;
-  display: inline-block;
-  font-size: 0.625rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-weight: 800;
-  text-transform: uppercase;
-  padding: 0.2rem 0.55rem;
-  border-radius: 9999px;
-  background: var(--seller-brand-tint);
-  color: var(--seller-brand);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  letter-spacing: 0.04em;
-}
-
-/* ==========================================================================
-   LIVE ATELIER CONVERSION FLOW STEPPER
-   ========================================================================== */
-.conversion-flow-card {
-  background: #FFFFFF;
-  border-radius: 1.25rem;
-  border: 1px solid var(--seller-border);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-  padding: 1.25rem 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.conversion-flow-header {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
 }
 
 @media (min-width: 640px) {
-  .conversion-flow-header {
+  .luxury-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .luxury-metrics-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.luxury-metric-card {
+  background: var(--pure-white);
+  border: 1px solid var(--soft-gold-line);
+  border-radius: 4px;
+  padding: 1.4rem 1.5rem;
+  box-shadow: 0 4px 14px rgba(43, 31, 24, 0.03);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.luxury-metric-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--gargi-gold);
+  box-shadow: 0 8px 24px rgba(43, 31, 24, 0.06);
+}
+
+.metric-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.metric-label {
+  font-family: var(--font-nav);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--stone-taupe);
+  font-weight: 700;
+}
+
+.metric-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  background: var(--ivory-silk);
+  border: 1px solid var(--soft-gold-line);
+  color: var(--maharani-maroon);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.metric-value {
+  font-family: var(--font-sans);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--ink-brown);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  margin: 0.85rem 0 0.35rem 0;
+}
+
+.metric-subtext {
+  font-size: 0.78rem;
+  color: var(--stone-taupe);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* ==========================================================================
+   CATEGORY CATALOG PERFORMANCE CARDS
+   ========================================================================== */
+.category-overview-card {
+  background: var(--pure-white);
+  border: 1px solid var(--soft-gold-line);
+  border-radius: 4px;
+  box-shadow: 0 4px 14px rgba(43, 31, 24, 0.03);
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+@media (min-width: 1024px) {
+  .category-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.category-cell {
+  background: var(--ivory-silk);
+  border: 1px solid var(--soft-gold-line);
+  border-radius: 4px;
+  padding: 1.15rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.category-cell-title {
+  font-family: var(--font-nav);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-brown);
+  font-weight: 700;
+}
+
+.category-cell-count {
+  font-family: var(--font-sans);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--maharani-maroon);
+  margin: 0.5rem 0 0.2rem 0;
+}
+
+.category-cell-stock {
+  font-size: 0.75rem;
+  color: var(--stone-taupe);
+}
+
+/* ==========================================================================
+   DATA TABLE & RECENT ORDERS
+   ========================================================================== */
+.luxury-table-card {
+  background: var(--pure-white);
+  border: 1px solid var(--soft-gold-line);
+  border-radius: 4px;
+  box-shadow: 0 4px 14px rgba(43, 31, 24, 0.03);
+  padding: 1.5rem 1.75rem;
+}
+
+.table-top-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--soft-gold-line);
+}
+
+@media (min-width: 768px) {
+  .table-top-bar {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
   }
 }
 
-.conversion-grid {
-  margin-top: 1rem;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.85rem;
-}
-
-@media (min-width: 640px) {
-  .conversion-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .conversion-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.conversion-step-card {
-  background: #FFFFFF;
-  border: 1px solid var(--seller-border);
-  border-radius: 0.85rem;
-  padding: 0.95rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.conversion-step-card.border-step-1 { border-left: 4px solid #6366F1; }
-.conversion-step-card.border-step-2 { border-left: 4px solid #F59E0B; }
-.conversion-step-card.border-step-3 { border-left: 4px solid #10B981; }
-.conversion-step-card.border-step-4 { border-left: 4px solid var(--seller-brand); }
-
-.conversion-progress-track {
+.luxury-table {
   width: 100%;
-  background: #F1F5F9;
-  height: 4px;
-  border-radius: 9999px;
-  margin-top: 0.75rem;
-  overflow: hidden;
-}
-
-.conversion-progress-fill {
-  height: 100%;
-  border-radius: 9999px;
-  transition: width 500ms ease;
-}
-
-/* ==========================================================================
-   LOWER SECTION: DATA TABLE & ACTIVITY STREAM
-   ========================================================================== */
-.atelier-lower-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-@media (min-width: 1024px) {
-  .atelier-lower-grid {
-    grid-template-columns: 2fr 1fr;
-  }
-}
-
-.atelier-table-card {
-  background: #FFFFFF;
-  border-radius: 1.25rem;
-  border: 1px solid var(--seller-border);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-  padding: 1.25rem 1.5rem;
-}
-
-.table-header-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.executive-table {
-  width: 100%;
-  text-align: left;
   border-collapse: collapse;
-  font-size: 0.85rem;
+  text-align: left;
+  font-size: 0.875rem;
 }
 
-.executive-table thead tr {
-  background: var(--seller-brand-tint);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+.luxury-table thead tr {
+  background: var(--ivory-silk);
+  border-bottom: 1px solid var(--soft-gold-line);
 }
 
-.executive-table th {
-  padding: 0.65rem 0.85rem;
-  font-size: 0.68rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-weight: 800;
+.luxury-table th {
+  padding: 0.85rem 1rem;
+  font-family: var(--font-nav);
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--stone-taupe);
+}
+
+.luxury-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--soft-gold-line);
+  color: var(--ink-brown);
+  vertical-align: middle;
+}
+
+.luxury-table tbody tr:hover {
+  background: #FCFAF6;
+}
+
+/* Order Status Tags */
+.status-pill {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: 2px;
+  font-family: var(--font-nav);
+  font-size: 0.68rem;
+  font-weight: 700;
   letter-spacing: 0.08em;
-  color: var(--seller-text-muted);
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
-.executive-table td {
-  padding: 0.75rem 0.85rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+.status-pill.delivered {
+  background: #F0FDF4;
+  color: #166534;
+  border: 1px solid #BBF7D0;
 }
 
-.executive-table tbody tr:hover {
-  background: #FAFAF8;
+.status-pill.shipped {
+  background: #F0F9FF;
+  color: #0369A1;
+  border: 1px solid #BAE6FD;
 }
 
-/* Activity Stream */
-.activity-stream-card {
-  background: #FFFFFF;
-  border-radius: 1.25rem;
-  border: 1px solid var(--seller-border);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-  padding: 1.25rem 1.5rem;
-  display: flex;
-  flex-direction: column;
+.status-pill.processing {
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
 }
 
-.activity-item {
-  display: flex;
-  gap: 0.85rem;
-  padding: 0.85rem 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-.activity-item:last-child {
-  border-bottom: none;
-}
-
-.activity-icon-bubble {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+.status-pill.bespoke {
+  background: #FFF1F2;
+  color: var(--maharani-maroon);
+  border: 1px solid #FECDD3;
 }
