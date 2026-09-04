@@ -31,20 +31,8 @@ export default function AtelierNewsletter() {
           <h2 className="salon-card__title">The Atelier Journal</h2>
           
           <p className="salon-card__subtitle">
-            Join our private circle of connoisseurs. Receive bespoke salon invitations, preview limited handloom drops before public release, and enjoy a <strong>complimentary $50 / ₹4,000 welcome courtesy</strong> toward your maiden heirloom commission.
+            Private salon previews, rare handloom releases, and a <strong>complimentary $50 / ₹4,000 welcome courtesy</strong> toward your maiden order.
           </p>
-
-          <div className="salon-card__perks">
-            <span className="salon-card__perk-pill">
-              <Sparkles size={13} className="salon-card__perk-icon" /> Private Salon Previews
-            </span>
-            <span className="salon-card__perk-pill">
-              <Sparkles size={13} className="salon-card__perk-icon" /> $50 Welcome Courtesy
-            </span>
-            <span className="salon-card__perk-pill">
-              <Sparkles size={13} className="salon-card__perk-icon" /> Rare Handloom Drops
-            </span>
-          </div>
         </div>
 
         {/* Right Column: High-Legibility Input with Direct Visual Context */}
@@ -67,7 +55,6 @@ export default function AtelierNewsletter() {
                 <label htmlFor="newsletter-email-input" className="salon-card__field-label">
                   <Mail size={15} style={{ color: 'var(--gargi-gold)' }} />
                   <span>Your Personal Email Address</span>
-                  <span className="salon-card__field-badge">Private Access</span>
                 </label>
 
                 <div className="salon-card__input-group">

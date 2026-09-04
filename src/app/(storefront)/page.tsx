@@ -8,7 +8,9 @@ import { ArrowRightIcon, LotusIcon } from '@/components/Icons';
 import { ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'House of Gargi | Handcrafted Luxury Indian Fashion',
+  title: {
+    absolute: 'House of Gargi | Handcrafted Luxury Indian Fashion',
+  },
   description: 'House of Gargi offers luxury, handcrafted traditional Indian fashion. Explore our curated collections of pure silk sarees, bridal lehengas, block-printed kurta sets, and heritage jewellery. Handcrafted Heritage, Worn Today.',
   alternates: {
     canonical: 'https://www.gargisaha.com',
