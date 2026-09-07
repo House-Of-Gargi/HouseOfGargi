@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { products, categories } from '@/data/products';
+import { artisans } from '@/data/artisans';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.gargisaha.com';
@@ -58,8 +59,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${baseUrl}/our-artisans`,
       lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.7,
+      changeFrequency: 'weekly',
+      priority: 0.85,
     },
     {
       url: `${baseUrl}/sustainability`,
@@ -89,5 +90,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...coreRoutes, ...productRoutes];
+  // Dynamic Artisan Profile Pages
+  const artisanRoutes: MetadataRoute.Sitemap = artisans.map((artisan) => ({
+    url: `${baseUrl}/artisan/${artisan.id}`,
+    lastModified: currentDate,
+    changeFrequency: 'weekly',
+    priority: 0.85,
+  }));
+
+  return [...coreRoutes, ...productRoutes, ...artisanRoutes];
 }
+
