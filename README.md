@@ -332,3 +332,12 @@ The repository is optimized for continuous deployment on Vercel via `vercel.json
 }
 ```
 All route handlers, server components, and dynamic metadata render natively on the Vercel Edge/Serverless runtime.
+
+---
+
+## 8. Documentation and Photography Guidelines
+
+- [Hero Banner Image Prompts & Dimensions](docs/HERO_BANNER_IMAGE_PROMPTS.md): Exact prompts, negative prompts, fixed dimensions (Desktop 2400x1200, Mobile 1080x1920), and safe-zone negative space guidelines for 3 banner concept sets.
+- [Royal Product Photography Guide](docs/ROYAL_PRODUCT_IMAGE_PROMPTS.md): Haute couture flatlay prompts for remaining catalog items and automated Supabase synchronization workflow.
+- [Luxury Design System](docs/LUXURY_DESIGN_SYSTEM.md): Vedic and royal Indian design tokens, color harmonies, typography specifications, and component states.
+

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import ScrollReveal from '@/components/ScrollReveal';
 import ProductCard from '@/components/ProductCard';
 import AtelierNewsletter from '@/components/AtelierNewsletter';
+import HeroBanner from '@/components/HeroBanner';
 import { categories, products, featuredProductIds } from '@/data/products';
 import { ArrowRightIcon, LotusIcon } from '@/components/Icons';
 import { ShieldCheck } from 'lucide-react';
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
     description: 'House of Gargi offers luxury, handcrafted traditional Indian fashion. Explore our curated collections of pure silk sarees, bridal lehengas, block-printed kurta sets, and heritage jewellery.',
     url: 'https://www.gargisaha.com',
     siteName: 'House of Gargi',
-    images: [{ url: '/images/hero-desktop.png', width: 1200, height: 630, alt: 'House of Gargi Luxury Fashion' }],
+    images: [{ url: '/images/hero-desktop-1.webp', width: 1200, height: 630, alt: 'House of Gargi Luxury Fashion' }],
   },
 };
 
@@ -32,17 +33,8 @@ export default function HomePage() {
   return (
     <>
       {/* ═══════ 1. HERO ═══════ */}
-      <section className="hero">
-        <div className="hero__bg">
-          <img src="/images/hero-desktop.png" alt="House of Gargi — Handcrafted Heritage" />
-        </div>
-        <div className="hero__overlay" />
-        <div className="hero__content">
-          <h1 className="hero__tagline">Handcrafted Heritage, Worn Today.</h1>
-          <p className="hero__subtitle">Luxury handmade Indian fashion — woven by hand, worn for a lifetime.</p>
-          <Link href="/category/sarees" className="btn btn--gold">Explore the Collection</Link>
-        </div>
-      </section>
+      <HeroBanner />
+
 
       {/* ═══════ 2. SHOP BY CATEGORY ═══════ */}
       <section className="section section--sand">
