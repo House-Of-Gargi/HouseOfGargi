@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface BannerSlide {
   id: string;
-  eyebrow: string;
+  sanskritLipi: string;
   tagline: string;
   subtitle: string;
   primaryCtaText: string;
@@ -23,7 +23,7 @@ interface BannerSlide {
 const slides: BannerSlide[] = [
   {
     id: 'utsav-anand',
-    eyebrow: 'गार्गी सूत्रम् • Royal Festive Splendour',
+    sanskritLipi: 'गार्गी सूत्रम्',
     tagline: 'Handcrafted Heritage, Worn Today.',
     subtitle: 'Pure crimson Patola & Kadwa gold weaves — crafted by multi-generational master looms for a lifetime of treasured moments.',
     primaryCtaText: 'Explore Sarees',
@@ -38,7 +38,7 @@ const slides: BannerSlide[] = [
   },
   {
     id: 'shwet-raktam',
-    eyebrow: 'पवित्र परम्परा • Sacred Heritage Weaves',
+    sanskritLipi: 'पवित्र परम्परा',
     tagline: 'Ethereal Silk, Timeless Grace.',
     subtitle: 'Sacred ivory Garad-Korial silks with vermilion temple borders, handcrafted with unhurried devotion for sacred celebrations.',
     primaryCtaText: 'Discover Heirlooms',
@@ -53,7 +53,7 @@ const slides: BannerSlide[] = [
   },
   {
     id: 'raj-darbar',
-    eyebrow: 'राज दरबार • Royal Courtly Grandeur',
+    sanskritLipi: 'राज दरबार',
     tagline: 'Regal Couture for Modern Royalty.',
     subtitle: 'Intricate pure gold zari bridal lehengas and Awadhi zardozi masterpieces hand-embroidered in historic courtly ateliers.',
     primaryCtaText: 'Explore Lehengas',
@@ -119,7 +119,6 @@ export default function HeroBanner() {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       aria-label="House of Gargi Luxury Heritage Hero Slider"
-      style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', alignItems: 'center' }}
     >
       {/* ── BACKGROUND IMAGE STACK WITH CROSSFADE ── */}
       {slides.map((slide, index) => {
@@ -159,134 +158,47 @@ export default function HeroBanner() {
       })}
 
       {/* ── LUXURY VIGNETTE & TEXT PROTECTION OVERLAY ── */}
-      <div
-        className="hero__overlay"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background:
-            'linear-gradient(to bottom, rgba(36,26,21,0.55) 0%, transparent 25%), linear-gradient(105deg, rgba(36,26,21,0.72) 0%, rgba(36,26,21,0.38) 45%, transparent 70%), linear-gradient(to top, rgba(36,26,21,0.6) 0%, transparent 20%)',
-          zIndex: 2,
-          pointerEvents: 'none',
-        }}
-      />
+      <div className="hero__overlay" />
 
       {/* ── CODE-RENDERED EDITORIAL TYPOGRAPHY & BUTTONS ── */}
-      <div className="hero__content" style={{ position: 'relative', zIndex: 3, width: '100%' }}>
+      <div className="hero__content">
         {slides.map((slide, index) => {
           const isActive = index === currentIndex;
           return (
             <div
               key={slide.id}
+              className="hero__slide-text-wrap"
               style={{
                 display: isActive ? 'block' : 'none',
-                maxWidth: '680px',
                 animation: isActive ? 'heroTextFadeIn 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards' : 'none',
               }}
             >
-              {/* Eyebrow Badge */}
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  background: 'rgba(201, 162, 39, 0.18)',
-                  border: '1px solid rgba(201, 162, 39, 0.45)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
-                  padding: '6px 16px',
-                  borderRadius: '20px',
-                  fontSize: '11.5px',
-                  fontFamily: 'var(--font-nav)',
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: '#FBF6EE',
-                  fontWeight: 700,
-                  marginBottom: '18px',
-                  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)',
-                }}
-              >
-                <Sparkles size={13} style={{ color: 'var(--gargi-gold)' }} />
-                <span>{slide.eyebrow}</span>
+              {/* Sanskrit Lipi (Prominent Devanagari Script - Desktop Only) */}
+              <div className="hero__sanskrit-lipi">
+                {slide.sanskritLipi}
               </div>
 
-              {/* Headline */}
-              <h1
-                className="hero__tagline"
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(34px, 5.2vw, 62px)',
-                  fontWeight: 600,
-                  color: '#FFFFFF',
-                  lineHeight: 1.12,
-                  letterSpacing: '-0.02em',
-                  marginBottom: '16px',
-                  textShadow: '0 2px 12px rgba(0, 0, 0, 0.45)',
-                }}
-              >
+              {/* Main Headline */}
+              <h1 className="hero__tagline">
                 {slide.tagline}
               </h1>
 
-              {/* Subtitle */}
-              <p
-                className="hero__subtitle"
-                style={{
-                  fontFamily: 'var(--font-serif)',
-                  fontSize: 'clamp(16.5px, 2vw, 21px)',
-                  color: 'rgba(255, 255, 255, 0.92)',
-                  fontStyle: 'italic',
-                  lineHeight: 1.65,
-                  maxWidth: '560px',
-                  marginBottom: '32px',
-                  textShadow: '0 1px 6px rgba(0, 0, 0, 0.35)',
-                }}
-              >
+              {/* Subtitle (Desktop Only to reduce mobile clutter) */}
+              <p className="hero__subtitle">
                 {slide.subtitle}
               </p>
 
-              {/* Dual Action Buttons */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '16px',
-                  flexWrap: 'wrap',
-                }}
-              >
+              {/* Action Buttons */}
+              <div className="hero__actions">
                 <Link
                   href={slide.primaryCtaLink}
-                  className="btn btn--gold"
-                  style={{
-                    padding: '14px 28px',
-                    fontSize: '13.5px',
-                    letterSpacing: '0.1em',
-                    boxShadow: '0 6px 20px rgba(184, 142, 24, 0.35)',
-                  }}
+                  className="btn btn--gold hero-primary-btn"
                 >
                   {slide.primaryCtaText} &rarr;
                 </Link>
 
                 <Link
                   href={slide.secondaryCtaLink}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '13px 24px',
-                    background: 'rgba(255, 255, 255, 0.12)',
-                    backdropFilter: 'blur(8px)',
-                    WebkitBackdropFilter: 'blur(8px)',
-                    border: '1px solid rgba(255, 255, 255, 0.4)',
-                    borderRadius: '4px',
-                    color: '#FFFFFF',
-                    fontFamily: 'var(--font-nav)',
-                    fontSize: '13px',
-                    fontWeight: 700,
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    textDecoration: 'none',
-                    transition: 'all 200ms ease',
-                  }}
                   className="hero-secondary-btn"
                 >
                   {slide.secondaryCtaText}
@@ -298,21 +210,7 @@ export default function HeroBanner() {
       </div>
 
       {/* ── ARROWS & PAGINATION PROGRESS ── */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '32px',
-          left: 0,
-          right: 0,
-          zIndex: 4,
-          padding: '0 var(--container-pad)',
-          maxWidth: 'var(--container-max)',
-          margin: '0 auto',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
+      <div className="hero__controls">
         {/* Pagination Pips */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           {slides.map((s, idx) => {
@@ -343,21 +241,6 @@ export default function HeroBanner() {
           <button
             onClick={prevSlide}
             aria-label="Previous Slide"
-            style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '50%',
-              background: 'rgba(255, 255, 255, 0.12)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255, 255, 255, 0.25)',
-              color: '#FFFFFF',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'all 200ms ease',
-            }}
             className="hero-arrow-btn"
           >
             <ChevronLeft size={18} />
@@ -366,21 +249,6 @@ export default function HeroBanner() {
           <button
             onClick={nextSlide}
             aria-label="Next Slide"
-            style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '50%',
-              background: 'rgba(255, 255, 255, 0.12)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255, 255, 255, 0.25)',
-              color: '#FFFFFF',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'all 200ms ease',
-            }}
             className="hero-arrow-btn"
           >
             <ChevronRight size={18} />
