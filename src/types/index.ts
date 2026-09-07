@@ -4,6 +4,8 @@ export interface Product {
   name: string;
   price: number;
   artisanNote: string;
+  artisanId?: string;
+  artisanName?: string;
   description: string;
   fabric: string;
   technique: string;
@@ -12,6 +14,23 @@ export interface Product {
   sizes: string[];
   care: string;
   images: string[];
+}
+
+export interface Artisan {
+  id: string;
+  name: string;
+  role: string;
+  region: string;
+  lineage: string;
+  experienceYears: number;
+  loomHoursTotal: string;
+  image: string;
+  coverImage: string;
+  bio: string;
+  philosophy: string;
+  specialties: string[];
+  awards?: string[];
+  productIds: string[];
 }
 
 export interface Category {

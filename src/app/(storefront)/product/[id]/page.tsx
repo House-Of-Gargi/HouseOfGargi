@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import ScrollReveal from '@/components/ScrollReveal';
 import ProductCard from '@/components/ProductCard';
-import { getProduct, getRelatedProducts, categories } from '@/data/products';
+import { getProduct, getRelatedProducts, categories, getArtisan, getArtisanByProductId } from '@/data/products';
 import { WishlistIcon, HeartFilledIcon, PlusIcon, MinusIcon } from '@/components/Icons';
-import { Crown } from 'lucide-react';
+import { Crown, ArrowRight, Sparkles } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCurrency } from '@/context/CurrencyContext';
@@ -35,6 +35,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const related = getRelatedProducts(id, 4);
   const categoryName = categories.find(c => c.id === product.category)?.name || 'Collection';
   const saved = isLoggedIn && isInWishlist(product.id);
+  const artisan = product ? (product.artisanId ? getArtisan(product.artisanId) : getArtisanByProductId(product.id)) : undefined;
   
   const sizeToCart = product.sizes.length > 1 ? selectedSize : product.sizes[0];
   const cartItem = cart.find(item => item.id === product.id && item.size === sizeToCart);
@@ -98,17 +99,44 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
           {/* Right Column: Clean Minimalist Details */}
           <div className="pdp-info">
-            {/* Category & Region */}
+            {/* Category and Region */}
             <div style={{
-              fontFamily: 'var(--font-nav)',
-              fontSize: '12px',
-              fontWeight: 700,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: 'var(--stone-taupe)',
-              marginBottom: '8px'
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '8px',
+              flexWrap: 'wrap',
+              gap: '8px',
             }}>
-              {categoryName} &bull; {product.region}
+              <div style={{
+                fontFamily: 'var(--font-nav)',
+                fontSize: '12px',
+                fontWeight: 700,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: 'var(--stone-taupe)',
+              }}>
+                {categoryName} &bull; {product.region}
+              </div>
+              {artisan && (
+                <Link
+                  href={`/artisan/${artisan.id}`}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '5px',
+                    fontFamily: 'var(--font-nav)',
+                    fontSize: '11px',
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                    fontWeight: 700,
+                    color: 'var(--gargi-gold)',
+                    textDecoration: 'none',
+                  }}
+                >
+                  <span>✦ Verified Artisan Guild</span>
+                </Link>
+              )}
             </div>
 
             {/* Title */}
@@ -171,7 +199,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               padding: '16px 0',
               borderTop: '1px solid var(--soft-gold-line)',
               borderBottom: '1px solid var(--soft-gold-line)',
-              marginBottom: '26px'
+              marginBottom: '22px'
             }}>
               <div>
                 <span style={{ display: 'block', fontSize: '11.5px', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', fontWeight: 700, marginBottom: '4px' }}>
@@ -198,6 +226,97 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 </span>
               </div>
             </div>
+
+            {/* Master Artisan Provenance Trigger Card */}
+            {artisan && (
+              <Link 
+                href={`/artisan/${artisan.id}`}
+                className="pdp-artisan-trigger-card"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '16px',
+                  padding: '16px 20px',
+                  background: '#FFFFFF',
+                  border: '1px solid rgba(201, 162, 39, 0.35)',
+                  borderRadius: '8px',
+                  marginBottom: '26px',
+                  textDecoration: 'none',
+                  boxShadow: '0 2px 10px rgba(43, 31, 24, 0.04)',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flex: 1 }}>
+                  <div style={{
+                    width: '46px',
+                    height: '46px',
+                    borderRadius: '50%',
+                    overflow: 'hidden',
+                    border: '1.5px solid var(--gargi-gold)',
+                    flexShrink: 0,
+                    background: 'var(--ivory-silk)',
+                  }}>
+                    <img 
+                      src={artisan.image} 
+                      alt={artisan.name} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                    />
+                  </div>
+                  <div>
+                    <div style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      fontFamily: 'var(--font-nav)',
+                      fontSize: '11px',
+                      letterSpacing: '0.12em',
+                      textTransform: 'uppercase',
+                      color: 'var(--maharani-maroon)',
+                      fontWeight: 700,
+                    }}>
+                      <span>✦ Master Artisan Provenance</span>
+                    </div>
+                    <div style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontSize: '16.5px',
+                      fontWeight: 600,
+                      color: 'var(--ink-brown)',
+                      margin: '2px 0',
+                    }}>
+                      {artisan.name}
+                    </div>
+                    <div style={{
+                      fontSize: '13px',
+                      color: 'var(--stone-taupe)',
+                      lineHeight: 1.4,
+                    }}>
+                      {product.artisanNote} &bull; <span style={{ color: 'var(--ink-brown)', fontWeight: 600 }}>{artisan.lineage}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontFamily: 'var(--font-nav)',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  color: 'var(--maharani-maroon)',
+                  letterSpacing: '0.04em',
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0,
+                  background: 'rgba(125, 26, 39, 0.06)',
+                  padding: '8px 14px',
+                  borderRadius: '4px',
+                  border: '1px solid rgba(125, 26, 39, 0.15)',
+                }}>
+                  <span>Meet Artisan</span>
+                  <ArrowRight size={13} />
+                </div>
+              </Link>
+            )}
 
             {/* Size Selector (if applicable) */}
             {product.sizes.length > 1 && (
@@ -292,7 +411,17 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               {careOpen && (
                 <div className="pdp-accordion__body" style={{ paddingBottom: '16px', fontSize: '14.5px', color: 'var(--stone-taupe)', lineHeight: 1.7 }}>
                   <p><strong>Care:</strong> {product.care}</p>
-                  <p style={{ marginTop: '8px' }}><strong>Origin:</strong> Handwoven in {product.region}. Each piece is naturally unique with authentic handloom textures.</p>
+                  <p style={{ marginTop: '8px' }}>
+                    <strong>Master Craftsman:</strong>{' '}
+                    {artisan ? (
+                      <Link href={`/artisan/${artisan.id}`} style={{ color: 'var(--maharani-maroon)', fontWeight: 600, textDecoration: 'underline' }}>
+                        {artisan.name} ({artisan.region}) &rarr;
+                      </Link>
+                    ) : (
+                      `Handwoven in ${product.region}.`
+                    )}
+                  </p>
+                  <p style={{ marginTop: '8px' }}>Each piece is naturally unique with authentic handloom textures and Silk Mark India certification.</p>
                 </div>
               )}
             </div>
