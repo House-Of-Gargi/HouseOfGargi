@@ -37,9 +37,20 @@ export default function ProductCard({ product, style }: ProductCardProps) {
     toggleWishlist(currentProduct);
   };
 
+  // Prefetch gallery images into browser cache on hover for instant PDP load
+  const handlePrefetch = () => {
+    if (typeof window === 'undefined' || !currentProduct.images) return;
+    currentProduct.images.forEach((imgUrl) => {
+      const img = new Image();
+      img.src = imgUrl;
+    });
+  };
+
   return (
     <div 
       className="product-card" 
+      onMouseEnter={handlePrefetch}
+      onTouchStart={handlePrefetch}
       style={{ 
         position: 'relative', 
         display: 'flex', 
@@ -60,7 +71,13 @@ export default function ProductCard({ product, style }: ProductCardProps) {
       </button>
       <Link href={`/product/${currentProduct.id}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', height: '100%' }}>
         <div className="product-card__image-wrap">
-          <img src={currentProduct.images[0]} alt={currentProduct.name} loading="lazy" />
+          <img 
+            src={currentProduct.images[0]} 
+            alt={currentProduct.name} 
+            loading="lazy" 
+            decoding="async"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
         </div>
         <div className="product-card__body" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
           <div className="product-card__name">{currentProduct.name}</div>

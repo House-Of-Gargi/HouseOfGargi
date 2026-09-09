@@ -18,7 +18,7 @@ export default function CartPage() {
   const [checkingOut, setCheckingOut] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState<string | null>(null);
   const [customerName, setCustomerName] = useState(customer?.name || '');
-  const [customerPhone, setCustomerPhone] = useState(customer?.phone || '');
+  const [customerEmail, setCustomerEmail] = useState(customer?.email || '');
   const [copied, setCopied] = useState(false);
 
   if (!isLoggedIn) {
@@ -33,11 +33,12 @@ export default function CartPage() {
             Private Shopping Bag
           </h1>
           <p style={{ color: 'var(--stone-taupe)', fontSize: '16px', lineHeight: 1.7, maxWidth: '480px', margin: '0 auto 34px' }}>
-            Sign in with your mobile number to view and manage your selected handcrafted pieces across all your sessions.
+            Sign in with your email address to view and manage your selected handcrafted pieces across all your open tabs.
           </p>
           <button 
             type="button" 
             onClick={() => openLoginModal('/cart')}
+
             className="btn btn--primary" 
             style={{ padding: '16px 38px', fontSize: '14px', letterSpacing: '0.14em', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
           >
@@ -90,7 +91,7 @@ export default function CartPage() {
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!customerName || !customerPhone) return;
+    if (!customerName || !customerEmail) return;
 
     setCheckingOut(true);
     try {
@@ -99,7 +100,8 @@ export default function CartPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           customer_name: customerName,
-          customer_phone: customerPhone,
+          customer_email: customerEmail,
+          customer_phone: customerEmail,
           items: cart.map(item => ({
             id: item.id,
             name: item.name,
@@ -112,6 +114,7 @@ export default function CartPage() {
 
       const data = await response.json();
       if (data.success) {
+
         setCheckoutSuccess(data.order.order_number);
         clearCart();
       } else {
@@ -209,9 +212,10 @@ export default function CartPage() {
 
             <p className="order-ledger-notice">
               Personalized dispatch tracking and artisan weaving milestones will be relayed to{' '}
-              <strong>+91 {customerPhone || customer?.phone || '9876543210'}</strong>.
+              <strong>{customerEmail || customer?.email || 'patron@gargisaha.com'}</strong>.
             </p>
           </div>
+
 
           {/* Action CTAs */}
           <div className="order-success-actions">
@@ -508,14 +512,14 @@ export default function CartPage() {
 
               <div style={{ marginBottom: '26px' }}>
                 <label style={{ display: 'block', fontSize: '13px', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '8px' }}>
-                  Phone Number
+                  Email Address
                 </label>
                 <input
-                  type="tel"
+                  type="email"
                   required
-                  value={customerPhone}
-                  onChange={e => setCustomerPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                  placeholder="9876543210"
+                  value={customerEmail}
+                  onChange={e => setCustomerEmail(e.target.value)}
+                  placeholder="patron@gargisaha.com"
                   style={{ 
                     width: '100%', 
                     padding: '14px 16px', 
@@ -531,6 +535,7 @@ export default function CartPage() {
                     transition: 'border-color 200ms ease'
                   }}
                   onFocus={(e) => e.currentTarget.style.borderColor = 'var(--gargi-gold)'}
+
                   onBlur={(e) => e.currentTarget.style.borderColor = 'var(--soft-gold-line)'}
                 />
               </div>
