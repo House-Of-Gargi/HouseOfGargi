@@ -4,6 +4,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { Product, CartItem } from '@/types';
 import { products } from '@/data/products';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
+import { broadcastPortalSync, subscribeToPortalSync } from '@/lib/realtimeSync';
 
 interface CartContextType {
   cart: CartItem[];
@@ -21,28 +22,27 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
   const { customer, isLoggedIn, openLoginModal } = useCustomerAuth();
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [currentLoadedPhone, setCurrentLoadedPhone] = useState<string | null>(null);
+  const [currentLoadedEmail, setCurrentLoadedEmail] = useState<string | null>(null);
 
-  // Load cart uniquely keyed to the logged-in customer's phone number
+  // Load cart uniquely keyed to the logged-in customer's email
   useEffect(() => {
-    if (!isLoggedIn || !customer?.phone) {
+    if (!isLoggedIn || !customer?.email) {
       setCart([]);
-      setCurrentLoadedPhone(null);
+      setCurrentLoadedEmail(null);
       return;
     }
 
-    const phone = customer.phone;
+    const email = customer.email.toLowerCase().trim();
     try {
-      const storageKey = `gargi_cart_${phone}`;
+      const storageKey = `gargi_cart_${email}`;
       let saved = localStorage.getItem(storageKey);
       
-      // If new login and legacy cart exists, migrate legacy into this user's private cart
+      // Fallback migration
       if (!saved) {
-        const legacy = localStorage.getItem('gargi_cart');
+        const legacy = localStorage.getItem('gargi_cart') || localStorage.getItem('gargi_cart_9876543210');
         if (legacy) {
           saved = legacy;
           localStorage.setItem(storageKey, legacy);
-          localStorage.removeItem('gargi_cart');
         }
       }
 
@@ -62,44 +62,77 @@ export function CartProvider({ children }: { children: ReactNode }) {
     } catch {
       setCart([]);
     }
-    setCurrentLoadedPhone(phone);
-  }, [isLoggedIn, customer?.phone]);
+    setCurrentLoadedEmail(email);
+  }, [isLoggedIn, customer?.email]);
 
   // Persist cart updates uniquely to the logged-in customer's storage key
   useEffect(() => {
-    if (!isLoggedIn || !customer?.phone || currentLoadedPhone !== customer.phone) return;
+    if (!isLoggedIn || !customer?.email || currentLoadedEmail !== customer.email.toLowerCase().trim()) return;
     try {
-      localStorage.setItem(`gargi_cart_${customer.phone}`, JSON.stringify(cart));
+      localStorage.setItem(`gargi_cart_${customer.email.toLowerCase().trim()}`, JSON.stringify(cart));
     } catch (e) {
       console.error('Failed to sync user cart to localStorage', e);
     }
-  }, [cart, isLoggedIn, customer?.phone, currentLoadedPhone]);
+  }, [cart, isLoggedIn, customer?.email, currentLoadedEmail]);
+
+  // Subscribe to real-time multi-tab cross-synchronization
+  useEffect(() => {
+    const unsubscribe = subscribeToPortalSync((message) => {
+      if (message.type === 'CART_UPDATED' && message.payload) {
+        const { email: msgEmail, cart: remoteCart } = message.payload;
+        const currentEmail = customer?.email?.toLowerCase().trim();
+
+        if (currentEmail && msgEmail && currentEmail === msgEmail.toLowerCase().trim()) {
+          const refreshed = (remoteCart as CartItem[]).map(item => {
+            const fresh = products.find(p => p.id === item.id);
+            return fresh 
+              ? { ...item, ...fresh, images: fresh.images, quantity: item.quantity, size: item.size } 
+              : item;
+          });
+          setCart(refreshed);
+        }
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [customer?.email]);
 
   const addToCart = (product: Product, quantity = 1, size: string | null = null) => {
-    if (!isLoggedIn || !customer?.phone) {
+    if (!isLoggedIn || !customer?.email) {
       openLoginModal();
       return;
     }
 
     const fresh = products.find(p => p.id === product.id) || product;
+    const currentEmail = customer.email.toLowerCase().trim();
+
     setCart(prev => {
       const existing = prev.find(item => item.id === fresh.id && item.size === size);
+      let updated: CartItem[];
       if (existing) {
-        return prev.map(item => 
+        updated = prev.map(item => 
           item.id === fresh.id && item.size === size
             ? { ...item, ...fresh, images: fresh.images, quantity: item.quantity + quantity }
             : item
         );
+      } else {
+        updated = [...prev, { ...fresh, images: fresh.images, quantity, size }];
       }
-      return [...prev, { ...fresh, images: fresh.images, quantity, size }];
+
+      broadcastPortalSync('CART_UPDATED', { email: currentEmail, cart: updated }, currentEmail);
+      return updated;
     });
   };
 
   const addMultipleToCart = (items: { product: Product; quantity?: number; size?: string | null }[]) => {
-    if (!isLoggedIn || !customer?.phone) {
+    if (!isLoggedIn || !customer?.email) {
       openLoginModal();
       return;
     }
+
+    const currentEmail = customer.email.toLowerCase().trim();
 
     setCart(prev => {
       let updated = [...prev];
@@ -124,32 +157,49 @@ export function CartProvider({ children }: { children: ReactNode }) {
           });
         }
       }
+
+      broadcastPortalSync('CART_UPDATED', { email: currentEmail, cart: updated }, currentEmail);
       return updated;
     });
   };
 
   const removeFromCart = (productId: string, size: string | null = null) => {
-    setCart(prev => prev.filter(item => !(item.id === productId && item.size === size)));
+    if (!customer?.email) return;
+    const currentEmail = customer.email.toLowerCase().trim();
+
+    setCart(prev => {
+      const updated = prev.filter(item => !(item.id === productId && item.size === size));
+      broadcastPortalSync('CART_UPDATED', { email: currentEmail, cart: updated }, currentEmail);
+      return updated;
+    });
   };
 
   const updateQuantity = (productId: string, size: string | null, newQuantity: number) => {
     if (newQuantity < 1) return removeFromCart(productId, size);
-    setCart(prev => prev.map(item => 
-      item.id === productId && item.size === size
-        ? { ...item, quantity: newQuantity }
-        : item
-    ));
+    if (!customer?.email) return;
+    const currentEmail = customer.email.toLowerCase().trim();
+
+    setCart(prev => {
+      const updated = prev.map(item => 
+        item.id === productId && item.size === size
+          ? { ...item, quantity: newQuantity }
+          : item
+      );
+      broadcastPortalSync('CART_UPDATED', { email: currentEmail, cart: updated }, currentEmail);
+      return updated;
+    });
   };
 
   const clearCart = () => {
+    if (!customer?.email) return;
+    const currentEmail = customer.email.toLowerCase().trim();
     setCart([]);
-    if (customer?.phone) {
-      try {
-        localStorage.removeItem(`gargi_cart_${customer.phone}`);
-      } catch (e) {
-        console.error('Failed to clear cart storage', e);
-      }
+    try {
+      localStorage.removeItem(`gargi_cart_${currentEmail}`);
+    } catch (e) {
+      console.error('Failed to clear cart storage', e);
     }
+    broadcastPortalSync('CART_UPDATED', { email: currentEmail, cart: [] }, currentEmail);
   };
 
   const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);

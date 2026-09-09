@@ -54,10 +54,6 @@ export default function AccountPage() {
     );
   }
 
-  const formattedPhone = customer.phone.length === 10
-    ? `+91 ${customer.phone.slice(0, 5)} ${customer.phone.slice(5)}`
-    : `+91 ${customer.phone}`;
-
   return (
     <div className="account-page-wrap">
       <div className="account-container">
@@ -87,9 +83,10 @@ export default function AccountPage() {
               <User size={34} strokeWidth={1.3} />
             </div>
             <h2 className="account-patron-name">{customer.name || 'Valued Patron'}</h2>
-            <div className="account-patron-phone">
-              <span>{formattedPhone}</span>
+            <div className="account-patron-phone" style={{ wordBreak: 'break-all' }}>
+              <span>{customer.email}</span>
             </div>
+
 
             {/* Quick Live Summary Stats */}
             <div className="account-sidebar-stats">
