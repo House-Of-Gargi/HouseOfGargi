@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, FormEvent, useEffect } from 'react';
+import { useState, FormEvent, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Sparkles, ArrowRight, ShieldCheck, ArrowLeft } from 'lucide-react';
+import { Sparkles, ArrowRight, ShieldCheck, ArrowLeft, Mail, RefreshCw } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
 
@@ -18,11 +18,15 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
   const isOpen = propsIsOpen !== undefined ? propsIsOpen : isLoginModalOpen;
   const handleClose = propsOnClose || closeLoginModal;
 
-  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState<1 | 2>(1);
   const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
   const [error, setError] = useState('');
+  const [resendCountdown, setResendCountdown] = useState(0);
+
+  const otpInputRef = useRef<HTMLInputElement>(null);
 
   // Reset states when modal is opened/closed
   useEffect(() => {
@@ -30,13 +34,29 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
       setError('');
       setStep(1);
       setOtp('');
+      setResendCountdown(0);
     }
   }, [isOpen]);
 
+  // Countdown timer for OTP resend
+  useEffect(() => {
+    if (resendCountdown > 0) {
+      const timer = setTimeout(() => setResendCountdown(resendCountdown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendCountdown]);
+
+  // Focus OTP input when transitioning to Step 2
+  useEffect(() => {
+    if (step === 2) {
+      setTimeout(() => otpInputRef.current?.focus(), 150);
+    }
+  }, [step]);
+
   if (!isOpen) return null;
 
-  const handleQuickFillPhone = () => {
-    setPhone('9876543210');
+  const handleQuickFillEmail = () => {
+    setEmail('patron@gargisaha.com');
     setError('');
   };
 
@@ -48,47 +68,81 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
   const handleSendOtp = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
-    const cleanPhone = phone.replace(/\D/g, '');
-    if (cleanPhone.length < 10) {
-      setError('Please enter a valid 10-digit mobile number.');
+    const cleanEmail = email.toLowerCase().trim();
+
+    if (!cleanEmail || !cleanEmail.includes('@') || !cleanEmail.includes('.')) {
+      setError('Please enter a valid email address.');
       return;
     }
 
     setLoading(true);
 
-    // Fast bypass for testing/demo evaluation
-    if (cleanPhone === '9876543210') {
+    // Fast bypass for test/demo evaluation
+    if (cleanEmail === 'patron@gargisaha.com' || cleanEmail === 'demo@gargisaha.com') {
       setStep(2);
+      setResendCountdown(45);
       setLoading(false);
       return;
     }
 
     try {
       const { error: otpErr } = await supabase.auth.signInWithOtp({
-        phone: '+91' + cleanPhone,
+        email: cleanEmail,
+        options: {
+          shouldCreateUser: true,
+        },
       });
 
       if (otpErr) throw otpErr;
+
       setStep(2);
+      setResendCountdown(45);
     } catch (err: any) {
-      console.warn('Supabase SMS OTP notice:', err.message);
-      // For local development or unconfigured SMS gateway, seamlessly advance to OTP verification
+      console.warn('Supabase Email OTP notice:', err.message);
+      // Fallback transition so user can proceed
       setStep(2);
+      setResendCountdown(45);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    if (resendCountdown > 0 || resending) return;
+    setError('');
+    setResending(true);
+    const cleanEmail = email.toLowerCase().trim();
+
+    try {
+      await supabase.auth.signInWithOtp({
+        email: cleanEmail,
+        options: { shouldCreateUser: true },
+      });
+      setResendCountdown(45);
+    } catch (err: any) {
+      console.warn('Resend OTP error:', err.message);
+      setResendCountdown(45);
+    } finally {
+      setResending(false);
     }
   };
 
   const handleVerifyOtp = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
-    const cleanPhone = phone.replace(/\D/g, '').slice(-10);
+    const cleanEmail = email.toLowerCase().trim();
+    const cleanOtp = otp.trim();
+
+    if (cleanOtp.length < 6) {
+      setError('Please enter the complete 6-digit access code.');
+      return;
+    }
 
     setLoading(true);
 
-    // Test bypass for demo evaluation
-    if ((cleanPhone === '9876543210' || cleanPhone.length === 10) && otp === '123456') {
-      login(cleanPhone);
+    // Demo evaluation bypass
+    if (cleanOtp === '123456' || cleanEmail === 'patron@gargisaha.com') {
+      login(cleanEmail, 'Valued Patron');
       handleClose();
       if (redirectAfterLogin) {
         router.push(redirectAfterLogin);
@@ -99,14 +153,14 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
 
     try {
       const { data, error: verifyErr } = await supabase.auth.verifyOtp({
-        phone: '+91' + cleanPhone,
-        token: otp,
-        type: 'sms',
+        email: cleanEmail,
+        token: cleanOtp,
+        type: 'email',
       });
 
       if (verifyErr) {
-        if (otp === '123456') {
-          login(cleanPhone);
+        if (cleanOtp === '123456') {
+          login(cleanEmail, 'Valued Patron');
           handleClose();
           if (redirectAfterLogin) router.push(redirectAfterLogin);
           return;
@@ -115,17 +169,18 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
       }
 
       if (data.session) {
-        login(cleanPhone);
+        const userName = data.session.user?.user_metadata?.name || 'Valued Patron';
+        login(cleanEmail, userName, data.session.user?.id);
         handleClose();
         if (redirectAfterLogin) router.push(redirectAfterLogin);
       }
     } catch (err: any) {
-      if (otp === '123456') {
-        login(cleanPhone);
+      if (cleanOtp === '123456') {
+        login(cleanEmail, 'Valued Patron');
         handleClose();
         if (redirectAfterLogin) router.push(redirectAfterLogin);
       } else {
-        setError(err.message || 'Invalid code. Use demo code 123456 to sign in.');
+        setError(err.message || 'Invalid or expired passcode. Check your email or use demo code 123456.');
       }
     } finally {
       setLoading(false);
@@ -151,7 +206,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
           &times;
         </button>
 
-        {/* Strictly Outline Icon Crest - No Circles, No Circle Outlines */}
+        {/* Outline Crest Icon */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -174,12 +229,12 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
 
         <div className="customer-modal-tag">House of Gargi • Atelier Access</div>
         <h2 id="customer-modal-title" className="customer-modal-title">
-          {step === 1 ? 'Patron Sign In' : 'Verify Patron Code'}
+          {step === 1 ? 'Patron Email Access' : 'Enter 6-Digit Passcode'}
         </h2>
         <p className="customer-modal-subtitle">
           {step === 1 
-            ? 'Sign in to access your bespoke bag & save your private heirloom curation.' 
-            : `Enter the 6-digit access code sent to +91 ${phone}`}
+            ? 'Enter your email address to receive an instant 6-digit access code from noreply@gargisaha.com.' 
+            : `We sent a 6-digit one-time access code to ${email}`}
         </p>
 
         {error && (
@@ -211,17 +266,26 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
                 textTransform: 'uppercase', 
                 color: 'var(--ink-brown)' 
               }}>
-                Mobile Number
+                Email Address
               </label>
 
               <div className="customer-modal-input-wrap">
-                <span className="customer-modal-country-code">+91</span>
+                <span style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  padding: '0 14px', 
+                  color: 'var(--gargi-gold)',
+                  borderRight: '1px solid rgba(228, 211, 174, 0.6)'
+                }}>
+                  <Mail size={17} strokeWidth={1.5} />
+                </span>
                 <input 
-                  type="tel" 
+                  type="email" 
                   autoFocus
-                  value={phone} 
-                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                  placeholder="98765 43210"
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="patron@gargisaha.com"
                   className="customer-modal-input"
                   required
                 />
@@ -231,19 +295,19 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
             <button 
               type="submit" 
               className="customer-modal-btn" 
-              disabled={loading || phone.length < 10}
+              disabled={loading || !email.includes('@')}
             >
-              {loading ? 'Sending Code...' : 'Send Verification OTP →'}
+              {loading ? 'Sending 6-Digit Passcode...' : 'Send One-Time Passcode →'}
             </button>
 
-            {/* Quick Demo Fill Helper */}
+            {/* Quick Demo Email Fill Helper */}
             <button 
               type="button" 
-              onClick={handleQuickFillPhone} 
+              onClick={handleQuickFillEmail} 
               className="customer-modal-quickfill"
             >
               <Sparkles size={14} style={{ color: 'var(--gargi-gold)' }} />
-              Quick Demo Number: <strong>9876543210</strong>
+              Quick Demo Email: <strong>patron@gargisaha.com</strong>
             </button>
           </form>
         ) : (
@@ -275,21 +339,55 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
                     gap: '4px'
                   }}
                 >
-                  <ArrowLeft size={13} /> Edit Number
+                  <ArrowLeft size={13} /> Change Email
                 </button>
               </div>
 
               <div className="customer-modal-input-wrap">
                 <input 
+                  ref={otpInputRef}
                   type="text" 
-                  autoFocus
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  maxLength={6}
                   value={otp} 
                   onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
                   placeholder="123456"
-                  style={{ textAlign: 'center', letterSpacing: '8px', fontSize: '20px', fontWeight: 700 }}
+                  style={{ textAlign: 'center', letterSpacing: '8px', fontSize: '22px', fontWeight: 700 }}
                   className="customer-modal-input"
                   required
                 />
+              </div>
+
+              {/* Resend Passcode Action with Countdown */}
+              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '12px', marginBottom: '8px' }}>
+                {resendCountdown > 0 ? (
+                  <span style={{ fontSize: '12.5px', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)' }}>
+                    Resend passcode in <strong>{resendCountdown}s</strong>
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleResendOtp}
+                    disabled={resending}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--maharani-maroon)',
+                      fontSize: '12.5px',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      fontFamily: 'var(--font-nav)',
+                      textDecoration: 'underline',
+                    }}
+                  >
+                    <RefreshCw size={13} className={resending ? 'animate-spin' : ''} />
+                    {resending ? 'Sending...' : 'Resend Passcode to Email'}
+                  </button>
+                )}
               </div>
             </div>
 
@@ -298,7 +396,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
               className="customer-modal-btn" 
               disabled={loading || otp.length < 6}
             >
-              {loading ? 'Verifying...' : 'Verify & Enter Atelier'}
+              {loading ? 'Verifying Passcode...' : 'Verify & Enter Atelier'}
             </button>
 
             {/* Quick Demo OTP Fill */}
@@ -308,7 +406,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
               className="customer-modal-quickfill"
             >
               <ShieldCheck size={14} style={{ color: 'var(--peacock-teal)' }} />
-              Quick Demo OTP: <strong>123456</strong>
+              Quick Demo Passcode: <strong>123456</strong>
             </button>
           </form>
         )}

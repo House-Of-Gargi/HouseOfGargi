@@ -2,10 +2,12 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '@/lib/supabaseClient';
+import { broadcastPortalSync, subscribeToPortalSync } from '@/lib/realtimeSync';
 
 export interface Customer {
-  phone: string;
+  email: string;
   name?: string;
+  id?: string;
 }
 
 interface CustomerAuthContextType {
@@ -14,7 +16,7 @@ interface CustomerAuthContextType {
   isLoginModalOpen: boolean;
   openLoginModal: (redirectUrl?: string) => void;
   closeLoginModal: () => void;
-  login: (phone: string, name?: string) => void;
+  login: (email: string, name?: string, id?: string) => void;
   logout: () => Promise<void>;
   redirectAfterLogin: string | null;
 }
@@ -26,40 +28,85 @@ export function CustomerAuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [redirectAfterLogin, setRedirectAfterLogin] = useState<string | null>(null);
-  const [initialized, setInitialized] = useState(false);
 
+  // Initialize and synchronize customer session
   useEffect(() => {
     try {
-      const storedPhone = localStorage.getItem('gargi_customer_phone');
+      const storedEmail = localStorage.getItem('gargi_customer_email');
       const isDemo = localStorage.getItem('customer_auth_demo') === 'true';
 
-      if (storedPhone) {
+      if (storedEmail) {
         const storedName = localStorage.getItem('gargi_customer_name') || 'Valued Patron';
-        setCustomer({ phone: storedPhone, name: storedName });
+        const storedId = localStorage.getItem('gargi_customer_id') || undefined;
+        setCustomer({ email: storedEmail, name: storedName, id: storedId });
         setIsLoggedIn(true);
       } else if (isDemo) {
-        // Fallback for demo session
-        const demoPhone = '9876543210';
-        localStorage.setItem('gargi_customer_phone', demoPhone);
-        setCustomer({ phone: demoPhone, name: 'Valued Patron' });
+        // Fallback for active demo session
+        const demoEmail = 'patron@gargisaha.com';
+        localStorage.setItem('gargi_customer_email', demoEmail);
+        setCustomer({ email: demoEmail, name: 'Valued Patron' });
         setIsLoggedIn(true);
       }
 
-      // Sync Supabase Auth session if active
+      // Check active Supabase Auth session
       supabase.auth.getSession().then(({ data: { session } }) => {
-        if (session?.user?.phone) {
-          const rawPhone = session.user.phone.replace(/^\+91/, '').replace(/\D/g, '');
-          if (rawPhone) {
-            localStorage.setItem('gargi_customer_phone', rawPhone);
-            setCustomer({ phone: rawPhone, name: session.user.user_metadata?.name || 'Valued Patron' });
-            setIsLoggedIn(true);
-          }
+        if (session?.user?.email) {
+          const userEmail = session.user.email.toLowerCase().trim();
+          const userName = session.user.user_metadata?.name || session.user.user_metadata?.full_name || 'Valued Patron';
+          localStorage.setItem('gargi_customer_email', userEmail);
+          localStorage.setItem('gargi_customer_name', userName);
+          localStorage.setItem('gargi_customer_id', session.user.id);
+          setCustomer({ email: userEmail, name: userName, id: session.user.id });
+          setIsLoggedIn(true);
         }
       });
+
+      // Listen for live Supabase Auth state changes
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_IN' && session?.user?.email) {
+          const userEmail = session.user.email.toLowerCase().trim();
+          const userName = session.user.user_metadata?.name || 'Valued Patron';
+          localStorage.setItem('gargi_customer_email', userEmail);
+          localStorage.setItem('gargi_customer_name', userName);
+          localStorage.setItem('gargi_customer_id', session.user.id);
+          setCustomer({ email: userEmail, name: userName, id: session.user.id });
+          setIsLoggedIn(true);
+        } else if (event === 'SIGNED_OUT') {
+          localStorage.removeItem('gargi_customer_email');
+          localStorage.removeItem('gargi_customer_name');
+          localStorage.removeItem('gargi_customer_id');
+          localStorage.removeItem('customer_auth_demo');
+          setCustomer(null);
+          setIsLoggedIn(false);
+        }
+      });
+
+      return () => {
+        subscription.unsubscribe();
+      };
     } catch (e) {
-      console.warn('Failed reading customer auth state:', e);
+      console.warn('Failed initializing customer auth session:', e);
     }
-    setInitialized(true);
+  }, []);
+
+  // Subscribe to real-time multi-tab cross-synchronization
+  useEffect(() => {
+    const unsubscribe = subscribeToPortalSync((message) => {
+      if (message.type === 'AUTH_CHANGED') {
+        const { action, email, name, id } = message.payload || {};
+        if (action === 'login' && email) {
+          setCustomer({ email, name: name || 'Valued Patron', id });
+          setIsLoggedIn(true);
+        } else if (action === 'logout') {
+          setCustomer(null);
+          setIsLoggedIn(false);
+        }
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const openLoginModal = (redirectUrl?: string) => {
@@ -72,23 +119,34 @@ export function CustomerAuthProvider({ children }: { children: ReactNode }) {
     setRedirectAfterLogin(null);
   };
 
-  const login = (phone: string, name = 'Valued Patron') => {
-    const cleanPhone = phone.replace(/\D/g, '').slice(-10);
-    localStorage.setItem('gargi_customer_phone', cleanPhone);
+  const login = (email: string, name = 'Valued Patron', id?: string) => {
+    const cleanEmail = email.toLowerCase().trim();
+    localStorage.setItem('gargi_customer_email', cleanEmail);
     localStorage.setItem('gargi_customer_name', name);
+    if (id) localStorage.setItem('gargi_customer_id', id);
     localStorage.setItem('customer_auth_demo', 'true');
-    setCustomer({ phone: cleanPhone, name });
+
+    setCustomer({ email: cleanEmail, name, id });
     setIsLoggedIn(true);
     closeLoginModal();
+
+    // Broadcast login to all other open tabs in real-time
+    broadcastPortalSync('AUTH_CHANGED', { action: 'login', email: cleanEmail, name, id }, cleanEmail);
   };
 
   const logout = async () => {
     try {
-      localStorage.removeItem('gargi_customer_phone');
+      const currentEmail = customer?.email;
+      localStorage.removeItem('gargi_customer_email');
       localStorage.removeItem('gargi_customer_name');
+      localStorage.removeItem('gargi_customer_id');
       localStorage.removeItem('customer_auth_demo');
       setCustomer(null);
       setIsLoggedIn(false);
+
+      // Broadcast logout to all other open tabs in real-time
+      broadcastPortalSync('AUTH_CHANGED', { action: 'logout' }, currentEmail);
+
       await supabase.auth.signOut().catch(() => {});
     } catch (e) {
       console.error('Logout error:', e);
