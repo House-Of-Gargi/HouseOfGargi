@@ -71,7 +71,7 @@ export default function Navbar() {
               onClick={() => setMobileOpen(true)}
               aria-label="Menu"
             >
-              <MenuIcon size={24} />
+              <MenuIcon size={26} />
             </button>
             <Link href="/" className="navbar__logo" aria-label="House of Gargi">
               <img
@@ -102,7 +102,7 @@ export default function Navbar() {
               title="Search"
               onClick={() => router.push('/shop')}
             >
-              <SearchIcon size={20} />
+              <SearchIcon size={23} />
             </button>
             <button 
               type="button" 
@@ -110,7 +110,7 @@ export default function Navbar() {
               title="Account" 
               onClick={handleUserClick}
             >
-              <UserIcon size={20} />
+              <UserIcon size={23} />
             </button>
             <button 
               type="button" 
@@ -125,7 +125,7 @@ export default function Navbar() {
               }}
               style={{ position: 'relative' }}
             >
-              <WishlistIcon size={20} />
+              <WishlistIcon size={23} />
               {mounted && wishlistCount > 0 && (
                 <span className="navbar__badge">{wishlistCount}</span>
               )}
@@ -143,7 +143,7 @@ export default function Navbar() {
               }}
               style={{ position: 'relative' }}
             >
-              <CartIcon size={20} />
+              <CartIcon size={23} />
               {mounted && itemCount > 0 && (
                 <span className="navbar__badge">{itemCount}</span>
               )}

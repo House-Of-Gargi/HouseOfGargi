@@ -21,10 +21,10 @@ A comprehensive architectural reference detailing every font family, desktop siz
 
 | Element | Selector / Location | Font Family | Desktop Size | Mobile Size | Weight | Tracking / Layout | Color |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Brand Signature (Hero)** | `.navbar--hero .navbar__logo-img--white` | Custom Script Image | Height: `68px` | Height: `54px` | — | Drop shadow `0 2px 10px rgba(0,0,0,0.35)` | Pure White (`#FFFFFF`) |
-| **Brand Signature (Scrolled)**| `.navbar--scrolled .navbar__logo-img--dark` | Custom Script Image | Height: `62px` | Height: `48px` | — | Crisp transparent PNG | Maharani Maroon (`#7A2331`) |
-| **Navigation Links** | `.navbar__links a` | Plus Jakarta Sans | `14px` | Drawer (`18px`) | 600 | `gap: 24px`, Tracking: `0.08em` / Uppercase | `#FFFFFF` (Hero) / `#231812` (Scrolled) |
-| **Navigation Icons** | `.navbar__icons` | Lucide SVG Icons | Icon `20px` (box `36px`) | Icon `18px` (box `32px`) | — | Clustered tightly (`gap: 8px`), no spreading | `#FFFFFF` (Hero) / `#231812` (Scrolled) |
+| **Brand Signature (Hero)** | `.navbar--hero .navbar__logo-img--white` | Custom Script Image | Height: `72px` | Height: `58px` | — | Drop shadow `0 2px 10px rgba(0,0,0,0.35)` | Pure White (`#FFFFFF`) |
+| **Brand Signature (Scrolled)**| `.navbar--scrolled .navbar__logo-img--dark` | Custom Script Image | Height: `66px` | Height: `52px` | — | Crisp transparent PNG | Maharani Maroon (`#7A2331`) |
+| **Navigation Links** | `.navbar__links a` | Plus Jakarta Sans | `15.5px` (Enlarged) | Drawer (`18px`) | 600 | `gap: 28px`, Tracking: `0.05em` / Uppercase | `#FFFFFF` (Hero) / `#231812` (Scrolled) |
+| **Navigation Icons** | `.navbar__icons` | Lucide SVG Icons | Icon `23px` (box `40px`) | Icon `20px` (box `36px`) | — | Clustered (`gap: 8px`), no spreading | `#FFFFFF` (Hero) / `#231812` (Scrolled) |
 | **Drawer Nav Links** | `.mobile-drawer__links .nav-label` | Plus Jakarta Sans | — | `18px` | 600 | `0.10em` / Uppercase | `#231812` |
 
 ---
@@ -42,14 +42,14 @@ A comprehensive architectural reference detailing every font family, desktop siz
 
 ### C. Homepage Section Headings & Subtitles
 
-*Directly mirrors Screenshot 4 classic serif header style ("You May Also Cherish") in authoritative bold.*
+*Directly mirrors Screenshot 4 classic serif header style ("You May Also Cherish") in authoritative bold and signature Maharani Maroon (`#7A2331`).*
 
 | Element | Selector / Location | Font Family | Desktop Size | Mobile Size | Weight | Line Height | Color |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Category Heading** | `h2.section-heading-bold` | Cormorant Garamond / Playfair | `clamp(32px, 4vw, 44px)` | `28px` | 700 (Bold) | 1.2 | Ink Brown (`#231812`) |
-| **Category Subtitle** | `.subtitle-italic` | Cormorant Garamond (Upright)| `clamp(17px, 2vw, 20px)` | `16px` | 500 | 1.6 | Stone Taupe (`#5C5043`) |
-| **Featured Heading** | `h2.section-heading-bold` | Cormorant Garamond / Playfair | `clamp(32px, 4vw, 44px)` | `28px` | 700 (Bold) | 1.2 | Ink Brown (`#231812`) |
-| **Featured Subtitle** | `.subtitle-italic` | Cormorant Garamond (Upright)| `clamp(17px, 2vw, 20px)` | `16px` | 500 | 1.6 | Stone Taupe (`#5C5043`) |
+| **Category Heading** | `h2.section-heading-bold` | Cormorant Garamond / Playfair | `clamp(38px, 4.6vw, 52px)` | `32px` | 700 (Bold) | 1.2 | Maharani Maroon (`#7A2331`) |
+| **Category Subtitle** | `.subtitle-italic` | Cormorant Garamond (Upright)| `clamp(19px, 2.2vw, 23px)` | `17px` | 500 | 1.6 | Stone Taupe (`#5C5043`) |
+| **Featured Heading** | `h2.section-heading-bold` | Cormorant Garamond / Playfair | `clamp(38px, 4.6vw, 52px)` | `32px` | 700 (Bold) | 1.2 | Maharani Maroon (`#7A2331`) |
+| **Featured Subtitle** | `.subtitle-italic` | Cormorant Garamond (Upright)| `clamp(19px, 2.2vw, 23px)` | `17px` | 500 | 1.6 | Stone Taupe (`#5C5043`) |
 
 ---
 
