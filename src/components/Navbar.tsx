@@ -168,7 +168,7 @@ export default function Navbar() {
               src="/logo-images/new-logo.png"
               alt="House of Gargi"
               className="navbar__logo-img navbar__logo-img--dark"
-              style={{ display: 'block', height: '44px' }}
+              style={{ display: 'block', height: '52px' }}
             />
           </Link>
           <button type="button" className="mobile-drawer__close" onClick={() => setMobileOpen(false)} aria-label="Close menu">
