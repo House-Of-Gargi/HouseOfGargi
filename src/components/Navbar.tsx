@@ -73,7 +73,18 @@ export default function Navbar() {
             >
               <MenuIcon size={24} />
             </button>
-            <Link href="/" className="navbar__logo">House of Gargi</Link>
+            <Link href="/" className="navbar__logo" aria-label="House of Gargi">
+              <img
+                src="/logo-images/new-white-logo.png"
+                alt="House of Gargi"
+                className="navbar__logo-img navbar__logo-img--white"
+              />
+              <img
+                src="/logo-images/new-logo.png"
+                alt="House of Gargi"
+                className="navbar__logo-img navbar__logo-img--dark"
+              />
+            </Link>
           </div>
 
           <div className="navbar__links">
@@ -152,7 +163,14 @@ export default function Navbar() {
       {/* Mobile drawer */}
       <div className={`mobile-drawer ${mobileOpen ? 'mobile-drawer--open' : ''}`}>
         <div className="mobile-drawer__header">
-          <Link href="/" className="navbar__logo" style={{ color: 'var(--ink-brown)' }} onClick={() => setMobileOpen(false)}>House of Gargi</Link>
+          <Link href="/" className="navbar__logo" onClick={() => setMobileOpen(false)} aria-label="House of Gargi">
+            <img
+              src="/logo-images/new-logo.png"
+              alt="House of Gargi"
+              className="navbar__logo-img navbar__logo-img--dark"
+              style={{ display: 'block', height: '46px', borderRadius: '8px' }}
+            />
+          </Link>
           <button type="button" className="mobile-drawer__close" onClick={() => setMobileOpen(false)} aria-label="Close menu">
             <CloseIcon size={28} />
           </button>

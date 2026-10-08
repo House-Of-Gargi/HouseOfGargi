@@ -1,6 +1,6 @@
 # House of Gargi — Knowledge Graph Architecture Report
 
-**Generated on:** Thu, 08 Oct 2026 04:35:32 GMT  
+**Generated on:** Thu, 08 Oct 2026 05:44:55 GMT  
 **Repository:** `House-Of-Gargi/HouseOfGargi`  
 **Total Entities (Nodes):** 80  
 **Total Relationships (Edges):** 108  
@@ -76,7 +76,7 @@ God nodes represent the foundational modules of the application that the majorit
 
 ### Design System & Styles (3 files)
 - **`src/account.css`** (497 lines) — *Module account.css in Design System & Styles* [In: 0, Out: 0]
-- **`src/index.css`** (3371 lines) — *Module index.css in Design System & Styles* [In: 0, Out: 0]
+- **`src/index.css`** (3404 lines) — *Module index.css in Design System & Styles* [In: 0, Out: 0]
 - **`src/seller.css`** (686 lines) — *Module seller.css in Design System & Styles* [In: 0, Out: 0]
 
 
@@ -130,7 +130,7 @@ God nodes represent the foundational modules of the application that the majorit
 - **`src/components/Footer.tsx`** (47 lines) — *Module Footer.tsx in Storefront UI Components* [In: 1, Out: 0]
 - **`src/components/HeroBanner.tsx`** (261 lines) — *Interactive 3-concept hero carousel with responsive WebP picture sources* [In: 1, Out: 0]
 - **`src/components/Icons.tsx`** (188 lines) — *Module Icons.tsx in Storefront UI Components* [In: 8, Out: 0]
-- **`src/components/Navbar.tsx`** (172 lines) — *Module Navbar.tsx in Storefront UI Components* [In: 1, Out: 6]
+- **`src/components/Navbar.tsx`** (190 lines) — *Module Navbar.tsx in Storefront UI Components* [In: 1, Out: 6]
 - **`src/components/ProductCard.tsx`** (91 lines) — *Module ProductCard.tsx in Storefront UI Components* [In: 6, Out: 6]
 - **`src/components/ScrollReveal.tsx`** (38 lines) — *Module ScrollReveal.tsx in Storefront UI Components* [In: 14, Out: 0]
 
