@@ -38,7 +38,9 @@ export default function HomePage() {
         <div className="container">
           <ScrollReveal>
             <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-              <h2 className="section-heading-bold">Shop by Collection</h2>
+              <h2 className="section-heading-bold">
+                <span style={{ color: 'var(--ink-brown)' }}>Shop </span>by Collection
+              </h2>
               <p className="subtitle-italic" style={{ color: 'var(--stone-taupe)', marginTop: '12px' }}>
                 Explore our curated lines of traditional wear
               </p>
@@ -68,7 +70,9 @@ export default function HomePage() {
         <div className="container">
           <ScrollReveal>
             <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-              <h2 className="section-heading-bold">Featured Curations</h2>
+              <h2 className="section-heading-bold">
+                <span style={{ color: 'var(--ink-brown)' }}>Featured </span>Curations
+              </h2>
               <p className="subtitle-italic" style={{ color: 'var(--stone-taupe)', marginTop: '12px' }}>
                 Our most loved pieces, selected for you
               </p>
