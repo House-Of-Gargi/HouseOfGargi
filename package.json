@@ -8,8 +8,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "sync:images": "node scripts/sync-images.cjs"
+    "sync:images": "node scripts/sync-images.cjs",
+    "graphify": "node scripts/generate-graphify.cjs"
   },
+
   "dependencies": {
     "@supabase/supabase-js": "^2.109.0",
     "@types/node": "^26.4.1",
