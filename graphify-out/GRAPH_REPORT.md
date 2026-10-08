@@ -1,6 +1,6 @@
 # House of Gargi — Knowledge Graph Architecture Report
 
-**Generated on:** Thu, 08 Oct 2026 04:31:58 GMT  
+**Generated on:** Thu, 08 Oct 2026 04:35:32 GMT  
 **Repository:** `House-Of-Gargi/HouseOfGargi`  
 **Total Entities (Nodes):** 80  
 **Total Relationships (Edges):** 108  
@@ -108,7 +108,7 @@ God nodes represent the foundational modules of the application that the majorit
 
 
 ### API Handlers (5 files)
-- **`src/app/api/auth/send-otp/route.ts`** (131 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
+- **`src/app/api/auth/send-otp/route.ts`** (144 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
 - **`src/app/api/auth/verify-otp/route.ts`** (82 lines) — *Module route.ts in API Handlers* [In: 0, Out: 0]
 - **`src/app/api/checkout/route.ts`** (42 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
 - **`src/app/api/orders/route.ts`** (108 lines) — *Module route.ts in API Handlers* [In: 0, Out: 2]
