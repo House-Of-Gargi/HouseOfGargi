@@ -1,9 +1,9 @@
 # House of Gargi — Knowledge Graph Architecture Report
 
-**Generated on:** Thu, 08 Oct 2026 04:20:47 GMT  
+**Generated on:** Thu, 08 Oct 2026 04:31:58 GMT  
 **Repository:** `House-Of-Gargi/HouseOfGargi`  
-**Total Entities (Nodes):** 78  
-**Total Relationships (Edges):** 107  
+**Total Entities (Nodes):** 80  
+**Total Relationships (Edges):** 108  
 **Detected Communities:** 13
 
 ---
@@ -14,10 +14,10 @@ House of Gargi is a Next.js 16 (React 19) digital atelier for luxury handcrafted
 
 | Metric | Count | Description |
 | :--- | :--- | :--- |
-| **Total Nodes** | **78** | Source files, components, contexts, routes, and configs |
-| **Total Directed Edges** | **107** | Import, composition, and event dependencies |
+| **Total Nodes** | **80** | Source files, components, contexts, routes, and configs |
+| **Total Directed Edges** | **108** | Import, composition, and event dependencies |
 | **Architectural Communities** | **13** | Functional subsystems |
-| **Average Degree** | **2.74** | Inter-module connectivity density |
+| **Average Degree** | **2.70** | Inter-module connectivity density |
 
 ---
 
@@ -107,7 +107,9 @@ God nodes represent the foundational modules of the application that the majorit
 - **`src/app/(storefront)/wishlist/page.tsx`** (322 lines) — *Storefront page route for wishlist* [In: 0, Out: 6]
 
 
-### API Handlers (3 files)
+### API Handlers (5 files)
+- **`src/app/api/auth/send-otp/route.ts`** (131 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
+- **`src/app/api/auth/verify-otp/route.ts`** (82 lines) — *Module route.ts in API Handlers* [In: 0, Out: 0]
 - **`src/app/api/checkout/route.ts`** (42 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
 - **`src/app/api/orders/route.ts`** (108 lines) — *Module route.ts in API Handlers* [In: 0, Out: 2]
 - **`src/app/api/products/route.ts`** (22 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
@@ -124,7 +126,7 @@ God nodes represent the foundational modules of the application that the majorit
 ### Storefront UI Components (9 files)
 - **`src/components/AtelierNewsletter.tsx`** (93 lines) — *Module AtelierNewsletter.tsx in Storefront UI Components* [In: 0, Out: 0]
 - **`src/components/CustomDropdown.tsx`** (212 lines) — *Module CustomDropdown.tsx in Storefront UI Components* [In: 6, Out: 0]
-- **`src/components/CustomerLoginModal.tsx`** (417 lines) — *Module CustomerLoginModal.tsx in Storefront UI Components* [In: 1, Out: 2]
+- **`src/components/CustomerLoginModal.tsx`** (428 lines) — *Module CustomerLoginModal.tsx in Storefront UI Components* [In: 1, Out: 2]
 - **`src/components/Footer.tsx`** (47 lines) — *Module Footer.tsx in Storefront UI Components* [In: 1, Out: 0]
 - **`src/components/HeroBanner.tsx`** (261 lines) — *Interactive 3-concept hero carousel with responsive WebP picture sources* [In: 1, Out: 0]
 - **`src/components/Icons.tsx`** (188 lines) — *Module Icons.tsx in Storefront UI Components* [In: 8, Out: 0]
@@ -152,7 +154,7 @@ God nodes represent the foundational modules of the application that the majorit
 
 ### Infrastructure & Realtime Mesh (3 files)
 - **`src/lib/realtimeSync.ts`** (148 lines) — *Cross-tab WebSocket and BroadcastChannel synchronization mesh* [In: 3, Out: 1]
-- **`src/lib/resend.ts`** (8 lines) — *Resend email client integration for noreply@gargisaha.com* [In: 0, Out: 0]
+- **`src/lib/resend.ts`** (8 lines) — *Resend email client integration for noreply@gargisaha.com* [In: 1, Out: 0]
 - **`src/lib/supabaseClient.ts`** (14 lines) — *Supabase client instance for database and auth* [In: 12, Out: 0]
 
 

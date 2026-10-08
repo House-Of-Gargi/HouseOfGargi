@@ -1,9 +1,9 @@
 {
   "meta": {
     "project": "House of Gargi",
-    "generatedAt": "2026-10-08T04:20:47.012Z",
-    "totalNodes": 78,
-    "totalEdges": 107,
+    "generatedAt": "2026-10-08T04:31:58.201Z",
+    "totalNodes": 80,
+    "totalEdges": 108,
     "communityCount": 13
   },
   "metrics": {
@@ -112,7 +112,7 @@
       },
       {
         "name": "API Handlers",
-        "count": 3
+        "count": 5
       },
       {
         "name": "Seller Portal",
@@ -803,6 +803,38 @@
       "degree": 6
     },
     {
+      "id": "src/app/api/auth/send-otp/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/auth/send-otp/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 131,
+      "size": 14,
+      "exports": [],
+      "imports": [
+        "src/lib/resend.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Module route.ts in API Handlers",
+      "degree": 1
+    },
+    {
+      "id": "src/app/api/auth/verify-otp/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/auth/verify-otp/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 82,
+      "size": 14,
+      "exports": [],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Module route.ts in API Handlers",
+      "degree": 0
+    },
+    {
       "id": "src/app/api/checkout/route.ts",
       "label": "route.ts",
       "path": "src/app/api/checkout/route.ts",
@@ -1072,7 +1104,7 @@
       "path": "src/components/CustomerLoginModal.tsx",
       "type": "component",
       "community": "Storefront UI Components",
-      "lines": 417,
+      "lines": 428,
       "size": 17.5,
       "exports": [
         "CustomerLoginModal"
@@ -1464,17 +1496,17 @@
       "type": "lib",
       "community": "Infrastructure & Realtime Mesh",
       "lines": 8,
-      "size": 14,
+      "size": 17.5,
       "exports": [
         "resend",
         "NOREPLY_EMAIL",
         "CONCIERGE_EMAIL"
       ],
       "imports": [],
-      "inDegree": 0,
+      "inDegree": 1,
       "outDegree": 0,
       "description": "Resend email client integration for noreply@gargisaha.com",
-      "degree": 0
+      "degree": 1
     },
     {
       "id": "src/lib/supabaseClient.ts",
@@ -1926,6 +1958,11 @@
     {
       "source": "src/app/(storefront)/wishlist/page.tsx",
       "target": "src/data/products.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/auth/send-otp/route.ts",
+      "target": "src/lib/resend.ts",
       "type": "imports"
     },
     {
