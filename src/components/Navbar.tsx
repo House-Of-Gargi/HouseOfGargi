@@ -98,6 +98,7 @@ export default function Navbar() {
           <div className="navbar__icons">
             <button 
               type="button" 
+              className="navbar__icon-btn navbar__icon-btn--desktop-only"
               aria-label="Search" 
               title="Search"
               onClick={() => router.push('/shop')}
@@ -106,6 +107,7 @@ export default function Navbar() {
             </button>
             <button 
               type="button" 
+              className="navbar__icon-btn navbar__icon-btn--desktop-only"
               aria-label="Account" 
               title="Account" 
               onClick={handleUserClick}
@@ -114,6 +116,7 @@ export default function Navbar() {
             </button>
             <button 
               type="button" 
+              className="navbar__icon-btn"
               aria-label="Wishlist" 
               title="Wishlist" 
               onClick={() => {
@@ -132,6 +135,7 @@ export default function Navbar() {
             </button>
             <button 
               type="button" 
+              className="navbar__icon-btn"
               aria-label="Cart" 
               title="Cart" 
               onClick={() => {
@@ -176,12 +180,35 @@ export default function Navbar() {
           </button>
         </div>
         <div className="mobile-drawer__links">
+          <Link href="/shop" className="nav-label" onClick={() => setMobileOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <SearchIcon size={18} /> Search Collections
+          </Link>
+          <button 
+            type="button" 
+            className="nav-label" 
+            onClick={() => { setMobileOpen(false); handleUserClick(); }} 
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '10px', 
+              background: 'none', 
+              border: 'none', 
+              cursor: 'pointer', 
+              textAlign: 'left',
+              padding: '24px 0',
+              borderBottom: '1px solid var(--soft-gold-line)',
+              color: 'var(--ink-brown)',
+              fontSize: '16px'
+            }}
+          >
+            <UserIcon size={18} /> {isLoggedIn ? 'My Account' : 'Sign In / Register'}
+          </button>
           <Link href="/category/sarees" className="nav-label" onClick={() => setMobileOpen(false)}>Sarees</Link>
           <Link href="/category/lehengas" className="nav-label" onClick={() => setMobileOpen(false)}>Lehengas</Link>
           <Link href="/category/kurta-sets" className="nav-label" onClick={() => setMobileOpen(false)}>Kurta Sets</Link>
           <Link href="/category/accessories" className="nav-label" onClick={() => setMobileOpen(false)}>Accessories</Link>
-          <Link href="/bespoke" className="nav-label" onClick={() => setMobileOpen(false)}>Bespoke</Link>
-          <Link href="/shop" className="nav-label" onClick={() => setMobileOpen(false)}>All Collections</Link>
+          <Link href="/bespoke" className="nav-label" onClick={() => setMobileOpen(false)}>Bespoke Atelier</Link>
+          <Link href="/shop" className="nav-label" onClick={() => setMobileOpen(false)}>All Masterpieces</Link>
         </div>
       </div>
     </>

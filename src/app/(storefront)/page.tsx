@@ -87,6 +87,50 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ═══════ 4. PROVENANCE & ATELIER PROMISE ═══════ */}
+      <section style={{ 
+        background: 'var(--ivory-silk)', 
+        borderTop: '1px solid var(--soft-gold-line)',
+        padding: '64px 0' 
+      }}>
+        <div className="container">
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gap: '36px',
+            textAlign: 'center',
+          }}>
+            <div style={{ padding: '0 16px' }}>
+              <div style={{ color: 'var(--gargi-gold)', fontSize: '26px', marginBottom: '10px' }}>✦</div>
+              <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 700, color: 'var(--ink-brown)', marginBottom: '8px' }}>
+                100% Certified Handloom
+              </h4>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'var(--stone-taupe)', lineHeight: 1.55 }}>
+                Authentic Silk Mark & Handloom certified weaves, handcrafted with genuine natural fibers.
+              </p>
+            </div>
+            <div style={{ padding: '0 16px' }}>
+              <div style={{ color: 'var(--gargi-gold)', fontSize: '26px', marginBottom: '10px' }}>⚜</div>
+              <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 700, color: 'var(--ink-brown)', marginBottom: '8px' }}>
+                Direct Artisan Lineage
+              </h4>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'var(--stone-taupe)', lineHeight: 1.55 }}>
+                Honoring 4th-generation master weaving families across Varanasi, Kanchipuram, and Jaipur.
+              </p>
+            </div>
+            <div style={{ padding: '0 16px' }}>
+              <div style={{ color: 'var(--gargi-gold)', fontSize: '26px', marginBottom: '10px' }}>✦</div>
+              <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 700, color: 'var(--ink-brown)', marginBottom: '8px' }}>
+                White-Glove Global Shipping
+              </h4>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'var(--stone-taupe)', lineHeight: 1.55 }}>
+                Insured express delivery worldwide with bespoke atelier presentation and archival packaging.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

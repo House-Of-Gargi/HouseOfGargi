@@ -78,10 +78,16 @@ export default function ProductCard({ product, style }: ProductCardProps) {
             decoding="async"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
+          <div className="product-card__quick-view">
+            <span>View Piece &rarr;</span>
+          </div>
         </div>
         <div className="product-card__body" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
           <div className="product-card__name">{currentProduct.name}</div>
-          <div className="product-card__artisan">{currentProduct.artisanNote}</div>
+          <div className="product-card__artisan">
+            <span style={{ color: 'var(--gargi-gold)', marginRight: '6px' }}>✦</span>
+            {currentProduct.artisanNote}
+          </div>
           <div className="product-card__price" style={{ marginTop: 'auto' }}>{formatPrice(currentProduct.price)}</div>
         </div>
       </Link>
