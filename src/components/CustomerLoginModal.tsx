@@ -25,6 +25,8 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
   const [resending, setResending] = useState(false);
   const [error, setError] = useState('');
   const [resendCountdown, setResendCountdown] = useState(0);
+  const [verificationToken, setVerificationToken] = useState<string>('');
+  const [expiresAt, setExpiresAt] = useState<number>(0);
 
   const otpInputRef = useRef<HTMLInputElement>(null);
 
@@ -35,6 +37,8 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
       setStep(1);
       setOtp('');
       setResendCountdown(0);
+      setVerificationToken('');
+      setExpiresAt(0);
     }
   }, [isOpen]);
 
@@ -86,25 +90,25 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
     }
 
     try {
-      const { error: otpErr } = await supabase.auth.signInWithOtp({
-        email: cleanEmail,
-        options: {
-          shouldCreateUser: true,
-        },
+      const res = await fetch('/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: cleanEmail }),
       });
 
-      if (otpErr) throw otpErr;
+      const data = await res.json();
 
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Failed to dispatch 6-digit access code.');
+      }
+
+      setVerificationToken(data.verificationToken || '');
+      setExpiresAt(data.expiresAt || Date.now() + 10 * 60 * 1000);
       setStep(2);
       setResendCountdown(45);
     } catch (err: any) {
-      console.error('Supabase Email OTP error:', err);
-      const errMsg = err?.message || 'Error sending passcode';
-      if (errMsg.toLowerCase().includes('error sending') || errMsg.toLowerCase().includes('500') || errMsg.toLowerCase().includes('unexpected_failure')) {
-        setError('Supabase SMTP Error: Please verify Custom SMTP is toggled ON in Supabase Dashboard with host smtp.resend.com, user "resend", and your Resend API key.');
-      } else {
-        setError(errMsg);
-      }
+      console.warn('Send OTP Notice:', err?.message);
+      setError(err?.message || 'Could not send passcode. Please verify your email or use demo code 123456.');
     } finally {
       setLoading(false);
     }
@@ -117,15 +121,24 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
     const cleanEmail = email.toLowerCase().trim();
 
     try {
-      const { error: resendErr } = await supabase.auth.signInWithOtp({
-        email: cleanEmail,
-        options: { shouldCreateUser: true },
+      const res = await fetch('/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: cleanEmail }),
       });
-      if (resendErr) throw resendErr;
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Failed to resend access code.');
+      }
+
+      setVerificationToken(data.verificationToken || '');
+      setExpiresAt(data.expiresAt || Date.now() + 10 * 60 * 1000);
       setResendCountdown(45);
     } catch (err: any) {
-      console.error('Resend OTP error:', err);
-      setError(err?.message || 'Failed to resend passcode. Please check Supabase SMTP settings.');
+      console.warn('Resend OTP Notice:', err?.message);
+      setError(err?.message || 'Failed to resend passcode. Please try again or use demo code 123456.');
     } finally {
       setResending(false);
     }
@@ -156,36 +169,30 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
     }
 
     try {
-      const { data, error: verifyErr } = await supabase.auth.verifyOtp({
-        email: cleanEmail,
-        token: cleanOtp,
-        type: 'email',
+      const res = await fetch('/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: cleanEmail,
+          otp: cleanOtp,
+          verificationToken,
+          expiresAt,
+        }),
       });
 
-      if (verifyErr) {
-        if (cleanOtp === '123456') {
-          login(cleanEmail, 'Valued Patron');
-          handleClose();
-          if (redirectAfterLogin) router.push(redirectAfterLogin);
-          return;
-        }
-        throw verifyErr;
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Invalid passcode.');
       }
 
-      if (data.session) {
-        const userName = data.session.user?.user_metadata?.name || 'Valued Patron';
-        login(cleanEmail, userName, data.session.user?.id);
-        handleClose();
-        if (redirectAfterLogin) router.push(redirectAfterLogin);
-      }
+      const patronName = data.user?.name || cleanEmail.split('@')[0] || 'Valued Patron';
+      login(cleanEmail, patronName, data.user?.id);
+      handleClose();
+      if (redirectAfterLogin) router.push(redirectAfterLogin);
     } catch (err: any) {
-      if (cleanOtp === '123456') {
-        login(cleanEmail, 'Valued Patron');
-        handleClose();
-        if (redirectAfterLogin) router.push(redirectAfterLogin);
-      } else {
-        setError(err.message || 'Invalid or expired passcode. Check your email or use demo code 123456.');
-      }
+      console.warn('Verify OTP Notice:', err?.message);
+      setError(err?.message || 'Invalid or expired passcode. Check your email or use demo code 123456.');
     } finally {
       setLoading(false);
     }
