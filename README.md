@@ -160,10 +160,12 @@ Key Design Tokens:
 - Stone Taupe: `#6E5F54` (Secondary technical copy)
 
 Typography:
-- Headlines: Playfair Display, Marcellus, Cinzel
-- Heritage Kicker: Noto Serif Devanagari
-- Navigation and Metadata: Plus Jakarta Sans
-- Body and Provenance: Cormorant Garamond
+- Script Section Headings: Alex Brush (Fluid calligraphy matching the brand signature)
+- Headlines (H1 / H2 / H3): Cormorant Garamond (Editorial luxury display serif)
+- Subtitles & Epigraphs: Cormorant Garamond (Upright literary serif)
+- Navigation, CTAs & Buttons: Tenor Sans (Wide-tracked high-fashion Roman caps)
+- Body Copy & Metadata: Outfit (Clean geometric sans-serif)
+- For complete desktop and mobile specifications across every section, see [TYPOGRAPHY.md](file:///c:/Users/shaws/ANGA9/HouseOfGargi/TYPOGRAPHY.md).
 
 ---
 
