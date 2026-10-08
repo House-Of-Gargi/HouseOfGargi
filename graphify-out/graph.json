@@ -1,9 +1,9 @@
 {
   "meta": {
     "project": "House of Gargi",
-    "generatedAt": "2026-10-08T04:11:51.640Z",
+    "generatedAt": "2026-10-08T04:20:47.012Z",
     "totalNodes": 78,
-    "totalEdges": 108,
+    "totalEdges": 107,
     "communityCount": 13
   },
   "metrics": {
@@ -562,7 +562,7 @@
       "path": "src/app/(storefront)/page.tsx",
       "type": "page",
       "community": "Storefront Pages",
-      "lines": 210,
+      "lines": 90,
       "size": 14,
       "exports": [
         "metadata",
@@ -571,15 +571,14 @@
       "imports": [
         "src/components/ScrollReveal.tsx",
         "src/components/ProductCard.tsx",
-        "src/components/AtelierNewsletter.tsx",
         "src/components/HeroBanner.tsx",
         "src/data/products.ts",
         "src/components/Icons.tsx"
       ],
       "inDegree": 0,
-      "outDegree": 6,
+      "outDegree": 5,
       "description": "Storefront page route for (storefront)",
-      "degree": 6
+      "degree": 5
     },
     {
       "id": "src/app/(storefront)/press/page.tsx",
@@ -1038,15 +1037,15 @@
       "type": "component",
       "community": "Storefront UI Components",
       "lines": 93,
-      "size": 17.5,
+      "size": 14,
       "exports": [
         "AtelierNewsletter"
       ],
       "imports": [],
-      "inDegree": 1,
+      "inDegree": 0,
       "outDegree": 0,
       "description": "Module AtelierNewsletter.tsx in Storefront UI Components",
-      "degree": 1
+      "degree": 0
     },
     {
       "id": "src/components/CustomDropdown.tsx",
@@ -1787,11 +1786,6 @@
     {
       "source": "src/app/(storefront)/page.tsx",
       "target": "src/components/ProductCard.tsx",
-      "type": "imports"
-    },
-    {
-      "source": "src/app/(storefront)/page.tsx",
-      "target": "src/components/AtelierNewsletter.tsx",
       "type": "imports"
     },
     {

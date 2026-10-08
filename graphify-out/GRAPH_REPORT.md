@@ -1,9 +1,9 @@
 # House of Gargi — Knowledge Graph Architecture Report
 
-**Generated on:** Thu, 08 Oct 2026 04:11:51 GMT  
+**Generated on:** Thu, 08 Oct 2026 04:20:47 GMT  
 **Repository:** `House-Of-Gargi/HouseOfGargi`  
 **Total Entities (Nodes):** 78  
-**Total Relationships (Edges):** 108  
+**Total Relationships (Edges):** 107  
 **Detected Communities:** 13
 
 ---
@@ -15,9 +15,9 @@ House of Gargi is a Next.js 16 (React 19) digital atelier for luxury handcrafted
 | Metric | Count | Description |
 | :--- | :--- | :--- |
 | **Total Nodes** | **78** | Source files, components, contexts, routes, and configs |
-| **Total Directed Edges** | **108** | Import, composition, and event dependencies |
+| **Total Directed Edges** | **107** | Import, composition, and event dependencies |
 | **Architectural Communities** | **13** | Functional subsystems |
-| **Average Degree** | **2.77** | Inter-module connectivity density |
+| **Average Degree** | **2.74** | Inter-module connectivity density |
 
 ---
 
@@ -93,7 +93,7 @@ God nodes represent the foundational modules of the application that the majorit
 - **`src/app/(storefront)/layout.tsx`** (14 lines) — *Module layout.tsx in Storefront Pages* [In: 0, Out: 2]
 - **`src/app/(storefront)/our-artisans/page.tsx`** (337 lines) — *Storefront page route for our-artisans* [In: 0, Out: 2]
 - **`src/app/(storefront)/our-story/page.tsx`** (98 lines) — *Storefront page route for our-story* [In: 0, Out: 2]
-- **`src/app/(storefront)/page.tsx`** (210 lines) — *Storefront page route for (storefront)* [In: 0, Out: 6]
+- **`src/app/(storefront)/page.tsx`** (90 lines) — *Storefront page route for (storefront)* [In: 0, Out: 5]
 - **`src/app/(storefront)/press/page.tsx`** (70 lines) — *Storefront page route for press* [In: 0, Out: 1]
 - **`src/app/(storefront)/privacy/page.tsx`** (77 lines) — *Storefront page route for privacy* [In: 0, Out: 1]
 - **`src/app/(storefront)/product/[id]/page.tsx`** (453 lines) — *Storefront page route for [id]* [In: 0, Out: 8]
@@ -122,7 +122,7 @@ God nodes represent the foundational modules of the application that the majorit
 
 
 ### Storefront UI Components (9 files)
-- **`src/components/AtelierNewsletter.tsx`** (93 lines) — *Module AtelierNewsletter.tsx in Storefront UI Components* [In: 1, Out: 0]
+- **`src/components/AtelierNewsletter.tsx`** (93 lines) — *Module AtelierNewsletter.tsx in Storefront UI Components* [In: 0, Out: 0]
 - **`src/components/CustomDropdown.tsx`** (212 lines) — *Module CustomDropdown.tsx in Storefront UI Components* [In: 6, Out: 0]
 - **`src/components/CustomerLoginModal.tsx`** (417 lines) — *Module CustomerLoginModal.tsx in Storefront UI Components* [In: 1, Out: 2]
 - **`src/components/Footer.tsx`** (47 lines) — *Module Footer.tsx in Storefront UI Components* [In: 1, Out: 0]
