@@ -98,10 +98,13 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
       setStep(2);
       setResendCountdown(45);
     } catch (err: any) {
-      console.warn('Supabase Email OTP notice:', err.message);
-      // Fallback transition so user can proceed
-      setStep(2);
-      setResendCountdown(45);
+      console.error('Supabase Email OTP error:', err);
+      const errMsg = err?.message || 'Error sending passcode';
+      if (errMsg.toLowerCase().includes('error sending') || errMsg.toLowerCase().includes('500') || errMsg.toLowerCase().includes('unexpected_failure')) {
+        setError('Supabase SMTP Error: Please verify Custom SMTP is toggled ON in Supabase Dashboard with host smtp.resend.com, user "resend", and your Resend API key.');
+      } else {
+        setError(errMsg);
+      }
     } finally {
       setLoading(false);
     }
@@ -114,14 +117,15 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
     const cleanEmail = email.toLowerCase().trim();
 
     try {
-      await supabase.auth.signInWithOtp({
+      const { error: resendErr } = await supabase.auth.signInWithOtp({
         email: cleanEmail,
         options: { shouldCreateUser: true },
       });
+      if (resendErr) throw resendErr;
       setResendCountdown(45);
     } catch (err: any) {
-      console.warn('Resend OTP error:', err.message);
-      setResendCountdown(45);
+      console.error('Resend OTP error:', err);
+      setError(err?.message || 'Failed to resend passcode. Please check Supabase SMTP settings.');
     } finally {
       setResending(false);
     }
