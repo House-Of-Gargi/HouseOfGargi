@@ -42,11 +42,13 @@ A comprehensive architectural reference detailing every font family, desktop siz
 
 ### C. Homepage Section Headings & Subtitles
 
+*Directly mirrors Screenshot 4 classic serif header style ("You May Also Cherish") in authoritative bold.*
+
 | Element | Selector / Location | Font Family | Desktop Size | Mobile Size | Weight | Line Height | Color |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Category Heading** | `h2.section-heading-bold` | Playfair Display | `clamp(32px, 4vw, 44px)` | `28px` | 700 (Bold) | 1.2 | Ink Brown (`#231812`) |
+| **Category Heading** | `h2.section-heading-bold` | Cormorant Garamond / Playfair | `clamp(32px, 4vw, 44px)` | `28px` | 700 (Bold) | 1.2 | Ink Brown (`#231812`) |
 | **Category Subtitle** | `.subtitle-italic` | Cormorant Garamond (Upright)| `clamp(17px, 2vw, 20px)` | `16px` | 500 | 1.6 | Stone Taupe (`#5C5043`) |
-| **Featured Heading** | `h2.section-heading-bold` | Playfair Display | `clamp(32px, 4vw, 44px)` | `28px` | 700 (Bold) | 1.2 | Ink Brown (`#231812`) |
+| **Featured Heading** | `h2.section-heading-bold` | Cormorant Garamond / Playfair | `clamp(32px, 4vw, 44px)` | `28px` | 700 (Bold) | 1.2 | Ink Brown (`#231812`) |
 | **Featured Subtitle** | `.subtitle-italic` | Cormorant Garamond (Upright)| `clamp(17px, 2vw, 20px)` | `16px` | 500 | 1.6 | Stone Taupe (`#5C5043`) |
 
 ---
@@ -57,20 +59,20 @@ A comprehensive architectural reference detailing every font family, desktop siz
 
 | Element | Selector / Location | Font Family | Desktop Size | Mobile Size | Weight | Tracking / Transform | Color |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Category Title** | `.category-tile__label h3` | Playfair Display | `26px` | `20px` | 700 | Normal | Pure White (`#FFFFFF`) |
-| **Explore Link** | `.category-tile__label span` | Plus Jakarta Sans | `13.5px` | `12px` | 700 | `0.12em` / Uppercase | Gargi Gold (`#B88E18`) |
+| **Category Title** | `.category-tile__label h3` | Cormorant Garamond / Playfair | `26px` | `20px` | 700 | Normal | Pure White (`#FFFFFF`) |
+| **Explore Link** | `.category-tile__label span` | Plus Jakarta Sans | `13.5px` | `12px` | 700 | `0.10em` / Uppercase | Gargi Gold (`#B88E18`) |
 
 ---
 
 ### E. Product Cards (Catalog & Featured Grid)
 
-*Upgraded for maximum clarity, visual weight, and easy reading without eye strain.*
+*Upgraded to a crystal-clear, non-curvy sans font for maximum legibility and zero eye strain.*
 
 | Element | Selector / Location | Font Family | Desktop Size | Mobile Size | Weight | Line Height | Color |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Product Title** | `.product-card__name` | Playfair Display | `21px` (Enlarged) | `18px` | 700 (Bold) | 1.35 | Ink Brown (`#231812`) |
-| **Artisan Subtitle** | `.product-card__artisan` | Outfit / Sans | `15.5px` (Enlarged) | `14px` | 500 | 1.45 | High Contrast (`#42352B`) |
-| **Price Tag** | `.product-card__price` | Outfit / Sans | `20px` (Enlarged) | `18px` | 700 (Bold) | 1.2 | Maharani Maroon (`#7A2331`) |
+| **Product Title** | `.product-card__name` | Plus Jakarta Sans / Outfit | `19px` (Large & Clear) | `17px` | 700 (Bold) | 1.35 | Ink Brown (`#231812`) |
+| **Artisan Subtitle** | `.product-card__artisan` | Outfit / Sans | `15px` (Legible) | `14px` | 500 | 1.45 | High Contrast (`#42352B`) |
+| **Price Tag** | `.product-card__price` | Plus Jakarta Sans / Outfit | `20px` (Large) | `18px` | 700 (Bold) | 1.2 | Maharani Maroon (`#7A2331`) |
 
 ---
 

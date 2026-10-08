@@ -153,18 +153,19 @@ To ensure high authority on search engines and enable expanded Google Sitelinks:
 The user interface avoids third-party utility frameworks like Tailwind CSS in favor of custom Vanilla CSS tokens defined in `src/index.css` and `src/account.css`.
 
 Key Design Tokens:
-- Maharani Maroon: `#7D1A27` (Primary royal accent, CTA buttons)
-- Gargi Gold: `#C9A227` (Ornamental borders, certifications, crests)
-- Ivory Silk: `#FAF7F2` (Primary atelier background)
-- Obsidian Brown: `#241A15` (High-contrast typography)
-- Stone Taupe: `#6E5F54` (Secondary technical copy)
+- Maharani Maroon: `#7A2331` (Primary royal accent, CTA buttons)
+- Gargi Gold: `#B88E18` (Ornamental borders, certifications, crests)
+- Ivory Silk: `#FBF6EE` (Primary atelier background)
+- Warm Sand: `#F2E8D8` (Secondary section background)
+- Ink Brown: `#231812` (High-contrast typography, WCAG AAA compliant)
+- Stone Taupe: `#5C5043` (Secondary technical copy)
 
-Typography:
-- Script Section Headings: Alex Brush (Fluid calligraphy matching the brand signature)
-- Headlines (H1 / H2 / H3): Cormorant Garamond (Editorial luxury display serif)
-- Subtitles & Epigraphs: Cormorant Garamond (Upright literary serif)
-- Navigation, CTAs & Buttons: Tenor Sans (Wide-tracked high-fashion Roman caps)
-- Body Copy & Metadata: Outfit (Clean geometric sans-serif)
+Typography Hierarchy:
+- Headlines & Section Headings (H1 / H2): Cormorant Garamond & Playfair Display in Authoritative Bold (700)
+- Section Subtitles & Epigraphs: Cormorant Garamond (Upright literary serif)
+- Navigation Links, CTAs & Action Buttons: Plus Jakarta Sans (Crisp, modern luxury sans with tight tracking)
+- Product Titles & Pricing: Plus Jakarta Sans (Large, bold, non-curvy sans for immediate legibility)
+- Body Copy, Specs & Metadata: Outfit (Clean geometric sans-serif)
 - For complete desktop and mobile specifications across every section, see [TYPOGRAPHY.md](file:///c:/Users/shaws/ANGA9/HouseOfGargi/TYPOGRAPHY.md).
 
 ---

@@ -19,7 +19,7 @@
   /* Typography (see TYPOGRAPHY.md) */
   --font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
   --font-subtitle: 'Cormorant Garamond', Georgia, serif;
-  --font-nav: 'Tenor Sans', 'Marcellus', sans-serif;
+  --font-nav: 'Plus Jakarta Sans', 'Outfit', -apple-system, sans-serif;
   --font-body: 'Outfit', 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
   --font-script: 'Alex Brush', 'Italianno', cursive;
 
@@ -130,7 +130,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 
 /* Bold Serif section titles (matching SS 4 classic style in bold) */
 .section-heading-bold {
-  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
   font-weight: 700;
   font-size: clamp(32px, 4vw, 44px);
   line-height: 1.2;
@@ -290,20 +290,21 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   padding: 16px 0 0 0;
 }
 .product-card__name {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 21px;
+  font-family: 'Plus Jakarta Sans', 'Outfit', -apple-system, sans-serif;
+  font-size: 19px;
   font-weight: 700;
   color: var(--ink-brown);
   margin-bottom: 6px;
   line-height: 1.35;
+  letter-spacing: -0.01em;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 .product-card__artisan {
-  font-family: var(--font-body);
-  font-size: 15.5px;
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
   color: #42352B;
   font-style: normal;
   font-weight: 500;
@@ -316,7 +317,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   color: var(--stone-taupe);
 }
 .product-card__price {
-  font-family: var(--font-body);
+  font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
   font-weight: 700;
   font-size: 20px;
   color: var(--maharani-maroon);
@@ -536,17 +537,17 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   gap: 24px;
 }
 .navbar__links a {
-  font-family: 'Plus Jakarta Sans', 'Outfit', -apple-system, sans-serif;
-  font-size: 14px;
+  font-family: var(--font-nav);
+  font-size: 13.5px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--ink-brown);
   position: relative;
   display: inline-flex;
   align-items: center;
   line-height: 1;
-  padding: 6px 0;
+  padding: 6px 2px;
 }
 .navbar--hero .navbar__links a { color: var(--pure-white); }
 .navbar--scrolled .navbar__links a { color: var(--ink-brown); }
@@ -566,16 +567,16 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 .navbar__icons {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 .navbar__icons button {
   background: none;
   border: none;
   color: var(--ink-brown);
-  padding: 6px;
+  padding: 4px;
   transition: color 300ms;
-  min-width: 36px;
-  min-height: 36px;
+  min-width: 34px;
+  min-height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2689,7 +2690,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   }
 
   .product-card__name {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 700;
   }
   .product-card__artisan {
