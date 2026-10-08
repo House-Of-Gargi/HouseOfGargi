@@ -34,11 +34,11 @@ export default function HomePage() {
       <HeroBanner />
 
       {/* ═══════ 2. SHOP BY CATEGORY ═══════ */}
-      <section className="section section--sand">
+      <section className="section section--ivory">
         <div className="container">
           <ScrollReveal>
             <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-              <h2>Shop by Collection</h2>
+              <h2 className="section-title--script">Shop by Collection</h2>
               <p className="subtitle-italic" style={{ color: 'var(--stone-taupe)', marginTop: '12px' }}>
                 Explore our curated lines of traditional wear
               </p>
@@ -68,7 +68,7 @@ export default function HomePage() {
         <div className="container">
           <ScrollReveal>
             <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-              <h2>Featured Curations</h2>
+              <h2 className="section-title--script">Featured Curations</h2>
               <p className="subtitle-italic" style={{ color: 'var(--stone-taupe)', marginTop: '12px' }}>
                 Our most loved pieces, selected for you
               </p>

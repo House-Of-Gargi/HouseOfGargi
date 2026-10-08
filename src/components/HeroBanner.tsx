@@ -173,11 +173,6 @@ export default function HeroBanner() {
                 animation: isActive ? 'heroTextFadeIn 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards' : 'none',
               }}
             >
-              {/* Sanskrit Lipi (Prominent Devanagari Script - Desktop Only) */}
-              <div className="hero__sanskrit-lipi">
-                {slide.sanskritLipi}
-              </div>
-
               {/* Main Headline */}
               <h1 className="hero__tagline">
                 {slide.tagline}
