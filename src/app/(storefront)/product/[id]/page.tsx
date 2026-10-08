@@ -118,25 +118,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               }}>
                 {categoryName} &bull; {product.region}
               </div>
-              {artisan && (
-                <Link
-                  href={`/artisan/${artisan.id}`}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '5px',
-                    fontFamily: 'var(--font-nav)',
-                    fontSize: '11px',
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    fontWeight: 700,
-                    color: 'var(--gargi-gold)',
-                    textDecoration: 'none',
-                  }}
-                >
-                  <span>✦ Verified Artisan Guild</span>
-                </Link>
-              )}
             </div>
 
             {/* Title */}
@@ -227,95 +208,24 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               </div>
             </div>
 
-            {/* Master Artisan Provenance Trigger Card */}
+            {/* Artisan Attribution on Same Background */}
             {artisan && (
-              <Link 
-                href={`/artisan/${artisan.id}`}
-                className="pdp-artisan-trigger-card"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: '16px',
-                  padding: '16px 20px',
-                  background: '#FFFFFF',
-                  border: '1px solid rgba(201, 162, 39, 0.35)',
-                  borderRadius: '8px',
-                  marginBottom: '26px',
-                  textDecoration: 'none',
-                  boxShadow: '0 2px 10px rgba(43, 31, 24, 0.04)',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flex: 1 }}>
-                  <div style={{
-                    width: '46px',
-                    height: '46px',
-                    borderRadius: '50%',
-                    overflow: 'hidden',
-                    border: '1.5px solid var(--gargi-gold)',
-                    flexShrink: 0,
-                    background: 'var(--ivory-silk)',
-                  }}>
-                    <img 
-                      src={artisan.image} 
-                      alt={artisan.name} 
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                    />
-                  </div>
-                  <div>
-                    <div style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      fontFamily: 'var(--font-nav)',
-                      fontSize: '11px',
-                      letterSpacing: '0.12em',
-                      textTransform: 'uppercase',
-                      color: 'var(--maharani-maroon)',
-                      fontWeight: 700,
-                    }}>
-                      <span>✦ Master Artisan Provenance</span>
-                    </div>
-                    <div style={{
-                      fontFamily: 'var(--font-serif)',
-                      fontSize: '16.5px',
-                      fontWeight: 600,
-                      color: 'var(--ink-brown)',
-                      margin: '2px 0',
-                    }}>
-                      {artisan.name}
-                    </div>
-                    <div style={{
-                      fontSize: '13px',
-                      color: 'var(--stone-taupe)',
-                      lineHeight: 1.4,
-                    }}>
-                      {product.artisanNote} &bull; <span style={{ color: 'var(--ink-brown)', fontWeight: 600 }}>{artisan.lineage}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  fontFamily: 'var(--font-nav)',
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  color: 'var(--maharani-maroon)',
-                  letterSpacing: '0.04em',
-                  whiteSpace: 'nowrap',
-                  flexShrink: 0,
-                  background: 'rgba(125, 26, 39, 0.06)',
-                  padding: '8px 14px',
-                  borderRadius: '4px',
-                  border: '1px solid rgba(125, 26, 39, 0.15)',
-                }}>
-                  <span>Meet Artisan</span>
-                  <ArrowRight size={13} />
-                </div>
-              </Link>
+              <div style={{ marginBottom: '22px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '15px' }}>
+                <span style={{ fontFamily: 'var(--font-nav)', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--stone-taupe)', fontWeight: 600 }}>
+                  Artisan:
+                </span>
+                <Link 
+                  href={`/artisan/${artisan.id}`} 
+                  style={{ 
+                    fontWeight: 600, 
+                    color: 'var(--ink-brown)', 
+                    textDecoration: 'underline',
+                    textUnderlineOffset: '3px'
+                  }}
+                >
+                  {artisan.name}
+                </Link>
+              </div>
             )}
 
             {/* Size Selector (if applicable) */}

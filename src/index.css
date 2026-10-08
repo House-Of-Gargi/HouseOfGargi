@@ -128,14 +128,14 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   font-weight: 500;
 }
 
-/* Script section titles (matches logo calligraphy) */
-.section-title--script {
-  font-family: var(--font-script);
-  font-weight: 400;
-  font-size: clamp(42px, 5.5vw, 64px);
-  line-height: 1.1;
-  letter-spacing: 0;
-  color: var(--maharani-maroon);
+/* Bold Serif section titles (matching SS 4 classic style in bold) */
+.section-heading-bold {
+  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(32px, 4vw, 44px);
+  line-height: 1.2;
+  color: var(--ink-brown);
+  letter-spacing: -0.01em;
 }
 
 .subtitle-italic {
@@ -290,9 +290,9 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   padding: 16px 0 0 0;
 }
 .product-card__name {
-  font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 500;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 21px;
+  font-weight: 700;
   color: var(--ink-brown);
   margin-bottom: 6px;
   line-height: 1.35;
@@ -302,11 +302,13 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   overflow: hidden;
 }
 .product-card__artisan {
-  font-size: 14.5px;
-  color: var(--stone-taupe);
+  font-family: var(--font-body);
+  font-size: 15.5px;
+  color: #42352B;
   font-style: normal;
   font-weight: 500;
   margin-bottom: 8px;
+  line-height: 1.45;
 }
 .caption {
   font-size: 14.5px;
@@ -316,7 +318,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 .product-card__price {
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 18px;
+  font-size: 20px;
   color: var(--maharani-maroon);
 }
 .product-card__wishlist {
@@ -531,12 +533,13 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 .navbar__links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 24px;
 }
 .navbar__links a {
-  font-family: var(--font-nav);
-  font-size: 16px;
-  letter-spacing: 0.18em;
+  font-family: 'Plus Jakarta Sans', 'Outfit', -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-brown);
   position: relative;
@@ -563,16 +566,16 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 .navbar__icons {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 8px;
 }
 .navbar__icons button {
   background: none;
   border: none;
   color: var(--ink-brown);
-  padding: 4px;
+  padding: 6px;
   transition: color 300ms;
-  min-width: 44px;
-  min-height: 44px;
+  min-width: 36px;
+  min-height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2686,13 +2689,16 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   }
 
   .product-card__name {
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 700;
   }
   .product-card__artisan {
-    font-size: 12.5px;
+    font-size: 14px;
+    color: #42352B;
   }
   .product-card__price {
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 700;
   }
 
   .product-grid, .related-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
