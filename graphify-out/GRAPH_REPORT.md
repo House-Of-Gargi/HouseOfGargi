@@ -1,6 +1,6 @@
 # House of Gargi — Knowledge Graph Architecture Report
 
-**Generated on:** Thu, 08 Oct 2026 05:46:13 GMT  
+**Generated on:** Thu, 08 Oct 2026 05:49:43 GMT  
 **Repository:** `House-Of-Gargi/HouseOfGargi`  
 **Total Entities (Nodes):** 80  
 **Total Relationships (Edges):** 108  
@@ -76,7 +76,7 @@ God nodes represent the foundational modules of the application that the majorit
 
 ### Design System & Styles (3 files)
 - **`src/account.css`** (497 lines) — *Module account.css in Design System & Styles* [In: 0, Out: 0]
-- **`src/index.css`** (3416 lines) — *Module index.css in Design System & Styles* [In: 0, Out: 0]
+- **`src/index.css`** (3413 lines) — *Module index.css in Design System & Styles* [In: 0, Out: 0]
 - **`src/seller.css`** (686 lines) — *Module seller.css in Design System & Styles* [In: 0, Out: 0]
 
 
