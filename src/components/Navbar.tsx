@@ -64,74 +64,80 @@ export default function Navbar() {
     <>
       <nav className={cls}>
         <div className="navbar__inner">
-          <div className="navbar__left">
-            <button
-              type="button"
-              className="navbar__mobile-toggle"
-              onClick={() => setMobileOpen(true)}
-              aria-label="Menu"
-            >
-              <MenuIcon size={26} />
-            </button>
-            <Link href="/" className="navbar__logo" aria-label="House of Gargi">
-              <img
-                src="/logo-images/new-white-logo.png"
-                alt="House of Gargi"
-                className="navbar__logo-img navbar__logo-img--white"
-              />
-              <img
-                src="/logo-images/new-logo.png"
-                alt="House of Gargi"
-                className="navbar__logo-img navbar__logo-img--dark"
-              />
-            </Link>
+          {/* Top Line: Brand Logo on Left, Actions & Login on Right */}
+          <div className="navbar__top-row">
+            <div className="navbar__left">
+              <button
+                type="button"
+                className="navbar__mobile-toggle"
+                onClick={() => setMobileOpen(true)}
+                aria-label="Menu"
+              >
+                <MenuIcon size={26} />
+              </button>
+              <Link href="/" className="navbar__logo" aria-label="House of Gargi">
+                <img
+                  src="/logo-images/new-white-logo.png"
+                  alt="House of Gargi"
+                  className="navbar__logo-img navbar__logo-img--white"
+                />
+                <img
+                  src="/logo-images/new-logo.png"
+                  alt="House of Gargi"
+                  className="navbar__logo-img navbar__logo-img--dark"
+                />
+              </Link>
+            </div>
+
+            <div className="navbar__icons">
+              <button 
+                type="button" 
+                className="navbar__icon-btn navbar__icon-btn--desktop-only"
+                aria-label="Search" 
+                title="Search"
+                onClick={() => router.push('/shop')}
+              >
+                <SearchIcon size={23} />
+              </button>
+              <button 
+                type="button" 
+                className="navbar__login-pill-btn navbar__login-pill-btn--desktop-only"
+                onClick={handleUserClick}
+                aria-label={isLoggedIn ? 'Account' : 'Login'}
+              >
+                {mounted && isLoggedIn ? 'Account' : 'Login'}
+              </button>
+              <button 
+                type="button" 
+                className="navbar__icon-btn"
+                aria-label="Cart" 
+                title="Cart" 
+                onClick={() => {
+                  if (!isLoggedIn) {
+                    openLoginModal('/cart');
+                  } else {
+                    router.push('/cart');
+                  }
+                }}
+                style={{ position: 'relative' }}
+              >
+                <CartIcon size={23} />
+                {mounted && itemCount > 0 && (
+                  <span className="navbar__badge">{itemCount}</span>
+                )}
+              </button>
+            </div>
           </div>
 
-          <div className="navbar__links">
-            <Link href="/category/sarees">Sarees</Link>
-            <Link href="/category/lehengas">Lehengas</Link>
-            <Link href="/category/kurta-sets">Kurta Sets</Link>
-            <Link href="/category/accessories">Accessories</Link>
-            <Link href="/bespoke">Bespoke</Link>
-          </div>
-
-          <div className="navbar__icons">
-            <button 
-              type="button" 
-              className="navbar__icon-btn navbar__icon-btn--desktop-only"
-              aria-label="Search" 
-              title="Search"
-              onClick={() => router.push('/shop')}
-            >
-              <SearchIcon size={23} />
-            </button>
-            <button 
-              type="button" 
-              className="navbar__login-pill-btn navbar__login-pill-btn--desktop-only"
-              onClick={handleUserClick}
-              aria-label={isLoggedIn ? 'Account' : 'Login'}
-            >
-              {mounted && isLoggedIn ? 'Account' : 'Login'}
-            </button>
-            <button 
-              type="button" 
-              className="navbar__icon-btn"
-              aria-label="Cart" 
-              title="Cart" 
-              onClick={() => {
-                if (!isLoggedIn) {
-                  openLoginModal('/cart');
-                } else {
-                  router.push('/cart');
-                }
-              }}
-              style={{ position: 'relative' }}
-            >
-              <CartIcon size={23} />
-              {mounted && itemCount > 0 && (
-                <span className="navbar__badge">{itemCount}</span>
-              )}
-            </button>
+          {/* Second Line: Sub-bar with Categories (Smooth fade away on scroll) */}
+          <div className="navbar__sub-row">
+            <div className="navbar__links">
+              <Link href="/category/sarees">Sarees</Link>
+              <Link href="/category/lehengas">Lehengas</Link>
+              <Link href="/category/kurta-sets">Kurta Sets</Link>
+              <Link href="/category/accessories">Accessories</Link>
+              <Link href="/bespoke">Bespoke</Link>
+            </div>
           </div>
         </div>
       </nav>
