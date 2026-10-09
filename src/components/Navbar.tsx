@@ -180,35 +180,22 @@ export default function Navbar() {
           </button>
         </div>
         <div className="mobile-drawer__links">
-          <Link href="/shop" className="nav-label" onClick={() => setMobileOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <Link href="/shop" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>
             <SearchIcon size={18} /> Search Collections
           </Link>
           <button 
             type="button" 
-            className="nav-label" 
-            onClick={() => { setMobileOpen(false); handleUserClick(); }} 
-            style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '10px', 
-              background: 'none', 
-              border: 'none', 
-              cursor: 'pointer', 
-              textAlign: 'left',
-              padding: '24px 0',
-              borderBottom: '1px solid var(--soft-gold-line)',
-              color: 'var(--ink-brown)',
-              fontSize: '16px'
-            }}
+            className="mobile-drawer__link" 
+            onClick={() => { setMobileOpen(false); handleUserClick(); }}
           >
             <UserIcon size={18} /> {isLoggedIn ? 'My Account' : 'Sign In / Register'}
           </button>
-          <Link href="/category/sarees" className="nav-label" onClick={() => setMobileOpen(false)}>Sarees</Link>
-          <Link href="/category/lehengas" className="nav-label" onClick={() => setMobileOpen(false)}>Lehengas</Link>
-          <Link href="/category/kurta-sets" className="nav-label" onClick={() => setMobileOpen(false)}>Kurta Sets</Link>
-          <Link href="/category/accessories" className="nav-label" onClick={() => setMobileOpen(false)}>Accessories</Link>
-          <Link href="/bespoke" className="nav-label" onClick={() => setMobileOpen(false)}>Bespoke Atelier</Link>
-          <Link href="/shop" className="nav-label" onClick={() => setMobileOpen(false)}>All Masterpieces</Link>
+          <Link href="/category/sarees" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>Sarees</Link>
+          <Link href="/category/lehengas" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>Lehengas</Link>
+          <Link href="/category/kurta-sets" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>Kurta Sets</Link>
+          <Link href="/category/accessories" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>Accessories</Link>
+          <Link href="/bespoke" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>Bespoke Atelier</Link>
+          <Link href="/shop" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>All Masterpieces</Link>
         </div>
       </div>
     </>
