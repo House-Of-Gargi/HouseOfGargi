@@ -101,7 +101,7 @@ export default function Navbar() {
 
             {/* Center: Search Placeholder Box */}
             <form onSubmit={handleSearchSubmit} className="navbar__search-box" role="search">
-              <SearchIcon size={17} />
+              <SearchIcon size={20} />
               <input
                 type="text"
                 value={searchQuery}
@@ -112,9 +112,9 @@ export default function Navbar() {
               />
             </form>
 
-            {/* Right: Auth Action Pills and Shopping Bag */}
+            {/* Right: Auth Action Pills (Bag is only shown after login) */}
             <div className="navbar__icons">
-              {mounted && !isLoggedIn ? (
+              {!isLoggedIn ? (
                 <>
                   <button 
                     type="button" 
@@ -142,7 +142,7 @@ export default function Navbar() {
                     aria-label="Wishlist"
                     title="Wishlist"
                   >
-                    <WishlistIcon size={17} />
+                    <WishlistIcon size={18} />
                     <span>Wishlist</span>
                     {mounted && wishlistCount > 0 && (
                       <span className="navbar__badge">{wishlistCount}</span>
@@ -156,28 +156,21 @@ export default function Navbar() {
                   >
                     Account
                   </button>
+                  <button 
+                    type="button" 
+                    className="navbar__icon-btn"
+                    aria-label="Cart" 
+                    title="Cart" 
+                    onClick={() => router.push('/cart')}
+                    style={{ position: 'relative' }}
+                  >
+                    <CartIcon size={23} />
+                    {mounted && itemCount > 0 && (
+                      <span className="navbar__badge">{itemCount}</span>
+                    )}
+                  </button>
                 </>
               )}
-
-              <button 
-                type="button" 
-                className="navbar__icon-btn"
-                aria-label="Cart" 
-                title="Cart" 
-                onClick={() => {
-                  if (!isLoggedIn) {
-                    openLoginModal('/cart');
-                  } else {
-                    router.push('/cart');
-                  }
-                }}
-                style={{ position: 'relative' }}
-              >
-                <CartIcon size={23} />
-                {mounted && itemCount > 0 && (
-                  <span className="navbar__badge">{itemCount}</span>
-                )}
-              </button>
             </div>
           </div>
 
