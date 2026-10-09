@@ -3,9 +3,10 @@
  * Facilitates seamless decoupled communication between Next.js frontend and Fastify API gateway
  */
 
-const API_BASE_URL = typeof window !== 'undefined'
-  ? (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000')
-  : (process.env.BACKEND_INTERNAL_URL || 'http://localhost:5000');
+const API_BASE_URL = 
+  process.env.NEXT_PUBLIC_API_URL ||
+  process.env.BACKEND_INTERNAL_URL ||
+  'https://houseofgargi-backend.onrender.com';
 
 interface ApiResponse<T = any> {
   success: boolean;
@@ -21,10 +22,16 @@ async function request<T = any>(endpoint: string, options: RequestInit = {}): Pr
   };
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
     const res = await fetch(url, {
       ...options,
       headers,
+      signal: options.signal || controller.signal,
+      next: { revalidate: 60 },
     });
+    clearTimeout(timeoutId);
 
     const data = await res.json();
     if (!res.ok) {
@@ -32,7 +39,10 @@ async function request<T = any>(endpoint: string, options: RequestInit = {}): Pr
     }
     return data;
   } catch (err: any) {
-    console.error(`[ApiClient Error] ${endpoint}:`, err.message);
+    // Only log client-side or when debug is enabled
+    if (typeof window !== 'undefined' || process.env.DEBUG_API) {
+      console.warn(`[ApiClient Info] ${endpoint}: ${err.message}`);
+    }
     throw err;
   }
 }

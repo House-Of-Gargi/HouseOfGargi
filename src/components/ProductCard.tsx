@@ -72,7 +72,7 @@ export default function ProductCard({ product, style }: ProductCardProps) {
       <Link href={`/product/${currentProduct.id}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', height: '100%' }}>
         <div className="product-card__image-wrap">
           <img 
-            src={currentProduct.images[0]} 
+            src={(currentProduct.images && currentProduct.images[0]) || (currentProduct as any).image_url || (currentProduct as any).image || '/images/category-sarees.png'} 
             alt={currentProduct.name} 
             loading="lazy" 
             decoding="async"
@@ -84,9 +84,9 @@ export default function ProductCard({ product, style }: ProductCardProps) {
           <div className="product-card__name">{currentProduct.name}</div>
           <div className="product-card__artisan">
             <span style={{ color: 'var(--gargi-gold)', marginRight: '6px' }}>✦</span>
-            {currentProduct.artisanNote}
+            {currentProduct.artisanNote || (currentProduct as any).artisan_note || 'Crafted by master artisans'}
           </div>
-          <div className="product-card__price" style={{ marginTop: 'auto' }}>{formatPrice(currentProduct.price)}</div>
+          <div className="product-card__price" style={{ marginTop: 'auto' }}>{formatPrice(currentProduct.price || (currentProduct as any).price_in_rupees || 0)}</div>
         </div>
       </Link>
     </div>

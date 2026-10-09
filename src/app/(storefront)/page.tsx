@@ -34,7 +34,25 @@ export default async function HomePage() {
   try {
     const res = await apiClient.products.list();
     if (res && res.products && Array.isArray(res.products) && res.products.length > 0) {
-      newArrivals = res.products.slice(0, 12);
+      newArrivals = res.products.slice(0, 12).map((item: any) => {
+        const matched = products.find(p => p.id === item.id || p.name.toLowerCase() === item.name.toLowerCase());
+        if (matched) return matched;
+        return {
+          id: String(item.id),
+          category: item.category || 'sarees',
+          name: item.name,
+          price: item.price || item.price_in_rupees || 0,
+          artisanNote: item.artisanNote || item.artisan_note || 'Crafted by master weavers in India',
+          description: item.description || `${item.name} handcrafted with heritage artisanal techniques.`,
+          fabric: item.fabric || 'Pure Silk',
+          technique: item.technique || 'Handloom Weave',
+          region: item.region || 'India',
+          occasion: item.occasion || 'Bridal & Festive',
+          sizes: item.sizes || ['Free Size'],
+          care: item.care || 'Dry clean only',
+          images: item.images && Array.isArray(item.images) ? item.images : [item.image_url || item.image || '/images/category-sarees.png'],
+        };
+      });
     }
   } catch (err) {
     // Graceful fallback to static products
