@@ -82,10 +82,10 @@ export default function HeroBanner() {
     setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
   }, []);
 
-  // Auto-advance every 7 seconds when not hovered
+  // Auto-advance every 4 seconds when not hovered
   useEffect(() => {
     if (isPaused) return;
-    const interval = setInterval(nextSlide, 7000);
+    const interval = setInterval(nextSlide, 4000);
     return () => clearInterval(interval);
   }, [isPaused, nextSlide]);
 
