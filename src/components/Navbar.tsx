@@ -176,6 +176,7 @@ export default function Navbar() {
 
           {/* Second Line: Sub-bar with Categories (Smooth fade away on scroll) */}
           <div className="navbar__sub-row">
+            <div className="navbar__sub-spacer-left" aria-hidden="true" />
             <div className="navbar__links">
               <Link href="/category/sarees">Sarees</Link>
               <Link href="/category/lehengas">Lehengas</Link>
@@ -183,6 +184,7 @@ export default function Navbar() {
               <Link href="/category/accessories">Accessories</Link>
               <Link href="/bespoke">Bespoke</Link>
             </div>
+            <div className="navbar__sub-spacer-right" aria-hidden="true" />
           </div>
         </div>
       </nav>
