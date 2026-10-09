@@ -14,6 +14,16 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      router.push('/shop');
+    }
+  };
 
   const pathname = usePathname();
   const router = useRouter();
@@ -64,7 +74,7 @@ export default function Navbar() {
     <>
       <nav className={cls}>
         <div className="navbar__inner">
-          {/* Top Line: Brand Logo on Left, Actions & Login on Right */}
+          {/* Top Line: Brand Logo on Left, Search Box in Middle, Actions on Right */}
           <div className="navbar__top-row">
             <div className="navbar__left">
               <button
@@ -89,24 +99,66 @@ export default function Navbar() {
               </Link>
             </div>
 
+            {/* Center: Search Placeholder Box */}
+            <form onSubmit={handleSearchSubmit} className="navbar__search-box" role="search">
+              <SearchIcon size={17} />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="What are you looking for..."
+                className="navbar__search-input"
+                aria-label="What are you looking for..."
+              />
+            </form>
+
+            {/* Right: Auth Action Pills and Shopping Bag */}
             <div className="navbar__icons">
-              <button 
-                type="button" 
-                className="navbar__icon-btn navbar__icon-btn--desktop-only"
-                aria-label="Search" 
-                title="Search"
-                onClick={() => router.push('/shop')}
-              >
-                <SearchIcon size={23} />
-              </button>
-              <button 
-                type="button" 
-                className="navbar__login-pill-btn navbar__login-pill-btn--desktop-only"
-                onClick={handleUserClick}
-                aria-label={isLoggedIn ? 'Account' : 'Login'}
-              >
-                {mounted && isLoggedIn ? 'Account' : 'Login'}
-              </button>
+              {mounted && !isLoggedIn ? (
+                <>
+                  <button 
+                    type="button" 
+                    className="navbar__login-pill-btn navbar__login-pill-btn--desktop-only"
+                    onClick={() => openLoginModal()}
+                    aria-label="Login"
+                  >
+                    Login
+                  </button>
+                  <button 
+                    type="button" 
+                    className="navbar__join-pill-btn navbar__join-pill-btn--desktop-only"
+                    onClick={() => openLoginModal()}
+                    aria-label="Join Us"
+                  >
+                    Join Us
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button 
+                    type="button" 
+                    className="navbar__wishlist-pill-btn navbar__wishlist-pill-btn--desktop-only"
+                    onClick={() => router.push('/wishlist')}
+                    aria-label="Wishlist"
+                    title="Wishlist"
+                  >
+                    <WishlistIcon size={17} />
+                    <span>Wishlist</span>
+                    {mounted && wishlistCount > 0 && (
+                      <span className="navbar__badge">{wishlistCount}</span>
+                    )}
+                  </button>
+                  <button 
+                    type="button" 
+                    className="navbar__login-pill-btn navbar__login-pill-btn--desktop-only"
+                    onClick={handleUserClick}
+                    aria-label="Account"
+                  >
+                    Account
+                  </button>
+                </>
+              )}
+
               <button 
                 type="button" 
                 className="navbar__icon-btn"
