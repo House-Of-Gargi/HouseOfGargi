@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import CustomerLoginModal from './CustomerLoginModal';
-import { SearchIcon, UserIcon, WishlistIcon, CartIcon, MenuIcon, CloseIcon } from './Icons';
+import { SearchIcon, MicIcon, UserIcon, WishlistIcon, CartIcon, MenuIcon, CloseIcon } from './Icons';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
@@ -15,6 +15,56 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isListening, setIsListening] = useState(false);
+
+  const handleVoiceSearch = () => {
+    if (typeof window === 'undefined') return;
+    const SpeechRecognition =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert('Voice search is not supported on this browser. Please try Chrome or Edge.');
+      return;
+    }
+
+    if (isListening) {
+      setIsListening(false);
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-IN';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.onstart = () => {
+        setIsListening(true);
+      };
+
+      recognition.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        if (transcript) {
+          setSearchQuery(transcript);
+          setIsListening(false);
+          router.push(`/shop?search=${encodeURIComponent(transcript.trim())}`);
+        }
+      };
+
+      recognition.onerror = () => {
+        setIsListening(false);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognition.start();
+    } catch (err) {
+      console.error('Speech recognition error:', err);
+      setIsListening(false);
+    }
+  };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -100,16 +150,25 @@ export default function Navbar() {
             </div>
 
             {/* Center: Search Placeholder Box */}
-            <form onSubmit={handleSearchSubmit} className="navbar__search-box" role="search">
-              <SearchIcon size={20} />
+            <form onSubmit={handleSearchSubmit} className={`navbar__search-box ${isListening ? 'navbar__search-box--listening' : ''}`} role="search">
+              <SearchIcon size={22} />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="What are you looking for..."
+                placeholder={isListening ? "Listening... Speak now" : "What are you looking for..."}
                 className="navbar__search-input"
                 aria-label="What are you looking for..."
               />
+              <button
+                type="button"
+                onClick={handleVoiceSearch}
+                className={`navbar__mic-btn ${isListening ? 'navbar__mic-btn--active' : ''}`}
+                aria-label={isListening ? "Stop voice search" : "Voice search"}
+                title={isListening ? "Listening... Speak now" : "Search by voice"}
+              >
+                <MicIcon size={21} />
+              </button>
             </form>
 
             {/* Right: Auth Action Pills (Bag is only shown after login) */}

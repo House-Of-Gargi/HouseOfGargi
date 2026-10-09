@@ -200,7 +200,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   letter-spacing: 0.16em;
   text-transform: uppercase;
   border: 1.5px solid transparent;
-  border-radius: 1px;
+  border-radius: 5px;
   transition: all 300ms ease;
   white-space: normal;
   text-align: center;
@@ -3807,7 +3807,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 12px;
+  margin-top: 14px;
   max-height: 48px;
   opacity: 1;
   transform: translateY(0);
@@ -3859,17 +3859,182 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   color: var(--ink-brown);
 }
 
-/* 2. Unified Button Styling Across Navbar & Hero Banner (Pill Shape, No Shadows, Royal Cohesion) */
+/* 2. Top Bar Enriched & Bigger Sizing: Search Placeholder Box with Voice Search */
+.navbar__search-box {
+  flex: 1;
+  max-width: 590px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 22px;
+  min-height: 48px;
+  border-radius: 9999px;
+  margin: 0 24px;
+  transition: all 250ms ease;
+  box-shadow: none !important;
+}
 
-/* Hero Banner Action Buttons - Unified to match luxury pill shape & colors */
+.navbar__search-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: 15.5px;
+  letter-spacing: 0.03em;
+}
+
+.navbar__mic-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  opacity: 0.75;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 200ms ease;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.navbar__mic-btn:hover {
+  opacity: 1;
+  color: #7A2331;
+  transform: scale(1.12);
+}
+
+.navbar--hero .navbar__mic-btn:hover {
+  color: #FFFFFF;
+}
+
+.navbar--scrolled .navbar__mic-btn:hover {
+  color: #7A2331;
+}
+
+.navbar__mic-btn--active {
+  opacity: 1 !important;
+  color: #E63946 !important;
+  animation: micPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes micPulse {
+  0% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(230, 57, 70, 0.4)); }
+  50% { transform: scale(1.22); filter: drop-shadow(0 0 8px rgba(230, 57, 70, 0.8)); }
+  100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(230, 57, 70, 0.4)); }
+}
+
+.navbar__search-box--listening {
+  border-color: #E63946 !important;
+  box-shadow: 0 0 14px rgba(230, 57, 70, 0.28) !important;
+}
+
+/* 3. Softer Curves (9px border-radius) & Bigger Sizing for Top Nav Buttons */
+.navbar__icons .navbar__join-pill-btn,
+.navbar__join-pill-btn {
+  font-family: var(--font-nav) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 12px 28px !important;
+  min-height: 48px !important;
+  border-radius: 9px !important;
+  background: #7A2331 !important;
+  border: 1.5px solid #7A2331 !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  transition: all 250ms ease !important;
+  white-space: nowrap !important;
+}
+
+.navbar__icons .navbar__join-pill-btn:hover,
+.navbar__join-pill-btn:hover {
+  background: #5E1A25 !important;
+  border-color: #5E1A25 !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+.navbar__icons .navbar__login-pill-btn,
+.navbar__login-pill-btn {
+  font-family: var(--font-nav) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 12px 26px !important;
+  min-height: 48px !important;
+  border-radius: 9px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  transition: all 250ms ease !important;
+  white-space: nowrap !important;
+}
+
+.navbar--hero .navbar__login-pill-btn {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+.navbar--scrolled .navbar__login-pill-btn {
+  background: #FFFFFF !important;
+  border: 1.5px solid var(--soft-gold-line) !important;
+  color: #231812 !important;
+  box-shadow: none !important;
+}
+
+.navbar__icons .navbar__login-pill-btn:hover,
+.navbar__login-pill-btn:hover {
+  background: #FFFFFF !important;
+  color: #7A2331 !important;
+  border-color: #7A2331 !important;
+  box-shadow: none !important;
+}
+
+.navbar__icons .navbar__wishlist-pill-btn,
+.navbar__wishlist-pill-btn {
+  font-family: var(--font-nav) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 12px 24px !important;
+  min-height: 48px !important;
+  border-radius: 9px !important;
+  box-shadow: none !important;
+}
+
+.navbar__icons .navbar__wishlist-pill-btn:hover,
+.navbar__wishlist-pill-btn:hover {
+  background: #FFFFFF !important;
+  color: #7A2331 !important;
+  border-color: #7A2331 !important;
+  box-shadow: none !important;
+}
+
+/* 4. Hero Banner CTA Buttons with Matching 9px Softer Curve */
 .hero-primary-btn {
   font-family: var(--font-nav) !important;
   font-size: 14.5px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: 0.12em !important;
   text-transform: uppercase !important;
-  padding: 13px 32px !important;
-  border-radius: 9999px !important;
+  padding: 15px 34px !important;
+  border-radius: 9px !important;
   background: #7A2331 !important;
   border: 1.5px solid #7A2331 !important;
   color: #FFFFFF !important;
@@ -3895,11 +4060,11 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   font-family: var(--font-nav) !important;
   font-size: 14px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: 0.12em !important;
   text-transform: uppercase !important;
-  padding: 13px 30px !important;
-  border-radius: 9999px !important;
-  background: rgba(255, 255, 255, 0.15) !important;
+  padding: 15px 32px !important;
+  border-radius: 9px !important;
+  background: rgba(255, 255, 255, 0.12) !important;
   border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
   color: #FFFFFF !important;
   backdrop-filter: blur(8px) !important;
@@ -3915,92 +4080,14 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 }
 
 .hero-secondary-btn:hover {
-  background: #7A2331 !important;
+  background: #FFFFFF !important;
+  color: #7A2331 !important;
   border-color: #7A2331 !important;
-  color: #FFFFFF !important;
   transform: translateY(-2px);
   box-shadow: none !important;
 }
 
-/* Navbar Auth Pill Buttons - 15.5px typography, sleek pill shape, NO shadows */
-.navbar__icons .navbar__join-pill-btn,
-.navbar__join-pill-btn {
-  font-family: var(--font-nav) !important;
-  font-size: 15.5px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  padding: 10px 26px !important;
-  border-radius: 9999px !important;
-  background: #7A2331 !important;
-  border: 1.5px solid #7A2331 !important;
-  color: #FFFFFF !important;
-  box-shadow: none !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  line-height: 1 !important;
-  cursor: pointer !important;
-  transition: all 250ms ease !important;
-  white-space: nowrap !important;
-}
-
-.navbar__icons .navbar__join-pill-btn:hover,
-.navbar__join-pill-btn:hover {
-  background: #5E1A25 !important;
-  border-color: #5E1A25 !important;
-  color: #FFFFFF !important;
-  box-shadow: none !important;
-}
-
-.navbar__icons .navbar__login-pill-btn,
-.navbar__login-pill-btn {
-  font-family: var(--font-nav) !important;
-  font-size: 15.5px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  padding: 10px 24px !important;
-  border-radius: 9999px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  line-height: 1 !important;
-  cursor: pointer !important;
-  box-shadow: none !important;
-  transition: all 250ms ease !important;
-  white-space: nowrap !important;
-}
-
-.navbar--hero .navbar__login-pill-btn {
-  background: rgba(255, 255, 255, 0.15) !important;
-  border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
-  color: #FFFFFF !important;
-  box-shadow: none !important;
-}
-
-.navbar--scrolled .navbar__login-pill-btn {
-  background: #FFFFFF !important;
-  border: 1.5px solid var(--soft-gold-line) !important;
-  color: #231812 !important;
-  box-shadow: none !important;
-}
-
-.navbar__login-pill-btn:hover {
-  background: #7A2331 !important;
-  color: #FFFFFF !important;
-  border-color: #7A2331 !important;
-  box-shadow: none !important;
-}
-
-.navbar__icons .navbar__wishlist-pill-btn,
-.navbar__wishlist-pill-btn {
-  font-family: var(--font-nav) !important;
-  font-size: 15.5px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  padding: 10px 22px !important;
-  border-radius: 9999px !important;
-  box-shadow: none !important;
+/* Global .btn softening */
+.btn {
+  border-radius: 8px !important;
 }
