@@ -1,3 +1,4 @@
+import { apiClient } from '@/lib/apiClient';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import ScrollReveal from '@/components/ScrollReveal';
@@ -23,10 +24,24 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
   const featured = featuredProductIds
     .map(id => products.find(p => p.id === id))
     .filter((p): p is typeof products[0] => Boolean(p));
+
+  // Fetch 12 most recent products from Fastify backend (with resilient catalog fallback)
+  let newArrivals: typeof products = [];
+  try {
+    const res = await apiClient.products.list();
+    if (res && res.products && Array.isArray(res.products) && res.products.length > 0) {
+      newArrivals = res.products.slice(0, 12);
+    }
+  } catch (err) {
+    // Graceful fallback to static products
+  }
+  if (!newArrivals || newArrivals.length === 0) {
+    newArrivals = products.slice(0, 12);
+  }
 
   return (
     <>
@@ -84,6 +99,34 @@ export default function HomePage() {
                 <ProductCard product={product} />
               </ScrollReveal>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ 4. NEW ARRIVALS ═══════ */}
+      <section className="section section--ivory">
+        <div className="container">
+          <ScrollReveal>
+            <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+              <h2 className="section-heading-bold">
+                <span style={{ color: 'var(--ink-brown)' }}>New </span>Arrivals
+              </h2>
+              <p className="subtitle-italic" style={{ color: 'var(--stone-taupe)', marginTop: '12px' }}>
+                Freshly woven creations directly from master artisan looms
+              </p>
+            </div>
+          </ScrollReveal>
+          <div className="product-grid">
+            {newArrivals.map(product => (
+              <ScrollReveal key={product.id}>
+                <ProductCard product={product} />
+              </ScrollReveal>
+            ))}
+          </div>
+          <div style={{ textAlign: 'center', marginTop: '48px' }}>
+            <Link href="/shop" className="btn btn--outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+              View All Creations <ArrowRightIcon size={16} />
+            </Link>
           </div>
         </div>
       </section>

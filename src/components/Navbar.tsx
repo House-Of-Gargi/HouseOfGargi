@@ -107,31 +107,11 @@ export default function Navbar() {
             </button>
             <button 
               type="button" 
-              className="navbar__icon-btn navbar__icon-btn--desktop-only"
-              aria-label="Account" 
-              title="Account" 
+              className="navbar__login-pill-btn navbar__login-pill-btn--desktop-only"
               onClick={handleUserClick}
+              aria-label={isLoggedIn ? 'Account' : 'Login'}
             >
-              <UserIcon size={23} />
-            </button>
-            <button 
-              type="button" 
-              className="navbar__icon-btn"
-              aria-label="Wishlist" 
-              title="Wishlist" 
-              onClick={() => {
-                if (!isLoggedIn) {
-                  openLoginModal('/wishlist');
-                } else {
-                  router.push('/wishlist');
-                }
-              }}
-              style={{ position: 'relative' }}
-            >
-              <WishlistIcon size={23} />
-              {mounted && wishlistCount > 0 && (
-                <span className="navbar__badge">{wishlistCount}</span>
-              )}
+              {mounted && isLoggedIn ? 'Account' : 'Login'}
             </button>
             <button 
               type="button" 

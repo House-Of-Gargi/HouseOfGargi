@@ -78,9 +78,7 @@ export default function ProductCard({ product, style }: ProductCardProps) {
             decoding="async"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
-          <div className="product-card__quick-view">
-            <span>View Piece &rarr;</span>
-          </div>
+
         </div>
         <div className="product-card__body" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
           <div className="product-card__name">{currentProduct.name}</div>
