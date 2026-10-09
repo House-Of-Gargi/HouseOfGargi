@@ -183,14 +183,13 @@ export default function Navbar() {
                   >
                     Login
                   </button>
-                  <button 
-                    type="button" 
+                  <Link 
+                    href="/seller/login" 
                     className="navbar__join-pill-btn navbar__join-pill-btn--desktop-only"
-                    onClick={() => openLoginModal()}
-                    aria-label="Join Us"
+                    aria-label="Join Us - Artisan Portal"
                   >
                     Join Us
-                  </button>
+                  </Link>
                 </>
               ) : (
                 <>

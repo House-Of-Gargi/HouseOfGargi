@@ -4,7 +4,7 @@ import { useState, FormEvent, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabaseClient';
-import { ArrowRight, ArrowLeft, Phone, Loader2, Check } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Phone, Mail, Lock, Loader2, Check } from 'lucide-react';
 import '@/seller.css';
 
 function IndiaFlagIcon({ width = 24, height = 16 }: { width?: number; height?: number }) {
@@ -26,7 +26,6 @@ function IndiaFlagIcon({ width = 24, height = 16 }: { width?: number; height?: n
       <rect width="36" height="8" fill="#F97316" />
       <rect y="8" width="36" height="8" fill="#FFFFFF" />
       <rect y="16" width="36" height="8" fill="#16A34A" />
-      {/* Central Navy Chakra disc & ring */}
       <circle cx="18" cy="12" r="3.2" fill="none" stroke="#1E3A8A" strokeWidth="0.8" />
       <circle cx="18" cy="12" r="1.4" fill="#1E3A8A" />
     </svg>
@@ -34,15 +33,21 @@ function IndiaFlagIcon({ width = 24, height = 16 }: { width?: number; height?: n
 }
 
 export default function SellerLoginPage() {
-  const [phone, setPhone] = useState('');
+  const [authMode, setAuthMode] = useState<'phone' | 'email'>('phone');
+  const [phone, setPhone] = useState('+91 ');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [otpValues, setOtpValues] = useState<string[]>(['', '', '', '', '', '']);
   const [step, setStep] = useState<1 | 2>(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   const [verifiedPhone, setVerifiedPhone] = useState('');
   const [rememberMe, setRememberMe] = useState(true);
   const router = useRouter();
 
+  const phoneInputRef = useRef<HTMLInputElement | null>(null);
+  const emailInputRef = useRef<HTMLInputElement | null>(null);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
@@ -55,20 +60,60 @@ export default function SellerLoginPage() {
     checkCurrentSession();
   }, [router]);
 
-  const cleanPhoneNumber = (input: string) => {
-    const digits = input.replace(/\D/g, '');
-    if (digits.length === 10) return digits;
-    if (digits.length === 12 && digits.startsWith('91')) return digits.slice(2);
-    return digits;
+  // Extract raw 10 digits
+  const getCleanPhoneDigits = (raw: string) => {
+    const numbersOnly = raw.replace(/D/g, '');
+    if (numbersOnly.length === 10) return numbersOnly;
+    if (numbersOnly.length >= 12 && numbersOnly.startsWith('91')) return numbersOnly.slice(2, 12);
+    if (numbersOnly.length > 10) return numbersOnly.slice(-10);
+    return numbersOnly;
   };
 
-  const handleSendOtp = async (e: FormEvent) => {
+  const handlePhoneInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputVal = e.target.value;
+    const digits = inputVal.replace(/\D/g, '');
+    
+    // Always preserve +91 prefix
+    let cleanDigits = digits;
+    if (cleanDigits.startsWith('91')) {
+      cleanDigits = cleanDigits.slice(2);
+    }
+    cleanDigits = cleanDigits.slice(0, 10);
+
+    if (cleanDigits.length > 5) {
+      setPhone(`+91 ${cleanDigits.slice(0, 5)} ${cleanDigits.slice(5)}`);
+    } else if (cleanDigits.length > 0) {
+      setPhone(`+91 ${cleanDigits}`);
+    } else {
+      setPhone('+91 ');
+    }
+  };
+
+  const switchToPhone = () => {
+    setAuthMode('phone');
+    setPhone('+91 ');
+    setError('');
+    setTimeout(() => {
+      phoneInputRef.current?.focus();
+    }, 50);
+  };
+
+  const switchToEmail = () => {
+    setAuthMode('email');
+    setError('');
+    setTimeout(() => {
+      emailInputRef.current?.focus();
+    }, 50);
+  };
+
+  // 1. Phone OTP Dispatch
+  const handleSendPhoneOtp = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
-    const targetPhone = cleanPhoneNumber(phone);
+    const targetDigits = getCleanPhoneDigits(phone);
 
-    if (targetPhone.length < 10) {
-      setError('Please enter a valid 10-digit mobile number.');
+    if (targetDigits.length < 10) {
+      setError('Please enter your 10-digit mobile number.');
       return;
     }
 
@@ -76,35 +121,74 @@ export default function SellerLoginPage() {
 
     try {
       let { error: otpErr } = await supabase.auth.signInWithOtp({
-        phone: targetPhone,
+        phone: `+91${targetDigits}`,
       });
 
       if (otpErr && otpErr.message?.toLowerCase().includes('format')) {
         const intlRes = await supabase.auth.signInWithOtp({
-          phone: `+91${targetPhone}`,
+          phone: targetDigits,
         });
         otpErr = intlRes.error;
       }
 
       if (otpErr) throw otpErr;
 
-      setVerifiedPhone(targetPhone);
+      setVerifiedPhone(targetDigits);
       setStep(2);
-      // Focus first OTP box
       setTimeout(() => {
         otpInputRefs.current[0]?.focus();
       }, 100);
     } catch (err: any) {
-      setError(err.message || 'Failed to dispatch verification code. Please check your connection.');
+      setError(err.message || 'Unable to send OTP. Please check your phone number and try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  // 2. Email Sign In
+  const handleEmailSignIn = async (e: FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    if (!email.trim() || !email.includes('@')) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      if (password.trim()) {
+        const { data, error: signInErr } = await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password: password.trim(),
+        });
+
+        if (signInErr) throw signInErr;
+
+        if (data?.session) {
+          router.push('/seller');
+          return;
+        }
+      } else {
+        // Send OTP/Magic link to email if password is not provided
+        const { error: otpErr } = await supabase.auth.signInWithOtp({
+          email: email.trim(),
+        });
+        if (otpErr) throw otpErr;
+        setSuccessMsg('A login link has been sent to your email. Please check your inbox.');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Sign in failed. Please check your email and password.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // OTP Handling
   const handleOtpChange = (index: number, value: string) => {
     const sanitized = value.replace(/\D/g, '');
     
-    // Handle paste of multiple digits
     if (sanitized.length > 1) {
       const pastedChars = sanitized.slice(0, 6).split('');
       const newValues = [...otpValues];
@@ -121,7 +205,6 @@ export default function SellerLoginPage() {
     newValues[index] = sanitized;
     setOtpValues(newValues);
 
-    // Auto advance on input
     if (sanitized && index < 5) {
       otpInputRefs.current[index + 1]?.focus();
     }
@@ -136,11 +219,11 @@ export default function SellerLoginPage() {
   const handleVerifyOtp = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
-    const targetPhone = cleanPhoneNumber(verifiedPhone || phone);
+    const targetDigits = getCleanPhoneDigits(verifiedPhone || phone);
     const fullOtp = otpValues.join('');
 
     if (fullOtp.length < 6) {
-      setError('Please enter all 6 digits of the verification code.');
+      setError('Please enter all 6 digits of the OTP code.');
       return;
     }
 
@@ -148,19 +231,19 @@ export default function SellerLoginPage() {
 
     try {
       let { data, error: verifyErr } = await supabase.auth.verifyOtp({
-        phone: targetPhone,
+        phone: `+91${targetDigits}`,
         token: fullOtp,
         type: 'sms',
       });
 
       if (verifyErr && verifyErr.message?.toLowerCase().includes('invalid')) {
-        const intlRes = await supabase.auth.verifyOtp({
-          phone: `+91${targetPhone}`,
+        const fallbackRes = await supabase.auth.verifyOtp({
+          phone: targetDigits,
           token: fullOtp,
           type: 'sms',
         });
-        if (!intlRes.error) {
-          data = intlRes.data;
+        if (!fallbackRes.error) {
+          data = fallbackRes.data;
           verifyErr = null;
         }
       }
@@ -170,14 +253,16 @@ export default function SellerLoginPage() {
       if (data?.session) {
         router.push('/seller');
       } else {
-        setError('Verification succeeded, but session could not be established.');
+        setError('Verification succeeded, but could not start session.');
       }
     } catch (err: any) {
-      setError(err.message || 'The verification code entered is invalid or has expired.');
+      setError(err.message || 'The OTP code is invalid or has expired. Please request a new one.');
     } finally {
       setLoading(false);
     }
   };
+
+  const phoneDigits = getCleanPhoneDigits(phone);
 
   return (
     <div style={{
@@ -187,21 +272,22 @@ export default function SellerLoginPage() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundImage: `url('/images/atelier-lineart-bg.jpg')`,
+      backgroundImage: `url('/images/artisan-batik-card.jpg')`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
       backgroundColor: '#FBF6EE',
       fontFamily: 'var(--font-sans)',
       color: 'var(--ink-brown)',
-      padding: '2rem 1rem',
+      padding: '2.5rem 1rem',
       overflowX: 'hidden',
     }}>
-      {/* Subtle Warm Ivory Lightening Veil */}
+      {/* Background Soft Ivory Overlay */}
       <div style={{
         position: 'absolute',
         inset: 0,
-        backgroundColor: 'rgba(251, 246, 238, 0.45)',
+        backgroundColor: 'rgba(251, 246, 238, 0.88)',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
         pointerEvents: 'none',
         zIndex: 1,
       }} />
@@ -214,16 +300,15 @@ export default function SellerLoginPage() {
           max-width: 960px;
           display: flex;
           flex-direction: column;
-          gap: 0.9rem;
+          gap: 1rem;
           margin: auto;
         }
         .seller-card-container {
-          background: var(--pure-white);
-          border-radius: 16px;
-          border: 1.5px solid #111827;
-          box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.18), 0 10px 20px -10px rgba(0, 0, 0, 0.1);
+          background: #FFFFFF;
+          border-radius: 12px;
+          border: 1px solid var(--soft-gold-line);
+          box-shadow: 0 20px 48px -10px rgba(43, 31, 24, 0.12);
           width: 100%;
-          padding: 0;
           display: grid;
           grid-template-columns: 1fr;
           overflow: hidden;
@@ -240,11 +325,12 @@ export default function SellerLoginPage() {
           min-height: 380px;
           background: #FBF6EE;
           display: block;
+          position: relative;
         }
         @media (max-width: 767px) {
           .artisan-image-panel {
-            min-height: 240px;
-            max-height: 280px;
+            min-height: 220px;
+            max-height: 260px;
           }
         }
         .artisan-image-panel img {
@@ -254,14 +340,14 @@ export default function SellerLoginPage() {
           display: block;
         }
         .seller-form-panel {
-          padding: 2.25rem 2rem;
+          padding: 2.5rem 2rem;
           display: flex;
           flex-direction: column;
           justify-content: center;
         }
         @media (min-width: 768px) {
           .seller-form-panel {
-            padding: 2.75rem 2.5rem;
+            padding: 3rem 2.5rem;
           }
         }
         .otp-boxes-grid {
@@ -287,76 +373,74 @@ export default function SellerLoginPage() {
           border-color: var(--maharani-maroon);
           box-shadow: 0 0 0 3px rgba(122, 35, 49, 0.12);
         }
+        .auth-switch-btn {
+          background: none;
+          border: none;
+          color: #7A2331;
+          font-family: var(--font-nav);
+          font-size: 0.88rem;
+          font-weight: 700;
+          cursor: pointer;
+          padding: 0;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          transition: color 150ms ease;
+        }
+        .auth-switch-btn:hover {
+          color: #5E1A25;
+          text-decoration: underline;
+        }
       `}</style>
 
-      {/* ========================================================= */}
-      {/* CENTER HUB CONTAINER                                      */}
-      {/* ========================================================= */}
+      {/* CENTER HUB */}
       <div className="seller-center-hub">
         
-        {/* 1. TOP BAR (Corner elements directly above the card) */}
+        {/* Top Header Bar */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 0.15rem',
+          padding: '0 0.25rem',
         }}>
-          {/* Top Left: Brand Logo + Seller Portal Pill with slim black outline */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-            <Link
-              href="/"
-              style={{
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                background: 'var(--maharani-maroon)',
-                color: 'var(--ivory-silk)',
-                padding: '0.45rem 0.95rem',
-                borderRadius: '8px',
-                border: '1.2px solid #111827',
-                boxShadow: '0 2px 8px rgba(122, 35, 49, 0.25)',
-              }}
-            >
-              <span style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: '1.2rem',
-                fontWeight: 700,
-                letterSpacing: '0.02em',
-                lineHeight: 1,
-              }}>
-                House of Gargi
-              </span>
+          {/* Official Logo + Artisan Portal Badge */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+            <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }} aria-label="House of Gargi">
+              <img
+                src="/logo-images/new-logo.png"
+                alt="House of Gargi"
+                style={{ height: '46px', width: 'auto', display: 'block' }}
+              />
             </Link>
 
             <span style={{
               fontSize: '0.82rem',
               fontFamily: 'var(--font-nav)',
               fontWeight: 700,
-              letterSpacing: '0.12em',
+              letterSpacing: '0.08em',
               textTransform: 'uppercase',
-              padding: '0.4rem 0.85rem',
-              borderRadius: '9999px',
-              background: 'var(--pure-white)',
-              color: 'var(--stone-taupe)',
-              border: '1.2px solid #111827',
-              boxShadow: '0 1px 4px rgba(0, 0, 0, 0.06)',
+              padding: '0.4rem 0.9rem',
+              borderRadius: '8px',
+              background: '#FFFFFF',
+              color: '#7A2331',
+              border: '1.2px solid var(--soft-gold-line)',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
             }}>
-              Seller Portal
+              Artisan Portal
             </span>
           </div>
 
-          {/* Top Right: Back to Boutique Button with slim black outline */}
+          {/* Back to Store */}
           <Link
             href="/"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.45rem',
-              padding: '0.5rem 0.95rem',
+              padding: '0.5rem 1rem',
               borderRadius: '8px',
-              background: 'var(--pure-white)',
-              border: '1.2px solid #111827',
+              background: '#FFFFFF',
+              border: '1.2px solid var(--soft-gold-line)',
               color: 'var(--ink-brown)',
               fontSize: '0.85rem',
               fontFamily: 'var(--font-nav)',
@@ -364,26 +448,27 @@ export default function SellerLoginPage() {
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
               textDecoration: 'none',
-              boxShadow: '0 1px 4px rgba(0, 0, 0, 0.06)',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+              transition: 'all 200ms ease',
             }}
           >
             <ArrowLeft style={{ width: 14, height: 14 }} />
-            Back to Boutique
+            Back to Store
           </Link>
         </div>
 
-        {/* 2. MAIN LOGIN MODAL CARD (Zero white border around image) */}
+        {/* Main Card */}
         <div className="seller-card-container">
           
-          {/* Left Column: Image flush with card edges */}
+          {/* Left Column: Image */}
           <div className="artisan-image-panel">
             <img
               src="/images/artisan-batik-card.jpg"
-              alt="House of Gargi Master Artisans at Work"
+              alt="House of Gargi Artisans"
             />
           </div>
 
-          {/* Right Column: Clean Luxury Authentication Form */}
+          {/* Right Column: Authentication Form */}
           <div className="seller-form-panel">
             <div>
               <h1 style={{
@@ -395,15 +480,15 @@ export default function SellerLoginPage() {
                 lineHeight: 1.15,
                 margin: 0,
               }}>
-                Atelier Seller Portal
+                Artisan Portal
               </h1>
               <p style={{
-                fontSize: '0.98rem',
+                fontSize: '0.96rem',
                 color: 'var(--stone-taupe)',
                 margin: '0.45rem 0 1.5rem 0',
-                lineHeight: 1.55,
+                lineHeight: 1.5,
               }}>
-                Sign in with your registered phone number to manage handcrafted couture orders and loom inventory.
+                Sign in to manage your products, orders, and artisan account.
               </p>
             </div>
 
@@ -411,9 +496,9 @@ export default function SellerLoginPage() {
               <div style={{
                 background: '#FEF2F2',
                 border: '1px solid #FECDD3',
-                color: 'var(--maharani-maroon)',
+                color: '#7A2331',
                 padding: '0.75rem 0.95rem',
-                borderRadius: '6px',
+                borderRadius: '8px',
                 fontSize: '0.9rem',
                 marginBottom: '1.25rem',
                 fontWeight: 500,
@@ -422,128 +507,337 @@ export default function SellerLoginPage() {
               </div>
             )}
 
-            {step === 1 ? (
-              <form onSubmit={handleSendOtp} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-                <div>
-                  <label style={{
-                    display: 'block',
-                    fontSize: '0.82rem',
-                    fontFamily: 'var(--font-nav)',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.14em',
-                    color: 'var(--stone-taupe)',
-                    marginBottom: '0.5rem',
-                  }}>
-                    Registered Phone Number
-                  </label>
+            {successMsg && (
+              <div style={{
+                background: '#F0FDF4',
+                border: '1px solid #BBF7D0',
+                color: '#166534',
+                padding: '0.75rem 0.95rem',
+                borderRadius: '8px',
+                fontSize: '0.9rem',
+                marginBottom: '1.25rem',
+                fontWeight: 500,
+              }}>
+                {successMsg}
+              </div>
+            )}
 
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    border: '1px solid var(--soft-gold-line)',
-                    borderRadius: '8px',
-                    background: '#FFFFFF',
-                    overflow: 'hidden',
-                  }}>
+            {step === 1 ? (
+              <>
+                {/* ── PHONE LOGIN MODE ── */}
+                {authMode === 'phone' ? (
+                  <form onSubmit={handleSendPhoneOtp} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                        <label style={{
+                          fontSize: '0.82rem',
+                          fontFamily: 'var(--font-nav)',
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.12em',
+                          color: 'var(--stone-taupe)',
+                        }}>
+                          Phone Number
+                        </label>
+                        <button
+                          type="button"
+                          onClick={switchToEmail}
+                          className="auth-switch-btn"
+                        >
+                          <Mail style={{ width: 14, height: 14 }} />
+                          Use Email Address
+                        </button>
+                      </div>
+
+                      {/* Phone Input with Indian Flag & Auto +91 */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        border: '1.5px solid var(--soft-gold-line)',
+                        borderRadius: '9px',
+                        background: '#FFFFFF',
+                        overflow: 'hidden',
+                        transition: 'border-color 150ms ease',
+                      }}>
+                        <div style={{
+                          padding: '0.85rem 0.95rem',
+                          background: 'var(--ivory-silk)',
+                          borderRight: '1.5px solid var(--soft-gold-line)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.45rem',
+                          flexShrink: 0,
+                        }}>
+                          <IndiaFlagIcon width={24} height={16} />
+                          <span style={{
+                            fontSize: '0.95rem',
+                            fontFamily: 'var(--font-nav)',
+                            fontWeight: 700,
+                            color: '#7A2331',
+                          }}>
+                            +91
+                          </span>
+                        </div>
+                        <input
+                          ref={phoneInputRef}
+                          type="tel"
+                          value={phone.replace(/^\+91\s*/, '')}
+                          onChange={(e) => {
+                            const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+                            setPhone(`+91 ${digits}`);
+                          }}
+                          placeholder="Enter 10-digit number"
+                          autoFocus
+                          required
+                          style={{
+                            flex: 1,
+                            padding: '0.85rem 1rem',
+                            border: 'none',
+                            outline: 'none',
+                            fontSize: '1.05rem',
+                            color: 'var(--ink-brown)',
+                            fontWeight: 600,
+                            letterSpacing: '0.05em',
+                          }}
+                        />
+                      </div>
+                    </div>
+
                     <div style={{
-                      padding: '0.8rem 0.95rem',
-                      background: 'var(--ivory-silk)',
-                      borderRight: '1px solid var(--soft-gold-line)',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '0.35rem',
-                      fontSize: '0.85rem',
-                      fontFamily: 'var(--font-nav)',
-                      fontWeight: 700,
-                      color: 'var(--maharani-maroon)',
+                      justifyContent: 'space-between',
+                      fontSize: '0.9rem',
                     }}>
-                      <Phone style={{ width: 15, height: 15 }} />
-                      +91
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', cursor: 'pointer', color: 'var(--stone-taupe)' }}>
+                        <input
+                          type="checkbox"
+                          checked={rememberMe}
+                          onChange={(e) => setRememberMe(e.target.checked)}
+                          style={{ accentColor: '#7A2331', cursor: 'pointer' }}
+                        />
+                        <span>Remember me</span>
+                      </label>
+
+                      <a
+                        href="mailto:support@houseofgargi.com"
+                        style={{ color: '#7A2331', textDecoration: 'none', fontWeight: 600 }}
+                      >
+                        Need help?
+                      </a>
                     </div>
-                    <input
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                      placeholder="Enter 10-digit number"
-                      autoFocus
-                      required
+
+                    <button
+                      type="submit"
+                      disabled={loading || phoneDigits.length < 10}
                       style={{
-                        flex: 1,
-                        padding: '0.8rem 1rem',
+                        width: '100%',
+                        background: phoneDigits.length === 10 ? '#7A2331' : '#D6D3D1',
+                        color: '#FFFFFF',
                         border: 'none',
-                        outline: 'none',
-                        fontSize: '1rem',
-                        color: 'var(--ink-brown)',
-                        fontWeight: 600,
-                        letterSpacing: '0.04em',
+                        borderRadius: '9px',
+                        padding: '1rem',
+                        fontSize: '0.98rem',
+                        fontFamily: 'var(--font-nav)',
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.12em',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        cursor: phoneDigits.length === 10 && !loading ? 'pointer' : 'not-allowed',
+                        transition: 'all 200ms ease',
                       }}
-                    />
-                  </div>
-                </div>
+                    >
+                      {loading ? (
+                        <>
+                          <Loader2 style={{ width: 16, height: 16, animation: 'spin 1s linear infinite' }} />
+                          Sending Code...
+                        </>
+                      ) : (
+                        <>
+                          Send OTP
+                          <ArrowRight style={{ width: 15, height: 15 }} />
+                        </>
+                      )}
+                    </button>
+                  </form>
+                ) : (
+                  /* ── EMAIL LOGIN MODE ── */
+                  <form onSubmit={handleEmailSignIn} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                        <label style={{
+                          fontSize: '0.82rem',
+                          fontFamily: 'var(--font-nav)',
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.12em',
+                          color: 'var(--stone-taupe)',
+                        }}>
+                          Email Address
+                        </label>
+                        <button
+                          type="button"
+                          onClick={switchToPhone}
+                          className="auth-switch-btn"
+                        >
+                          <Phone style={{ width: 14, height: 14 }} />
+                          Use Phone Number
+                        </button>
+                      </div>
 
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  fontSize: '0.92rem',
-                }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', cursor: 'pointer', color: 'var(--stone-taupe)', fontWeight: 500 }}>
-                    <input
-                      type="checkbox"
-                      checked={rememberMe}
-                      onChange={(e) => setRememberMe(e.target.checked)}
-                      style={{ accentColor: 'var(--maharani-maroon)', cursor: 'pointer' }}
-                    />
-                    <span>Keep me signed in</span>
-                  </label>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        border: '1.5px solid var(--soft-gold-line)',
+                        borderRadius: '9px',
+                        background: '#FFFFFF',
+                        overflow: 'hidden',
+                      }}>
+                        <div style={{
+                          padding: '0.85rem 0.95rem',
+                          background: 'var(--ivory-silk)',
+                          borderRight: '1.5px solid var(--soft-gold-line)',
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}>
+                          <Mail style={{ width: 16, height: 16, color: '#7A2331' }} />
+                        </div>
+                        <input
+                          ref={emailInputRef}
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="artisan@houseofgargi.com"
+                          autoFocus
+                          required
+                          style={{
+                            flex: 1,
+                            padding: '0.85rem 1rem',
+                            border: 'none',
+                            outline: 'none',
+                            fontSize: '1rem',
+                            color: 'var(--ink-brown)',
+                            fontWeight: 500,
+                          }}
+                        />
+                      </div>
+                    </div>
 
-                  <a
-                    href="mailto:artisan@houseofgargi.com"
-                    style={{ color: 'var(--maharani-maroon)', textDecoration: 'none', fontWeight: 600, fontSize: '0.9rem' }}
-                  >
-                    Need assistance?
-                  </a>
-                </div>
+                    <div>
+                      <label style={{
+                        display: 'block',
+                        fontSize: '0.82rem',
+                        fontFamily: 'var(--font-nav)',
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.12em',
+                        color: 'var(--stone-taupe)',
+                        marginBottom: '0.5rem',
+                      }}>
+                        Password
+                      </label>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        border: '1.5px solid var(--soft-gold-line)',
+                        borderRadius: '9px',
+                        background: '#FFFFFF',
+                        overflow: 'hidden',
+                      }}>
+                        <div style={{
+                          padding: '0.85rem 0.95rem',
+                          background: 'var(--ivory-silk)',
+                          borderRight: '1.5px solid var(--soft-gold-line)',
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}>
+                          <Lock style={{ width: 16, height: 16, color: '#7A2331' }} />
+                        </div>
+                        <input
+                          type="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          placeholder="Enter your password"
+                          required
+                          style={{
+                            flex: 1,
+                            padding: '0.85rem 1rem',
+                            border: 'none',
+                            outline: 'none',
+                            fontSize: '1rem',
+                            color: 'var(--ink-brown)',
+                          }}
+                        />
+                      </div>
+                    </div>
 
-                <button
-                  type="submit"
-                  disabled={loading || phone.length < 10}
-                  style={{
-                    width: '100%',
-                    background: phone.length === 10 ? 'var(--maharani-maroon)' : '#D6D3D1',
-                    color: 'var(--ivory-silk)',
-                    border: 'none',
-                    borderRadius: '8px',
-                    padding: '0.95rem',
-                    fontSize: '0.98rem',
-                    fontFamily: 'var(--font-nav)',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.14em',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.5rem',
-                    cursor: phone.length === 10 && !loading ? 'pointer' : 'not-allowed',
-                    boxShadow: phone.length === 10 ? '0 4px 14px rgba(122, 35, 49, 0.25)' : 'none',
-                    transition: 'all 200ms ease',
-                  }}
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 style={{ width: 16, height: 16, animation: 'spin 1s linear infinite' }} />
-                      Dispatching Code...
-                    </>
-                  ) : (
-                    <>
-                      Send OTP
-                      <ArrowRight style={{ width: 15, height: 15 }} />
-                    </>
-                  )}
-                </button>
-              </form>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      fontSize: '0.9rem',
+                    }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', cursor: 'pointer', color: 'var(--stone-taupe)' }}>
+                        <input
+                          type="checkbox"
+                          checked={rememberMe}
+                          onChange={(e) => setRememberMe(e.target.checked)}
+                          style={{ accentColor: '#7A2331', cursor: 'pointer' }}
+                        />
+                        <span>Remember me</span>
+                      </label>
+
+                      <a
+                        href="mailto:support@houseofgargi.com"
+                        style={{ color: '#7A2331', textDecoration: 'none', fontWeight: 600 }}
+                      >
+                        Need help?
+                      </a>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={loading || !email.trim() || !password.trim()}
+                      style={{
+                        width: '100%',
+                        background: email.trim() && password.trim() ? '#7A2331' : '#D6D3D1',
+                        color: '#FFFFFF',
+                        border: 'none',
+                        borderRadius: '9px',
+                        padding: '1rem',
+                        fontSize: '0.98rem',
+                        fontFamily: 'var(--font-nav)',
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.12em',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        cursor: email.trim() && password.trim() && !loading ? 'pointer' : 'not-allowed',
+                        transition: 'all 200ms ease',
+                      }}
+                    >
+                      {loading ? (
+                        <>
+                          <Loader2 style={{ width: 16, height: 16, animation: 'spin 1s linear infinite' }} />
+                          Signing In...
+                        </>
+                      ) : (
+                        <>
+                          Sign In
+                          <ArrowRight style={{ width: 15, height: 15 }} />
+                        </>
+                      )}
+                    </button>
+                  </form>
+                )}
+              </>
             ) : (
+              /* ── STEP 2: ENTER OTP ── */
               <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
@@ -552,7 +846,7 @@ export default function SellerLoginPage() {
                       fontFamily: 'var(--font-nav)',
                       fontWeight: 700,
                       textTransform: 'uppercase',
-                      letterSpacing: '0.14em',
+                      letterSpacing: '0.12em',
                       color: 'var(--stone-taupe)',
                     }}>
                       Enter 6-Digit OTP Code
@@ -564,7 +858,7 @@ export default function SellerLoginPage() {
                         background: 'transparent',
                         border: 'none',
                         fontSize: '0.85rem',
-                        color: 'var(--maharani-maroon)',
+                        color: '#7A2331',
                         fontWeight: 700,
                         cursor: 'pointer',
                         textDecoration: 'underline',
@@ -574,7 +868,6 @@ export default function SellerLoginPage() {
                     </button>
                   </div>
 
-                  {/* Sleek 6-Digit Segmented OTP Input Grid */}
                   <div className="otp-boxes-grid">
                     {otpValues.map((digit, idx) => (
                       <input
@@ -602,28 +895,28 @@ export default function SellerLoginPage() {
                   disabled={loading || otpValues.join('').length < 6}
                   style={{
                     width: '100%',
-                    background: otpValues.join('').length === 6 ? 'var(--maharani-maroon)' : '#D6D3D1',
-                    color: 'var(--ivory-silk)',
+                    background: otpValues.join('').length === 6 ? '#7A2331' : '#D6D3D1',
+                    color: '#FFFFFF',
                     border: 'none',
-                    borderRadius: '8px',
-                    padding: '0.95rem',
+                    borderRadius: '9px',
+                    padding: '1rem',
                     fontSize: '0.98rem',
                     fontFamily: 'var(--font-nav)',
                     fontWeight: 700,
                     textTransform: 'uppercase',
-                    letterSpacing: '0.14em',
+                    letterSpacing: '0.12em',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: '0.5rem',
                     cursor: otpValues.join('').length === 6 && !loading ? 'pointer' : 'not-allowed',
-                    boxShadow: otpValues.join('').length === 6 ? '0 4px 14px rgba(122, 35, 49, 0.25)' : 'none',
+                    transition: 'all 200ms ease',
                   }}
                 >
                   {loading ? (
                     <>
                       <Loader2 style={{ width: 16, height: 16, animation: 'spin 1s linear infinite' }} />
-                      Verifying Code...
+                      Verifying...
                     </>
                   ) : (
                     <>
@@ -636,41 +929,38 @@ export default function SellerLoginPage() {
             )}
 
             <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.9rem', color: 'var(--stone-taupe)' }}>
-              Need artisan partner onboarding?{' '}
-              <a href="mailto:support@houseofgargi.com" style={{ color: 'var(--maharani-maroon)', fontWeight: 700, textDecoration: 'none' }}>
-                Request Atelier Registration
+              New artisan partner?{' '}
+              <a href="mailto:artisan@houseofgargi.com" style={{ color: '#7A2331', fontWeight: 700, textDecoration: 'none' }}>
+                Register here
               </a>
             </div>
           </div>
         </div>
 
-        {/* 3. BOTTOM BAR (Corner element directly below the card) */}
+        {/* Bottom Made in India Badge */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'flex-start',
-          padding: '0.25rem 0.15rem 0',
+          padding: '0.25rem 0.25rem 0',
         }}>
-          {/* Bottom Left: White pill with slim black outline for Proudly Made in India + Flag */}
           <div style={{
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.65rem',
-            background: 'var(--pure-white)',
-            border: '1.2px solid #111827',
-            borderRadius: '9999px',
-            padding: '0.35rem 1.15rem',
-            boxShadow: '0 2px 6px rgba(0, 0, 0, 0.06)',
+            background: '#FFFFFF',
+            border: '1.2px solid var(--soft-gold-line)',
+            borderRadius: '9px',
+            padding: '0.45rem 1.15rem',
+            boxShadow: '0 1px 4px rgba(0, 0, 0, 0.05)',
           }}>
             <span style={{
               fontFamily: "'Caveat', 'Kalam', cursive, sans-serif",
-              fontSize: '1.5rem',
+              fontSize: '1.45rem',
               fontWeight: 700,
               fontStyle: 'italic',
-              color: '#000000',
-              letterSpacing: '0.02em',
+              color: 'var(--ink-brown)',
               lineHeight: 1.1,
-              display: 'inline-block',
             }}>
               Proudly Made in India
             </span>

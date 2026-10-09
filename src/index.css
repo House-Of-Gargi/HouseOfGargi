@@ -3859,7 +3859,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   color: var(--ink-brown);
 }
 
-/* 2. Top Bar Enriched & Bigger Sizing: Search Placeholder Box with Voice Search */
+/* 2. Top Bar Search Placeholder Box with Voice Search */
 .navbar__search-box {
   flex: 1;
   max-width: 590px;
@@ -3931,9 +3931,11 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   box-shadow: 0 0 14px rgba(230, 57, 70, 0.28) !important;
 }
 
-/* 3. Softer Curves (9px border-radius) & Bigger Sizing for Top Nav Buttons */
-.navbar__icons .navbar__join-pill-btn,
-.navbar__join-pill-btn {
+/* 3. Swapped Colors for Auth Buttons (Login is Solid Maroon, Join Us is Outline) */
+
+/* LOGIN BUTTON: Solid Royal Maroon, 9px Softer Curve */
+.navbar__icons .navbar__login-pill-btn,
+.navbar__login-pill-btn {
   font-family: var(--font-nav) !important;
   font-size: 16px !important;
   font-weight: 700 !important;
@@ -3953,18 +3955,20 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   cursor: pointer !important;
   transition: all 250ms ease !important;
   white-space: nowrap !important;
+  text-decoration: none !important;
 }
 
-.navbar__icons .navbar__join-pill-btn:hover,
-.navbar__join-pill-btn:hover {
+.navbar__icons .navbar__login-pill-btn:hover,
+.navbar__login-pill-btn:hover {
   background: #5E1A25 !important;
   border-color: #5E1A25 !important;
   color: #FFFFFF !important;
   box-shadow: none !important;
 }
 
-.navbar__icons .navbar__login-pill-btn,
-.navbar__login-pill-btn {
+/* JOIN US BUTTON: Outline Button (Transparent Glass on hero, White on scroll, Red on hover) */
+.navbar__icons .navbar__join-pill-btn,
+.navbar__join-pill-btn {
   font-family: var(--font-nav) !important;
   font-size: 16px !important;
   font-weight: 700 !important;
@@ -3981,30 +3985,32 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   box-shadow: none !important;
   transition: all 250ms ease !important;
   white-space: nowrap !important;
+  text-decoration: none !important;
 }
 
-.navbar--hero .navbar__login-pill-btn {
+.navbar--hero .navbar__join-pill-btn {
   background: rgba(255, 255, 255, 0.12) !important;
   border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
   color: #FFFFFF !important;
   box-shadow: none !important;
 }
 
-.navbar--scrolled .navbar__login-pill-btn {
+.navbar--scrolled .navbar__join-pill-btn {
   background: #FFFFFF !important;
   border: 1.5px solid var(--soft-gold-line) !important;
   color: #231812 !important;
   box-shadow: none !important;
 }
 
-.navbar__icons .navbar__login-pill-btn:hover,
-.navbar__login-pill-btn:hover {
+.navbar__icons .navbar__join-pill-btn:hover,
+.navbar__join-pill-btn:hover {
   background: #FFFFFF !important;
   color: #7A2331 !important;
   border-color: #7A2331 !important;
   box-shadow: none !important;
 }
 
+/* Wishlist Button */
 .navbar__icons .navbar__wishlist-pill-btn,
 .navbar__wishlist-pill-btn {
   font-family: var(--font-nav) !important;
@@ -4026,7 +4032,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   box-shadow: none !important;
 }
 
-/* 4. Hero Banner CTA Buttons with Matching 9px Softer Curve */
+/* Hero Banner CTA Buttons with Matching 9px Softer Curve */
 .hero-primary-btn {
   font-family: var(--font-nav) !important;
   font-size: 14.5px !important;
