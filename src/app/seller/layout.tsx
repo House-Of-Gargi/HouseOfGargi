@@ -14,7 +14,7 @@ export default function SellerLayout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // If on login page, do not gate
-    if (pathname === '/seller/login') {
+    if (pathname === '/seller/login' || pathname === '/seller/apply') {
       setAuthorized(true);
       return;
     }
@@ -50,7 +50,7 @@ export default function SellerLayout({ children }: { children: ReactNode }) {
 
     // Listen for auth state changes (e.g. sign in or sign out)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (pathname === '/seller/login') return;
+      if (pathname === '/seller/login' || pathname === '/seller/apply') return;
       if (!session) {
         router.push('/seller/login');
       } else {
@@ -66,7 +66,7 @@ export default function SellerLayout({ children }: { children: ReactNode }) {
     };
   }, [pathname, router]);
 
-  if (pathname === '/seller/login') {
+  if (pathname === '/seller/login' || pathname === '/seller/apply') {
     return <>{children}</>;
   }
 
