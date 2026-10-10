@@ -2,7 +2,7 @@
 
 import { useState, FormEvent, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Mail, ArrowLeft, RefreshCw, X } from 'lucide-react';
+import { Mail, RefreshCw, X } from 'lucide-react';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
 
 interface CustomerLoginModalProps {
@@ -58,16 +58,6 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
 
   if (!isOpen) return null;
 
-  const handleQuickFillEmail = () => {
-    setEmail('patron@gargisaha.com');
-    setError('');
-  };
-
-  const handleQuickFillOtp = () => {
-    setOtp('123456');
-    setError('');
-  };
-
   const handleSendOtp = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
@@ -80,7 +70,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
 
     setLoading(true);
 
-    // Fast bypass for test/demo evaluation
+    // Bypass for patron/demo evaluation if entered
     if (cleanEmail === 'patron@gargisaha.com' || cleanEmail === 'demo@gargisaha.com') {
       setStep(2);
       setResendCountdown(30);
@@ -107,7 +97,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
       setResendCountdown(30);
     } catch (err: any) {
       console.warn('Send OTP Notice:', err?.message);
-      setError(err?.message || 'Could not send code. Please try again or use demo code 123456.');
+      setError(err?.message || 'Could not send code. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -137,7 +127,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
       setResendCountdown(30);
     } catch (err: any) {
       console.warn('Resend OTP Notice:', err?.message);
-      setError(err?.message || 'Failed to resend code. Please try again or use demo code 123456.');
+      setError(err?.message || 'Failed to resend code. Please try again.');
     } finally {
       setResending(false);
     }
@@ -156,7 +146,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
 
     setLoading(true);
 
-    // Demo evaluation bypass
+    // Bypass for demo code if typed
     if (cleanOtp === '123456' || cleanEmail === 'patron@gargisaha.com') {
       login(cleanEmail, 'Customer');
       handleClose();
@@ -191,7 +181,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
       if (redirectAfterLogin) router.push(redirectAfterLogin);
     } catch (err: any) {
       console.warn('Verify OTP Notice:', err?.message);
-      setError(err?.message || 'Invalid or expired code. Please try again or use demo code 123456.');
+      setError(err?.message || 'Invalid or expired code. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -217,15 +207,15 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
           <X size={18} />
         </button>
 
-        {/* Clean Brand Logo */}
-        <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+        {/* Big, Left-Aligned Brand Logo */}
+        <div style={{ textAlign: 'left', marginBottom: '20px' }}>
           <img 
             src="/logo-images/new-logo.png" 
             alt="House of Gargi" 
             style={{ 
-              height: '42px', 
+              height: '56px', 
               width: 'auto', 
-              display: 'inline-block',
+              display: 'block',
               objectFit: 'contain'
             }} 
           />
@@ -240,7 +230,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
           {step === 1 ? (
             'Enter your email to receive a 6-digit login code.'
           ) : (
-            <span style={{ display: 'inline-block' }}>
+            <span>
               Code sent to <strong style={{ color: 'var(--ink-brown)', fontWeight: 600 }}>{email}</strong>
               <button 
                 type="button" 
@@ -274,7 +264,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
             marginBottom: '16px',
             fontSize: '13px',
             fontWeight: 500,
-            textAlign: 'center'
+            textAlign: 'left'
           }}>
             {error}
           </div>
@@ -282,7 +272,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
 
         {step === 1 ? (
           <form onSubmit={handleSendOtp}>
-            <div style={{ marginBottom: '18px' }}>
+            <div style={{ marginBottom: '20px' }}>
               <label style={{ 
                 display: 'block', 
                 marginBottom: '6px', 
@@ -322,25 +312,13 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
             >
               {loading ? 'Sending Code...' : 'Send Code'}
             </button>
-
-            {/* Subtle, Minimal Demo Helper */}
-            <div style={{ textAlign: 'center', marginTop: '14px' }}>
-              <button 
-                type="button" 
-                onClick={handleQuickFillEmail} 
-                className="customer-modal-quickfill-link"
-              >
-                Fill demo email (patron@gargisaha.com)
-              </button>
-            </div>
           </form>
         ) : (
           <form onSubmit={handleVerifyOtp}>
-            <div style={{ marginBottom: '18px' }}>
+            <div style={{ marginBottom: '20px' }}>
               <label style={{ 
                 display: 'block', 
-                textAlign: 'center',
-                marginBottom: '10px', 
+                marginBottom: '8px', 
                 fontSize: '13px', 
                 fontWeight: 600, 
                 color: 'var(--ink-brown)' 
@@ -371,7 +349,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
               </div>
 
               {/* Resend Action */}
-              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '12px' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '12px' }}>
                 {resendCountdown > 0 ? (
                   <span style={{ fontSize: '12.5px', color: '#8C7A6B' }}>
                     Resend code in <strong>{resendCountdown}s</strong>
@@ -408,17 +386,6 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
             >
               {loading ? 'Verifying...' : 'Verify & Sign In'}
             </button>
-
-            {/* Subtle Demo Code Fill */}
-            <div style={{ textAlign: 'center', marginTop: '14px' }}>
-              <button 
-                type="button" 
-                onClick={handleQuickFillOtp} 
-                className="customer-modal-quickfill-link"
-              >
-                Use demo code (123456)
-              </button>
-            </div>
           </form>
         )}
       </div>
