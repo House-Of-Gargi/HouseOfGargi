@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import { resend, NOREPLY_EMAIL } from '@/lib/resend';
 
 const AUTH_SECRET = process.env.AUTH_SECRET || process.env.RESEND_API_KEY || 'house_of_gargi_vedic_auth_secret_2026';
-const LOGO_URL = 'https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/new-logo.png';
+const LOGO_URL = 'https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/logo-email.png';
 
 function generateHmacToken(email: string, otp: string, expiresAt: number): string {
   const payload = `${email.toLowerCase().trim()}:${otp.trim()}:${expiresAt}`;
@@ -61,7 +61,8 @@ export async function POST(req: Request) {
                           src="${LOGO_URL}" 
                           alt="House of Gargi" 
                           width="210"
-                          style="height: auto; max-height: 56px; width: 210px; display: block; margin: 0 auto 10px; border: 0;"
+                          height="60"
+                          style="display: block; margin: 0 auto 10px; width: 210px; height: 60px; max-width: 100%; border: 0; outline: none; text-decoration: none;"
                         />
                       </a>
                       <p style="margin: 0; font-size: 13px; font-style: italic; color: #8C7B70; letter-spacing: 0.04em;">
@@ -141,7 +142,8 @@ export async function POST(req: Request) {
                           src="${LOGO_URL}" 
                           alt="House of Gargi" 
                           width="210"
-                          style="height: auto; max-height: 56px; width: 210px; display: block; margin: 0 auto 10px; border: 0;"
+                          height="60"
+                          style="display: block; margin: 0 auto 10px; width: 210px; height: 60px; max-width: 100%; border: 0; outline: none; text-decoration: none;"
                         />
                       </a>
                       <p style="margin: 0; font-size: 13px; font-style: italic; color: #8C7B70; letter-spacing: 0.04em;">
