@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, FormEvent, useEffect, useId } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, Check, ShieldCheck, Sparkles, AlertCircle, Loader2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, ShieldCheck, AlertCircle, Loader2 } from 'lucide-react';
 
 interface FormData {
   name: string;
@@ -63,6 +63,14 @@ const CRAFT_TYPES = [
   'Other Traditional Craft (অন্যান্য ঐতিহ্যবাহী শিল্প)',
 ];
 
+const STEPS = [
+  { step: 1, labelEn: '1. Basic Info', labelBn: 'প্রাথমিক পরিচয়', titleEn: 'Basic Profile & Contact', titleBn: 'প্রাথমিক পরিচয় ও যোগাযোগ' },
+  { step: 2, labelEn: '2. Journey', labelBn: 'জীবনের গল্প', titleEn: 'Part I: Personal Life & Dreams', titleBn: 'প্রথম পর্ব: জীবন ও স্বপ্ন (Q1 - Q4)' },
+  { step: 3, labelEn: '3. Craft & Materials', labelBn: 'শিল্প ও উপকরণ', titleEn: 'Part II: Craft, Lineage & Materials', titleBn: 'দ্বিতীয় পর্ব: শিল্প, ঐতিহ্য ও উপকরণ (Q5 - Q8)' },
+  { step: 4, labelEn: '4. Atelier', labelBn: 'অনুপ্রেরণা ও দল', titleEn: 'Part III: Community, Inspiration & Design', titleBn: 'তৃতীয় পর্ব: সমাজ ও অনুপ্রেরণা (Q9 - Q14)' },
+  { step: 5, labelEn: '5. Agreement', labelBn: 'চুক্তি ও সম্মতি', titleEn: 'Ethical Agreement & Submission', titleBn: 'শিশুশ্রম বিরোধী চুক্তি ও স্বাক্ষর' },
+];
+
 export default function ArtisanApplyPage() {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [formData, setFormData] = useState<FormData>({
@@ -85,7 +93,6 @@ export default function ArtisanApplyPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [submittedAppId, setSubmittedAppId] = useState<string | null>(null);
-  const [showAgreementModal, setShowAgreementModal] = useState(false);
 
   // Auto calculate age when DOB changes
   useEffect(() => {
@@ -135,13 +142,13 @@ export default function ArtisanApplyPage() {
     }
     setError('');
     setCurrentStep((prev) => Math.min(prev + 1, 5));
-    window.scrollTo({ top: 100, behavior: 'smooth' });
+    window.scrollTo({ top: 80, behavior: 'smooth' });
   };
 
   const handlePrev = () => {
     setError('');
     setCurrentStep((prev) => Math.max(prev - 1, 1));
-    window.scrollTo({ top: 100, behavior: 'smooth' });
+    window.scrollTo({ top: 80, behavior: 'smooth' });
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -171,7 +178,7 @@ export default function ArtisanApplyPage() {
       }
 
       setSubmittedAppId(data.applicationId || 'HG-ART-2026');
-      window.scrollTo({ top: 80, behavior: 'smooth' });
+      window.scrollTo({ top: 60, behavior: 'smooth' });
     } catch (err: any) {
       setError(err?.message || 'Error submitting application. Please try again.');
     } finally {
@@ -179,78 +186,242 @@ export default function ArtisanApplyPage() {
     }
   };
 
-  // Line art background styling
-  const lineArtBgSvg = `url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23D4AF37' stroke-width='0.45' stroke-opacity='0.16'%3E%3Cpath d='M60 10 C45 35 30 50 10 60 C30 70 45 85 60 110 C75 85 90 70 110 60 C90 50 75 35 60 10 Z'/%3E%3Ccircle cx='60' cy='60' r='18'/%3E%3Ccircle cx='60' cy='60' r='4'/%3E%3Cpath d='M0 60 H120 M60 0 V120' stroke-dasharray='1 4'/%3E%3C/g%3E%3C/svg%3E")`;
-
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: '#FBF6EE',
-      backgroundImage: lineArtBgSvg,
-      backgroundRepeat: 'repeat',
-      color: '#241A15',
-      fontFamily: 'var(--font-nav)',
-      padding: '2.5rem 1rem 5rem',
-      position: 'relative',
-    }}>
-      <div style={{ maxWidth: '820px', margin: '0 auto' }}>
+    <div className="artisan-apply-root">
+      
+      {/* Background Soft Ivory Overlay (Line art remains clearly visible, exactly like seller login) */}
+      <div className="artisan-apply-overlay" />
+
+      {/* Embedded Responsive Styles */}
+      <style>{`
+        .artisan-apply-root {
+          min-height: 100vh;
+          width: 100%;
+          position: relative;
+          background-image: url('/images/atelier-lineart-bg.jpg');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+          background-color: #FBF6EE;
+          font-family: var(--font-nav);
+          color: #241A15;
+          padding: 2.25rem 1rem 5rem;
+          overflow-x: hidden;
+          box-sizing: border-box;
+        }
+
+        .artisan-apply-overlay {
+          position: absolute;
+          inset: 0;
+          background-color: rgba(251, 246, 238, 0.28);
+          pointer-events: none;
+          z-index: 1;
+        }
+
+        .artisan-apply-container {
+          position: relative;
+          z-index: 10;
+          width: 100%;
+          max-width: 840px;
+          margin: 0 auto;
+        }
+
+        .artisan-apply-card {
+          background: #FFFFFF;
+          border: 1.5px solid var(--soft-gold-line);
+          border-radius: 12px;
+          padding: 2.75rem 2.5rem;
+          box-shadow: 0 16px 40px -10px rgba(43, 31, 24, 0.08);
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .artisan-form-grid-2 {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1.15rem;
+        }
+
+        .artisan-form-grid-sig {
+          display: grid;
+          grid-template-columns: 2fr 1fr;
+          gap: 1.15rem;
+        }
+
+        .artisan-input-field {
+          width: 100%;
+          padding: 0.85rem 1rem;
+          border-radius: 8px;
+          border: 1.5px solid var(--soft-gold-line);
+          font-size: 1rem;
+          outline: none;
+          color: #241A15;
+          background: #FFFFFF;
+          font-family: var(--font-nav);
+          box-sizing: border-box;
+          transition: border-color 150ms ease, box-shadow 150ms ease;
+        }
+
+        .artisan-input-field:focus {
+          border-color: #7A2331;
+          box-shadow: 0 0 0 3px rgba(122, 35, 49, 0.1);
+        }
+
+        .artisan-nav-actions {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-top: 1px solid #F0E6D2;
+          padding-top: 1.75rem;
+          margin-top: 2rem;
+          gap: 1rem;
+        }
+
+        .artisan-stepper-track {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin: 1.75rem 0;
+          padding: 0.85rem 1rem;
+          background: #FAF7F2;
+          border-radius: 9px;
+          border: 1px solid #EAE2D5;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        /* ── MOBILE OPTIMIZATIONS ── */
+        @media (max-width: 680px) {
+          .artisan-apply-root {
+            padding: 1.25rem 0.65rem 3.5rem;
+          }
+
+          .artisan-apply-card {
+            padding: 1.6rem 1.1rem;
+            border-radius: 10px;
+          }
+
+          .artisan-form-grid-2 {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+
+          .artisan-form-grid-sig {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+
+          .artisan-nav-actions {
+            flex-direction: column-reverse;
+            gap: 0.85rem;
+          }
+
+          .artisan-nav-actions button {
+            width: 100% !important;
+            justify-content: center;
+            padding: 0.95rem 1rem !important;
+          }
+
+          .artisan-header-title {
+            font-size: 1.6rem !important;
+          }
+
+          .artisan-header-sub {
+            font-size: 1.1rem !important;
+          }
+
+          .artisan-stepper-track {
+            padding: 0.65rem 0.5rem;
+            gap: 0.5rem;
+          }
+
+          .stepper-label-text {
+            display: none;
+          }
+
+          .stepper-circle {
+            width: 32px !important;
+            height: 32px !important;
+            font-size: 0.88rem !important;
+          }
+
+          .mobile-step-banner {
+            display: block !important;
+          }
+        }
+
+        @media (min-width: 681px) {
+          .mobile-step-banner {
+            display: none !important;
+          }
+        }
+      `}</style>
+
+      <div className="artisan-apply-container">
         
-        {/* Navigation Bar */}
+        {/* Top Navigation Bar */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          marginBottom: '1.75rem',
+          marginBottom: '1.5rem',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
         }}>
           <Link
             href="/seller/login"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.55rem 1.15rem',
+              gap: '0.45rem',
+              padding: '0.55rem 1.1rem',
               borderRadius: '8px',
               background: '#FFFFFF',
-              border: '1.5px solid var(--soft-gold-line)',
-              color: '#241A15',
-              fontSize: '0.86rem',
+              border: '1.2px solid var(--soft-gold-line)',
+              color: 'var(--ink-brown)',
+              fontSize: '0.85rem',
+              fontFamily: 'var(--font-nav)',
               fontWeight: 700,
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
               textDecoration: 'none',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
               transition: 'all 200ms ease',
             }}
           >
-            <ArrowLeft style={{ width: 15, height: 15 }} />
+            <ArrowLeft style={{ width: 14, height: 14 }} />
             Artisan Login &bull; লগইন
           </Link>
 
           <Link
             href="/"
             style={{
-              fontSize: '0.84rem',
-              fontWeight: 600,
-              color: '#8C7B70',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.35rem',
+              padding: '0.55rem 0.95rem',
+              borderRadius: '8px',
+              background: 'rgba(255, 255, 255, 0.85)',
+              border: '1.2px solid var(--soft-gold-line)',
+              fontSize: '0.82rem',
+              fontWeight: 700,
+              color: 'var(--ink-brown)',
               textDecoration: 'none',
-              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              letterSpacing: '0.06em',
             }}
           >
             Storefront &rarr;
           </Link>
         </div>
 
-        {/* Success Confirmation State */}
+        {/* ════════════ SUCCESS SUBMITTED STATE ════════════ */}
         {submittedAppId ? (
-          <div style={{
-            background: '#FFFFFF',
-            border: '1.5px solid var(--soft-gold-line)',
-            borderRadius: '12px',
-            padding: '3.5rem 2rem',
-            textAlign: 'center',
-          }}>
+          <div className="artisan-apply-card" style={{ textAlign: 'center', padding: '3.5rem 1.75rem' }}>
             <div style={{
-              width: '64px',
-              height: '64px',
+              width: '68px',
+              height: '68px',
               borderRadius: '50%',
               background: '#FAF7F2',
               border: '2px solid #7A2331',
@@ -260,7 +431,7 @@ export default function ArtisanApplyPage() {
               marginBottom: '1.5rem',
               color: '#7A2331',
             }}>
-              <Check style={{ width: 34, height: 34, strokeWidth: 2.5 }} />
+              <Check style={{ width: 36, height: 36, strokeWidth: 2.5 }} />
             </div>
 
             <h1 style={{
@@ -278,7 +449,7 @@ export default function ArtisanApplyPage() {
               color: '#241A15',
               lineHeight: 1.6,
               maxWidth: '560px',
-              margin: '0.75rem auto 1.5rem',
+              margin: '0.75rem auto 1.25rem',
             }}>
               Thank you, <strong>{formData.name}</strong>, for sharing your story and craft with House of Gargi.
             </p>
@@ -291,7 +462,7 @@ export default function ArtisanApplyPage() {
               margin: '0 auto 2rem',
               fontStyle: 'italic',
             }}>
-              হাউস অফ গার্গী কারিগর পরিবারে যোগদানের জন্য আপনার আবেদন সফলভাবে জমা পড়েছে। আমাদের কিউরেশন টিম ৪৮ থেকে ৭২ ঘণ্টার মধ্যে আপনার সাথে যোগাযোগ করবে।
+              হাউস অফ গার্গী কারিগর পরিবারে যোগদানের জন্য আপনার আবেদন সফলভাবে জমা পড়েছে। আমাদের কিউরেশন টিম অতি শীঘ্রই আপনার সাথে যোগাযোগ করবে।
             </p>
 
             <div style={{
@@ -301,6 +472,8 @@ export default function ArtisanApplyPage() {
               borderRadius: '9px',
               padding: '1.25rem 2.25rem',
               marginBottom: '2.5rem',
+              maxWidth: '100%',
+              boxSizing: 'border-box',
             }}>
               <span style={{ fontSize: '0.85rem', color: '#8C7B70', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                 Application Reference ID / আবেদন নং:
@@ -323,13 +496,17 @@ export default function ArtisanApplyPage() {
                 style={{
                   background: '#7A2331',
                   color: '#FFFFFF',
-                  padding: '0.9rem 2rem',
+                  padding: '0.95rem 2rem',
                   borderRadius: '8px',
                   fontWeight: 700,
                   fontSize: '0.92rem',
                   textTransform: 'uppercase',
                   letterSpacing: '0.1em',
                   textDecoration: 'none',
+                  minHeight: '48px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 Go to Artisan Portal Login
@@ -340,13 +517,17 @@ export default function ArtisanApplyPage() {
                   background: '#FFFFFF',
                   color: '#241A15',
                   border: '1.5px solid var(--soft-gold-line)',
-                  padding: '0.9rem 2rem',
+                  padding: '0.95rem 2rem',
                   borderRadius: '8px',
                   fontWeight: 700,
                   fontSize: '0.92rem',
                   textTransform: 'uppercase',
                   letterSpacing: '0.1em',
                   textDecoration: 'none',
+                  minHeight: '48px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 Return to Storefront
@@ -354,16 +535,11 @@ export default function ArtisanApplyPage() {
             </div>
           </div>
         ) : (
-          /* Main Questionnaire Card */
-          <div style={{
-            background: '#FFFFFF',
-            border: '1.5px solid var(--soft-gold-line)',
-            borderRadius: '12px',
-            padding: '2.5rem 2.25rem',
-          }}>
+          /* ════════════ MAIN FORM CARD ════════════ */
+          <div className="artisan-apply-card">
             
             {/* Header Crest */}
-            <div style={{ textAlign: 'center', paddingBottom: '1.75rem', borderBottom: '1px solid #F0E6D2' }}>
+            <div style={{ textAlign: 'center', paddingBottom: '1.5rem', borderBottom: '1px solid #F0E6D2' }}>
               <span style={{
                 fontSize: '0.88rem',
                 letterSpacing: '0.22em',
@@ -385,17 +561,18 @@ export default function ArtisanApplyPage() {
                 — TRADITION &middot; CRAFT &middot; HERITAGE —
               </p>
 
-              <h1 style={{
+              <h1 className="artisan-header-title" style={{
                 fontFamily: 'var(--font-serif)',
                 fontSize: '2rem',
                 fontWeight: 600,
                 color: '#7A2331',
-                margin: '1.1rem 0 0.2rem',
+                margin: '1rem 0 0.2rem',
                 letterSpacing: '0.04em',
+                lineHeight: 1.2,
               }}>
                 ARTIST QUESTIONNAIRE
               </h1>
-              <h2 style={{
+              <h2 className="artisan-header-sub" style={{
                 fontSize: '1.25rem',
                 fontWeight: 500,
                 color: '#4A3C33',
@@ -405,24 +582,9 @@ export default function ArtisanApplyPage() {
               </h2>
             </div>
 
-            {/* Stepper Progress Bar */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              margin: '1.75rem 0',
-              padding: '0.75rem 1rem',
-              background: '#FAF7F2',
-              borderRadius: '9px',
-              border: '1px solid #EAE2D5',
-            }}>
-              {[
-                { step: 1, labelEn: '1. Basic Info', labelBn: 'প্রাথমিক পরিচয়' },
-                { step: 2, labelEn: '2. Journey', labelBn: 'জীবনের গল্প' },
-                { step: 3, labelEn: '3. Craft & Materials', labelBn: 'শিল্প ও উপকরণ' },
-                { step: 4, labelEn: '4. Atelier', labelBn: 'অনুপ্রেরণা ও দল' },
-                { step: 5, labelEn: '5. Agreement', labelBn: 'চুক্তি ও সম্মতি' },
-              ].map((s) => (
+            {/* Stepper Progress Track */}
+            <div className="artisan-stepper-track">
+              {STEPS.map((s) => (
                 <div
                   key={s.step}
                   onClick={() => s.step < currentStep && setCurrentStep(s.step)}
@@ -430,33 +592,56 @@ export default function ArtisanApplyPage() {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    gap: '2px',
+                    gap: '4px',
                     cursor: s.step < currentStep ? 'pointer' : 'default',
                     opacity: currentStep === s.step ? 1 : currentStep > s.step ? 0.9 : 0.45,
+                    flex: 1,
+                    minWidth: '50px',
                   }}
                 >
-                  <div style={{
-                    width: '28px',
-                    height: '28px',
-                    borderRadius: '50%',
-                    background: currentStep === s.step ? '#7A2331' : currentStep > s.step ? '#2E6F40' : '#D5C7B3',
-                    color: '#FFFFFF',
-                    fontSize: '0.82rem',
-                    fontWeight: 700,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
+                  <div
+                    className="stepper-circle"
+                    style={{
+                      width: '30px',
+                      height: '30px',
+                      borderRadius: '50%',
+                      background: currentStep === s.step ? '#7A2331' : currentStep > s.step ? '#2E6F40' : '#D5C7B3',
+                      color: '#FFFFFF',
+                      fontSize: '0.82rem',
+                      fontWeight: 700,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      transition: 'all 200ms ease',
+                    }}
+                  >
                     {currentStep > s.step ? <Check style={{ width: 14, height: 14 }} /> : s.step}
                   </div>
-                  <span style={{ fontSize: '0.72rem', fontWeight: 700, color: currentStep === s.step ? '#7A2331' : '#6A5A50', textAlign: 'center' }}>
+                  <span className="stepper-label-text" style={{ fontSize: '0.72rem', fontWeight: 700, color: currentStep === s.step ? '#7A2331' : '#6A5A50', textAlign: 'center', whiteSpace: 'nowrap' }}>
                     {s.labelEn}
                   </span>
                 </div>
               ))}
             </div>
 
-            {/* Error Banner */}
+            {/* Mobile Active Step Sub-Banner */}
+            <div className="mobile-step-banner" style={{
+              background: '#FAF7F2',
+              border: '1px solid #EAE2D5',
+              borderRadius: '7px',
+              padding: '0.5rem 0.85rem',
+              marginBottom: '1.25rem',
+              textAlign: 'center',
+            }}>
+              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#7A2331' }}>
+                Step {currentStep} of 5: {STEPS[currentStep - 1].titleEn}
+              </span>
+              <div style={{ fontSize: '0.78rem', color: '#6A564C', fontStyle: 'italic', marginTop: '2px' }}>
+                {STEPS[currentStep - 1].titleBn}
+              </div>
+            </div>
+
+            {/* Error Notification */}
             {error && (
               <div style={{
                 display: 'flex',
@@ -485,7 +670,7 @@ export default function ArtisanApplyPage() {
                 borderRight: '1px solid #EAE2D5',
                 borderBottom: '1px solid #EAE2D5',
                 borderRadius: '0 8px 8px 0',
-                padding: '1.15rem 1.35rem',
+                padding: '1.15rem 1.25rem',
                 marginBottom: '2rem',
               }}>
                 <p style={{ margin: '0 0 0.5rem', fontSize: '0.92rem', lineHeight: 1.55, color: '#3E3029' }}>
@@ -500,7 +685,7 @@ export default function ArtisanApplyPage() {
             {/* ═══════════════ STEP 1: BASIC INFORMATION ═══════════════ */}
             {currentStep === 1 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.35rem' }}>
-                <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem', marginBottom: '0.5rem' }}>
+                <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem', marginBottom: '0.25rem' }}>
                   <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 700 }}>
                     1. Basic Profile &amp; Contact &bull; প্রাথমিক পরিচয় ও যোগাযোগ
                   </h3>
@@ -520,21 +705,12 @@ export default function ArtisanApplyPage() {
                     onChange={(e) => handleInputChange('name', e.target.value)}
                     placeholder="Enter full name (e.g., Ramdas Mishra / রামদাস মিশ্র)"
                     required
-                    style={{
-                      width: '100%',
-                      padding: '0.85rem 1rem',
-                      borderRadius: '8px',
-                      border: '1.5px solid var(--soft-gold-line)',
-                      fontSize: '0.98rem',
-                      outline: 'none',
-                      color: '#241A15',
-                      background: '#FFFFFF',
-                    }}
+                    className="artisan-input-field"
                   />
                 </div>
 
                 {/* DOB & AGE */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="artisan-form-grid-2">
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
                       • DATE OF BIRTH: / জন্ম তারিখ:
@@ -543,16 +719,7 @@ export default function ArtisanApplyPage() {
                       type="date"
                       value={formData.dob}
                       onChange={(e) => handleInputChange('dob', e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '0.82rem 1rem',
-                        borderRadius: '8px',
-                        border: '1.5px solid var(--soft-gold-line)',
-                        fontSize: '0.95rem',
-                        outline: 'none',
-                        color: '#241A15',
-                        background: '#FFFFFF',
-                      }}
+                      className="artisan-input-field"
                     />
                   </div>
 
@@ -565,22 +732,13 @@ export default function ArtisanApplyPage() {
                       value={formData.age}
                       onChange={(e) => handleInputChange('age', e.target.value)}
                       placeholder="e.g. 42"
-                      style={{
-                        width: '100%',
-                        padding: '0.82rem 1rem',
-                        borderRadius: '8px',
-                        border: '1.5px solid var(--soft-gold-line)',
-                        fontSize: '0.95rem',
-                        outline: 'none',
-                        color: '#241A15',
-                        background: '#FFFFFF',
-                      }}
+                      className="artisan-input-field"
                     />
                   </div>
                 </div>
 
                 {/* GENDER & STATE */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="artisan-form-grid-2">
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
                       GENDER / লিঙ্গ: <span style={{ color: '#7A2331' }}>*</span>
@@ -589,16 +747,7 @@ export default function ArtisanApplyPage() {
                       value={formData.gender}
                       onChange={(e) => handleInputChange('gender', e.target.value)}
                       required
-                      style={{
-                        width: '100%',
-                        padding: '0.85rem 1rem',
-                        borderRadius: '8px',
-                        border: '1.5px solid var(--soft-gold-line)',
-                        fontSize: '0.95rem',
-                        outline: 'none',
-                        color: '#241A15',
-                        background: '#FFFFFF',
-                      }}
+                      className="artisan-input-field"
                     >
                       <option value="">Select Gender / নির্বাচন করুন</option>
                       <option value="Male">Male / পুরুষ</option>
@@ -615,16 +764,7 @@ export default function ArtisanApplyPage() {
                       value={formData.state}
                       onChange={(e) => handleInputChange('state', e.target.value)}
                       required
-                      style={{
-                        width: '100%',
-                        padding: '0.85rem 1rem',
-                        borderRadius: '8px',
-                        border: '1.5px solid var(--soft-gold-line)',
-                        fontSize: '0.95rem',
-                        outline: 'none',
-                        color: '#241A15',
-                        background: '#FFFFFF',
-                      }}
+                      className="artisan-input-field"
                     >
                       <option value="">Select State / রাজ্য বেছে নিন</option>
                       {INDIAN_STATES.map((st) => (
@@ -635,7 +775,7 @@ export default function ArtisanApplyPage() {
                 </div>
 
                 {/* PLACE OF BIRTH & TYPE OF ART */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="artisan-form-grid-2">
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
                       • PLACE OF BIRTH: / জন্মস্থান:
@@ -645,16 +785,7 @@ export default function ArtisanApplyPage() {
                       value={formData.placeOfBirth}
                       onChange={(e) => handleInputChange('placeOfBirth', e.target.value)}
                       placeholder="Village / Town / District (গ্রাম বা শহর)"
-                      style={{
-                        width: '100%',
-                        padding: '0.85rem 1rem',
-                        borderRadius: '8px',
-                        border: '1.5px solid var(--soft-gold-line)',
-                        fontSize: '0.95rem',
-                        outline: 'none',
-                        color: '#241A15',
-                        background: '#FFFFFF',
-                      }}
+                      className="artisan-input-field"
                     />
                   </div>
 
@@ -666,16 +797,7 @@ export default function ArtisanApplyPage() {
                       value={formData.typeOfArt}
                       onChange={(e) => handleInputChange('typeOfArt', e.target.value)}
                       required
-                      style={{
-                        width: '100%',
-                        padding: '0.85rem 1rem',
-                        borderRadius: '8px',
-                        border: '1.5px solid var(--soft-gold-line)',
-                        fontSize: '0.95rem',
-                        outline: 'none',
-                        color: '#241A15',
-                        background: '#FFFFFF',
-                      }}
+                      className="artisan-input-field"
                     >
                       <option value="">Select Craft / শিল্পের ধরন</option>
                       {CRAFT_TYPES.map((c) => (
@@ -686,7 +808,7 @@ export default function ArtisanApplyPage() {
                 </div>
 
                 {/* PHONE & EMAIL */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="artisan-form-grid-2">
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
                       MOBILE NUMBER: / ফোন নম্বর: <span style={{ color: '#7A2331' }}>*</span>
@@ -698,14 +820,17 @@ export default function ArtisanApplyPage() {
                       borderRadius: '8px',
                       overflow: 'hidden',
                       background: '#FFFFFF',
+                      width: '100%',
+                      boxSizing: 'border-box',
                     }}>
                       <span style={{
-                        padding: '0.82rem 0.85rem',
+                        padding: '0.85rem 0.85rem',
                         background: '#FAF7F2',
                         borderRight: '1px solid var(--soft-gold-line)',
                         fontSize: '0.92rem',
                         fontWeight: 700,
                         color: '#7A2331',
+                        flexShrink: 0,
                       }}>
                         +91
                       </span>
@@ -720,11 +845,12 @@ export default function ArtisanApplyPage() {
                         required
                         style={{
                           flex: 1,
-                          padding: '0.82rem 0.95rem',
+                          padding: '0.85rem 0.95rem',
                           border: 'none',
                           outline: 'none',
-                          fontSize: '0.98rem',
+                          fontSize: '1rem',
                           color: '#241A15',
+                          fontFamily: 'var(--font-nav)',
                         }}
                       />
                     </div>
@@ -740,16 +866,7 @@ export default function ArtisanApplyPage() {
                       onChange={(e) => handleInputChange('email', e.target.value)}
                       placeholder="e.g. artisan@gmail.com"
                       required
-                      style={{
-                        width: '100%',
-                        padding: '0.82rem 1rem',
-                        borderRadius: '8px',
-                        border: '1.5px solid var(--soft-gold-line)',
-                        fontSize: '0.98rem',
-                        outline: 'none',
-                        color: '#241A15',
-                        background: '#FFFFFF',
-                      }}
+                      className="artisan-input-field"
                     />
                   </div>
                 </div>
@@ -778,15 +895,7 @@ export default function ArtisanApplyPage() {
                     value={formData.answers.q1 || ''}
                     onChange={(e) => handleAnswerChange('q1', e.target.value)}
                     placeholder="Describe 3 qualities..."
-                    style={{
-                      width: '100%',
-                      padding: '0.85rem 1rem',
-                      borderRadius: '8px',
-                      border: '1.5px solid var(--soft-gold-line)',
-                      fontSize: '0.95rem',
-                      color: '#241A15',
-                      outline: 'none',
-                    }}
+                    className="artisan-input-field"
                   />
                 </div>
 
@@ -803,15 +912,7 @@ export default function ArtisanApplyPage() {
                     value={formData.answers.q2 || ''}
                     onChange={(e) => handleAnswerChange('q2', e.target.value)}
                     placeholder="Share any challenges you overcame..."
-                    style={{
-                      width: '100%',
-                      padding: '0.85rem 1rem',
-                      borderRadius: '8px',
-                      border: '1.5px solid var(--soft-gold-line)',
-                      fontSize: '0.95rem',
-                      color: '#241A15',
-                      outline: 'none',
-                    }}
+                    className="artisan-input-field"
                   />
                 </div>
 
@@ -828,15 +929,7 @@ export default function ArtisanApplyPage() {
                     value={formData.answers.q3 || ''}
                     onChange={(e) => handleAnswerChange('q3', e.target.value)}
                     placeholder="Share a lighthearted memory..."
-                    style={{
-                      width: '100%',
-                      padding: '0.85rem 1rem',
-                      borderRadius: '8px',
-                      border: '1.5px solid var(--soft-gold-line)',
-                      fontSize: '0.95rem',
-                      color: '#241A15',
-                      outline: 'none',
-                    }}
+                    className="artisan-input-field"
                   />
                 </div>
 
@@ -853,15 +946,7 @@ export default function ArtisanApplyPage() {
                     value={formData.answers.q4 || ''}
                     onChange={(e) => handleAnswerChange('q4', e.target.value)}
                     placeholder="Your dreams for your craft, family and atelier..."
-                    style={{
-                      width: '100%',
-                      padding: '0.85rem 1rem',
-                      borderRadius: '8px',
-                      border: '1.5px solid var(--soft-gold-line)',
-                      fontSize: '0.95rem',
-                      color: '#241A15',
-                      outline: 'none',
-                    }}
+                    className="artisan-input-field"
                   />
                 </div>
               </div>
@@ -889,15 +974,7 @@ export default function ArtisanApplyPage() {
                     value={formData.answers.q5 || ''}
                     onChange={(e) => handleAnswerChange('q5', e.target.value)}
                     placeholder="Your passion and beginnings..."
-                    style={{
-                      width: '100%',
-                      padding: '0.85rem 1rem',
-                      borderRadius: '8px',
-                      border: '1.5px solid var(--soft-gold-line)',
-                      fontSize: '0.95rem',
-                      color: '#241A15',
-                      outline: 'none',
-                    }}
+                    className="artisan-input-field"
                   />
                 </div>
 
@@ -907,22 +984,14 @@ export default function ArtisanApplyPage() {
                     6) Who taught you? Do you also now teach to others? (please specify who and where)
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                    আপনাকে কে শিখিয়েছেন? আপনি কি এখন অন্যদেরও শেখান? (যদি শেখান, তবে কে এবং কোথায়, তা উল্লেখ করুন)
+                    আপনাকে কে শিখিয়েছেন? আপনি কি এখন অন্যদেরও শেখান? (যদি শিখান, তবে কে এবং কোথায়, তা উল্লেখ করুন)
                   </p>
                   <textarea
                     rows={3}
                     value={formData.answers.q6 || ''}
                     onChange={(e) => handleAnswerChange('q6', e.target.value)}
                     placeholder="Master weavers, teachers, apprentices..."
-                    style={{
-                      width: '100%',
-                      padding: '0.85rem 1rem',
-                      borderRadius: '8px',
-                      border: '1.5px solid var(--soft-gold-line)',
-                      fontSize: '0.95rem',
-                      color: '#241A15',
-                      outline: 'none',
-                    }}
+                    className="artisan-input-field"
                   />
                 </div>
 
@@ -939,15 +1008,7 @@ export default function ArtisanApplyPage() {
                     value={formData.answers.q7 || ''}
                     onChange={(e) => handleAnswerChange('q7', e.target.value)}
                     placeholder="Years of practice, dedication, master techniques..."
-                    style={{
-                      width: '100%',
-                      padding: '0.85rem 1rem',
-                      borderRadius: '8px',
-                      border: '1.5px solid var(--soft-gold-line)',
-                      fontSize: '0.95rem',
-                      color: '#241A15',
-                      outline: 'none',
-                    }}
+                    className="artisan-input-field"
                   />
                 </div>
 
@@ -964,15 +1025,7 @@ export default function ArtisanApplyPage() {
                     value={formData.answers.q8 || ''}
                     onChange={(e) => handleAnswerChange('q8', e.target.value)}
                     placeholder="Mulberry silk, metallic zari, natural indigo dyes, teak wood..."
-                    style={{
-                      width: '100%',
-                      padding: '0.85rem 1rem',
-                      borderRadius: '8px',
-                      border: '1.5px solid var(--soft-gold-line)',
-                      fontSize: '0.95rem',
-                      color: '#241A15',
-                      outline: 'none',
-                    }}
+                    className="artisan-input-field"
                   />
                 </div>
               </div>
@@ -1000,15 +1053,7 @@ export default function ArtisanApplyPage() {
                     value={formData.answers.q9 || ''}
                     onChange={(e) => handleAnswerChange('q9', e.target.value)}
                     placeholder="Your joy and challenges..."
-                    style={{
-                      width: '100%',
-                      padding: '0.85rem 1rem',
-                      borderRadius: '8px',
-                      border: '1.5px solid var(--soft-gold-line)',
-                      fontSize: '0.95rem',
-                      color: '#241A15',
-                      outline: 'none',
-                    }}
+                    className="artisan-input-field"
                   />
                 </div>
 
@@ -1025,15 +1070,7 @@ export default function ArtisanApplyPage() {
                     value={formData.answers.q10 || ''}
                     onChange={(e) => handleAnswerChange('q10', e.target.value)}
                     placeholder="Temple architecture, nature, royal heritage..."
-                    style={{
-                      width: '100%',
-                      padding: '0.85rem 1rem',
-                      borderRadius: '8px',
-                      border: '1.5px solid var(--soft-gold-line)',
-                      fontSize: '0.95rem',
-                      color: '#241A15',
-                      outline: 'none',
-                    }}
+                    className="artisan-input-field"
                   />
                 </div>
 
@@ -1050,15 +1087,7 @@ export default function ArtisanApplyPage() {
                     value={formData.answers.q11 || ''}
                     onChange={(e) => handleAnswerChange('q11', e.target.value)}
                     placeholder="Setting up your own loom or workshop..."
-                    style={{
-                      width: '100%',
-                      padding: '0.85rem 1rem',
-                      borderRadius: '8px',
-                      border: '1.5px solid var(--soft-gold-line)',
-                      fontSize: '0.95rem',
-                      color: '#241A15',
-                      outline: 'none',
-                    }}
+                    className="artisan-input-field"
                   />
                 </div>
 
@@ -1075,15 +1104,7 @@ export default function ArtisanApplyPage() {
                     value={formData.answers.q12 || ''}
                     onChange={(e) => handleAnswerChange('q12', e.target.value)}
                     placeholder="Family roles in spinning, warping, embroidery..."
-                    style={{
-                      width: '100%',
-                      padding: '0.85rem 1rem',
-                      borderRadius: '8px',
-                      border: '1.5px solid var(--soft-gold-line)',
-                      fontSize: '0.95rem',
-                      color: '#241A15',
-                      outline: 'none',
-                    }}
+                    className="artisan-input-field"
                   />
                 </div>
 
@@ -1100,15 +1121,7 @@ export default function ArtisanApplyPage() {
                     value={formData.answers.q13 || ''}
                     onChange={(e) => handleAnswerChange('q13', e.target.value)}
                     placeholder="Patience, precision, heritage fidelity..."
-                    style={{
-                      width: '100%',
-                      padding: '0.85rem 1rem',
-                      borderRadius: '8px',
-                      border: '1.5px solid var(--soft-gold-line)',
-                      fontSize: '0.95rem',
-                      color: '#241A15',
-                      outline: 'none',
-                    }}
+                    className="artisan-input-field"
                   />
                 </div>
 
@@ -1125,15 +1138,7 @@ export default function ArtisanApplyPage() {
                     value={formData.answers.q14 || ''}
                     onChange={(e) => handleAnswerChange('q14', e.target.value)}
                     placeholder="Livelihoods, women empowerment, preservation..."
-                    style={{
-                      width: '100%',
-                      padding: '0.85rem 1rem',
-                      borderRadius: '8px',
-                      border: '1.5px solid var(--soft-gold-line)',
-                      fontSize: '0.95rem',
-                      color: '#241A15',
-                      outline: 'none',
-                    }}
+                    className="artisan-input-field"
                   />
                 </div>
 
@@ -1166,6 +1171,7 @@ export default function ArtisanApplyPage() {
                   fontSize: '0.87rem',
                   lineHeight: 1.6,
                   color: '#3E3029',
+                  boxSizing: 'border-box',
                 }}>
                   <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
                     <strong style={{ display: 'block', fontSize: '0.96rem', color: '#7A2331' }}>
@@ -1204,7 +1210,7 @@ export default function ArtisanApplyPage() {
                 </div>
 
                 {/* 2 COMPULSORY TICKS (CHECKBOXES) */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', background: '#FFFFFF', padding: '1rem 0' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', background: '#FFFFFF' }}>
                   
                   {/* TICK 1 */}
                   <label style={{
@@ -1217,6 +1223,7 @@ export default function ArtisanApplyPage() {
                     border: formData.agreedChildLabor ? '1.5px solid #7A2331' : '1.5px solid #E4D3AE',
                     background: formData.agreedChildLabor ? '#FAF7F2' : '#FFFFFF',
                     transition: 'all 150ms ease',
+                    boxSizing: 'border-box',
                   }}>
                     <input
                       type="checkbox"
@@ -1252,6 +1259,7 @@ export default function ArtisanApplyPage() {
                     border: formData.agreedInspection ? '1.5px solid #7A2331' : '1.5px solid #E4D3AE',
                     background: formData.agreedInspection ? '#FAF7F2' : '#FFFFFF',
                     transition: 'all 150ms ease',
+                    boxSizing: 'border-box',
                   }}>
                     <input
                       type="checkbox"
@@ -1278,7 +1286,7 @@ export default function ArtisanApplyPage() {
                 </div>
 
                 {/* SIGNATURE & DATE */}
-                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem', borderTop: '1px solid #F0E6D2', paddingTop: '1.25rem' }}>
+                <div className="artisan-form-grid-sig" style={{ borderTop: '1px solid #F0E6D2', paddingTop: '1.25rem' }}>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
                       SIGNATURE OF ARTISAN / শিল্পীর পূর্ণ স্বাক্ষর: <span style={{ color: '#7A2331' }}>*</span>
@@ -1289,15 +1297,8 @@ export default function ArtisanApplyPage() {
                       onChange={(e) => handleInputChange('signature', e.target.value)}
                       placeholder="Type your full legal name as signature"
                       required
+                      className="artisan-input-field"
                       style={{
-                        width: '100%',
-                        padding: '0.82rem 1rem',
-                        borderRadius: '8px',
-                        border: '1.5px solid var(--soft-gold-line)',
-                        fontSize: '0.98rem',
-                        outline: 'none',
-                        color: '#241A15',
-                        background: '#FFFFFF',
                         fontFamily: "'Courier New', monospace",
                         fontWeight: 700,
                       }}
@@ -1312,12 +1313,8 @@ export default function ArtisanApplyPage() {
                       type="text"
                       value={formData.signatureDate}
                       readOnly
+                      className="artisan-input-field"
                       style={{
-                        width: '100%',
-                        padding: '0.82rem 1rem',
-                        borderRadius: '8px',
-                        border: '1.5px solid #EAE2D5',
-                        fontSize: '0.95rem',
                         background: '#FAF7F2',
                         color: '#6A5A50',
                       }}
@@ -1347,6 +1344,8 @@ export default function ArtisanApplyPage() {
                     gap: '0.65rem',
                     cursor: formData.agreedChildLabor && formData.agreedInspection && !loading ? 'pointer' : 'not-allowed',
                     transition: 'all 200ms ease',
+                    minHeight: '52px',
+                    boxSizing: 'border-box',
                     marginTop: '0.5rem',
                   }}
                 >
@@ -1367,14 +1366,7 @@ export default function ArtisanApplyPage() {
 
             {/* Stepper Navigation Buttons (Steps 1 to 4) */}
             {currentStep < 5 && (
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                borderTop: '1px solid #F0E6D2',
-                paddingTop: '1.75rem',
-                marginTop: '2rem',
-              }}>
+              <div className="artisan-nav-actions">
                 {currentStep > 1 ? (
                   <button
                     type="button"
@@ -1383,7 +1375,7 @@ export default function ArtisanApplyPage() {
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '0.5rem',
-                      padding: '0.8rem 1.6rem',
+                      padding: '0.85rem 1.6rem',
                       borderRadius: '8px',
                       background: '#FFFFFF',
                       border: '1.5px solid var(--soft-gold-line)',
@@ -1393,6 +1385,7 @@ export default function ArtisanApplyPage() {
                       textTransform: 'uppercase',
                       letterSpacing: '0.08em',
                       cursor: 'pointer',
+                      minHeight: '48px',
                     }}
                   >
                     <ArrowLeft style={{ width: 15, height: 15 }} />
@@ -1409,20 +1402,21 @@ export default function ArtisanApplyPage() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.5rem',
-                    padding: '0.85rem 2rem',
+                    padding: '0.9rem 2.25rem',
                     borderRadius: '8px',
                     background: '#7A2331',
                     border: 'none',
                     color: '#FFFFFF',
-                    fontSize: '0.9rem',
+                    fontSize: '0.92rem',
                     fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '0.1em',
                     cursor: 'pointer',
                     transition: 'all 200ms ease',
+                    minHeight: '48px',
                   }}
                 >
-                  {currentStep === 4 ? 'Proceed to Agreement &bull; চুক্তিতে যান' : 'Next &bull; পরবর্তী'}
+                  {currentStep === 4 ? 'Proceed to Agreement \u2022 চুক্তিতে যান' : 'Next \u2022 পরবর্তী'}
                   <ArrowRight style={{ width: 15, height: 15 }} />
                 </button>
               </div>
