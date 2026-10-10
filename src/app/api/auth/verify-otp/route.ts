@@ -15,7 +15,7 @@ export async function POST(req: Request) {
 
     if (!email || !otp) {
       return NextResponse.json(
-        { success: false, message: 'Email and OTP passcode are required.' },
+        { success: false, message: 'Email and OTP are required.' },
         { status: 400 }
       );
     }
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
 
     if (!verificationToken || !expiresAt) {
       return NextResponse.json(
-        { success: false, message: 'Missing verification session. Please request a new code.' },
+        { success: false, message: 'Missing OTP session. Please request a new OTP.' },
         { status: 400 }
       );
     }
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     // Check expiry
     if (Date.now() > Number(expiresAt)) {
       return NextResponse.json(
-        { success: false, message: 'Passcode has expired. Please request a fresh one.' },
+        { success: false, message: 'OTP has expired. Please request a fresh OTP.' },
         { status: 400 }
       );
     }
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
 
     if (tokenBuf.length !== expectedBuf.length || !crypto.timingSafeEqual(tokenBuf, expectedBuf)) {
       return NextResponse.json(
-        { success: false, message: 'Invalid 6-digit passcode. Please check and try again.' },
+        { success: false, message: 'Invalid 6-digit OTP. Please check and try again.' },
         { status: 400 }
       );
     }
@@ -76,7 +76,7 @@ export async function POST(req: Request) {
   } catch (err: any) {
     console.error('Verify OTP API Exception:', err);
     return NextResponse.json(
-      { success: false, message: err?.message || 'Error verifying OTP passcode.' },
+      { success: false, message: err?.message || 'Error verifying OTP.' },
       { status: 500 }
     );
   }

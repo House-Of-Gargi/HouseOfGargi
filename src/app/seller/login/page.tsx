@@ -32,6 +32,14 @@ function IndiaFlagIcon({ width = 24, height = 16 }: { width?: number; height?: n
   );
 }
 
+function sanitizeOtpError(msg?: string): string {
+  if (!msg) return 'The OTP code is invalid or has expired. Please request a new OTP.';
+  return msg
+    .replace(/token has expired or is invalid/gi, 'OTP has expired or is invalid')
+    .replace(/token/gi, 'OTP')
+    .replace(/OTP/gi, 'OTP');
+}
+
 export default function SellerLoginPage() {
   const [authMode, setAuthMode] = useState<'phone' | 'email'>('phone');
   const [phone, setPhone] = useState('+91 ');
@@ -121,7 +129,7 @@ export default function SellerLoginPage() {
           otpInputRefs.current[0]?.focus();
         }, 100);
       } catch (err: any) {
-        setError(err.message || 'Unable to send OTP. Please check your phone number and try again.');
+        setError(sanitizeOtpError(err?.message));
       } finally {
         setLoading(false);
       }
@@ -149,8 +157,13 @@ export default function SellerLoginPage() {
           throw new Error(data.message || 'Failed to dispatch artisan access code.');
         }
 
-        setVerificationToken(data.verificationToken || '');
-        setExpiresAt(data.expiresAt || Date.now() + 10 * 60 * 1000);
+        const newToken = data.verificationToken || '';
+        const newExpires = data.expiresAt || Date.now() + 10 * 60 * 1000;
+        setVerificationToken(newToken);
+        setExpiresAt(newExpires);
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('artisan_active_otp', JSON.stringify({ token: newToken, expiresAt: newExpires, email: cleanEmail }));
+        }
         setVerifiedTarget(cleanEmail);
         setStep(2);
         setTimeout(() => {
@@ -158,7 +171,7 @@ export default function SellerLoginPage() {
         }, 100);
       } catch (err: any) {
         console.error('Artisan Send OTP Error:', err);
-        setError(err.message || 'Unable to send email OTP code. Please check your email and try again.');
+        setError(sanitizeOtpError(err?.message));
       } finally {
         setLoading(false);
       }
@@ -241,15 +254,18 @@ export default function SellerLoginPage() {
         // Verify Email OTP via Resend verification or Supabase fallback
         const cleanEmail = (verifiedTarget || email).trim().toLowerCase();
 
-        if (verificationToken) {
+        const activeToken = verificationToken || (typeof window !== 'undefined' ? JSON.parse(sessionStorage.getItem('artisan_active_otp') || '{}').token : '');
+        const activeExpires = expiresAt || (typeof window !== 'undefined' ? JSON.parse(sessionStorage.getItem('artisan_active_otp') || '{}').expiresAt : 0);
+
+        if (activeToken) {
           const res = await fetch('/api/auth/verify-otp', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               email: cleanEmail,
               otp: fullOtp,
-              verificationToken,
-              expiresAt,
+              verificationToken: activeToken,
+              expiresAt: activeExpires,
               role: 'artisan',
             }),
           });
@@ -257,7 +273,7 @@ export default function SellerLoginPage() {
           const data = await res.json();
 
           if (!res.ok || !data.success) {
-            throw new Error(data.message || 'The OTP code is invalid or has expired.');
+            throw new Error(data.message || 'The OTP is invalid or has expired.');
           }
 
           if (typeof window !== 'undefined') {
@@ -301,7 +317,7 @@ export default function SellerLoginPage() {
         }
       }
     } catch (err: any) {
-      setError(err.message || 'The OTP code is invalid or has expired. Please request a new code.');
+      setError(sanitizeOtpError(err?.message));
     } finally {
       setLoading(false);
     }

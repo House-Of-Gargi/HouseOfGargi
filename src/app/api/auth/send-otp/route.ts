@@ -67,10 +67,10 @@ export async function POST(req: Request) {
                   <tr>
                     <td style="padding: 36px 32px 28px 32px; text-align: center;">
                       <p style="margin: 0 0 20px; font-size: 15px; line-height: 1.65; color: #4A3C33;">
-                        Welcome to House Of Gargi Artisan Portal. Use the 6-digit one-time access passcode below to complete your sign-in:
+                        Welcome to House Of Gargi Artisan Portal. Use the 6-digit one-time OTP below to complete your sign-in:
                       </p>
 
-                      <!-- Passcode Card -->
+                      <!-- OTP Card -->
                       <div style="background-color: #FAF7F2; border: 1.5px solid #D4AF37; border-radius: 6px; padding: 18px 28px; margin: 12px auto 24px; display: inline-block;">
                         <span style="font-size: 34px; font-weight: 700; letter-spacing: 10px; color: #7A2331; font-family: 'Courier New', Courier, monospace; display: inline-block; padding-left: 10px;">
                           ${otp}
@@ -90,7 +90,7 @@ export async function POST(req: Request) {
                         Sent securely from <strong style="color: #241A15;">noreply@gargisaha.com</strong>
                       </p>
                       <p style="margin: 4px 0 0; font-size: 11.5px;">
-                        If you did not request this passcode, you can safely disregard this email.
+                        If you did not request this OTP, you can safely disregard this email.
                       </p>
                       <p style="margin: 10px 0 0; font-size: 11px; letter-spacing: 0.08em;">
                         <a href="https://gargisaha.com" style="color: #B88E18; text-decoration: none; font-weight: 600;">www.gargisaha.com</a>
@@ -141,10 +141,10 @@ export async function POST(req: Request) {
                   <tr>
                     <td style="padding: 36px 32px 28px 32px; text-align: center;">
                       <p style="margin: 0 0 20px; font-size: 15px; line-height: 1.65; color: #4A3C33;">
-                        Welcome to House of Gargi. Use the 6-digit one-time access passcode below to complete your sign-in:
+                        Welcome to House of Gargi. Use the 6-digit one-time OTP below to complete your sign-in:
                       </p>
 
-                      <!-- Passcode Card -->
+                      <!-- OTP Card -->
                       <div style="background-color: #FAF7F2; border: 1.5px solid #D4AF37; border-radius: 6px; padding: 18px 28px; margin: 12px auto 24px; display: inline-block;">
                         <span style="font-size: 34px; font-weight: 700; letter-spacing: 10px; color: #7A2331; font-family: 'Courier New', Courier, monospace; display: inline-block; padding-left: 10px;">
                           ${otp}
@@ -164,7 +164,7 @@ export async function POST(req: Request) {
                         Sent securely from <strong style="color: #241A15;">noreply@gargisaha.com</strong>
                       </p>
                       <p style="margin: 4px 0 0; font-size: 11.5px;">
-                        If you did not request this passcode, you can safely disregard this email.
+                        If you did not request this OTP, you can safely disregard this email.
                       </p>
                       <p style="margin: 10px 0 0; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;">
                         <a href="https://gargisaha.com" style="color: #B88E18; text-decoration: none; font-weight: 600;">www.gargisaha.com</a>
@@ -202,7 +202,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: 'Passcode sent successfully.',
+      message: 'OTP sent successfully.',
       verificationToken,
       expiresAt,
       resendId: resendData?.id,
