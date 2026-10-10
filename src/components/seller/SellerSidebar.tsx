@@ -5,11 +5,15 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { 
   LayoutDashboard, 
-  ShoppingBag, 
+  TrendingUp,
   Shirt, 
-  Layers, 
-  Sparkles,
+  PlusCircle,
+  Boxes,
+  ShoppingBag, 
   Truck, 
+  Wallet,
+  ShieldCheck,
+  UserCheck,
   ExternalLink,
   LogOut, 
   X, 
@@ -26,6 +30,7 @@ export interface SellerSidebarProps {
 
 export interface SellerNavItem {
   label: string;
+  bengaliLabel?: string;
   href: string;
   icon: React.ComponentType<{ style?: React.CSSProperties; className?: string }>;
   badge?: string;
@@ -34,30 +39,49 @@ export interface SellerNavItem {
 
 export interface SellerNavGroup {
   section: string;
+  bengaliSection?: string;
   items: SellerNavItem[];
 }
 
 const sellerNavGroups: SellerNavGroup[] = [
   {
     section: 'Overview',
+    bengaliSection: 'সারসংক্ষেপ',
     items: [
-      { label: 'Dashboard', href: '/seller', icon: LayoutDashboard },
-      { label: 'Live Orders', href: '/seller/orders', icon: ShoppingBag, badge: 'Live' },
+      { label: 'Dashboard', bengaliLabel: 'ড্যাশবোর্ড', href: '/seller', icon: LayoutDashboard },
+      { label: 'Performance Analytics', bengaliLabel: 'বিক্রয় তথ্য', href: '/seller/analytics', icon: TrendingUp },
     ],
   },
   {
-    section: 'Catalog & Atelier',
+    section: 'My Creations',
+    bengaliSection: 'আমার সৃষ্টি',
     items: [
-      { label: 'Master Catalog', href: '/seller/products', icon: Shirt },
-      { label: 'Saree & Loom Matrix', href: '/seller/products?tab=sarees', icon: Layers },
-      { label: 'Bespoke Orders', href: '/seller/orders?filter=bespoke', icon: Sparkles },
+      { label: 'My Products', bengaliLabel: 'আমার পণ্যতালিকা', href: '/seller/products', icon: Shirt },
+      { label: 'Add New Creation', bengaliLabel: 'নতুন সৃষ্টি যোগ করুন', href: '/seller/products/new', icon: PlusCircle },
+      { label: 'Inventory & Loom Stock', bengaliLabel: 'মজুত ও তাঁত সংখ্যা', href: '/seller/inventory', icon: Boxes, badge: 'Stock' },
     ],
   },
   {
-    section: 'Fulfillment & Store',
+    section: 'Orders & Dispatch',
+    bengaliSection: 'অর্ডার ও ডেলিভারি',
     items: [
-      { label: 'Dispatch Manifests', href: '/seller/orders?filter=dispatch', icon: Truck },
-      { label: 'Preview Boutique', href: '/', icon: ExternalLink, external: true },
+      { label: 'Assigned Orders', bengaliLabel: 'প্রেরিত অর্ডার', href: '/seller/orders', icon: ShoppingBag, badge: 'Live' },
+      { label: 'Dispatch Slips', bengaliLabel: 'চালান ও প্যাকিং', href: '/seller/orders?filter=dispatch', icon: Truck },
+    ],
+  },
+  {
+    section: 'Finances & Payouts',
+    bengaliSection: 'আয় ও লেনদেন',
+    items: [
+      { label: 'Earnings Ledger', bengaliLabel: 'অর্জিত আয়', href: '/seller/earnings', icon: Wallet },
+    ],
+  },
+  {
+    section: 'Ethical Lineage',
+    bengaliSection: 'পরিচয় ও নীতি',
+    items: [
+      { label: 'Child Labor Agreement', bengaliLabel: 'নীতিগত চুক্তি', href: '/seller/compliance', icon: ShieldCheck },
+      { label: 'Preview Boutique', bengaliLabel: 'দোকান দেখুন', href: '/', icon: ExternalLink, external: true },
     ],
   },
 ];
@@ -74,7 +98,6 @@ export function SellerSidebar({
   const [navigatingTo, setNavigatingTo] = useState<string | null>(null);
   const leaveTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Instant Eager Open on cursor enter
   const handleMouseEnter = () => {
     if (leaveTimerRef.current) {
       clearTimeout(leaveTimerRef.current);
@@ -83,7 +106,6 @@ export function SellerSidebar({
     setIsHovered(true);
   };
 
-  // 280ms Anti-Flicker Buffer on Exit before 700ms smooth cubic collapse
   const handleMouseLeave = () => {
     if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current);
     leaveTimerRef.current = setTimeout(() => {
@@ -101,211 +123,327 @@ export function SellerSidebar({
     setNavigatingTo(null);
   }, [pathname]);
 
-  const handleSignOut = async () => {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('artisan_session');
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('artisan_session');
+      }
+      router.push('/seller/login');
+    } catch {
+      router.push('/seller/login');
     }
-    await supabase.auth.signOut();
-    router.push('/seller/login');
   };
 
-  const renderNavItem = (item: SellerNavItem, isExpanded: boolean) => {
-    const Icon = item.icon;
-    const isActive = item.href === '/seller' 
-      ? pathname === '/seller' 
-      : !item.external && pathname.startsWith(item.href.split('?')[0]);
-    const isLoading = navigatingTo === item.href;
+  const isExpanded = isHovered;
 
-    const linkProps = item.external
-      ? { href: item.href, target: '_blank', rel: 'noopener noreferrer' }
-      : { 
-          href: item.href, 
-          prefetch: true,
-          onClick: () => {
-            if (!isActive) setNavigatingTo(item.href);
-            onMobileClose?.();
-          }
-        };
-
-    return (
-      <Link
-        key={item.href}
-        {...linkProps}
-        className={`seller-nav-item ${isActive ? 'active' : 'inactive'}`}
-        title={!isExpanded ? item.label : undefined}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', minWidth: 0, gap: isExpanded ? '0.75rem' : 0, justifyContent: isExpanded ? 'flex-start' : 'center', flex: 1 }}>
-          {isLoading ? (
-            <Loader2 style={{ width: 18, height: 18, color: 'var(--maharani-maroon)', animation: 'spin 1s linear infinite', flexShrink: 0 }} />
-          ) : (
-            <Icon style={{ width: 18, height: 18, flexShrink: 0, color: isActive ? 'var(--maharani-maroon)' : 'var(--stone-taupe)' }} />
-          )}
-
-          <span className="seller-nav-label" style={{ fontWeight: isActive ? 700 : 500 }}>
-            {item.label}
-          </span>
+  const renderNavGroup = (group: SellerNavGroup, isDrawer = false) => (
+    <div key={group.section} style={{ marginBottom: '1.25rem' }}>
+      {(isExpanded || isDrawer) && (
+        <div
+          style={{
+            padding: '0 0.85rem',
+            marginBottom: '0.4rem',
+            fontSize: '0.66rem',
+            fontWeight: 700,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: 'var(--stone-taupe)',
+            fontFamily: 'var(--font-nav)',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          {group.section} {group.bengaliSection ? '• ' + group.bengaliSection : ''}
         </div>
+      )}
+      <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '3px' }}>
+        {group.items.map((item) => {
+          const isActive = pathname === item.href;
+          const isPending = navigatingTo === item.href;
+          const Icon = item.icon;
 
-        {isExpanded && (
-          <div style={{ flexShrink: 0 }}>
-            {isLoading ? (
-              <span className="seller-nav-badge" style={{ animation: 'pulse 1.5s infinite' }}>Opening...</span>
-            ) : item.badge ? (
-              <span className="seller-nav-badge">{item.badge}</span>
-            ) : null}
-          </div>
-        )}
-      </Link>
-    );
-  };
+          return (
+            <li key={item.href} style={{ position: 'relative' }}>
+              <Link
+                href={item.href}
+                target={item.external ? '_blank' : undefined}
+                rel={item.external ? 'noopener noreferrer' : undefined}
+                onClick={() => {
+                  if (!item.external && !isActive) setNavigatingTo(item.href);
+                  if (isDrawer && onMobileClose) onMobileClose();
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  minHeight: '42px',
+                  borderRadius: '2px',
+                  textDecoration: 'none',
+                  position: 'relative',
+                  padding: (isExpanded || isDrawer) ? '0 0.85rem' : '0',
+                  justifyContent: (isExpanded || isDrawer) ? 'flex-start' : 'center',
+                  backgroundColor: isActive ? '#F7F1E5' : 'transparent',
+                  color: isActive ? 'var(--maharani-maroon)' : 'var(--ink-brown)',
+                  borderLeft: isActive ? '3px solid var(--maharani-maroon)' : '3px solid transparent',
+                  transition: 'background-color 0.18s ease, color 0.18s ease',
+                }}
+                title={!isExpanded && !isDrawer ? item.label : undefined}
+              >
+                <div
+                  style={{
+                    width: 40,
+                    height: 40,
+                    flexShrink: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {isPending ? (
+                    <Loader2 style={{ width: 18, height: 18, animation: 'spin 1s linear infinite', color: 'var(--maharani-maroon)' }} />
+                  ) : (
+                    <Icon style={{ width: 18, height: 18, color: isActive ? 'var(--maharani-maroon)' : 'var(--stone-taupe)' }} />
+                  )}
+                </div>
+
+                {(isExpanded || isDrawer) && (
+                  <div
+                    style={{
+                      flex: 1,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      marginLeft: '0.45rem',
+                      minWidth: 0,
+                    }}
+                  >
+                    <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-nav)',
+                          fontSize: '0.84rem',
+                          fontWeight: isActive ? 600 : 500,
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {item.label}
+                      </span>
+                      {item.bengaliLabel && (
+                        <span style={{ fontSize: '0.68rem', color: 'var(--stone-taupe)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {item.bengaliLabel}
+                        </span>
+                      )}
+                    </div>
+                    {item.badge && (
+                      <span
+                        style={{
+                          fontSize: '0.62rem',
+                          fontWeight: 700,
+                          padding: '0.15rem 0.45rem',
+                          borderRadius: '2px',
+                          backgroundColor: 'var(--maharani-maroon)',
+                          color: '#FFFFFF',
+                          letterSpacing: '0.04em',
+                          textTransform: 'uppercase',
+                        }}
+                      >
+                        {item.badge}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
 
   return (
     <>
-      {/* ======================================================== */}
-      {/* 1. DESKTOP HOVER-SLIDE RAIL (hidden below lg)            */}
-      {/* ======================================================== */}
       <aside
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className={`seller-sidebar-desktop ${isHovered ? 'expanded' : 'collapsed'}`}
+        className="seller-sidebar-desktop"
+        style={{
+          width: isExpanded ? '264px' : '72px',
+          boxShadow: isExpanded ? '0 10px 30px rgba(43,31,24,0.12)' : 'none',
+          transition: 'width 0.28s cubic-bezier(0.16, 1, 0.3, 1)',
+        }}
       >
-        {/* Brand Header */}
-        <div className="seller-sidebar-header">
-          <Link href="/seller" style={{ display: 'flex', alignItems: 'center', width: '100%', textDecoration: 'none' }}>
-            {/* Collapsed Store Initial Avatar */}
-            {!isHovered ? (
-              <div className="seller-avatar-mini">
-                HG
-              </div>
-            ) : (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                <div className="seller-avatar-mini" style={{ margin: 0 }}>
-                  HG
-                </div>
-                <div className="seller-brand-text">
-                  <span className="brand-name">{sellerName}</span>
-                  <span className="brand-sub">Seller Atelier</span>
-                </div>
-              </div>
-            )}
-          </Link>
-        </div>
-
-        {/* Nav Sections */}
-        <nav className="seller-nav-scroll">
-          {sellerNavGroups.map((group) => (
-            <div key={group.section} style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-              {isHovered && (
-                <div className="seller-nav-group-title">
-                  {group.section}
-                </div>
-              )}
-              {group.items.map((item) => renderNavItem(item, isHovered))}
-            </div>
-          ))}
-        </nav>
-
-        {/* Profile / Sign Out Footer */}
-        <div className="seller-sidebar-footer">
-          <div style={{ width: 36, height: 36, borderRadius: '4px', background: 'var(--maharani-maroon)', border: '1px solid var(--gargi-gold)', color: 'var(--ivory-silk)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-nav)', fontWeight: 700, fontSize: '0.8rem', flexShrink: 0, margin: !isHovered ? '0 auto' : '0' }}>
+        <div
+          style={{
+            height: '74px',
+            borderBottom: '1px solid var(--soft-gold-line)',
+            display: 'flex',
+            alignItems: 'center',
+            padding: isExpanded ? '0 1rem' : '0',
+            justifyContent: isExpanded ? 'flex-start' : 'center',
+            backgroundColor: '#FAF7F2',
+          }}
+        >
+          <div
+            style={{
+              width: 38,
+              height: 38,
+              borderRadius: 2,
+              background: 'var(--maharani-maroon)',
+              border: '1px solid var(--gargi-gold)',
+              color: 'var(--ivory-silk)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 700,
+              fontSize: '0.92rem',
+              flexShrink: 0,
+            }}
+          >
             HG
           </div>
 
-          {isHovered && (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flex: 1, minWidth: 0, marginLeft: '0.75rem' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-                <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--ink-brown)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {sellerPhone}
-                </span>
-                <span style={{ fontSize: '0.78rem', fontFamily: 'var(--font-nav)', color: 'var(--peacock-teal)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                  Verified Artisan
-                </span>
+          {isExpanded && (
+            <div style={{ marginLeft: '0.75rem', minWidth: 0 }}>
+              <div style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, fontSize: '0.98rem', color: 'var(--maharani-maroon)' }}>
+                HOUSE OF GARGI
               </div>
-
-              <button
-                type="button"
-                onClick={handleSignOut}
-                title="Sign Out"
-                style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '0.35rem', borderRadius: '4px', color: 'var(--stone-taupe)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--maharani-maroon)')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--stone-taupe)')}
-              >
-                <LogOut style={{ width: 16, height: 16 }} />
-              </button>
+              <div style={{ fontSize: '0.65rem', letterSpacing: '0.06em', color: 'var(--stone-taupe)', textTransform: 'uppercase', fontWeight: 600 }}>
+                Artisan Atelier • কারিগর
+              </div>
             </div>
           )}
         </div>
-      </aside>
 
-      {/* ======================================================== */}
-      {/* 2. MOBILE DRAWER (< lg)                                  */}
-      {/* ======================================================== */}
-      {isMobileOpen && (
-        <div
-          className="seller-mobile-drawer-backdrop"
-          onClick={onMobileClose}
-        />
-      )}
-
-      <aside
-        className="seller-mobile-drawer"
-        style={{
-          transform: isMobileOpen ? 'translateX(0)' : 'translateX(-100%)',
-        }}
-      >
-        <div>
-          {/* Mobile Drawer Header */}
-          <div style={{ padding: '1.25rem 1rem', borderBottom: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-              <div className="seller-avatar-mini" style={{ margin: 0 }}>
-                HG
-              </div>
-              <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, fontSize: '1.1rem', color: 'var(--ink-brown)' }}>
-                {sellerName}
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={onMobileClose}
-              style={{ background: 'transparent', border: '1px solid var(--soft-gold-line)', borderRadius: '2px', padding: '0.35rem', cursor: 'pointer', color: 'var(--stone-taupe)' }}
-            >
-              <X style={{ width: 18, height: 18 }} />
-            </button>
-          </div>
-
-          {/* Mobile Nav */}
-          <nav style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            {sellerNavGroups.map((group) => (
-              <div key={group.section} style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                <div className="seller-nav-group-title">
-                  {group.section}
-                </div>
-                {group.items.map((item) => renderNavItem(item, true))}
-              </div>
-            ))}
-          </nav>
+        <div style={{ flex: 1, overflowY: 'auto', padding: '1rem 0.45rem', minHeight: 0 }}>
+          {sellerNavGroups.map((g) => renderNavGroup(g))}
         </div>
 
-        {/* Mobile Profile Footer */}
-        <div style={{ padding: '1rem', borderTop: '1px solid var(--soft-gold-line)', background: 'var(--ivory-silk)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--ink-brown)' }}>
-              {sellerPhone}
-            </span>
-            <span style={{ fontSize: '0.78rem', fontFamily: 'var(--font-nav)', color: 'var(--peacock-teal)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Verified Artisan
-            </span>
-          </div>
+        <div
+          style={{
+            borderTop: '1px solid var(--soft-gold-line)',
+            padding: isExpanded ? '0.85rem 1rem' : '0.85rem 0',
+            backgroundColor: '#FAF7F2',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: isExpanded ? 'stretch' : 'center',
+            gap: '0.5rem',
+          }}
+        >
+          {isExpanded && (
+            <div style={{ minWidth: 0, marginBottom: '0.25rem' }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--ink-brown)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {sellerName}
+              </div>
+              <div style={{ fontSize: '0.68rem', color: 'var(--stone-taupe)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {sellerPhone}
+              </div>
+            </div>
+          )}
+
           <button
             type="button"
-            onClick={handleSignOut}
-            style={{ background: '#FFF1F2', color: 'var(--maharani-maroon)', border: '1px solid #FECDD3', borderRadius: '2px', padding: '0.55rem 0.95rem', fontSize: '0.82rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+            onClick={handleLogout}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: isExpanded ? 'flex-start' : 'center',
+              gap: '0.5rem',
+              width: '100%',
+              padding: '0.5rem',
+              borderRadius: 2,
+              background: 'transparent',
+              border: 'none',
+              color: 'var(--maharani-maroon)',
+              cursor: 'pointer',
+              fontSize: '0.78rem',
+              fontWeight: 600,
+            }}
+            title="প্রস্থান / Sign Out"
           >
-            <LogOut style={{ width: 15, height: 15 }} />
-            Sign Out
+            <LogOut style={{ width: 16, height: 16 }} />
+            {isExpanded && <span>প্রস্থান / Sign Out</span>}
           </button>
         </div>
       </aside>
+
+      {/* Mobile Drawer */}
+      {isMobileOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 50,
+            backgroundColor: 'rgba(35, 24, 18, 0.65)',
+            backdropFilter: 'blur(3px)',
+            display: 'flex',
+          }}
+          onClick={onMobileClose}
+        >
+          <div
+            style={{
+              width: '280px',
+              maxWidth: '85vw',
+              height: '100%',
+              backgroundColor: '#FFFFFF',
+              borderRight: '1px solid var(--soft-gold-line)',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              style={{
+                height: 64,
+                borderBottom: '1px solid var(--soft-gold-line)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0 1.25rem',
+                backgroundColor: '#FAF7F2',
+              }}
+            >
+              <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, color: 'var(--maharani-maroon)', fontSize: '0.95rem' }}>
+                ARTISAN ATELIER
+              </span>
+              <button onClick={onMobileClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-brown)' }}>
+                <X style={{ width: 20, height: 20 }} />
+              </button>
+            </div>
+
+            <div style={{ flex: 1, overflowY: 'auto', padding: '1rem 0.6rem' }}>
+              {sellerNavGroups.map((g) => renderNavGroup(g, true))}
+            </div>
+
+            <div style={{ padding: '1rem', borderTop: '1px solid var(--soft-gold-line)', backgroundColor: '#FAF7F2' }}>
+              <button
+                type="button"
+                onClick={handleLogout}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  width: '100%',
+                  padding: '0.6rem',
+                  border: '1px solid var(--maharani-maroon)',
+                  borderRadius: 2,
+                  background: 'transparent',
+                  color: 'var(--maharani-maroon)',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                  fontSize: '0.85rem',
+                  justifyContent: 'center',
+                }}
+              >
+                <LogOut style={{ width: 16, height: 16 }} />
+                <span>প্রস্থান / Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
