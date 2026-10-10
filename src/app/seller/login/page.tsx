@@ -4,7 +4,7 @@ import { useState, FormEvent, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabaseClient';
-import { ArrowRight, ArrowLeft, Phone, Mail, Lock, Loader2, Check } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Phone, Mail, Loader2, Check } from 'lucide-react';
 import '@/seller.css';
 
 function IndiaFlagIcon({ width = 24, height = 16 }: { width?: number; height?: number }) {
@@ -36,13 +36,11 @@ export default function SellerLoginPage() {
   const [authMode, setAuthMode] = useState<'phone' | 'email'>('phone');
   const [phone, setPhone] = useState('+91 ');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [otpValues, setOtpValues] = useState<string[]>(['', '', '', '', '', '']);
   const [step, setStep] = useState<1 | 2>(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
-  const [verifiedPhone, setVerifiedPhone] = useState('');
+  const [verifiedTarget, setVerifiedTarget] = useState('');
   const [rememberMe, setRememberMe] = useState(true);
   const router = useRouter();
 
@@ -62,31 +60,11 @@ export default function SellerLoginPage() {
 
   // Extract raw 10 digits
   const getCleanPhoneDigits = (raw: string) => {
-    const numbersOnly = raw.replace(/D/g, '');
+    const numbersOnly = raw.replace(/\D/g, '');
     if (numbersOnly.length === 10) return numbersOnly;
     if (numbersOnly.length >= 12 && numbersOnly.startsWith('91')) return numbersOnly.slice(2, 12);
     if (numbersOnly.length > 10) return numbersOnly.slice(-10);
     return numbersOnly;
-  };
-
-  const handlePhoneInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputVal = e.target.value;
-    const digits = inputVal.replace(/\D/g, '');
-    
-    // Always preserve +91 prefix
-    let cleanDigits = digits;
-    if (cleanDigits.startsWith('91')) {
-      cleanDigits = cleanDigits.slice(2);
-    }
-    cleanDigits = cleanDigits.slice(0, 10);
-
-    if (cleanDigits.length > 5) {
-      setPhone(`+91 ${cleanDigits.slice(0, 5)} ${cleanDigits.slice(5)}`);
-    } else if (cleanDigits.length > 0) {
-      setPhone(`+91 ${cleanDigits}`);
-    } else {
-      setPhone('+91 ');
-    }
   };
 
   const switchToPhone = () => {
@@ -106,86 +84,75 @@ export default function SellerLoginPage() {
     }, 50);
   };
 
-  // 1. Phone OTP Dispatch
-  const handleSendPhoneOtp = async (e: FormEvent) => {
+  // 1. Send OTP (Supports both Phone and Email)
+  const handleSendOtp = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
-    const targetDigits = getCleanPhoneDigits(phone);
 
-    if (targetDigits.length < 10) {
-      setError('Please enter your 10-digit mobile number.');
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      let { error: otpErr } = await supabase.auth.signInWithOtp({
-        phone: `+91${targetDigits}`,
-      });
-
-      if (otpErr && otpErr.message?.toLowerCase().includes('format')) {
-        const intlRes = await supabase.auth.signInWithOtp({
-          phone: targetDigits,
-        });
-        otpErr = intlRes.error;
+    if (authMode === 'phone') {
+      const targetDigits = getCleanPhoneDigits(phone);
+      if (targetDigits.length < 10) {
+        setError('Please enter your 10-digit mobile number.');
+        return;
       }
 
-      if (otpErr) throw otpErr;
+      setLoading(true);
 
-      setVerifiedPhone(targetDigits);
-      setStep(2);
-      setTimeout(() => {
-        otpInputRefs.current[0]?.focus();
-      }, 100);
-    } catch (err: any) {
-      setError(err.message || 'Unable to send OTP. Please check your phone number and try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // 2. Email Sign In
-  const handleEmailSignIn = async (e: FormEvent) => {
-    e.preventDefault();
-    setError('');
-
-    if (!email.trim() || !email.includes('@')) {
-      setError('Please enter a valid email address.');
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      if (password.trim()) {
-        const { data, error: signInErr } = await supabase.auth.signInWithPassword({
-          email: email.trim(),
-          password: password.trim(),
+      try {
+        let { error: otpErr } = await supabase.auth.signInWithOtp({
+          phone: `+91${targetDigits}`,
         });
 
-        if (signInErr) throw signInErr;
-
-        if (data?.session) {
-          router.push('/seller');
-          return;
+        if (otpErr && otpErr.message?.toLowerCase().includes('format')) {
+          const fallbackRes = await supabase.auth.signInWithOtp({
+            phone: targetDigits,
+          });
+          otpErr = fallbackRes.error;
         }
-      } else {
-        // Send OTP/Magic link to email if password is not provided
-        const { error: otpErr } = await supabase.auth.signInWithOtp({
-          email: email.trim(),
-        });
+
         if (otpErr) throw otpErr;
-        setSuccessMsg('A login link has been sent to your email. Please check your inbox.');
+
+        setVerifiedTarget(`+91 ${targetDigits}`);
+        setStep(2);
+        setTimeout(() => {
+          otpInputRefs.current[0]?.focus();
+        }, 100);
+      } catch (err: any) {
+        setError(err.message || 'Unable to send OTP. Please check your phone number and try again.');
+      } finally {
+        setLoading(false);
       }
-    } catch (err: any) {
-      setError(err.message || 'Sign in failed. Please check your email and password.');
-    } finally {
-      setLoading(false);
+    } else {
+      // Email OTP dispatch
+      const cleanEmail = email.trim();
+      if (!cleanEmail || !cleanEmail.includes('@')) {
+        setError('Please enter a valid email address.');
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const { error: otpErr } = await supabase.auth.signInWithOtp({
+          email: cleanEmail,
+        });
+
+        if (otpErr) throw otpErr;
+
+        setVerifiedTarget(cleanEmail);
+        setStep(2);
+        setTimeout(() => {
+          otpInputRefs.current[0]?.focus();
+        }, 100);
+      } catch (err: any) {
+        setError(err.message || 'Unable to send email OTP code. Please check your email and try again.');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
-  // OTP Handling
+  // OTP Input navigation
   const handleOtpChange = (index: number, value: string) => {
     const sanitized = value.replace(/\D/g, '');
     
@@ -216,10 +183,10 @@ export default function SellerLoginPage() {
     }
   };
 
+  // 2. Verify OTP (Handles both SMS OTP and Email OTP)
   const handleVerifyOtp = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
-    const targetDigits = getCleanPhoneDigits(verifiedPhone || phone);
     const fullOtp = otpValues.join('');
 
     if (fullOtp.length < 6) {
@@ -230,39 +197,61 @@ export default function SellerLoginPage() {
     setLoading(true);
 
     try {
-      let { data, error: verifyErr } = await supabase.auth.verifyOtp({
-        phone: `+91${targetDigits}`,
-        token: fullOtp,
-        type: 'sms',
-      });
-
-      if (verifyErr && verifyErr.message?.toLowerCase().includes('invalid')) {
-        const fallbackRes = await supabase.auth.verifyOtp({
-          phone: targetDigits,
+      if (authMode === 'phone') {
+        const targetDigits = getCleanPhoneDigits(verifiedTarget || phone);
+        let { data, error: verifyErr } = await supabase.auth.verifyOtp({
+          phone: `+91${targetDigits}`,
           token: fullOtp,
           type: 'sms',
         });
-        if (!fallbackRes.error) {
-          data = fallbackRes.data;
-          verifyErr = null;
+
+        if (verifyErr && verifyErr.message?.toLowerCase().includes('invalid')) {
+          const fallbackRes = await supabase.auth.verifyOtp({
+            phone: targetDigits,
+            token: fullOtp,
+            type: 'sms',
+          });
+          if (!fallbackRes.error) {
+            data = fallbackRes.data;
+            verifyErr = null;
+          }
+        }
+
+        if (verifyErr) throw verifyErr;
+
+        if (data?.session) {
+          router.push('/seller');
+        } else {
+          setError('Verification succeeded, but could not start session.');
+        }
+      } else {
+        // Verify Email OTP
+        const cleanEmail = verifiedTarget || email.trim();
+        const { data, error: verifyErr } = await supabase.auth.verifyOtp({
+          email: cleanEmail,
+          token: fullOtp,
+          type: 'email',
+        });
+
+        if (verifyErr) throw verifyErr;
+
+        if (data?.session) {
+          router.push('/seller');
+        } else {
+          setError('Verification succeeded, but could not start session.');
         }
       }
-
-      if (verifyErr) throw verifyErr;
-
-      if (data?.session) {
-        router.push('/seller');
-      } else {
-        setError('Verification succeeded, but could not start session.');
-      }
     } catch (err: any) {
-      setError(err.message || 'The OTP code is invalid or has expired. Please request a new one.');
+      setError(err.message || 'The OTP code is invalid or has expired. Please request a new code.');
     } finally {
       setLoading(false);
     }
   };
 
   const phoneDigits = getCleanPhoneDigits(phone);
+  const isSendButtonDisabled = authMode === 'phone' 
+    ? phoneDigits.length < 10 || loading 
+    : !email.trim() || !email.includes('@') || loading;
 
   return (
     <div style={{
@@ -272,22 +261,21 @@ export default function SellerLoginPage() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundImage: `url('/images/artisan-batik-card.jpg')`,
+      backgroundImage: `url('/images/atelier-lineart-bg.jpg')`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
       backgroundColor: '#FBF6EE',
       fontFamily: 'var(--font-sans)',
       color: 'var(--ink-brown)',
       padding: '2.5rem 1rem',
       overflowX: 'hidden',
     }}>
-      {/* Background Soft Ivory Overlay */}
+      {/* Background Soft Ivory Overlay (Line art remains clearly visible) */}
       <div style={{
         position: 'absolute',
         inset: 0,
-        backgroundColor: 'rgba(251, 246, 238, 0.88)',
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)',
+        backgroundColor: 'rgba(251, 246, 238, 0.28)',
         pointerEvents: 'none',
         zIndex: 1,
       }} />
@@ -403,28 +391,29 @@ export default function SellerLoginPage() {
           justifyContent: 'space-between',
           padding: '0 0.25rem',
         }}>
-          {/* Official Logo + Artisan Portal Badge */}
+          {/* Bigger Logo + Subtle Artisan Portal Badge */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
             <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }} aria-label="House of Gargi">
               <img
                 src="/logo-images/new-logo.png"
                 alt="House of Gargi"
-                style={{ height: '46px', width: 'auto', display: 'block' }}
+                style={{ height: '66px', width: 'auto', display: 'block' }}
               />
             </Link>
 
             <span style={{
-              fontSize: '0.82rem',
+              fontSize: '0.72rem',
               fontFamily: 'var(--font-nav)',
               fontWeight: 700,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
-              padding: '0.4rem 0.9rem',
-              borderRadius: '8px',
+              padding: '0.26rem 0.65rem',
+              borderRadius: '9999px',
               background: '#FFFFFF',
               color: '#7A2331',
-              border: '1.2px solid var(--soft-gold-line)',
-              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+              border: '1px solid var(--soft-gold-line)',
+              boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
+              lineHeight: 1,
             }}>
               Artisan Portal
             </span>
@@ -488,7 +477,7 @@ export default function SellerLoginPage() {
                 margin: '0.45rem 0 1.5rem 0',
                 lineHeight: 1.5,
               }}>
-                Sign in to manage your products, orders, and artisan account.
+                Sign in with OTP to manage your products, orders, and artisan account.
               </p>
             </div>
 
@@ -507,335 +496,208 @@ export default function SellerLoginPage() {
               </div>
             )}
 
-            {successMsg && (
-              <div style={{
-                background: '#F0FDF4',
-                border: '1px solid #BBF7D0',
-                color: '#166534',
-                padding: '0.75rem 0.95rem',
-                borderRadius: '8px',
-                fontSize: '0.9rem',
-                marginBottom: '1.25rem',
-                fontWeight: 500,
-              }}>
-                {successMsg}
-              </div>
-            )}
-
             {step === 1 ? (
-              <>
-                {/* ── PHONE LOGIN MODE ── */}
+              <form onSubmit={handleSendOtp} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
                 {authMode === 'phone' ? (
-                  <form onSubmit={handleSendPhoneOtp} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
-                    <div>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                        <label style={{
-                          fontSize: '0.82rem',
-                          fontFamily: 'var(--font-nav)',
-                          fontWeight: 700,
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.12em',
-                          color: 'var(--stone-taupe)',
-                        }}>
-                          Phone Number
-                        </label>
-                        <button
-                          type="button"
-                          onClick={switchToEmail}
-                          className="auth-switch-btn"
-                        >
-                          <Mail style={{ width: 14, height: 14 }} />
-                          Use Email Address
-                        </button>
-                      </div>
-
-                      {/* Phone Input with Indian Flag & Auto +91 */}
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        border: '1.5px solid var(--soft-gold-line)',
-                        borderRadius: '9px',
-                        background: '#FFFFFF',
-                        overflow: 'hidden',
-                        transition: 'border-color 150ms ease',
-                      }}>
-                        <div style={{
-                          padding: '0.85rem 0.95rem',
-                          background: 'var(--ivory-silk)',
-                          borderRight: '1.5px solid var(--soft-gold-line)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.45rem',
-                          flexShrink: 0,
-                        }}>
-                          <IndiaFlagIcon width={24} height={16} />
-                          <span style={{
-                            fontSize: '0.95rem',
-                            fontFamily: 'var(--font-nav)',
-                            fontWeight: 700,
-                            color: '#7A2331',
-                          }}>
-                            +91
-                          </span>
-                        </div>
-                        <input
-                          ref={phoneInputRef}
-                          type="tel"
-                          value={phone.replace(/^\+91\s*/, '')}
-                          onChange={(e) => {
-                            const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
-                            setPhone(`+91 ${digits}`);
-                          }}
-                          placeholder="Enter 10-digit number"
-                          autoFocus
-                          required
-                          style={{
-                            flex: 1,
-                            padding: '0.85rem 1rem',
-                            border: 'none',
-                            outline: 'none',
-                            fontSize: '1.05rem',
-                            color: 'var(--ink-brown)',
-                            fontWeight: 600,
-                            letterSpacing: '0.05em',
-                          }}
-                        />
-                      </div>
-                    </div>
-
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      fontSize: '0.9rem',
-                    }}>
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', cursor: 'pointer', color: 'var(--stone-taupe)' }}>
-                        <input
-                          type="checkbox"
-                          checked={rememberMe}
-                          onChange={(e) => setRememberMe(e.target.checked)}
-                          style={{ accentColor: '#7A2331', cursor: 'pointer' }}
-                        />
-                        <span>Remember me</span>
-                      </label>
-
-                      <a
-                        href="mailto:support@houseofgargi.com"
-                        style={{ color: '#7A2331', textDecoration: 'none', fontWeight: 600 }}
-                      >
-                        Need help?
-                      </a>
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={loading || phoneDigits.length < 10}
-                      style={{
-                        width: '100%',
-                        background: phoneDigits.length === 10 ? '#7A2331' : '#D6D3D1',
-                        color: '#FFFFFF',
-                        border: 'none',
-                        borderRadius: '9px',
-                        padding: '1rem',
-                        fontSize: '0.98rem',
-                        fontFamily: 'var(--font-nav)',
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.12em',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '0.5rem',
-                        cursor: phoneDigits.length === 10 && !loading ? 'pointer' : 'not-allowed',
-                        transition: 'all 200ms ease',
-                      }}
-                    >
-                      {loading ? (
-                        <>
-                          <Loader2 style={{ width: 16, height: 16, animation: 'spin 1s linear infinite' }} />
-                          Sending Code...
-                        </>
-                      ) : (
-                        <>
-                          Send OTP
-                          <ArrowRight style={{ width: 15, height: 15 }} />
-                        </>
-                      )}
-                    </button>
-                  </form>
-                ) : (
-                  /* ── EMAIL LOGIN MODE ── */
-                  <form onSubmit={handleEmailSignIn} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
-                    <div>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                        <label style={{
-                          fontSize: '0.82rem',
-                          fontFamily: 'var(--font-nav)',
-                          fontWeight: 700,
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.12em',
-                          color: 'var(--stone-taupe)',
-                        }}>
-                          Email Address
-                        </label>
-                        <button
-                          type="button"
-                          onClick={switchToPhone}
-                          className="auth-switch-btn"
-                        >
-                          <Phone style={{ width: 14, height: 14 }} />
-                          Use Phone Number
-                        </button>
-                      </div>
-
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        border: '1.5px solid var(--soft-gold-line)',
-                        borderRadius: '9px',
-                        background: '#FFFFFF',
-                        overflow: 'hidden',
-                      }}>
-                        <div style={{
-                          padding: '0.85rem 0.95rem',
-                          background: 'var(--ivory-silk)',
-                          borderRight: '1.5px solid var(--soft-gold-line)',
-                          display: 'flex',
-                          alignItems: 'center',
-                        }}>
-                          <Mail style={{ width: 16, height: 16, color: '#7A2331' }} />
-                        </div>
-                        <input
-                          ref={emailInputRef}
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          placeholder="artisan@houseofgargi.com"
-                          autoFocus
-                          required
-                          style={{
-                            flex: 1,
-                            padding: '0.85rem 1rem',
-                            border: 'none',
-                            outline: 'none',
-                            fontSize: '1rem',
-                            color: 'var(--ink-brown)',
-                            fontWeight: 500,
-                          }}
-                        />
-                      </div>
-                    </div>
-
-                    <div>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                       <label style={{
-                        display: 'block',
                         fontSize: '0.82rem',
                         fontFamily: 'var(--font-nav)',
                         fontWeight: 700,
                         textTransform: 'uppercase',
                         letterSpacing: '0.12em',
                         color: 'var(--stone-taupe)',
-                        marginBottom: '0.5rem',
                       }}>
-                        Password
+                        Phone Number
                       </label>
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        border: '1.5px solid var(--soft-gold-line)',
-                        borderRadius: '9px',
-                        background: '#FFFFFF',
-                        overflow: 'hidden',
-                      }}>
-                        <div style={{
-                          padding: '0.85rem 0.95rem',
-                          background: 'var(--ivory-silk)',
-                          borderRight: '1.5px solid var(--soft-gold-line)',
-                          display: 'flex',
-                          alignItems: 'center',
-                        }}>
-                          <Lock style={{ width: 16, height: 16, color: '#7A2331' }} />
-                        </div>
-                        <input
-                          type="password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          placeholder="Enter your password"
-                          required
-                          style={{
-                            flex: 1,
-                            padding: '0.85rem 1rem',
-                            border: 'none',
-                            outline: 'none',
-                            fontSize: '1rem',
-                            color: 'var(--ink-brown)',
-                          }}
-                        />
-                      </div>
+                      <button
+                        type="button"
+                        onClick={switchToEmail}
+                        className="auth-switch-btn"
+                      >
+                        <Mail style={{ width: 14, height: 14 }} />
+                        Use Email Address
+                      </button>
                     </div>
 
+                    {/* Phone Input with Indian Flag & Auto +91 */}
                     <div style={{
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'space-between',
-                      fontSize: '0.9rem',
+                      border: '1.5px solid var(--soft-gold-line)',
+                      borderRadius: '9px',
+                      background: '#FFFFFF',
+                      overflow: 'hidden',
+                      transition: 'border-color 150ms ease',
                     }}>
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', cursor: 'pointer', color: 'var(--stone-taupe)' }}>
-                        <input
-                          type="checkbox"
-                          checked={rememberMe}
-                          onChange={(e) => setRememberMe(e.target.checked)}
-                          style={{ accentColor: '#7A2331', cursor: 'pointer' }}
-                        />
-                        <span>Remember me</span>
-                      </label>
-
-                      <a
-                        href="mailto:support@houseofgargi.com"
-                        style={{ color: '#7A2331', textDecoration: 'none', fontWeight: 600 }}
-                      >
-                        Need help?
-                      </a>
+                      <div style={{
+                        padding: '0.85rem 0.95rem',
+                        background: 'var(--ivory-silk)',
+                        borderRight: '1.5px solid var(--soft-gold-line)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.45rem',
+                        flexShrink: 0,
+                      }}>
+                        <IndiaFlagIcon width={24} height={16} />
+                        <span style={{
+                          fontSize: '0.95rem',
+                          fontFamily: 'var(--font-nav)',
+                          fontWeight: 700,
+                          color: '#7A2331',
+                        }}>
+                          +91
+                        </span>
+                      </div>
+                      <input
+                        ref={phoneInputRef}
+                        type="tel"
+                        value={phone.replace(/^\+91\s*/, '')}
+                        onChange={(e) => {
+                          const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+                          setPhone(`+91 ${digits}`);
+                        }}
+                        placeholder="Enter 10-digit number"
+                        autoFocus
+                        required
+                        style={{
+                          flex: 1,
+                          padding: '0.85rem 1rem',
+                          border: 'none',
+                          outline: 'none',
+                          fontSize: '1.05rem',
+                          color: 'var(--ink-brown)',
+                          fontWeight: 600,
+                          letterSpacing: '0.05em',
+                        }}
+                      />
                     </div>
-
-                    <button
-                      type="submit"
-                      disabled={loading || !email.trim() || !password.trim()}
-                      style={{
-                        width: '100%',
-                        background: email.trim() && password.trim() ? '#7A2331' : '#D6D3D1',
-                        color: '#FFFFFF',
-                        border: 'none',
-                        borderRadius: '9px',
-                        padding: '1rem',
-                        fontSize: '0.98rem',
+                  </div>
+                ) : (
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                      <label style={{
+                        fontSize: '0.82rem',
                         fontFamily: 'var(--font-nav)',
                         fontWeight: 700,
                         textTransform: 'uppercase',
                         letterSpacing: '0.12em',
+                        color: 'var(--stone-taupe)',
+                      }}>
+                        Email Address
+                      </label>
+                      <button
+                        type="button"
+                        onClick={switchToPhone}
+                        className="auth-switch-btn"
+                      >
+                        <Phone style={{ width: 14, height: 14 }} />
+                        Use Phone Number
+                      </button>
+                    </div>
+
+                    {/* Email Input */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      border: '1.5px solid var(--soft-gold-line)',
+                      borderRadius: '9px',
+                      background: '#FFFFFF',
+                      overflow: 'hidden',
+                    }}>
+                      <div style={{
+                        padding: '0.85rem 0.95rem',
+                        background: 'var(--ivory-silk)',
+                        borderRight: '1.5px solid var(--soft-gold-line)',
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '0.5rem',
-                        cursor: email.trim() && password.trim() && !loading ? 'pointer' : 'not-allowed',
-                        transition: 'all 200ms ease',
-                      }}
-                    >
-                      {loading ? (
-                        <>
-                          <Loader2 style={{ width: 16, height: 16, animation: 'spin 1s linear infinite' }} />
-                          Signing In...
-                        </>
-                      ) : (
-                        <>
-                          Sign In
-                          <ArrowRight style={{ width: 15, height: 15 }} />
-                        </>
-                      )}
-                    </button>
-                  </form>
+                        color: '#7A2331',
+                      }}>
+                        <Mail style={{ width: 17, height: 17 }} />
+                      </div>
+                      <input
+                        ref={emailInputRef}
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="artisan@houseofgargi.com"
+                        autoFocus
+                        required
+                        style={{
+                          flex: 1,
+                          padding: '0.85rem 1rem',
+                          border: 'none',
+                          outline: 'none',
+                          fontSize: '1.05rem',
+                          color: 'var(--ink-brown)',
+                          fontWeight: 500,
+                        }}
+                      />
+                    </div>
+                  </div>
                 )}
-              </>
+
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  fontSize: '0.9rem',
+                }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', cursor: 'pointer', color: 'var(--stone-taupe)' }}>
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                      style={{ accentColor: '#7A2331', cursor: 'pointer' }}
+                    />
+                    <span>Remember me</span>
+                  </label>
+
+                  <a
+                    href="mailto:artisan@houseofgargi.com"
+                    style={{ color: '#7A2331', textDecoration: 'none', fontWeight: 600 }}
+                  >
+                    Need help?
+                  </a>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSendButtonDisabled}
+                  style={{
+                    width: '100%',
+                    background: !isSendButtonDisabled ? '#7A2331' : '#D6D3D1',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    borderRadius: '9px',
+                    padding: '1rem',
+                    fontSize: '0.98rem',
+                    fontFamily: 'var(--font-nav)',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.12em',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.5rem',
+                    cursor: !isSendButtonDisabled ? 'pointer' : 'not-allowed',
+                    transition: 'all 200ms ease',
+                  }}
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 style={{ width: 16, height: 16, animation: 'spin 1s linear infinite' }} />
+                      Sending OTP...
+                    </>
+                  ) : (
+                    <>
+                      Send OTP
+                      <ArrowRight style={{ width: 15, height: 15 }} />
+                    </>
+                  )}
+                </button>
+              </form>
             ) : (
               /* ── STEP 2: ENTER OTP ── */
               <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
@@ -864,7 +726,7 @@ export default function SellerLoginPage() {
                         textDecoration: 'underline',
                       }}
                     >
-                      Change Number
+                      {authMode === 'phone' ? 'Change Phone' : 'Change Email'}
                     </button>
                   </div>
 
@@ -886,7 +748,7 @@ export default function SellerLoginPage() {
                   </div>
 
                   <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--stone-taupe)', marginTop: '0.5rem', textAlign: 'center', fontWeight: 500 }}>
-                    Code sent to +91 {verifiedPhone}
+                    Code sent to {verifiedTarget}
                   </span>
                 </div>
 
