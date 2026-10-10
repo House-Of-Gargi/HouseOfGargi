@@ -2,8 +2,7 @@
 
 import { useState, FormEvent, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Sparkles, ArrowRight, ShieldCheck, ArrowLeft, Mail, RefreshCw } from 'lucide-react';
-import { supabase } from '@/lib/supabaseClient';
+import { Mail, ArrowLeft, RefreshCw, X } from 'lucide-react';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
 
 interface CustomerLoginModalProps {
@@ -84,7 +83,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
     // Fast bypass for test/demo evaluation
     if (cleanEmail === 'patron@gargisaha.com' || cleanEmail === 'demo@gargisaha.com') {
       setStep(2);
-      setResendCountdown(45);
+      setResendCountdown(30);
       setLoading(false);
       return;
     }
@@ -99,16 +98,16 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Failed to dispatch 6-digit access code.');
+        throw new Error(data.message || 'Failed to send login code.');
       }
 
       setVerificationToken(data.verificationToken || '');
       setExpiresAt(data.expiresAt || Date.now() + 10 * 60 * 1000);
       setStep(2);
-      setResendCountdown(45);
+      setResendCountdown(30);
     } catch (err: any) {
       console.warn('Send OTP Notice:', err?.message);
-      setError(err?.message || 'Could not send passcode. Please verify your email or use demo code 123456.');
+      setError(err?.message || 'Could not send code. Please try again or use demo code 123456.');
     } finally {
       setLoading(false);
     }
@@ -130,15 +129,15 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Failed to resend access code.');
+        throw new Error(data.message || 'Failed to resend code.');
       }
 
       setVerificationToken(data.verificationToken || '');
       setExpiresAt(data.expiresAt || Date.now() + 10 * 60 * 1000);
-      setResendCountdown(45);
+      setResendCountdown(30);
     } catch (err: any) {
       console.warn('Resend OTP Notice:', err?.message);
-      setError(err?.message || 'Failed to resend passcode. Please try again or use demo code 123456.');
+      setError(err?.message || 'Failed to resend code. Please try again or use demo code 123456.');
     } finally {
       setResending(false);
     }
@@ -151,7 +150,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
     const cleanOtp = otp.trim();
 
     if (cleanOtp.length < 6) {
-      setError('Please enter the complete 6-digit access code.');
+      setError('Please enter the 6-digit code.');
       return;
     }
 
@@ -159,7 +158,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
 
     // Demo evaluation bypass
     if (cleanOtp === '123456' || cleanEmail === 'patron@gargisaha.com') {
-      login(cleanEmail, 'Valued Patron');
+      login(cleanEmail, 'Customer');
       handleClose();
       if (redirectAfterLogin) {
         router.push(redirectAfterLogin);
@@ -183,16 +182,16 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Invalid passcode.');
+        throw new Error(data.message || 'Invalid code.');
       }
 
-      const patronName = data.user?.name || cleanEmail.split('@')[0] || 'Valued Patron';
-      login(cleanEmail, patronName, data.user?.id);
+      const userName = data.user?.name || cleanEmail.split('@')[0] || 'Customer';
+      login(cleanEmail, userName, data.user?.id);
       handleClose();
       if (redirectAfterLogin) router.push(redirectAfterLogin);
     } catch (err: any) {
       console.warn('Verify OTP Notice:', err?.message);
-      setError(err?.message || 'Invalid or expired passcode. Check your email or use demo code 123456.');
+      setError(err?.message || 'Invalid or expired code. Please try again or use demo code 123456.');
     } finally {
       setLoading(false);
     }
@@ -209,54 +208,71 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
       aria-labelledby="customer-modal-title"
     >
       <div className="customer-modal-card">
+        {/* Close Button */}
         <button 
           onClick={handleClose}
           className="customer-modal-close"
           aria-label="Close dialog"
         >
-          &times;
+          <X size={18} />
         </button>
 
-        {/* Outline Crest Icon */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '14px',
-          marginBottom: '14px',
-        }}>
-          <div style={{
-            flex: 1,
-            height: '1px',
-            background: 'linear-gradient(90deg, transparent, rgba(184, 142, 24, 0.45))',
-          }} />
-          <Sparkles size={22} strokeWidth={1.3} style={{ color: 'var(--maharani-maroon)' }} />
-          <div style={{
-            flex: 1,
-            height: '1px',
-            background: 'linear-gradient(270deg, transparent, rgba(184, 142, 24, 0.45))',
-          }} />
+        {/* Clean Brand Logo */}
+        <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+          <img 
+            src="/logo-images/new-logo.png" 
+            alt="House of Gargi" 
+            style={{ 
+              height: '42px', 
+              width: 'auto', 
+              display: 'inline-block',
+              objectFit: 'contain'
+            }} 
+          />
         </div>
 
-        <div className="customer-modal-tag">House of Gargi • Atelier Access</div>
+        {/* Clear, Minimal Header */}
         <h2 id="customer-modal-title" className="customer-modal-title">
-          {step === 1 ? 'Patron Email Access' : 'Enter 6-Digit Passcode'}
+          {step === 1 ? 'Sign In' : 'Enter Code'}
         </h2>
+        
         <p className="customer-modal-subtitle">
-          {step === 1 
-            ? 'Enter your email address to receive an instant 6-digit access code from noreply@gargisaha.com.' 
-            : `We sent a 6-digit one-time access code to ${email}`}
+          {step === 1 ? (
+            'Enter your email to receive a 6-digit login code.'
+          ) : (
+            <span style={{ display: 'inline-block' }}>
+              Code sent to <strong style={{ color: 'var(--ink-brown)', fontWeight: 600 }}>{email}</strong>
+              <button 
+                type="button" 
+                onClick={() => { setStep(1); setError(''); }}
+                style={{ 
+                  background: 'none', 
+                  border: 'none', 
+                  color: 'var(--maharani-maroon)', 
+                  fontSize: '13px', 
+                  fontWeight: 600, 
+                  cursor: 'pointer',
+                  marginLeft: '8px',
+                  textDecoration: 'underline',
+                  padding: 0
+                }}
+              >
+                Change
+              </button>
+            </span>
+          )}
         </p>
 
+        {/* Error Alert */}
         {error && (
           <div style={{
             background: 'rgba(122, 35, 49, 0.08)',
-            border: '1px solid rgba(122, 35, 49, 0.25)',
+            border: '1px solid rgba(122, 35, 49, 0.22)',
             color: 'var(--maharani-maroon)',
-            padding: '11px 16px',
-            borderRadius: '6px',
-            marginBottom: '18px',
-            fontSize: '13.5px',
+            padding: '10px 14px',
+            borderRadius: '8px',
+            marginBottom: '16px',
+            fontSize: '13px',
             fontWeight: 500,
             textAlign: 'center'
           }}>
@@ -266,15 +282,12 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
 
         {step === 1 ? (
           <form onSubmit={handleSendOtp}>
-            <div style={{ marginBottom: '6px' }}>
+            <div style={{ marginBottom: '18px' }}>
               <label style={{ 
                 display: 'block', 
-                marginBottom: '8px', 
+                marginBottom: '6px', 
                 fontSize: '13px', 
-                fontFamily: 'var(--font-nav)', 
-                letterSpacing: '0.08em', 
                 fontWeight: 600, 
-                textTransform: 'uppercase', 
                 color: 'var(--ink-brown)' 
               }}>
                 Email Address
@@ -285,18 +298,17 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center', 
-                  padding: '0 14px', 
-                  color: 'var(--gargi-gold)',
-                  borderRight: '1px solid rgba(228, 211, 174, 0.6)'
+                  padding: '0 12px', 
+                  color: '#8C7A6B',
                 }}>
-                  <Mail size={17} strokeWidth={1.5} />
+                  <Mail size={18} strokeWidth={1.6} />
                 </span>
                 <input 
                   type="email" 
                   autoFocus
                   value={email} 
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="patron@gargisaha.com"
+                  placeholder="name@example.com"
                   className="customer-modal-input"
                   required
                 />
@@ -308,53 +320,35 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
               className="customer-modal-btn" 
               disabled={loading || !email.includes('@')}
             >
-              {loading ? 'Sending 6-Digit Passcode...' : 'Send One-Time Passcode →'}
+              {loading ? 'Sending Code...' : 'Send Code'}
             </button>
 
-            {/* Quick Demo Email Fill Helper */}
-            <button 
-              type="button" 
-              onClick={handleQuickFillEmail} 
-              className="customer-modal-quickfill"
-            >
-              <Sparkles size={14} style={{ color: 'var(--gargi-gold)' }} />
-              Quick Demo Email: <strong>patron@gargisaha.com</strong>
-            </button>
+            {/* Subtle, Minimal Demo Helper */}
+            <div style={{ textAlign: 'center', marginTop: '14px' }}>
+              <button 
+                type="button" 
+                onClick={handleQuickFillEmail} 
+                className="customer-modal-quickfill-link"
+              >
+                Fill demo email (patron@gargisaha.com)
+              </button>
+            </div>
           </form>
         ) : (
           <form onSubmit={handleVerifyOtp}>
-            <div style={{ marginBottom: '6px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                <label style={{ 
-                  fontSize: '13px', 
-                  fontFamily: 'var(--font-nav)', 
-                  letterSpacing: '0.08em', 
-                  fontWeight: 600, 
-                  textTransform: 'uppercase', 
-                  color: 'var(--ink-brown)' 
-                }}>
-                  6-Digit Passcode
-                </label>
-                <button 
-                  type="button" 
-                  onClick={() => { setStep(1); setError(''); }}
-                  style={{ 
-                    background: 'none', 
-                    border: 'none', 
-                    color: 'var(--gargi-gold)', 
-                    fontSize: '12.5px', 
-                    fontWeight: 600, 
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px'
-                  }}
-                >
-                  <ArrowLeft size={13} /> Change Email
-                </button>
-              </div>
+            <div style={{ marginBottom: '18px' }}>
+              <label style={{ 
+                display: 'block', 
+                textAlign: 'center',
+                marginBottom: '10px', 
+                fontSize: '13px', 
+                fontWeight: 600, 
+                color: 'var(--ink-brown)' 
+              }}>
+                6-Digit Verification Code
+              </label>
 
-              <div className="customer-modal-input-wrap">
+              <div className="customer-modal-input-wrap" style={{ padding: '2px 0' }}>
                 <input 
                   ref={otpInputRef}
                   type="text" 
@@ -363,18 +357,24 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
                   maxLength={6}
                   value={otp} 
                   onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                  placeholder="123456"
-                  style={{ textAlign: 'center', letterSpacing: '8px', fontSize: '22px', fontWeight: 700 }}
+                  placeholder="······"
+                  style={{ 
+                    textAlign: 'center', 
+                    letterSpacing: '12px', 
+                    fontSize: '22px', 
+                    fontWeight: 700,
+                    padding: '10px 14px'
+                  }}
                   className="customer-modal-input"
                   required
                 />
               </div>
 
-              {/* Resend Passcode Action with Countdown */}
-              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '12px', marginBottom: '8px' }}>
+              {/* Resend Action */}
+              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '12px' }}>
                 {resendCountdown > 0 ? (
-                  <span style={{ fontSize: '12.5px', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)' }}>
-                    Resend passcode in <strong>{resendCountdown}s</strong>
+                  <span style={{ fontSize: '12.5px', color: '#8C7A6B' }}>
+                    Resend code in <strong>{resendCountdown}s</strong>
                   </span>
                 ) : (
                   <button
@@ -391,12 +391,11 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '5px',
-                      fontFamily: 'var(--font-nav)',
                       textDecoration: 'underline',
                     }}
                   >
-                    <RefreshCw size={13} className={resending ? 'animate-spin' : ''} />
-                    {resending ? 'Sending...' : 'Resend Passcode to Email'}
+                    <RefreshCw size={12} className={resending ? 'animate-spin' : ''} />
+                    {resending ? 'Sending...' : 'Resend Code'}
                   </button>
                 )}
               </div>
@@ -407,18 +406,19 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
               className="customer-modal-btn" 
               disabled={loading || otp.length < 6}
             >
-              {loading ? 'Verifying Passcode...' : 'Verify & Enter Atelier'}
+              {loading ? 'Verifying...' : 'Verify & Sign In'}
             </button>
 
-            {/* Quick Demo OTP Fill */}
-            <button 
-              type="button" 
-              onClick={handleQuickFillOtp} 
-              className="customer-modal-quickfill"
-            >
-              <ShieldCheck size={14} style={{ color: 'var(--peacock-teal)' }} />
-              Quick Demo Passcode: <strong>123456</strong>
-            </button>
+            {/* Subtle Demo Code Fill */}
+            <div style={{ textAlign: 'center', marginTop: '14px' }}>
+              <button 
+                type="button" 
+                onClick={handleQuickFillOtp} 
+                className="customer-modal-quickfill-link"
+              >
+                Use demo code (123456)
+              </button>
+            </div>
           </form>
         )}
       </div>
