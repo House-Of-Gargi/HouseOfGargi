@@ -70,7 +70,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
 
     setLoading(true);
 
-    // Bypass for patron/demo evaluation if entered
+    // Fast bypass for patron/demo evaluation if entered
     if (cleanEmail === 'patron@gargisaha.com' || cleanEmail === 'demo@gargisaha.com') {
       setStep(2);
       setResendCountdown(30);
@@ -146,7 +146,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
 
     setLoading(true);
 
-    // Bypass for demo code if typed
+    // Fast bypass for demo code if typed
     if (cleanOtp === '123456' || cleanEmail === 'patron@gargisaha.com') {
       login(cleanEmail, 'Customer');
       handleClose();
@@ -204,24 +204,19 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
           className="customer-modal-close"
           aria-label="Close dialog"
         >
-          <X size={18} />
+          <X size={20} />
         </button>
 
         {/* Big, Left-Aligned Brand Logo */}
-        <div style={{ textAlign: 'left', marginBottom: '20px' }}>
+        <div className="customer-modal-logo-wrap">
           <img 
             src="/logo-images/new-logo.png" 
             alt="House of Gargi" 
-            style={{ 
-              height: '56px', 
-              width: 'auto', 
-              display: 'block',
-              objectFit: 'contain'
-            }} 
+            className="customer-modal-logo"
           />
         </div>
 
-        {/* Clear, Minimal Header */}
+        {/* Typography-Guided Header */}
         <h2 id="customer-modal-title" className="customer-modal-title">
           {step === 1 ? 'Sign In' : 'Enter Code'}
         </h2>
@@ -235,17 +230,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
               <button 
                 type="button" 
                 onClick={() => { setStep(1); setError(''); }}
-                style={{ 
-                  background: 'none', 
-                  border: 'none', 
-                  color: 'var(--maharani-maroon)', 
-                  fontSize: '13px', 
-                  fontWeight: 600, 
-                  cursor: 'pointer',
-                  marginLeft: '8px',
-                  textDecoration: 'underline',
-                  padding: 0
-                }}
+                className="customer-modal-change-link"
               >
                 Change
               </button>
@@ -255,43 +240,21 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
 
         {/* Error Alert */}
         {error && (
-          <div style={{
-            background: 'rgba(122, 35, 49, 0.08)',
-            border: '1px solid rgba(122, 35, 49, 0.22)',
-            color: 'var(--maharani-maroon)',
-            padding: '10px 14px',
-            borderRadius: '8px',
-            marginBottom: '16px',
-            fontSize: '13px',
-            fontWeight: 500,
-            textAlign: 'left'
-          }}>
+          <div className="customer-modal-error">
             {error}
           </div>
         )}
 
         {step === 1 ? (
           <form onSubmit={handleSendOtp}>
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ 
-                display: 'block', 
-                marginBottom: '6px', 
-                fontSize: '13px', 
-                fontWeight: 600, 
-                color: 'var(--ink-brown)' 
-              }}>
+            <div style={{ marginBottom: '22px' }}>
+              <label className="customer-modal-label">
                 Email Address
               </label>
 
               <div className="customer-modal-input-wrap">
-                <span style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center', 
-                  padding: '0 12px', 
-                  color: '#8C7A6B',
-                }}>
-                  <Mail size={18} strokeWidth={1.6} />
+                <span className="customer-modal-input-icon">
+                  <Mail size={20} strokeWidth={1.6} />
                 </span>
                 <input 
                   type="email" 
@@ -315,18 +278,12 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
           </form>
         ) : (
           <form onSubmit={handleVerifyOtp}>
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ 
-                display: 'block', 
-                marginBottom: '8px', 
-                fontSize: '13px', 
-                fontWeight: 600, 
-                color: 'var(--ink-brown)' 
-              }}>
+            <div style={{ marginBottom: '22px' }}>
+              <label className="customer-modal-label">
                 6-Digit Verification Code
               </label>
 
-              <div className="customer-modal-input-wrap" style={{ padding: '2px 0' }}>
+              <div className="customer-modal-input-wrap">
                 <input 
                   ref={otpInputRef}
                   type="text" 
@@ -336,22 +293,15 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
                   value={otp} 
                   onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
                   placeholder="······"
-                  style={{ 
-                    textAlign: 'center', 
-                    letterSpacing: '12px', 
-                    fontSize: '22px', 
-                    fontWeight: 700,
-                    padding: '10px 14px'
-                  }}
-                  className="customer-modal-input"
+                  className="customer-modal-input customer-modal-otp-input"
                   required
                 />
               </div>
 
               {/* Resend Action */}
-              <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '12px' }}>
+              <div className="customer-modal-resend-wrap">
                 {resendCountdown > 0 ? (
-                  <span style={{ fontSize: '12.5px', color: '#8C7A6B' }}>
+                  <span className="customer-modal-resend-countdown">
                     Resend code in <strong>{resendCountdown}s</strong>
                   </span>
                 ) : (
@@ -359,20 +309,9 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
                     type="button"
                     onClick={handleResendOtp}
                     disabled={resending}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: 'var(--maharani-maroon)',
-                      fontSize: '12.5px',
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '5px',
-                      textDecoration: 'underline',
-                    }}
+                    className="customer-modal-resend-btn"
                   >
-                    <RefreshCw size={12} className={resending ? 'animate-spin' : ''} />
+                    <RefreshCw size={13} className={resending ? 'animate-spin' : ''} />
                     {resending ? 'Sending...' : 'Resend Code'}
                   </button>
                 )}
