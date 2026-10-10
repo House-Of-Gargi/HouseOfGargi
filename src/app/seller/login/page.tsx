@@ -60,10 +60,51 @@ export default function SellerLoginPage() {
 
   useEffect(() => {
     const checkCurrentSession = async () => {
+      // If user came specifically to re-authenticate or log out, do not auto-redirect
+      if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('logout') === 'true' || urlParams.get('switch') === 'true') {
+          return;
+        }
+      }
+
+      const stored = typeof window !== 'undefined'
+        ? (localStorage.getItem('auth_session') || localStorage.getItem('super_admin_session') || localStorage.getItem('admin_session') || localStorage.getItem('artisan_session'))
+        : null;
+
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (parsed?.role === 'super_admin') {
+            router.replace('/super-admin/dashboard');
+            return;
+          }
+          if (parsed?.role === 'admin') {
+            router.replace('/admin/dashboard');
+            return;
+          }
+          if (parsed?.role === 'artisan') {
+            router.replace('/artisan/dashboard');
+            return;
+          }
+        } catch {}
+      }
+
       const { data: { session } } = await supabase.auth.getSession();
-      const artisanSession = typeof window !== 'undefined' ? localStorage.getItem('artisan_session') : null;
-      if (session || artisanSession) {
-        router.push('/seller');
+      if (session?.user?.email) {
+        try {
+          const roleRes = await fetch(`/api/auth/role?email=${encodeURIComponent(session.user.email)}`);
+          const roleData = await roleRes.json();
+          if (roleData?.role === 'super_admin') {
+            router.replace('/super-admin/dashboard');
+          } else if (roleData?.role === 'admin') {
+            router.replace('/admin/dashboard');
+          } else {
+            router.replace('/artisan/dashboard');
+          }
+        } catch {
+          router.replace('/artisan/dashboard');
+        }
       }
     };
     checkCurrentSession();
@@ -209,7 +250,19 @@ export default function SellerLoginPage() {
     }
   };
 
-  // 2. Verify OTP (Handles both SMS OTP and Email OTP)
+  const routeUserByRole = (role: string) => {
+    if (role === 'super_admin') {
+      router.push('/super-admin/dashboard');
+    } else if (role === 'admin') {
+      router.push('/admin/dashboard');
+    } else if (role === 'artisan') {
+      router.push('/artisan/dashboard');
+    } else {
+      router.push('/');
+    }
+  };
+
+  // 2. Verify OTP (Handles both SMS OTP and Email OTP with Dynamic Role Redirection)
   const handleVerifyOtp = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
@@ -246,7 +299,33 @@ export default function SellerLoginPage() {
         if (verifyErr) throw verifyErr;
 
         if (data?.session) {
-          router.push('/seller');
+          const phoneIdentifier = data.session.user?.phone || data.session.user?.email || targetDigits;
+          let role = 'artisan';
+          try {
+            const roleRes = await fetch(`/api/auth/role?email=${encodeURIComponent(phoneIdentifier)}`);
+            const roleData = await roleRes.json();
+            if (roleData?.role) role = roleData.role;
+          } catch {}
+
+          const sessionPayload = {
+            email: data.session.user?.email || '',
+            phone: phoneIdentifier,
+            role,
+            timestamp: Date.now(),
+          };
+
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('auth_session', JSON.stringify(sessionPayload));
+            localStorage.setItem('artisan_session', JSON.stringify(sessionPayload));
+            if (role === 'admin' || role === 'super_admin') {
+              localStorage.setItem('admin_session', JSON.stringify(sessionPayload));
+            }
+            if (role === 'super_admin') {
+              localStorage.setItem('super_admin_session', JSON.stringify(sessionPayload));
+            }
+          }
+
+          routeUserByRole(role);
         } else {
           setError('Verification succeeded, but could not start session.');
         }
@@ -276,16 +355,27 @@ export default function SellerLoginPage() {
             throw new Error(data.message || 'The OTP is invalid or has expired.');
           }
 
+          const userRole = data.user?.role || 'artisan';
+          const sessionPayload = {
+            email: cleanEmail,
+            name: data.user?.name || cleanEmail.split('@')[0],
+            role: userRole,
+            token: activeToken,
+            timestamp: Date.now(),
+          };
+
           if (typeof window !== 'undefined') {
-            localStorage.setItem('artisan_session', JSON.stringify({
-              email: cleanEmail,
-              role: 'artisan',
-              token: verificationToken,
-              timestamp: Date.now(),
-            }));
+            localStorage.setItem('auth_session', JSON.stringify(sessionPayload));
+            localStorage.setItem('artisan_session', JSON.stringify(sessionPayload));
+            if (userRole === 'admin' || userRole === 'super_admin') {
+              localStorage.setItem('admin_session', JSON.stringify(sessionPayload));
+            }
+            if (userRole === 'super_admin') {
+              localStorage.setItem('super_admin_session', JSON.stringify(sessionPayload));
+            }
           }
 
-          router.push('/seller');
+          routeUserByRole(userRole);
           return;
         }
 
@@ -311,7 +401,31 @@ export default function SellerLoginPage() {
         if (verifyErr) throw verifyErr;
 
         if (data?.session) {
-          router.push('/seller');
+          let role = 'artisan';
+          try {
+            const roleRes = await fetch(`/api/auth/role?email=${encodeURIComponent(cleanEmail)}`);
+            const roleData = await roleRes.json();
+            if (roleData?.role) role = roleData.role;
+          } catch {}
+
+          const sessionPayload = {
+            email: cleanEmail,
+            role,
+            timestamp: Date.now(),
+          };
+
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('auth_session', JSON.stringify(sessionPayload));
+            localStorage.setItem('artisan_session', JSON.stringify(sessionPayload));
+            if (role === 'admin' || role === 'super_admin') {
+              localStorage.setItem('admin_session', JSON.stringify(sessionPayload));
+            }
+            if (role === 'super_admin') {
+              localStorage.setItem('super_admin_session', JSON.stringify(sessionPayload));
+            }
+          }
+
+          routeUserByRole(role);
         } else {
           setError('Verification succeeded, but could not start session.');
         }
