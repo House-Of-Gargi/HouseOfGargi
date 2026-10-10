@@ -41,6 +41,8 @@ export default function SellerLoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [verifiedTarget, setVerifiedTarget] = useState('');
+  const [verificationToken, setVerificationToken] = useState<string>('');
+  const [expiresAt, setExpiresAt] = useState<number>(0);
   const [rememberMe, setRememberMe] = useState(true);
   const router = useRouter();
 
@@ -51,7 +53,8 @@ export default function SellerLoginPage() {
   useEffect(() => {
     const checkCurrentSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
+      const artisanSession = typeof window !== 'undefined' ? localStorage.getItem('artisan_session') : null;
+      if (session || artisanSession) {
         router.push('/seller');
       }
     };
@@ -123,31 +126,38 @@ export default function SellerLoginPage() {
         setLoading(false);
       }
     } else {
-      // Email OTP dispatch
-      const cleanEmail = email.trim();
+      // Email OTP dispatch via Resend API (Same reliable engine as Customer Login)
+      const cleanEmail = email.trim().toLowerCase();
       if (!cleanEmail || !cleanEmail.includes('@')) {
         setError('Please enter a valid email address.');
         return;
       }
 
       setLoading(true);
+      setError('');
 
       try {
-        // Try resetPasswordForEmail first (allows using the separate "Reset Password" template in Supabase so it does NOT conflict with customer Magic Link)
-        let { error: resetErr } = await supabase.auth.resetPasswordForEmail(cleanEmail);
+        const res = await fetch('/api/auth/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: cleanEmail, portal: 'artisan' }),
+        });
 
-        if (resetErr) {
-          // If user not registered yet or reset password fails, fall back to signInWithOtp
-          const { error: signInErr } = await supabase.auth.signInWithOtp({ email: cleanEmail });
-          if (signInErr) throw (resetErr || signInErr);
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || 'Failed to dispatch artisan access code.');
         }
 
+        setVerificationToken(data.verificationToken || '');
+        setExpiresAt(data.expiresAt || Date.now() + 10 * 60 * 1000);
         setVerifiedTarget(cleanEmail);
         setStep(2);
         setTimeout(() => {
           otpInputRefs.current[0]?.focus();
         }, 100);
       } catch (err: any) {
+        console.error('Artisan Send OTP Error:', err);
         setError(err.message || 'Unable to send email OTP code. Please check your email and try again.');
       } finally {
         setLoading(false);
@@ -228,8 +238,42 @@ export default function SellerLoginPage() {
           setError('Verification succeeded, but could not start session.');
         }
       } else {
-        // Verify Email OTP: Supports 'recovery' (Reset Password template) and 'email' (Magic Link template)
-        const cleanEmail = verifiedTarget || email.trim();
+        // Verify Email OTP via Resend verification or Supabase fallback
+        const cleanEmail = (verifiedTarget || email).trim().toLowerCase();
+
+        if (verificationToken) {
+          const res = await fetch('/api/auth/verify-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: cleanEmail,
+              otp: fullOtp,
+              verificationToken,
+              expiresAt,
+              role: 'artisan',
+            }),
+          });
+
+          const data = await res.json();
+
+          if (!res.ok || !data.success) {
+            throw new Error(data.message || 'The OTP code is invalid or has expired.');
+          }
+
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('artisan_session', JSON.stringify({
+              email: cleanEmail,
+              role: 'artisan',
+              token: verificationToken,
+              timestamp: Date.now(),
+            }));
+          }
+
+          router.push('/seller');
+          return;
+        }
+
+        // Supabase Fallback if verificationToken not present
         let { data, error: verifyErr } = await supabase.auth.verifyOtp({
           email: cleanEmail,
           token: fullOtp,

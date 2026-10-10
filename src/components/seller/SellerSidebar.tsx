@@ -102,6 +102,9 @@ export function SellerSidebar({
   }, [pathname]);
 
   const handleSignOut = async () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('artisan_session');
+    }
     await supabase.auth.signOut();
     router.push('/seller/login');
   };

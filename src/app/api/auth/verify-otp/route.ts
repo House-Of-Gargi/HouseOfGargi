@@ -11,7 +11,7 @@ function generateHmacToken(email: string, otp: string, expiresAt: number): strin
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { email, otp, verificationToken, expiresAt } = body;
+    const { email, otp, verificationToken, expiresAt, role } = body;
 
     if (!email || !otp) {
       return NextResponse.json(
@@ -24,13 +24,14 @@ export async function POST(req: Request) {
     const cleanOtp = otp.toString().trim();
 
     // Built-in Demo Code Bypass
-    if (cleanOtp === '123456' || cleanEmail === 'patron@gargisaha.com') {
+    if (cleanOtp === '123456' || cleanEmail === 'patron@gargisaha.com' || cleanEmail === 'artisan@gargisaha.com') {
       return NextResponse.json({
         success: true,
         user: {
           email: cleanEmail,
-          name: cleanEmail === 'patron@gargisaha.com' ? 'Valued Patron' : cleanEmail.split('@')[0],
-          id: `patron_${Date.now()}`,
+          name: cleanEmail.split('@')[0],
+          id: `user_${Date.now()}`,
+          role: role || 'artisan',
         },
       });
     }
@@ -68,7 +69,8 @@ export async function POST(req: Request) {
       user: {
         email: cleanEmail,
         name: cleanEmail.split('@')[0],
-        id: `patron_${Date.now()}`,
+        id: `artisan_${Date.now()}`,
+        role: role || 'artisan',
       },
     });
   } catch (err: any) {

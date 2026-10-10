@@ -22,13 +22,22 @@ export default function SellerLayout({ children }: { children: ReactNode }) {
     const checkAuth = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
+        const artisanSessionStr = typeof window !== 'undefined' ? localStorage.getItem('artisan_session') : null;
+
+        if (!session && !artisanSessionStr) {
           router.push('/seller/login');
         } else {
-          if (session.user?.phone) {
+          if (session?.user?.phone) {
             setSellerPhone(session.user.phone.startsWith('+91') ? session.user.phone : `+91 ${session.user.phone}`);
-          } else if (session.user?.email) {
+          } else if (session?.user?.email) {
             setSellerPhone(session.user.email);
+          } else if (artisanSessionStr) {
+            try {
+              const parsed = JSON.parse(artisanSessionStr);
+              setSellerPhone(parsed.email || parsed.phone || 'Artisan Partner');
+            } catch {
+              setSellerPhone('Artisan Partner');
+            }
           }
           setAuthorized(true);
         }
