@@ -133,11 +133,14 @@ export default function SellerLoginPage() {
       setLoading(true);
 
       try {
-        const { error: otpErr } = await supabase.auth.signInWithOtp({
-          email: cleanEmail,
-        });
+        // Try resetPasswordForEmail first (allows using the separate "Reset Password" template in Supabase so it does NOT conflict with customer Magic Link)
+        let { error: resetErr } = await supabase.auth.resetPasswordForEmail(cleanEmail);
 
-        if (otpErr) throw otpErr;
+        if (resetErr) {
+          // If user not registered yet or reset password fails, fall back to signInWithOtp
+          const { error: signInErr } = await supabase.auth.signInWithOtp({ email: cleanEmail });
+          if (signInErr) throw (resetErr || signInErr);
+        }
 
         setVerifiedTarget(cleanEmail);
         setStep(2);
@@ -225,13 +228,25 @@ export default function SellerLoginPage() {
           setError('Verification succeeded, but could not start session.');
         }
       } else {
-        // Verify Email OTP
+        // Verify Email OTP: Supports 'recovery' (Reset Password template) and 'email' (Magic Link template)
         const cleanEmail = verifiedTarget || email.trim();
-        const { data, error: verifyErr } = await supabase.auth.verifyOtp({
+        let { data, error: verifyErr } = await supabase.auth.verifyOtp({
           email: cleanEmail,
           token: fullOtp,
-          type: 'email',
+          type: 'recovery',
         });
+
+        if (verifyErr) {
+          const fallbackRes = await supabase.auth.verifyOtp({
+            email: cleanEmail,
+            token: fullOtp,
+            type: 'email',
+          });
+          if (!fallbackRes.error) {
+            data = fallbackRes.data;
+            verifyErr = null;
+          }
+        }
 
         if (verifyErr) throw verifyErr;
 
