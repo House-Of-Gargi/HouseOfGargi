@@ -865,11 +865,37 @@ export default function SellerLoginPage() {
               </form>
             )}
 
-            <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.9rem', color: 'var(--stone-taupe)' }}>
-              New artisan partner?{' '}
-              <a href="mailto:artisan@houseofgargi.com" style={{ color: '#7A2331', fontWeight: 700, textDecoration: 'none' }}>
-                Register here
-              </a>
+            <div style={{
+              marginTop: '1.5rem',
+              paddingTop: '1.25rem',
+              borderTop: '1px dashed var(--soft-gold-line)',
+              textAlign: 'center',
+            }}>
+              <Link
+                href="/seller/apply"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.5rem',
+                  width: '100%',
+                  padding: '0.8rem 1.25rem',
+                  borderRadius: '9px',
+                  background: '#FAF7F2',
+                  border: '1.5px solid var(--soft-gold-line)',
+                  color: '#7A2331',
+                  fontFamily: 'var(--font-nav)',
+                  fontSize: '0.92rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  textDecoration: 'none',
+                  transition: 'all 200ms ease',
+                }}
+              >
+                <span>Join Us as Artisan &bull; কারিগর হিসেবে যুক্ত হোন</span>
+                <ArrowRight style={{ width: 15, height: 15 }} />
+              </Link>
             </div>
           </div>
         </div>
