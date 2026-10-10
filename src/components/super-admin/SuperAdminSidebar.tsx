@@ -46,7 +46,7 @@ const superAdminNavGroups: SuperAdminNavGroup[] = [
   {
     section: 'Executive Governance',
     items: [
-      { label: 'Executive Overview', href: '/super-admin', icon: Landmark },
+      { label: 'Executive Overview', href: '/super-admin/dashboard', icon: Landmark },
       { label: 'Revenue Analytics', href: '/super-admin/revenue', icon: DollarSign },
       { label: 'Hot & Best Sellers', href: '/super-admin/bestsellers', icon: Flame, badge: 'HOT', badgeColor: '#B88E18' },
     ],

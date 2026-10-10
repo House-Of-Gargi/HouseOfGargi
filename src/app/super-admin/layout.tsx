@@ -21,9 +21,8 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
       try {
         let activeEmail = '';
 
-        // 1. Check local session storage
         if (typeof window !== 'undefined') {
-          const stored = localStorage.getItem('artisan_session') || localStorage.getItem('user_session') || localStorage.getItem('super_admin_session');
+          const stored = localStorage.getItem('auth_session') || localStorage.getItem('super_admin_session') || localStorage.getItem('artisan_session');
           if (stored) {
             try {
               const parsed = JSON.parse(stored);
@@ -32,34 +31,48 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
           }
         }
 
-        // 2. Check Supabase Auth
         if (!activeEmail) {
           const { data: { session } } = await supabase.auth.getSession();
-          if (session?.user?.email) {
-            activeEmail = session.user.email;
-          }
+          if (session?.user?.email) activeEmail = session.user.email;
         }
 
-        // If no active session found, try query param ?as= or fallback
         if (!activeEmail && typeof window !== 'undefined') {
           const urlParams = new URLSearchParams(window.location.search);
           const asParam = urlParams.get('as');
           if (asParam) activeEmail = asParam;
         }
 
-        // Check against known super admin emails or RBAC
-        const cleanEmail = (activeEmail || 'tanmaysaaagr@gmail.com').toLowerCase().trim();
-        const role: AppRole = await getUserRole(cleanEmail);
+        const cleanEmail = (activeEmail || '').toLowerCase().trim();
+        const superAdmins = [
+          'tanmaysaaagr@gmail.com',
+          'tanmaysaagar@gmail.com',
+          'gargisaha1508@gmail.com',
+          'shawsumit6286@gmail.com'
+        ];
 
-        if (canAccessSuperAdmin(role) || cleanEmail === 'tanmaysaaagr@gmail.com' || cleanEmail === 'tanmaysaagar@gmail.com' || cleanEmail === 'gargisaha1508@gmail.com' || cleanEmail === 'shawsumit6286@gmail.com') {
+        if (superAdmins.includes(cleanEmail)) {
           setUserEmail(cleanEmail);
           setUserName(cleanEmail.split('@')[0]);
           setAuthorized(true);
-        } else {
-          setAuthorized(false);
+          setChecking(false);
+          return;
         }
+
+        if (cleanEmail) {
+          const role: AppRole = await getUserRole(cleanEmail);
+          if (canAccessSuperAdmin(role)) {
+            setUserEmail(cleanEmail);
+            setUserName(cleanEmail.split('@')[0]);
+            setAuthorized(true);
+            setChecking(false);
+            return;
+          }
+        }
+
+        // If no email found in local session, redirect to login with callback
+        setAuthorized(false);
       } catch (err) {
-        console.error('Super Admin auth check error:', err);
+        console.error('Super Admin verify error:', err);
         setAuthorized(false);
       } finally {
         setChecking(false);

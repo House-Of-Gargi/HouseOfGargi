@@ -48,7 +48,7 @@ const sellerNavGroups: SellerNavGroup[] = [
     section: 'Overview',
     bengaliSection: 'সারসংক্ষেপ',
     items: [
-      { label: 'Dashboard', bengaliLabel: 'ড্যাশবোর্ড', href: '/seller', icon: LayoutDashboard },
+      { label: 'Dashboard', bengaliLabel: 'ড্যাশবোর্ড', href: '/artisan/dashboard', icon: LayoutDashboard },
       { label: 'Performance Analytics', bengaliLabel: 'বিক্রয় তথ্য', href: '/seller/analytics', icon: TrendingUp },
     ],
   },

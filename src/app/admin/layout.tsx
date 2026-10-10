@@ -21,7 +21,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         let activeEmail = '';
 
         if (typeof window !== 'undefined') {
-          const stored = localStorage.getItem('admin_session') || localStorage.getItem('artisan_session') || localStorage.getItem('user_session');
+          const stored = localStorage.getItem('auth_session') || localStorage.getItem('admin_session') || localStorage.getItem('super_admin_session') || localStorage.getItem('artisan_session');
           if (stored) {
             try {
               const parsed = JSON.parse(stored);
@@ -32,9 +32,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
         if (!activeEmail) {
           const { data: { session } } = await supabase.auth.getSession();
-          if (session?.user?.email) {
-            activeEmail = session.user.email;
-          }
+          if (session?.user?.email) activeEmail = session.user.email;
         }
 
         if (!activeEmail && typeof window !== 'undefined') {
@@ -43,16 +41,36 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           if (asParam) activeEmail = asParam;
         }
 
-        const cleanEmail = (activeEmail || 'sumitgreat2705@gmail.com').toLowerCase().trim();
-        const role: AppRole = await getUserRole(cleanEmail);
+        const cleanEmail = (activeEmail || '').toLowerCase().trim();
+        const allowedAdmins = [
+          'sumitgreat2705@gmail.com',
+          'tanmaysaaagr@gmail.com',
+          'tanmaysaagar@gmail.com',
+          'gargisaha1508@gmail.com',
+          'shawsumit6286@gmail.com',
+          'admin@gargisaha.com'
+        ];
 
-        if (canAccessAdmin(role) || cleanEmail === 'sumitgreat2705@gmail.com' || cleanEmail === 'tanmaysaaagr@gmail.com' || cleanEmail === 'tanmaysaagar@gmail.com' || cleanEmail === 'gargisaha1508@gmail.com' || cleanEmail === 'shawsumit6286@gmail.com' || cleanEmail === 'admin@gargisaha.com') {
+        if (allowedAdmins.includes(cleanEmail)) {
           setAdminEmail(cleanEmail);
           setAdminName(cleanEmail.split('@')[0]);
           setAuthorized(true);
-        } else {
-          setAuthorized(false);
+          setChecking(false);
+          return;
         }
+
+        if (cleanEmail) {
+          const role: AppRole = await getUserRole(cleanEmail);
+          if (canAccessAdmin(role)) {
+            setAdminEmail(cleanEmail);
+            setAdminName(cleanEmail.split('@')[0]);
+            setAuthorized(true);
+            setChecking(false);
+            return;
+          }
+        }
+
+        setAuthorized(false);
       } catch (err) {
         console.error('Admin auth check error:', err);
         setAuthorized(false);

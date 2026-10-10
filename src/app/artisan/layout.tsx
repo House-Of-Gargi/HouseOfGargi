@@ -6,19 +6,13 @@ import { supabase } from '@/lib/supabaseClient';
 import { SellerShell } from '@/components/seller/SellerShell';
 import '@/seller.css';
 
-export default function SellerLayout({ children }: { children: ReactNode }) {
+export default function ArtisanLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
   const [sellerPhone, setSellerPhone] = useState<string>('Artisan Atelier');
 
   useEffect(() => {
-    // Never gate login or apply pages
-    if (pathname === '/seller/login' || pathname === '/seller/apply') {
-      setAuthorized(true);
-      return;
-    }
-
     const checkAuth = async () => {
       try {
         const authSessionStr = typeof window !== 'undefined'
@@ -51,10 +45,7 @@ export default function SellerLayout({ children }: { children: ReactNode }) {
 
     checkAuth();
 
-    // Prevent blind redirect on onAuthStateChange if auth_session exists in localStorage
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (pathname === '/seller/login' || pathname === '/seller/apply') return;
-
       const authSessionStr = typeof window !== 'undefined'
         ? (localStorage.getItem('auth_session') || localStorage.getItem('artisan_session'))
         : null;
@@ -71,10 +62,6 @@ export default function SellerLayout({ children }: { children: ReactNode }) {
     };
   }, [pathname, router]);
 
-  if (pathname === '/seller/login' || pathname === '/seller/apply') {
-    return <>{children}</>;
-  }
-
   if (!authorized) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FAFAF8', color: '#7A2331' }}>
@@ -86,7 +73,7 @@ export default function SellerLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <SellerShell sellerPhone={sellerPhone} sellerName="House of Gargi">
+    <SellerShell sellerPhone={sellerPhone} sellerName="Artisan Atelier">
       {children}
     </SellerShell>
   );
