@@ -66,9 +66,12 @@ export default function SellerDashboardPage() {
   const handleSignOut = async () => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('artisan_session');
+      localStorage.removeItem('admin_session');
+      localStorage.removeItem('super_admin_session');
+      localStorage.removeItem('auth_session');
     }
     await supabase.auth.signOut();
-    router.push('/seller/login');
+    router.push('/seller/login?logout=true');
   };
 
   const handleUpdateOrderStatus = async (orderId: string, newStatus: string) => {

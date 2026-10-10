@@ -72,7 +72,7 @@ export function SellerShell({
           </button>
 
           <Link
-            href="/seller"
+            href="/artisan/dashboard"
             style={{
               fontFamily: 'var(--font-serif)',
               fontWeight: 700,

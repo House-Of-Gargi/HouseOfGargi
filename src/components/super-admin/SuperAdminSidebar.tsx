@@ -123,8 +123,11 @@ export function SuperAdminSidebar({
       await supabase.auth.signOut();
       if (typeof window !== 'undefined') {
         localStorage.removeItem('super_admin_session');
+        localStorage.removeItem('admin_session');
+        localStorage.removeItem('artisan_session');
+        localStorage.removeItem('auth_session');
       }
-      router.push('/seller/login');
+      router.push('/seller/login?logout=true');
     } catch {
       router.push('/seller/login');
     }

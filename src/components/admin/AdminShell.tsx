@@ -57,7 +57,7 @@ export function AdminShell({
           </button>
 
           <Link
-            href="/admin"
+            href="/admin/dashboard"
             style={{
               fontFamily: 'var(--font-serif)',
               fontWeight: 700,

@@ -57,7 +57,7 @@ export function SuperAdminShell({
           </button>
 
           <Link
-            href="/super-admin"
+            href="/super-admin/dashboard"
             style={{
               fontFamily: 'var(--font-serif)',
               fontWeight: 700,
