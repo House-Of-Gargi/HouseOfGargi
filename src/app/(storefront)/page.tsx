@@ -127,7 +127,7 @@ export default async function HomePage() {
               </p>
             </div>
           </ScrollReveal>
-          <div className="product-grid">
+          <div className="product-grid product-grid--home">
             {featured.map(product => (
               <ScrollReveal key={product.id}>
                 <ProductCard product={product} />
@@ -158,7 +158,7 @@ export default async function HomePage() {
               </p>
             </div>
           </ScrollReveal>
-          <div className="product-grid">
+          <div className="product-grid product-grid--home">
             {newArrivals.map(product => (
               <ScrollReveal key={product.id}>
                 <ProductCard product={product} />
