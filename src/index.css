@@ -856,7 +856,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   background-size: cover;
   background-position: center;
   color: var(--ivory-silk);
-  padding: 72px 0 32px;
+  padding: 76px 0 32px;
   position: relative;
   overflow: hidden;
 }
@@ -874,12 +874,12 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   z-index: 1;
 }
 
-/* 3-Column Top Grid: Brand (45%) | Platform (27%) | Access & Support (28%) */
+/* 2-Column Main Layout: Left Brand (~42%) | Right Navigation Columns (~58%) */
 .footer__grid {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr;
-  gap: 60px;
-  margin-bottom: 48px;
+  grid-template-columns: 1.35fr 1.65fr;
+  gap: 72px;
+  margin-bottom: 52px;
   align-items: flex-start;
 }
 
@@ -893,19 +893,21 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 
 .footer__logo-wrap {
   display: inline-block;
-  margin-bottom: 16px;
-  transition: opacity 180ms ease;
+  margin-bottom: 18px;
+  transition: opacity 180ms ease, transform 180ms ease;
 }
 
 .footer__logo-wrap:hover {
-  opacity: 0.88;
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .footer__logo-img {
-  height: 38px;
+  height: 54px; /* Increased size for prominent, clear visibility */
+  max-width: 260px;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.45));
 }
 
 .footer__brand-desc {
@@ -944,10 +946,17 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   background: rgba(184, 142, 24, 0.16);
   color: var(--gargi-gold);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(184, 142, 24, 0.2);
+  box-shadow: 0 4px 12px rgba(184, 142, 24, 0.22);
 }
 
-/* Navigation Columns */
+/* Navigation Columns Wrapper: Platform (Col 1) & Access & Support (Col 2) */
+.footer__nav-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  width: 100%;
+}
+
 .footer__nav-col {
   display: flex;
   flex-direction: column;
@@ -1016,22 +1025,21 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   transform: translateX(3px);
 }
 
-/* ── Bottom Footer Bar ────────────────────────────────────── */
+/* ── Bottom Footer Bar (Left | Center | Right) ───────────── */
 .footer__bottom {
   border-top: 1px solid rgba(228, 211, 174, 0.22);
-  padding-top: 24px;
-  display: flex;
+  padding-top: 26px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
+  gap: 24px;
 }
 
+/* Left: Proudly Made in India with SVG Flag */
 .footer__bottom-left {
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .footer__made-in-india {
@@ -1042,23 +1050,43 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   letter-spacing: 0.02em;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.footer__flag-svg {
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
+}
+
+/* Middle: 2026 House of Gargi in the exact center */
+.footer__bottom-middle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .footer__copyright {
   font-size: 13.5px;
-  color: rgba(251, 246, 238, 0.72);
+  color: rgba(251, 246, 238, 0.78);
   font-family: var(--font-body);
+  letter-spacing: 0.01em;
 }
 
+/* Right: 3 buttons */
 .footer__bottom-right {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 12px;
   font-size: 13.5px;
   color: rgba(251, 246, 238, 0.75);
-  flex-wrap: wrap;
+  white-space: nowrap;
 }
 
 .footer__bottom-right a {
@@ -1077,53 +1105,104 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   font-size: 13.5px;
 }
 
-/* Responsive Breakpoints */
+/* ── Responsive Mobile & Tablet Breakpoints ──────────────── */
 @media (max-width: 900px) {
-  .footer__grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-  }
-
-  .footer__brand-col {
-    grid-column: 1 / -1;
-    max-width: 100%;
-  }
-
-  .footer__bottom {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
-  }
-}
-
-@media (max-width: 600px) {
   .footer {
-    padding: 56px 0 28px;
+    padding: 60px 0 32px;
   }
 
   .footer__grid {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 36px;
+    margin-bottom: 40px;
+  }
+
+  .footer__brand-col {
+    max-width: 100%;
+  }
+
+  .footer__nav-cols {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    width: 100%;
+  }
+
+  .footer__bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 14px;
+    padding-top: 24px;
+  }
+
+  .footer__bottom-left,
+  .footer__bottom-middle,
+  .footer__bottom-right {
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .footer {
+    padding: 48px 0 28px;
+  }
+
+  .footer__logo-img {
+    height: 48px;
+    max-width: 220px;
   }
 
   .footer__brand-desc {
-    font-size: 14px;
+    font-size: 13.5px;
+    line-height: 1.55;
     margin-bottom: 18px;
   }
 
-  .footer__bottom-left {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
+  .footer__social-btn {
+    width: 36px;
+    height: 36px;
   }
 
-  .footer__bottom-left .footer__dot {
-    display: none;
+  .footer__nav-cols {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .footer__heading {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    margin-bottom: 16px;
+  }
+
+  .footer__links-list {
+    gap: 10px;
+  }
+
+  .footer__links-list a,
+  .footer__portal-link,
+  .footer__whatsapp-link {
+    font-size: 13.5px !important;
+  }
+
+  .footer__made-in-india {
+    font-size: 20px;
+  }
+
+  .footer__copyright {
+    font-size: 12.5px;
   }
 
   .footer__bottom-right {
     gap: 8px;
-    font-size: 13px;
+    font-size: 12.5px;
+  }
+
+  .footer__bottom-right a {
+    font-size: 12.5px;
   }
 }
 
