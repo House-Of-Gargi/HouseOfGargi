@@ -1,86 +1,295 @@
 'use client';
 
-import { useState, use } from 'react';
+import { useState, use, useMemo } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import ProductCard from '@/components/ProductCard';
-import ScrollReveal from '@/components/ScrollReveal';
 import CustomDropdown from '@/components/CustomDropdown';
 import { getCategory, getProductsByCategory, categories } from '@/data/products';
-import { ArrowRightIcon, FilterIcon, CloseIcon } from '@/components/Icons';
-import { Sparkles } from 'lucide-react';
+import { 
+  X, 
+  SlidersHorizontal, 
+  RotateCcw,
+  ArrowRight
+} from 'lucide-react';
 
 export default function CategoryPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
   const { id } = resolvedParams;
-
-  const [fabric, setFabric] = useState<string>('');
-  const [occasion, setOccasion] = useState<string>('');
-  const [sort, setSort] = useState<string>('');
 
   const category = getCategory(id);
   if (!category) {
     notFound();
   }
 
-  let items = getProductsByCategory(id);
+  // Filter states
+  const [fabric, setFabric] = useState<string>('');
+  const [priceTier, setPriceTier] = useState<string>('all');
+  const [sort, setSort] = useState<string>('');
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
-  if (fabric) {
-    items = items.filter(p => p.fabric.toLowerCase().includes(fabric.toLowerCase()));
-  }
-  if (occasion) {
-    items = items.filter(p => p.occasion === occasion);
-  }
+  // Raw items for this category
+  const baseItems = useMemo(() => {
+    return getProductsByCategory(id);
+  }, [id]);
 
-  if (sort === 'price-asc') {
-    items.sort((a, b) => a.price - b.price);
-  } else if (sort === 'price-desc') {
-    items.sort((a, b) => b.price - a.price);
-  }
+  // Derived fabrics
+  const allFabrics = useMemo(() => {
+    return Array.from(new Set(baseItems.map(p => p.fabric))).filter(Boolean);
+  }, [baseItems]);
 
-  const allCategoryItems = getProductsByCategory(id);
-  const fabrics = Array.from(new Set(allCategoryItems.map(p => p.fabric)));
-  const occasions = Array.from(new Set(allCategoryItems.map(p => p.occasion)));
+  const fabricOptions = useMemo(() => {
+    return allFabrics.map(f => ({ value: f, label: f }));
+  }, [allFabrics]);
+
+  const priceOptions = useMemo(() => [
+    { value: 'under-15k', label: 'Under ₹15,000' },
+    { value: '15k-40k', label: '₹15,000 – ₹40,000' },
+    { value: 'above-40k', label: 'Above ₹40,000' },
+  ], []);
+
+  const sortOptions = useMemo(() => [
+    { value: 'price-asc', label: 'Price: Low to High' },
+    { value: 'price-desc', label: 'Price: High to Low' },
+    { value: 'name-asc', label: 'Name: A–Z' },
+  ], []);
+
+  // Filter and sort
+  const filteredItems = useMemo(() => {
+    let result = [...baseItems];
+
+    if (fabric) {
+      result = result.filter(p => p.fabric.toLowerCase().includes(fabric.toLowerCase()));
+    }
+
+    if (priceTier === 'under-15k') {
+      result = result.filter(p => p.price < 15000);
+    } else if (priceTier === '15k-40k') {
+      result = result.filter(p => p.price >= 15000 && p.price <= 40000);
+    } else if (priceTier === 'above-40k') {
+      result = result.filter(p => p.price > 40000);
+    }
+
+    if (sort === 'price-asc') {
+      result.sort((a, b) => a.price - b.price);
+    } else if (sort === 'price-desc') {
+      result.sort((a, b) => b.price - a.price);
+    } else if (sort === 'name-asc') {
+      result.sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    return result;
+  }, [baseItems, fabric, priceTier, sort]);
+
+  const hasActiveFilters = Boolean(
+    fabric ||
+    (priceTier && priceTier !== 'all') ||
+    sort
+  );
+
+  const resetAllFilters = () => {
+    setFabric('');
+    setPriceTier('all');
+    setSort('');
+  };
+
   const otherCategories = categories.filter(c => c.id !== id);
 
   return (
-    <>
-      <div className="category-banner">
-        <img src={category.bannerImage} alt={category.name} />
-        <div className="category-banner__content">
-          <h1>{category.name}</h1>
-          <p>{category.tagline}</p>
+    <div className="explore-page">
+      <div className="container">
+        {/* ── 1. Results for : <Category Name> ─────────────────────── */}
+        <div className="explore-header-row">
+          <div className="explore-results-title-wrap">
+            <span className="explore-results-label">Results for :</span>
+            <h1 className="explore-results-query" style={{ display: 'inline' }}>
+              {category.name}
+            </h1>
+            <span className="explore-results-count">
+              ({filteredItems.length} {filteredItems.length === 1 ? 'Piece' : 'Pieces'})
+            </span>
+          </div>
+        </div>
+
+        {/* ── 2. Filter Strip with CustomDropdown ─────────────────── */}
+        <div className="explore-filter-strip">
+          <div className="explore-filter-strip__left">
+            <div className="explore-strip-group">
+              <span className="explore-strip-label">Fabric</span>
+              <CustomDropdown
+                options={fabricOptions}
+                value={fabric}
+                onChange={setFabric}
+                placeholder="All Fabrics"
+                showEmptyOption
+                fullWidth
+              />
+            </div>
+
+            <div className="explore-strip-group">
+              <span className="explore-strip-label">Price</span>
+              <CustomDropdown
+                options={priceOptions}
+                value={priceTier === 'all' ? '' : priceTier}
+                onChange={(v) => setPriceTier(v || 'all')}
+                placeholder="All Prices"
+                showEmptyOption
+                fullWidth
+              />
+            </div>
+
+            <div className="explore-strip-group">
+              <span className="explore-strip-label">Sort By</span>
+              <CustomDropdown
+                options={sortOptions}
+                value={sort}
+                onChange={setSort}
+                placeholder="Featured Curation"
+                showEmptyOption
+                fullWidth
+              />
+            </div>
+
+            {hasActiveFilters && (
+              <button
+                type="button"
+                className="explore-strip-reset"
+                onClick={resetAllFilters}
+                title="Reset filters"
+              >
+                <RotateCcw size={13} />
+                <span>Reset</span>
+              </button>
+            )}
+          </div>
+
+          {/* Mobile Filter Button */}
+          <button
+            type="button"
+            className="explore-mobile-filter-btn"
+            onClick={() => setMobileFilterOpen(true)}
+          >
+            <SlidersHorizontal size={14} />
+            <span>Filters</span>
+            {hasActiveFilters && <span className="explore-dot" />}
+          </button>
+        </div>
+
+        {/* ── 3. Product Grid: Exactly 4 Products Per Row ─────────── */}
+        <section className="explore-grid-section">
+          {filteredItems.length === 0 ? (
+            <div className="explore-empty-minimal">
+              <h2 className="explore-empty-minimal__title">No creations match your filters</h2>
+              <p className="explore-empty-minimal__desc">
+                Try relaxing your fabric or price criteria to view all {category.name.toLowerCase()}.
+              </p>
+              <button
+                type="button"
+                className="btn btn--primary"
+                onClick={resetAllFilters}
+                style={{ marginTop: '20px' }}
+              >
+                View All {category.name}
+              </button>
+            </div>
+          ) : (
+            <div className="explore-4col-grid">
+              {filteredItems.map(product => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* ── 4. Explore More Collections ─────────────────────────── */}
+        <div style={{ marginTop: '90px', paddingTop: '50px', borderTop: '1px solid var(--soft-gold-line)' }}>
+          <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+            <h2 style={{ 
+              fontFamily: 'var(--font-display)', 
+              fontSize: 'clamp(26px, 3.2vw, 36px)', 
+              fontWeight: 600, 
+              color: 'var(--ink-brown)',
+              margin: 0
+            }}>
+              Explore Accompanying Collections
+            </h2>
+            <p style={{ 
+              fontFamily: 'var(--font-body)', 
+              fontSize: '15.5px', 
+              color: 'var(--stone-taupe)', 
+              marginTop: '10px',
+              maxWidth: '560px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              lineHeight: 1.6
+            }}>
+              Discover handwoven masterpieces, heirloom couture, and temple adornments crafted across our other ateliers.
+            </p>
+          </div>
+
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', 
+            gap: '24px',
+            alignItems: 'stretch'
+          }}>
+            {otherCategories.map(cat => (
+              <Link 
+                href={`/category/${cat.id}`} 
+                key={cat.id} 
+                className="category-tile" 
+                style={{ minHeight: '380px', height: 'auto' }}
+              >
+                <img src={cat.exploreImage || cat.image} alt={cat.name} loading="lazy" />
+                <div className="category-tile__border" />
+                <div className="category-tile__label">
+                  <h3 style={{ fontSize: '24px', marginBottom: '6px' }}>{cat.name}</h3>
+                  {cat.tagline && (
+                    <p style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.88)', lineHeight: 1.5, marginBottom: '12px' }}>
+                      {cat.tagline}
+                    </p>
+                  )}
+                  <span style={{ 
+                    display: 'inline-flex', 
+                    alignItems: 'center', 
+                    gap: '8px',
+                    fontFamily: 'var(--font-nav)',
+                    fontSize: '13px',
+                    fontWeight: 700,
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                    color: 'var(--gargi-gold)'
+                  }}>
+                    Explore Collection <ArrowRight size={14} />
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
 
-      <section className="section section--ivory section--category">
-        <div className="container">
-          {/* Breadcrumb Navigation */}
-          <div className="breadcrumb" style={{ marginBottom: '22px' }}>
-            <Link href="/">Home</Link>
-            <span>/</span>
-            <Link href="/shop">Collections</Link>
-            <span>/</span>
-            <span style={{ color: 'var(--ink-brown)', fontWeight: 600 }}>{category.name}</span>
-          </div>
-
-          {/* Atelier Filter & Sort Bar */}
-          <div className="filter-bar">
-            <div className="filter-bar__header">
-              <div className="filter-bar__title">
-                <FilterIcon size={18} style={{ color: 'var(--gargi-gold)' }} />
-                <span>Refine Collection</span>
-              </div>
-              <div className="filter-bar__summary">
-                Showing <strong>{items.length}</strong> {items.length === 1 ? 'Piece' : 'Pieces'}
-              </div>
+      {/* ── 5. Mobile Filter Drawer ───────────────────────────────── */}
+      {mobileFilterOpen && (
+        <div className="explore-mobile-drawer-overlay" onClick={() => setMobileFilterOpen(false)}>
+          <div className="explore-mobile-drawer" onClick={(e) => e.stopPropagation()}>
+            <div className="explore-mobile-drawer__header">
+              <span className="explore-mobile-drawer__title">Filter & Sort</span>
+              <button
+                type="button"
+                className="explore-mobile-drawer__close"
+                onClick={() => setMobileFilterOpen(false)}
+                aria-label="Close"
+              >
+                <X size={20} />
+              </button>
             </div>
 
-            <div className="filter-bar__controls">
-              <div className="filter-bar__group">
-                <span className="filter-bar__label">Fabric</span>
+            <div className="explore-mobile-drawer__body">
+              <div className="explore-drawer-group">
+                <label className="explore-drawer-label">Fabric</label>
                 <CustomDropdown
-                  options={fabrics.map(f => ({ value: f, label: f }))}
+                  options={fabricOptions}
                   value={fabric}
                   onChange={setFabric}
                   placeholder="All Fabrics"
@@ -89,25 +298,22 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
                 />
               </div>
 
-              <div className="filter-bar__group">
-                <span className="filter-bar__label">Occasion</span>
+              <div className="explore-drawer-group">
+                <label className="explore-drawer-label">Price</label>
                 <CustomDropdown
-                  options={occasions.map(o => ({ value: o, label: o }))}
-                  value={occasion}
-                  onChange={setOccasion}
-                  placeholder="All Occasions"
+                  options={priceOptions}
+                  value={priceTier === 'all' ? '' : priceTier}
+                  onChange={(v) => setPriceTier(v || 'all')}
+                  placeholder="All Prices"
                   showEmptyOption
                   fullWidth
                 />
               </div>
 
-              <div className="filter-bar__group">
-                <span className="filter-bar__label">Sort By</span>
+              <div className="explore-drawer-group">
+                <label className="explore-drawer-label">Sort</label>
                 <CustomDropdown
-                  options={[
-                    { value: 'price-asc', label: 'Price: Low to High' },
-                    { value: 'price-desc', label: 'Price: High to Low' },
-                  ]}
+                  options={sortOptions}
                   value={sort}
                   onChange={setSort}
                   placeholder="Featured Curation"
@@ -117,139 +323,25 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
               </div>
             </div>
 
-            {/* Active Filters Strip */}
-            {(fabric || occasion || sort) && (
-              <div className="filter-bar__active-chips">
-                <span className="filter-bar__active-label">Active:</span>
-                {fabric && (
-                  <button type="button" className="filter-chip" onClick={() => setFabric('')}>
-                    Fabric: {fabric} <CloseIcon size={12} />
-                  </button>
-                )}
-                {occasion && (
-                  <button type="button" className="filter-chip" onClick={() => setOccasion('')}>
-                    Occasion: {occasion} <CloseIcon size={12} />
-                  </button>
-                )}
-                {sort && (
-                  <button type="button" className="filter-chip" onClick={() => setSort('')}>
-                    Sort: {sort === 'price-asc' ? 'Price: Low-High' : 'Price: High-Low'} <CloseIcon size={12} />
-                  </button>
-                )}
-                <button 
-                  type="button" 
-                  className="filter-bar__clear-btn" 
-                  onClick={() => { setFabric(''); setOccasion(''); setSort(''); }}
-                >
-                  Clear All Filters
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Product Grid */}
-          {items.length === 0 ? (
-            <div style={{ 
-              textAlign: 'center', 
-              padding: '60px 24px', 
-              background: 'var(--pure-white)', 
-              borderRadius: '8px', 
-              border: '1px solid var(--soft-gold-line)',
-              boxShadow: '0 4px 16px rgba(43, 31, 24, 0.03)'
-            }}>
-              <Sparkles size={40} strokeWidth={1.4} style={{ color: 'var(--maharani-maroon)', marginBottom: '16px' }} />
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: 'var(--ink-brown)', marginBottom: '8px' }}>
-                No pieces match your selected filters.
-              </h3>
-              <p style={{ color: 'var(--stone-taupe)', fontSize: '15px', maxWidth: '420px', margin: '0 auto 20px' }}>
-                Try relaxing your fabric or occasion criteria to explore more handcrafted treasures.
-              </p>
-              <button 
-                type="button" 
-                className="btn btn--primary" 
-                onClick={() => { setFabric(''); setOccasion(''); setSort(''); }}
+            <div className="explore-mobile-drawer__footer">
+              <button
+                type="button"
+                className="explore-drawer-reset-btn"
+                onClick={resetAllFilters}
               >
-                Clear All Filters
+                Reset
               </button>
-            </div>
-          ) : (
-            <div className="product-grid">
-              {items.map(product => (
-                <ScrollReveal key={product.id}>
-                  <ProductCard product={product} />
-                </ScrollReveal>
-              ))}
-            </div>
-          )}
-
-          {/* Explore Other Categories */}
-          <div style={{ marginTop: '70px', marginBottom: '30px' }}>
-            <div style={{ textAlign: 'center', margin: '0 0 44px' }}>
-              <h2 style={{ 
-                fontFamily: 'var(--font-display)', 
-                fontSize: 'clamp(28px, 3.5vw, 38px)', 
-                fontWeight: 600, 
-                color: 'var(--ink-brown)',
-                margin: 0
-              }}>
-                Explore More Collections
-              </h2>
-              <p style={{ 
-                fontFamily: 'var(--font-body)', 
-                fontSize: '16.5px', 
-                color: 'var(--stone-taupe)', 
-                marginTop: '10px',
-                maxWidth: '560px',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                lineHeight: 1.6
-              }}>
-                Discover the timeless artistry, master craftsmanship, and pure fabrics woven across our accompanying ateliers.
-              </p>
-            </div>
-
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
-              gap: '28px',
-              alignItems: 'stretch'
-            }}>
-              {otherCategories.map(cat => (
-                <Link 
-                  href={`/category/${cat.id}`} 
-                  key={cat.id} 
-                  className="category-tile" 
-                  style={{ minHeight: '420px', height: 'auto' }}
-                >
-                  <img src={cat.exploreImage || cat.image} alt={cat.name} loading="lazy" />
-                  <div className="category-tile__border" />
-                  <div className="category-tile__label">
-                    <h3 style={{ fontSize: '26px', marginBottom: '6px' }}>{cat.name}</h3>
-                    {cat.tagline && (
-                      <p style={{ fontSize: '14.5px', color: 'rgba(255, 255, 255, 0.88)', lineHeight: 1.5, marginBottom: '14px' }}>
-                        {cat.tagline}
-                      </p>
-                    )}
-                    <span style={{ 
-                      display: 'inline-flex', 
-                      alignItems: 'center', 
-                      gap: '8px',
-                      fontFamily: 'var(--font-nav)',
-                      fontSize: '13.5px',
-                      fontWeight: 700,
-                      letterSpacing: '0.12em',
-                      textTransform: 'uppercase',
-                      color: 'var(--gargi-gold)'
-                    }}>
-                      Explore Collection <ArrowRightIcon size={14} />
-                    </span>
-                  </div>
-                </Link>
-              ))}
+              <button
+                type="button"
+                className="btn btn--primary explore-drawer-apply-btn"
+                onClick={() => setMobileFilterOpen(false)}
+              >
+                Show {filteredItems.length} pieces
+              </button>
             </div>
           </div>
         </div>
-      </section>
-    </>
+      )}
+    </div>
   );
 }

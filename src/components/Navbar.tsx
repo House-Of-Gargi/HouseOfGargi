@@ -152,6 +152,7 @@ export default function Navbar() {
     pathname && (
       pathname.startsWith('/product') ||
       pathname.startsWith('/explore') ||
+      pathname.startsWith('/category') ||
       pathname === '/cart' ||
       pathname === '/wishlist' ||
       pathname === '/terms' ||

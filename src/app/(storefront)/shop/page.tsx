@@ -1,92 +1,256 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import ProductCard from '@/components/ProductCard';
-import ScrollReveal from '@/components/ScrollReveal';
 import CustomDropdown from '@/components/CustomDropdown';
 import { products, categories } from '@/data/products';
-import { FilterIcon, CloseIcon } from '@/components/Icons';
-import { Sparkles } from 'lucide-react';
+import { 
+  X, 
+  SlidersHorizontal, 
+  RotateCcw,
+  ArrowRight
+} from 'lucide-react';
 
 export default function ShopPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedFabric, setSelectedFabric] = useState<string>('');
+  const [selectedPriceTier, setSelectedPriceTier] = useState<string>('all');
   const [sort, setSort] = useState<string>('');
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
-  let filtered = [...products];
-  if (selectedCategory !== 'all') {
-    filtered = filtered.filter(p => p.category === selectedCategory);
-  }
-  if (selectedFabric) {
-    filtered = filtered.filter(p => p.fabric.toLowerCase().includes(selectedFabric.toLowerCase()));
-  }
+  // Derived options
+  const allFabrics = useMemo(() => {
+    return Array.from(new Set(products.map(p => p.fabric))).filter(Boolean);
+  }, []);
 
-  if (sort === 'price-asc') {
-    filtered.sort((a, b) => a.price - b.price);
-  } else if (sort === 'price-desc') {
-    filtered.sort((a, b) => b.price - a.price);
-  }
+  const fabricOptions = useMemo(() => {
+    return allFabrics.map(f => ({ value: f, label: f }));
+  }, [allFabrics]);
 
-  const fabrics = Array.from(new Set(products.map(p => p.fabric)));
+  const categoryOptions = useMemo(() => [
+    ...categories.map(c => ({ value: c.id, label: c.name }))
+  ], []);
+
+  const priceOptions = useMemo(() => [
+    { value: 'under-15k', label: 'Under ₹15,000' },
+    { value: '15k-40k', label: '₹15,000 – ₹40,000' },
+    { value: 'above-40k', label: 'Above ₹40,000' },
+  ], []);
+
+  const sortOptions = useMemo(() => [
+    { value: 'price-asc', label: 'Price: Low to High' },
+    { value: 'price-desc', label: 'Price: High to Low' },
+    { value: 'name-asc', label: 'Name: A–Z' },
+  ], []);
+
+  const filteredItems = useMemo(() => {
+    let result = [...products];
+
+    if (selectedCategory !== 'all') {
+      result = result.filter(p => p.category === selectedCategory);
+    }
+
+    if (selectedFabric) {
+      result = result.filter(p => p.fabric.toLowerCase().includes(selectedFabric.toLowerCase()));
+    }
+
+    if (selectedPriceTier === 'under-15k') {
+      result = result.filter(p => p.price < 15000);
+    } else if (selectedPriceTier === '15k-40k') {
+      result = result.filter(p => p.price >= 15000 && p.price <= 40000);
+    } else if (selectedPriceTier === 'above-40k') {
+      result = result.filter(p => p.price > 40000);
+    }
+
+    if (sort === 'price-asc') {
+      result.sort((a, b) => a.price - b.price);
+    } else if (sort === 'price-desc') {
+      result.sort((a, b) => b.price - a.price);
+    } else if (sort === 'name-asc') {
+      result.sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    return result;
+  }, [selectedCategory, selectedFabric, selectedPriceTier, sort]);
+
+  const hasActiveFilters = Boolean(
+    (selectedCategory && selectedCategory !== 'all') ||
+    selectedFabric ||
+    (selectedPriceTier && selectedPriceTier !== 'all') ||
+    sort
+  );
+
+  const resetAllFilters = () => {
+    setSelectedCategory('all');
+    setSelectedFabric('');
+    setSelectedPriceTier('all');
+    setSort('');
+  };
 
   return (
-    <>
-      <div className="category-banner" style={{ height: '380px' }}>
-        <img src="/images/banner-sarees-wide.png" alt="House of Gargi Complete Catalog" />
-        <div className="category-banner__content">
-          <h1>The Complete Collection</h1>
-          <p>Handwoven masterpieces, bridal silhouettes, and bespoke adornments.</p>
+    <div className="explore-page">
+      <div className="container">
+        {/* ── 1. Results for : All Creations ───────────────────────── */}
+        <div className="explore-header-row">
+          <div className="explore-results-title-wrap">
+            <span className="explore-results-label">Results for :</span>
+            <h1 className="explore-results-query" style={{ display: 'inline' }}>
+              All Creations
+            </h1>
+            <span className="explore-results-count">
+              ({filteredItems.length} {filteredItems.length === 1 ? 'Piece' : 'Pieces'})
+            </span>
+          </div>
         </div>
-      </div>
 
-      <section className="section section--ivory section--category" style={{ minHeight: '80vh' }}>
-        <div className="container">
-          {/* Breadcrumb Navigation */}
-          <div className="breadcrumb" style={{ marginBottom: '22px' }}>
-            <Link href="/">Home</Link>
-            <span>/</span>
-            <span style={{ color: 'var(--ink-brown)', fontWeight: 600 }}>The Atelier Catalog</span>
-          </div>
-
-          {/* Category Filter Tabs Rail */}
-          <div className="category-tabs-rail">
-            <button
-              type="button"
-              className={`category-tab-btn ${selectedCategory === 'all' ? 'is-active' : ''}`}
-              onClick={() => setSelectedCategory('all')}
-            >
-              All Pieces ({products.length})
-            </button>
-            {categories.map(cat => (
-              <button
-                key={cat.id}
-                type="button"
-                className={`category-tab-btn ${selectedCategory === cat.id ? 'is-active' : ''}`}
-                onClick={() => setSelectedCategory(cat.id)}
-              >
-                {cat.name}
-              </button>
-            ))}
-          </div>
-
-          {/* Atelier Filter & Sort Bar */}
-          <div className="filter-bar">
-            <div className="filter-bar__header">
-              <div className="filter-bar__title">
-                <FilterIcon size={18} style={{ color: 'var(--gargi-gold)' }} />
-                <span>Refine Collection</span>
-              </div>
-              <div className="filter-bar__summary">
-                Showing <strong>{filtered.length}</strong> {filtered.length === 1 ? 'Piece' : 'Pieces'}
-              </div>
+        {/* ── 2. Filter Strip with CustomDropdown ─────────────────── */}
+        <div className="explore-filter-strip">
+          <div className="explore-filter-strip__left">
+            <div className="explore-strip-group">
+              <span className="explore-strip-label">Category</span>
+              <CustomDropdown
+                options={categoryOptions}
+                value={selectedCategory === 'all' ? '' : selectedCategory}
+                onChange={(v) => setSelectedCategory(v || 'all')}
+                placeholder="All Categories"
+                showEmptyOption
+                fullWidth
+              />
             </div>
 
-            <div className="filter-bar__controls">
-              <div className="filter-bar__group">
-                <span className="filter-bar__label">Fabric</span>
+            <div className="explore-strip-group">
+              <span className="explore-strip-label">Fabric</span>
+              <CustomDropdown
+                options={fabricOptions}
+                value={selectedFabric}
+                onChange={setSelectedFabric}
+                placeholder="All Fabrics"
+                showEmptyOption
+                fullWidth
+              />
+            </div>
+
+            <div className="explore-strip-group">
+              <span className="explore-strip-label">Price</span>
+              <CustomDropdown
+                options={priceOptions}
+                value={selectedPriceTier === 'all' ? '' : selectedPriceTier}
+                onChange={(v) => setSelectedPriceTier(v || 'all')}
+                placeholder="All Prices"
+                showEmptyOption
+                fullWidth
+              />
+            </div>
+
+            <div className="explore-strip-group">
+              <span className="explore-strip-label">Sort By</span>
+              <CustomDropdown
+                options={sortOptions}
+                value={sort}
+                onChange={setSort}
+                placeholder="Featured Curation"
+                showEmptyOption
+                fullWidth
+              />
+            </div>
+
+            {hasActiveFilters && (
+              <button
+                type="button"
+                className="explore-strip-reset"
+                onClick={resetAllFilters}
+                title="Reset filters"
+              >
+                <RotateCcw size={13} />
+                <span>Reset</span>
+              </button>
+            )}
+          </div>
+
+          {/* Mobile Filter Button */}
+          <button
+            type="button"
+            className="explore-mobile-filter-btn"
+            onClick={() => setMobileFilterOpen(true)}
+          >
+            <SlidersHorizontal size={14} />
+            <span>Filters</span>
+            {hasActiveFilters && <span className="explore-dot" />}
+          </button>
+        </div>
+
+        {/* ── 3. Product Grid: Exactly 4 Products Per Row ─────────── */}
+        <section className="explore-grid-section">
+          {filteredItems.length === 0 ? (
+            <div className="explore-empty-minimal">
+              <h2 className="explore-empty-minimal__title">No creations match your filters</h2>
+              <p className="explore-empty-minimal__desc">
+                Try relaxing your filter criteria to view our handcrafted treasures.
+              </p>
+              <button
+                type="button"
+                className="btn btn--primary"
+                onClick={resetAllFilters}
+                style={{ marginTop: '20px' }}
+              >
+                View All Creations
+              </button>
+            </div>
+          ) : (
+            <div className="explore-4col-grid">
+              {filteredItems.map(product => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
+
+      {/* ── 4. Mobile Filter Drawer ───────────────────────────────── */}
+      {mobileFilterOpen && (
+        <div className="explore-mobile-drawer-overlay" onClick={() => setMobileFilterOpen(false)}>
+          <div className="explore-mobile-drawer" onClick={(e) => e.stopPropagation()}>
+            <div className="explore-mobile-drawer__header">
+              <span className="explore-mobile-drawer__title">Filter & Sort</span>
+              <button
+                type="button"
+                className="explore-mobile-drawer__close"
+                onClick={() => setMobileFilterOpen(false)}
+                aria-label="Close"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="explore-mobile-drawer__body">
+              <div className="explore-drawer-group">
+                <label className="explore-drawer-label">Category</label>
+                <div className="explore-drawer-pills">
+                  <button
+                    type="button"
+                    className={`explore-drawer-pill ${selectedCategory === 'all' ? 'is-active' : ''}`}
+                    onClick={() => setSelectedCategory('all')}
+                  >
+                    All ({products.length})
+                  </button>
+                  {categories.map(c => (
+                    <button
+                      key={c.id}
+                      type="button"
+                      className={`explore-drawer-pill ${selectedCategory === c.id ? 'is-active' : ''}`}
+                      onClick={() => setSelectedCategory(c.id)}
+                    >
+                      {c.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="explore-drawer-group">
+                <label className="explore-drawer-label">Fabric</label>
                 <CustomDropdown
-                  options={fabrics.map(f => ({ value: f, label: f }))}
+                  options={fabricOptions}
                   value={selectedFabric}
                   onChange={setSelectedFabric}
                   placeholder="All Fabrics"
@@ -95,13 +259,22 @@ export default function ShopPage() {
                 />
               </div>
 
-              <div className="filter-bar__group">
-                <span className="filter-bar__label">Sort By</span>
+              <div className="explore-drawer-group">
+                <label className="explore-drawer-label">Price</label>
                 <CustomDropdown
-                  options={[
-                    { value: 'price-asc', label: 'Price: Low to High' },
-                    { value: 'price-desc', label: 'Price: High to Low' },
-                  ]}
+                  options={priceOptions}
+                  value={selectedPriceTier === 'all' ? '' : selectedPriceTier}
+                  onChange={(v) => setSelectedPriceTier(v || 'all')}
+                  placeholder="All Prices"
+                  showEmptyOption
+                  fullWidth
+                />
+              </div>
+
+              <div className="explore-drawer-group">
+                <label className="explore-drawer-label">Sort</label>
+                <CustomDropdown
+                  options={sortOptions}
                   value={sort}
                   onChange={setSort}
                   placeholder="Featured Curation"
@@ -111,72 +284,25 @@ export default function ShopPage() {
               </div>
             </div>
 
-            {/* Active Filter Chips */}
-            {(selectedFabric || sort || selectedCategory !== 'all') && (
-              <div className="filter-bar__active-chips">
-                <span className="filter-bar__active-label">Active:</span>
-                {selectedCategory !== 'all' && (
-                  <button type="button" className="filter-chip" onClick={() => setSelectedCategory('all')}>
-                    Category: {categories.find(c => c.id === selectedCategory)?.name || selectedCategory} <CloseIcon size={12} />
-                  </button>
-                )}
-                {selectedFabric && (
-                  <button type="button" className="filter-chip" onClick={() => setSelectedFabric('')}>
-                    Fabric: {selectedFabric} <CloseIcon size={12} />
-                  </button>
-                )}
-                {sort && (
-                  <button type="button" className="filter-chip" onClick={() => setSort('')}>
-                    Sort: {sort === 'price-asc' ? 'Low to High' : 'High to Low'} <CloseIcon size={12} />
-                  </button>
-                )}
-                <button 
-                  type="button" 
-                  className="filter-bar__clear-btn" 
-                  onClick={() => { setSelectedCategory('all'); setSelectedFabric(''); setSort(''); }}
-                >
-                  Clear All Filters
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Product Grid */}
-          {filtered.length === 0 ? (
-            <div style={{ 
-              textAlign: 'center', 
-              padding: '60px 24px', 
-              background: 'var(--pure-white)', 
-              borderRadius: '8px', 
-              border: '1px solid var(--soft-gold-line)',
-              boxShadow: '0 4px 16px rgba(43, 31, 24, 0.03)'
-            }}>
-              <Sparkles size={40} strokeWidth={1.4} style={{ color: 'var(--maharani-maroon)', marginBottom: '16px' }} />
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: 'var(--ink-brown)', marginBottom: '8px' }}>
-                No items match your selected filters.
-              </h3>
-              <p style={{ color: 'var(--stone-taupe)', fontSize: '15px', maxWidth: '420px', margin: '0 auto 20px' }}>
-                Try selecting &ldquo;All Pieces&rdquo; or clearing your fabric filter to see more handcrafted treasures.
-              </p>
-              <button 
-                type="button" 
-                className="btn btn--primary" 
-                onClick={() => { setSelectedCategory('all'); setSelectedFabric(''); setSort(''); }}
+            <div className="explore-mobile-drawer__footer">
+              <button
+                type="button"
+                className="explore-drawer-reset-btn"
+                onClick={resetAllFilters}
               >
-                Reset All Filters
+                Reset
+              </button>
+              <button
+                type="button"
+                className="btn btn--primary explore-drawer-apply-btn"
+                onClick={() => setMobileFilterOpen(false)}
+              >
+                Show {filteredItems.length} pieces
               </button>
             </div>
-          ) : (
-            <div className="product-grid">
-              {filtered.map(product => (
-                <ScrollReveal key={product.id}>
-                  <ProductCard product={product} />
-                </ScrollReveal>
-              ))}
-            </div>
-          )}
+          </div>
         </div>
-      </section>
-    </>
+      )}
+    </div>
   );
 }
