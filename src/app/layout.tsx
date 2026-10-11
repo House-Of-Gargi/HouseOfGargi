@@ -6,6 +6,7 @@ import { CurrencyProvider } from '@/context/CurrencyContext';
 import { CustomerAuthProvider } from '@/context/CustomerAuthContext';
 import { CartProvider } from '@/context/CartContext';
 import { WishlistProvider } from '@/context/WishlistContext';
+import { NetworkStatusBanner } from '@/components/common/NetworkStatusBanner';
 
 export const metadata: Metadata = {
   title: {
@@ -154,6 +155,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <CustomerAuthProvider>
             <CartProvider>
               <WishlistProvider>
+                <NetworkStatusBanner />
                 {children}
               </WishlistProvider>
             </CartProvider>
