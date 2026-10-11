@@ -233,9 +233,9 @@ export default function SearchDropdown({
                     <div className="search-dropdown__item-sub">
                       <span className="search-dropdown__item-category">{p.category.toUpperCase()}</span>
                       <span className="search-dropdown__dot">•</span>
-                      <span>{p.fabric}</span>
-                      <span className="search-dropdown__dot">•</span>
-                      <span>{p.artisanNote || p.artisanName}</span>
+                      <span className="search-dropdown__item-detail">
+                        {p.fabric}{p.technique ? ` • ${p.technique}` : ''}
+                      </span>
                     </div>
                   </div>
                   <div className="search-dropdown__item-price">

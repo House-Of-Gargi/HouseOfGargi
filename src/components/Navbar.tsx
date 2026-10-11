@@ -320,52 +320,69 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Search Expandable Bar */}
+          {/* Mobile Search Dedicated Fullscreen Modal (Never overflows or balloons fixed nav) */}
           {mobileSearchOpen && (
-            <div className="navbar__mobile-search-bar" ref={mobileSearchContainerRef}>
-              <form onSubmit={handleSearchSubmit} className="navbar__mobile-search-form">
-                <SearchIcon size={19} />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onFocus={() => setSearchDropdownOpen(true)}
-                  placeholder="What are you looking for..."
-                  className="navbar__mobile-search-input"
-                  autoFocus
-                />
-                <button
-                  type="button"
-                  onClick={handleVoiceSearch}
-                  className={`navbar__mic-btn ${isListening ? 'navbar__mic-btn--active' : ''}`}
-                  aria-label="Voice search"
-                >
-                  <MicIcon size={19} />
-                </button>
+            <div className="navbar__mobile-search-overlay" ref={mobileSearchContainerRef}>
+              <div className="navbar__mobile-search-header">
+                <form onSubmit={handleSearchSubmit} className="navbar__mobile-search-form">
+                  <SearchIcon size={19} className="navbar__mobile-search-icon" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                      if (!searchDropdownOpen) setSearchDropdownOpen(true);
+                    }}
+                    onFocus={() => setSearchDropdownOpen(true)}
+                    placeholder="What are you looking for..."
+                    className="navbar__mobile-search-input"
+                    autoFocus
+                  />
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchQuery('')}
+                      className="navbar__mobile-search-clear"
+                      aria-label="Clear search"
+                    >
+                      <CloseIcon size={16} />
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={handleVoiceSearch}
+                    className={`navbar__mic-btn ${isListening ? 'navbar__mic-btn--active' : ''}`}
+                    aria-label="Voice search"
+                  >
+                    <MicIcon size={19} />
+                  </button>
+                </form>
                 <button
                   type="button"
                   onClick={() => {
                     setMobileSearchOpen(false);
                     setSearchDropdownOpen(false);
                   }}
-                  className="navbar__mobile-search-close"
-                  aria-label="Close search"
+                  className="navbar__mobile-search-cancel"
+                  aria-label="Cancel search"
                 >
-                  <CloseIcon size={18} />
+                  Cancel
                 </button>
-              </form>
+              </div>
 
-              <SearchDropdown
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                isOpen={searchDropdownOpen}
-                onClose={() => {
-                  setSearchDropdownOpen(false);
-                  setMobileSearchOpen(false);
-                }}
-                onSelectProduct={handleSelectProduct}
-                isMobileModal
-              />
+              <div className="navbar__mobile-search-results">
+                <SearchDropdown
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                  isOpen={true}
+                  onClose={() => {
+                    setSearchDropdownOpen(false);
+                    setMobileSearchOpen(false);
+                  }}
+                  onSelectProduct={handleSelectProduct}
+                  isMobileModal
+                />
+              </div>
             </div>
           )}
 
