@@ -323,21 +323,7 @@ export default function SearchDropdown({
           </div>
         </div>
 
-        {/* BOTTOM ACTION: Press Enter to open explore page */}
-        <div 
-          className="search-dropdown__footer"
-          onClick={() => {
-            const q = trimmedQuery || 'All Masterpieces';
-            handleSelect(q);
-          }}
-        >
-          <div className="search-dropdown__footer-text">
-            <span>Press</span>
-            <kbd className="search-dropdown__kbd">Enter</kbd>
-            <span>to explore all matching atelier creations</span>
-          </div>
-          <ArrowRight size={14} className="search-dropdown__footer-arrow" />
-        </div>
+
       </div>
     </div>
   );
