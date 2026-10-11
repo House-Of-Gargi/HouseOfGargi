@@ -127,7 +127,7 @@ export function SuperAdminSidebar({
         localStorage.removeItem('artisan_session');
         localStorage.removeItem('auth_session');
       }
-      router.push('/seller/login?logout=true');
+      router.push('/admin/login?logout=true');
     } catch {
       router.push('/seller/login');
     }

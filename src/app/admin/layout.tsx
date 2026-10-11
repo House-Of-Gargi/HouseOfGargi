@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { AdminShell } from '@/components/admin/AdminShell';
 import { supabase } from '@/lib/supabaseClient';
@@ -10,12 +10,19 @@ import { ShieldAlert, ArrowLeft, Loader2 } from 'lucide-react';
 import '@/seller.css';
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
   const [checking, setChecking] = useState(true);
   const [authorized, setAuthorized] = useState(false);
   const [adminEmail, setAdminEmail] = useState('sumitgreat2705@gmail.com');
   const [adminName, setAdminName] = useState('Operations Admin');
 
   useEffect(() => {
+    if (pathname === '/admin/login') {
+      setAuthorized(true);
+      setChecking(false);
+      return;
+    }
+
     async function verifyAdmin() {
       try {
         let activeEmail = '';
@@ -80,7 +87,11 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     }
 
     verifyAdmin();
-  }, []);
+  }, [pathname]);
+
+  if (pathname === '/admin/login') {
+    return <>{children}</>;
+  }
 
   if (checking) {
     return (
@@ -103,7 +114,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             <Link
-              href="/seller/login"
+              href="/admin/login"
               style={{
                 display: 'inline-block',
                 padding: '0.75rem 1.5rem',
@@ -115,7 +126,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                 textDecoration: 'none',
               }}
             >
-              Sign In as Admin
+              Sign In to Admin Console
             </Link>
             <Link
               href="/"

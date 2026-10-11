@@ -57,6 +57,13 @@ export async function POST(req: Request) {
     // Resolve user's actual role using strict RBAC
     const actualRole = await getUserRole(cleanEmail);
 
+    if (portal === 'admin' && actualRole !== 'admin' && actualRole !== 'super_admin') {
+      return NextResponse.json(
+        { success: false, message: 'Access denied. Account is not registered with Administrative privileges.' },
+        { status: 403 }
+      );
+    }
+
     return NextResponse.json({
       success: true,
       user: {

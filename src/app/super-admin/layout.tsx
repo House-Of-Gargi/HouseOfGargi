@@ -103,7 +103,7 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             <Link
-              href="/seller/login"
+              href="/admin/login"
               style={{
                 display: 'inline-block',
                 padding: '0.75rem 1.5rem',
@@ -115,7 +115,7 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
                 textDecoration: 'none',
               }}
             >
-              Sign In with Super Admin Credentials
+              Sign In to Admin & Super Admin Portal
             </Link>
             <Link
               href="/"

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { resend, NOREPLY_EMAIL } from '@/lib/resend';
+import { getUserRole } from '@/lib/rbac';
 
 const AUTH_SECRET = process.env.AUTH_SECRET || process.env.RESEND_API_KEY || 'house_of_gargi_vedic_auth_secret_2026';
 const LOGO_URL = 'https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/logo-email.png';
@@ -32,7 +33,89 @@ export async function POST(req: Request) {
     let emailHtml = '';
     let emailSubject = '';
 
-    if (portal === 'artisan') {
+    if (portal === 'admin') {
+      // Strict Pre-Send RBAC Verification:
+      // Only emails registered as 'admin' or 'super_admin' will receive an OTP!
+      const userRole = await getUserRole(cleanEmail);
+      if (userRole !== 'admin' && userRole !== 'super_admin') {
+        return NextResponse.json(
+          { 
+            success: false, 
+            message: 'Access restricted. This email is not registered as an Admin or Super Admin with House of Gargi.' 
+          },
+          { status: 403 }
+        );
+      }
+
+      const roleDisplay = userRole === 'super_admin' ? 'Super Administrator' : 'Administrator';
+      emailSubject = `${otp} is your House of Gargi Administrative Portal Access Code`;
+      emailHtml = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>House of Gargi Administrative Access Code</title>
+        </head>
+        <body style="margin: 0; padding: 0; background-color: #FBF6EE; font-family: 'Georgia', -apple-system, BlinkMacSystemFont, 'Segoe UI', serif; color: #241A15; -webkit-font-smoothing: antialiased;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #FBF6EE; padding: 40px 16px;">
+            <tr>
+              <td align="center">
+                <table role="presentation" width="100%" style="max-width: 540px; background-color: #FFFFFF; border: 1.5px solid #E4D3AE; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 24px rgba(43, 31, 24, 0.06);">
+                  <tr>
+                    <td style="background-color: #7A2331; height: 5px; padding: 0; line-height: 5px; font-size: 5px;">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td align="center" style="padding: 34px 32px 22px 32px; text-align: center; border-bottom: 1px solid #F4EDE0;">
+                      <a href="https://gargisaha.com" target="_blank" style="text-decoration: none; display: inline-block;">
+                        <img 
+                          src="${LOGO_URL}" 
+                          alt="House of Gargi" 
+                          width="210"
+                          height="60"
+                          style="display: block; margin: 0 auto 10px; width: 210px; height: 60px; max-width: 100%; border: 0; outline: none; text-decoration: none;"
+                        />
+                      </a>
+                      <p style="margin: 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: #7A2331;">
+                        Administrative & Executive Command
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 36px 32px 28px 32px; text-align: center;">
+                      <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.65; color: #4A3C33;">
+                        Administrative login requested for <strong>${cleanEmail}</strong>.
+                      </p>
+                      <p style="margin: 0 0 20px; font-size: 13px; color: #8C7B70;">
+                        Role Privilege: <strong style="color: #7A2331;">${roleDisplay}</strong>
+                      </p>
+
+                      <div style="background-color: #FAF7F2; border: 1.5px solid #D4AF37; border-radius: 8px; padding: 18px 28px; margin: 12px auto 24px; display: inline-block;">
+                        <span style="font-size: 34px; font-weight: 700; letter-spacing: 10px; color: #7A2331; font-family: 'Courier New', Courier, monospace; display: inline-block; padding-left: 10px;">
+                          ${otp}
+                        </span>
+                      </div>
+
+                      <p style="margin: 0; font-size: 13px; color: #8C7B70; line-height: 1.5;">
+                        This code expires in <strong>10 minutes</strong>. Strictly restricted to verified House of Gargi leadership.
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="border-top: 1px solid #EAE2D5; background-color: #FAF7F2; padding: 22px 32px; text-align: center; font-size: 12px; color: #8C7B70; line-height: 1.6;">
+                      <p style="margin: 0;">
+                        Secure authentication dispatched from <strong style="color: #241A15;">noreply@gargisaha.com</strong>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>
+      `;
+    } else if (portal === 'artisan') {
       emailSubject = `${otp} is your House of Gargi Artisan Portal OTP`;
       emailHtml = `
         <!DOCTYPE html>
