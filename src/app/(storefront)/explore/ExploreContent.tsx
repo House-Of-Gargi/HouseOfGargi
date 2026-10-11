@@ -173,7 +173,8 @@ export default function ExploreContent() {
   const handleQuickAddToCart = (e: React.MouseEvent, product: Product) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart(product, product.sizes && product.sizes[0] ? product.sizes[0] : null, 1);
+    const chosenSize = product.sizes && product.sizes[0] ? product.sizes[0] : null;
+    addToCart(product, 1, chosenSize);
     setAddedToast(`Added "${product.name}" to your bag`);
     setTimeout(() => setAddedToast(null), 3000);
   };

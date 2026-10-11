@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import CustomerLoginModal from './CustomerLoginModal';
 import { SearchIcon, MicIcon, UserIcon, WishlistIcon, CartIcon, MenuIcon, CloseIcon } from './Icons';
+import SearchDropdown, { saveSearchHistory } from './SearchDropdown';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
@@ -16,6 +17,49 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isListening, setIsListening] = useState(false);
+  const [searchDropdownOpen, setSearchDropdownOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const mobileSearchContainerRef = useRef<HTMLDivElement>(null);
+
+  const pathname = usePathname();
+  const router = useRouter();
+  const { itemCount } = useCart();
+  const { wishlistCount } = useWishlist();
+  const { isLoggedIn, openLoginModal } = useCustomerAuth();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Click outside to close search dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      const insideDesktop = searchContainerRef.current?.contains(target);
+      const insideMobile = mobileSearchContainerRef.current?.contains(target);
+
+      if (!insideDesktop && !insideMobile) {
+        setSearchDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Close dropdown on route change
+  useEffect(() => {
+    setSearchDropdownOpen(false);
+    setMobileSearchOpen(false);
+  }, [pathname]);
 
   const handleVoiceSearch = () => {
     if (typeof window === 'undefined') return;
@@ -45,9 +89,13 @@ export default function Navbar() {
       recognition.onresult = (event: any) => {
         const transcript = event.results[0][0].transcript;
         if (transcript) {
-          setSearchQuery(transcript);
+          const trimmed = transcript.trim();
+          setSearchQuery(trimmed);
           setIsListening(false);
-          router.push(`/shop?search=${encodeURIComponent(transcript.trim())}`);
+          saveSearchHistory(trimmed);
+          setSearchDropdownOpen(false);
+          setMobileSearchOpen(false);
+          router.push(`/explore?q=${encodeURIComponent(trimmed)}`);
         }
       };
 
@@ -68,28 +116,29 @@ export default function Navbar() {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+    const q = searchQuery.trim();
+    if (q) {
+      saveSearchHistory(q);
+      setSearchDropdownOpen(false);
+      setMobileSearchOpen(false);
+      router.push(`/explore?q=${encodeURIComponent(q)}`);
     } else {
-      router.push('/shop');
+      setSearchDropdownOpen(false);
+      setMobileSearchOpen(false);
+      router.push('/explore');
     }
   };
 
-  const pathname = usePathname();
-  const router = useRouter();
-  const { itemCount } = useCart();
-  const { wishlistCount } = useWishlist();
-  const { isLoggedIn, openLoginModal } = useCustomerAuth();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  const handleSelectProduct = (term: string, productId?: string) => {
+    saveSearchHistory(term);
+    setSearchQuery(term);
+    setSearchDropdownOpen(false);
+    setMobileSearchOpen(false);
+    const targetUrl = productId 
+      ? `/explore?q=${encodeURIComponent(term)}&id=${encodeURIComponent(productId)}`
+      : `/explore?q=${encodeURIComponent(term)}`;
+    router.push(targetUrl);
+  };
 
   const handleUserClick = () => {
     if (isLoggedIn) {
@@ -102,6 +151,7 @@ export default function Navbar() {
   const isDarkNavPage = Boolean(
     pathname && (
       pathname.startsWith('/product') ||
+      pathname.startsWith('/explore') ||
       pathname === '/cart' ||
       pathname === '/wishlist' ||
       pathname === '/terms' ||
@@ -135,6 +185,18 @@ export default function Navbar() {
               >
                 <MenuIcon size={26} />
               </button>
+              <button
+                type="button"
+                className="navbar__mobile-search-btn"
+                onClick={() => {
+                  setMobileSearchOpen(!mobileSearchOpen);
+                  setSearchDropdownOpen(!mobileSearchOpen);
+                }}
+                aria-label="Search"
+                title="Search"
+              >
+                <SearchIcon size={22} />
+              </button>
               <Link href="/" className="navbar__logo" aria-label="House of Gargi">
                 <img
                   src="/logo-images/new-white-logo.png"
@@ -149,27 +211,44 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {/* Center: Search Placeholder Box */}
-            <form onSubmit={handleSearchSubmit} className={`navbar__search-box ${isListening ? 'navbar__search-box--listening' : ''}`} role="search">
-              <SearchIcon size={22} />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={isListening ? "Listening... Speak now" : "What are you looking for..."}
-                className="navbar__search-input"
-                aria-label="What are you looking for..."
-              />
-              <button
-                type="button"
-                onClick={handleVoiceSearch}
-                className={`navbar__mic-btn ${isListening ? 'navbar__mic-btn--active' : ''}`}
-                aria-label={isListening ? "Stop voice search" : "Voice search"}
-                title={isListening ? "Listening... Speak now" : "Search by voice"}
+            {/* Center: Search Box Container with Elastic Search Dropdown */}
+            <div className="navbar__search-wrapper" ref={searchContainerRef}>
+              <form 
+                onSubmit={handleSearchSubmit} 
+                className={`navbar__search-box ${isListening ? 'navbar__search-box--listening' : ''} ${searchDropdownOpen ? 'navbar__search-box--focused' : ''}`} 
+                role="search"
               >
-                <MicIcon size={21} />
-              </button>
-            </form>
+                <SearchIcon size={22} />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => setSearchDropdownOpen(true)}
+                  onClick={() => setSearchDropdownOpen(true)}
+                  placeholder={isListening ? "Listening... Speak now" : "What are you looking for..."}
+                  className="navbar__search-input"
+                  aria-label="What are you looking for..."
+                />
+                <button
+                  type="button"
+                  onClick={handleVoiceSearch}
+                  className={`navbar__mic-btn ${isListening ? 'navbar__mic-btn--active' : ''}`}
+                  aria-label={isListening ? "Stop voice search" : "Voice search"}
+                  title={isListening ? "Listening... Speak now" : "Search by voice"}
+                >
+                  <MicIcon size={21} />
+                </button>
+              </form>
+
+              {/* Elastic Search Dropdown */}
+              <SearchDropdown
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                isOpen={searchDropdownOpen}
+                onClose={() => setSearchDropdownOpen(false)}
+                onSelectProduct={handleSelectProduct}
+              />
+            </div>
 
             {/* Right: Auth Action Pills (Bag is only shown after login) */}
             <div className="navbar__icons">
@@ -232,16 +311,66 @@ export default function Navbar() {
             </div>
           </div>
 
+          {/* Mobile Search Expandable Bar */}
+          {mobileSearchOpen && (
+            <div className="navbar__mobile-search-bar" ref={mobileSearchContainerRef}>
+              <form onSubmit={handleSearchSubmit} className="navbar__mobile-search-form">
+                <SearchIcon size={19} />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => setSearchDropdownOpen(true)}
+                  placeholder="What are you looking for..."
+                  className="navbar__mobile-search-input"
+                  autoFocus
+                />
+                <button
+                  type="button"
+                  onClick={handleVoiceSearch}
+                  className={`navbar__mic-btn ${isListening ? 'navbar__mic-btn--active' : ''}`}
+                  aria-label="Voice search"
+                >
+                  <MicIcon size={19} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileSearchOpen(false);
+                    setSearchDropdownOpen(false);
+                  }}
+                  className="navbar__mobile-search-close"
+                  aria-label="Close search"
+                >
+                  <CloseIcon size={18} />
+                </button>
+              </form>
+
+              <SearchDropdown
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                isOpen={searchDropdownOpen}
+                onClose={() => {
+                  setSearchDropdownOpen(false);
+                  setMobileSearchOpen(false);
+                }}
+                onSelectProduct={handleSelectProduct}
+                isMobileModal
+              />
+            </div>
+          )}
+
           {/* Second Line: Sub-bar with Categories (Smooth fade away on scroll) */}
           <div className="navbar__sub-row">
             <div className="navbar__links">
+              <Link href="/explore">Explore All</Link>
               <Link href="/category/sarees">Sarees</Link>
               <Link href="/category/lehengas">Lehengas</Link>
               <Link href="/category/kurta-sets">Kurta Sets</Link>
               <Link href="/category/accessories">Accessories</Link>
               <Link href="/bespoke">Bespoke</Link>
             </div>
-            </div>
+          </div>
         </div>
       </nav>
 
@@ -269,8 +398,8 @@ export default function Navbar() {
           </button>
         </div>
         <div className="mobile-drawer__links">
-          <Link href="/shop" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>
-            <SearchIcon size={18} /> Search Collections
+          <Link href="/explore" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>
+            <SearchIcon size={18} /> Explore Atelier Collections
           </Link>
           <button 
             type="button" 
