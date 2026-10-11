@@ -83,8 +83,10 @@ export default function ProductCard({ product, style }: ProductCardProps) {
         <div className="product-card__body" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
           <div className="product-card__name">{currentProduct.name}</div>
           <div className="product-card__artisan">
-            <span style={{ color: 'var(--gargi-gold)', marginRight: '6px' }}>✦</span>
-            {currentProduct.artisanNote || (currentProduct as any).artisan_note || 'Crafted by master artisans'}
+            <span className="product-card__artisan-icon">✦</span>
+            <span className="product-card__artisan-text">
+              {currentProduct.artisanNote || (currentProduct as any).artisan_note || 'Crafted by master artisans'}
+            </span>
           </div>
           <div className="product-card__price" style={{ marginTop: 'auto' }}>{formatPrice(currentProduct.price || (currentProduct as any).price_in_rupees || 0)}</div>
         </div>
