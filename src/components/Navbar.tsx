@@ -411,6 +411,9 @@ export default function Navbar() {
           <Link href="/category/accessories" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>Accessories</Link>
           <Link href="/bespoke" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>Bespoke Atelier</Link>
           <Link href="/shop" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>All Masterpieces</Link>
+          <Link href="/seller/login" className="mobile-drawer__link" onClick={() => setMobileOpen(false)} style={{ color: 'var(--gargi-gold)', fontWeight: 600, borderTop: '1px solid rgba(184, 142, 24, 0.2)', paddingTop: '14px', marginTop: '6px' }}>
+            Join Us (Artisan Portal)
+          </Link>
         </div>
       </div>
     </>
