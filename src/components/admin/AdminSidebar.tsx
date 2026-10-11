@@ -50,7 +50,7 @@ const adminNavGroups: AdminNavGroup[] = [
     section: 'Command Center',
     items: [
       { label: 'Operational Hub', href: '/admin/dashboard', icon: Gauge },
-      { label: 'Urgent Action Queue', href: '/admin/queue', icon: AlertOctagon, badge: '3', badgeColor: '#7A2331' },
+      { label: 'Urgent Action Queue', href: '/admin/queue', icon: AlertOctagon, badge: '3', badgeColor: '#7A2331' },\n      { label: 'Bespoke Commissions', href: '/admin/bespoke', icon: Sparkles, badge: 'Patron', badgeColor: '#B88E18' },
     ],
   },
   {
