@@ -1,0 +1,57 @@
+[
+  {
+    "id": "sarees",
+    "name": "Royal Sarees",
+    "sanskritLipi": "गार्गी सूत्रम्",
+    "slug": "sarees",
+    "description": "Master handloom Banarasi, Kanchipuram, and Paithani silks woven on traditional pit looms.",
+    "imageUrl": "/images/category-sarees.png",
+    "displayOrder": 1,
+    "isActive": true,
+    "productCount": 14
+  },
+  {
+    "id": "lehengas",
+    "name": "Bridal Lehengas",
+    "sanskritLipi": "राज दरबार",
+    "slug": "lehengas",
+    "description": "Hand-embroidered zardozi and gota patti bridal ensembles for royal weddings.",
+    "imageUrl": "/images/category-lehengas.png",
+    "displayOrder": 2,
+    "isActive": true,
+    "productCount": 8
+  },
+  {
+    "id": "kurta-sets",
+    "name": "Heritage Kurta Sets",
+    "sanskritLipi": "पवित्र परम्परा",
+    "slug": "kurta-sets",
+    "description": "Chanderi silk and Awadhi Chikankari artisan kurtas with handcrafted buttons.",
+    "imageUrl": "/images/category-kurtas.png",
+    "displayOrder": 3,
+    "isActive": true,
+    "productCount": 6
+  },
+  {
+    "id": "accessories",
+    "name": "Courtly Jewellery & Dupattas",
+    "sanskritLipi": "शृङ्गार अलङ्कार",
+    "slug": "accessories",
+    "description": "Kundan polki crafts and pure zari pashmina stoles handcrafted by heritage guild artisans.",
+    "imageUrl": "/images/category-accessories.png",
+    "displayOrder": 4,
+    "isActive": true,
+    "productCount": 11
+  },
+  {
+    "id": "bespoke",
+    "name": "Bespoke Atelier Trousseau",
+    "sanskritLipi": "राजकीय सृष्टि",
+    "slug": "bespoke",
+    "description": "Commissioned heirloom textiles custom woven with personalized motifs and weaver signatures.",
+    "imageUrl": "/images/category-bespoke.png",
+    "displayOrder": 5,
+    "isActive": true,
+    "productCount": 4
+  }
+]
