@@ -70,11 +70,19 @@ export default async function HomePage() {
       <section className="section section--ivory">
         <div className="container">
           <ScrollReveal>
-            <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-              <h2 className="section-heading-bold">
-                <span style={{ color: 'var(--ink-brown)' }}>Shop </span>by Collection
-              </h2>
-              <p className="subtitle-italic" style={{ color: 'var(--stone-taupe)', marginTop: '12px' }}>
+            <div className="royal-header-lockup">
+              <div className="royal-header-line-row">
+                <div className="royal-header-line royal-header-line--left">
+                  <span className="royal-header-diamond" />
+                </div>
+                <h2 className="royal-header-title">
+                  <span style={{ color: 'var(--ink-brown)' }}>Shop </span>by Collection
+                </h2>
+                <div className="royal-header-line royal-header-line--right">
+                  <span className="royal-header-diamond" />
+                </div>
+              </div>
+              <p className="royal-header-desc">
                 Explore our curated lines of traditional wear
               </p>
             </div>
@@ -102,11 +110,19 @@ export default async function HomePage() {
       <section className="section section--sand">
         <div className="container">
           <ScrollReveal>
-            <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-              <h2 className="section-heading-bold">
-                <span style={{ color: 'var(--ink-brown)' }}>Featured </span>Curations
-              </h2>
-              <p className="subtitle-italic" style={{ color: 'var(--stone-taupe)', marginTop: '12px' }}>
+            <div className="royal-header-lockup">
+              <div className="royal-header-line-row">
+                <div className="royal-header-line royal-header-line--left">
+                  <span className="royal-header-diamond" />
+                </div>
+                <h2 className="royal-header-title">
+                  <span style={{ color: 'var(--ink-brown)' }}>Featured </span>Curations
+                </h2>
+                <div className="royal-header-line royal-header-line--right">
+                  <span className="royal-header-diamond" />
+                </div>
+              </div>
+              <p className="royal-header-desc">
                 Our most loved pieces, selected for you
               </p>
             </div>
@@ -125,11 +141,19 @@ export default async function HomePage() {
       <section className="section section--ivory">
         <div className="container">
           <ScrollReveal>
-            <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-              <h2 className="section-heading-bold">
-                <span style={{ color: 'var(--ink-brown)' }}>New </span>Arrivals
-              </h2>
-              <p className="subtitle-italic" style={{ color: 'var(--stone-taupe)', marginTop: '12px' }}>
+            <div className="royal-header-lockup">
+              <div className="royal-header-line-row">
+                <div className="royal-header-line royal-header-line--left">
+                  <span className="royal-header-diamond" />
+                </div>
+                <h2 className="royal-header-title">
+                  <span style={{ color: 'var(--ink-brown)' }}>New </span>Arrivals
+                </h2>
+                <div className="royal-header-line royal-header-line--right">
+                  <span className="royal-header-diamond" />
+                </div>
+              </div>
+              <p className="royal-header-desc">
                 Freshly woven creations directly from master artisan looms
               </p>
             </div>

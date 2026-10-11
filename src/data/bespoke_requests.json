@@ -1,0 +1,20 @@
+[
+  {
+    "id": "81166376-e83c-41fa-8030-043e7a855453",
+    "request_number": "HG-BESP-284971",
+    "customer_id": "patron_test_123",
+    "name": "Princess Gayatri Devi",
+    "email": "gayatridevi@royalpatron.com",
+    "phone": "+91 98300 12345",
+    "category": "Sarees",
+    "material": "Banarasi Katan",
+    "size": "Custom M",
+    "details": "Bridal Wedding: Traditional red and gold real zari woven with sacred peacock motifs for royal wedding in Jaipur.",
+    "status": "in_consultation",
+    "assigned_artisan": "Master Ramdas Mishra Pit Loom Guild",
+    "admin_notes": "Direct consultation scheduled with Master Ramdas Mishra on Tuesday.",
+    "reviewed_by": "operations@gargisaha.com",
+    "created_at": "2026-10-11T12:41:24.819+00:00",
+    "updated_at": "2026-10-11T12:41:27.446Z"
+  }
+]
