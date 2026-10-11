@@ -1631,6 +1631,10 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   z-index: 1;
 }
 @media (max-width: 900px) {
+  /* Complete elimination of navbar collision on explore, category, and shop pages */
+  .explore-page {
+    padding-top: 165px !important; /* Mobile explore-page clearance */
+  }
   .vision-strip {
     grid-template-columns: repeat(2, 1fr);
     gap: 32px 20px;
@@ -6595,7 +6599,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 
 @media (max-width: 860px) {
   .explore-page {
-    padding-top: 110px !important;
+    padding-top: 165px !important; /* Generous clearance for 2-row mobile navbar to prevent overlap conflict */
   }
   .explore-4col-grid {
     grid-template-columns: repeat(2, 1fr) !important;
@@ -7454,11 +7458,13 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   .navbar:not(.navbar--sub-hidden) .navbar__sub-row,
   .navbar__sub-row {
     display: flex !important;
+    justify-content: flex-start !important; /* CRITICAL: Must align to start so first item is never cut off */
+    align-items: center !important;
     width: 100% !important;
-    max-height: 42px !important;
+    max-height: 44px !important;
     opacity: 1 !important;
     transform: none !important;
-    margin-top: 6px !important;
+    margin-top: 14px !important; /* Generous space between top bar and category strip */
     overflow-x: auto !important;
     overflow-y: hidden !important;
     -webkit-overflow-scrolling: touch !important;
@@ -7479,12 +7485,15 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 
   .navbar__links {
     display: inline-flex !important;
+    justify-content: flex-start !important; /* CRITICAL: Never center */
     align-items: center !important;
-    gap: 20px !important;
-    padding: 2px 4px 6px 4px !important;
+    margin: 0 !important; /* CRITICAL: Clear margin 0 auto */
+    gap: 22px !important;
+    padding: 4px 18px 8px 18px !important; /* 18px padding so 'Explore All' & 'Sarees' are 100% visible */
     white-space: nowrap !important;
     flex-wrap: nowrap !important;
     width: max-content !important;
+    min-width: max-content !important;
   }
 
   .navbar__links a {
