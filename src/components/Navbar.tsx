@@ -382,37 +382,56 @@ export default function Navbar() {
       {/* Mobile drawer */}
       <div className={`mobile-drawer ${mobileOpen ? 'mobile-drawer--open' : ''}`}>
         <div className="mobile-drawer__header">
-          <Link href="/" className="navbar__logo" onClick={() => setMobileOpen(false)} aria-label="House of Gargi">
+          <Link href="/" className="mobile-drawer__logo" onClick={() => setMobileOpen(false)} aria-label="House of Gargi">
             <img
               src="/logo-images/new-logo.png"
               alt="House of Gargi"
-              className="navbar__logo-img navbar__logo-img--dark"
-              style={{ display: 'block', height: '52px' }}
+              className="navbar__logo-img--dark"
+              style={{ display: 'block', height: '62px', width: 'auto', objectFit: 'contain' }}
             />
           </Link>
           <button type="button" className="mobile-drawer__close" onClick={() => setMobileOpen(false)} aria-label="Close menu">
-            <CloseIcon size={28} />
+            <CloseIcon size={26} />
           </button>
         </div>
-        <div className="mobile-drawer__links">
-          <Link href="/explore" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>
-            <SearchIcon size={18} /> Explore Atelier Collections
-          </Link>
+
+        {/* Auth Action Buttons: Both Sign In & Join Us in Button Style with Black Font */}
+        <div className="mobile-drawer__auth-actions">
           <button 
             type="button" 
-            className="mobile-drawer__link" 
+            className="mobile-drawer__auth-btn" 
             onClick={() => { setMobileOpen(false); handleUserClick(); }}
           >
-            <UserIcon size={18} /> {isLoggedIn ? 'My Account' : 'Sign In / Register'}
+            {isLoggedIn ? 'My Account' : 'Sign In'}
           </button>
-          <Link href="/category/sarees" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>Sarees</Link>
-          <Link href="/category/lehengas" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>Lehengas</Link>
-          <Link href="/category/kurta-sets" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>Kurta Sets</Link>
-          <Link href="/category/accessories" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>Accessories</Link>
-          <Link href="/bespoke" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>Bespoke Atelier</Link>
-          <Link href="/shop" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>All Masterpieces</Link>
-          <Link href="/seller/login" className="mobile-drawer__link" onClick={() => setMobileOpen(false)} style={{ color: 'var(--gargi-gold)', fontWeight: 600, borderTop: '1px solid rgba(184, 142, 24, 0.2)', paddingTop: '14px', marginTop: '6px' }}>
-            Join Us (Artisan Portal)
+          <Link 
+            href="/seller/login" 
+            className="mobile-drawer__auth-btn" 
+            onClick={() => setMobileOpen(false)}
+          >
+            Join Us
+          </Link>
+        </div>
+
+        {/* Navigation Categories: Clean text only, no custom icons, no All Masterpieces */}
+        <div className="mobile-drawer__links">
+          <Link href="/explore" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>
+            All Collections
+          </Link>
+          <Link href="/category/sarees" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>
+            Sarees
+          </Link>
+          <Link href="/category/lehengas" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>
+            Lehengas
+          </Link>
+          <Link href="/category/kurta-sets" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>
+            Kurta Sets
+          </Link>
+          <Link href="/category/accessories" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>
+            Accessories
+          </Link>
+          <Link href="/bespoke" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>
+            Bespoke Atelier
           </Link>
         </div>
       </div>

@@ -740,34 +740,83 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 48px;
+  margin-bottom: 24px;
+}
+.mobile-drawer__logo {
+  display: flex;
+  align-items: center;
+  line-height: 0;
+  text-decoration: none;
 }
 .mobile-drawer__close {
   background: none;
   border: none;
   color: var(--ink-brown);
   padding: 4px;
-  min-width: 44px;
-  min-height: 44px;
+  min-width: 40px;
+  min-height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
 }
+
+/* Auth Buttons in Drawer: Button Style with Black Font */
+.mobile-drawer__auth-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(184, 142, 24, 0.3);
+}
+
+.mobile-drawer__auth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  padding: 0 12px;
+  background: transparent;
+  border: 1.5px solid #231812;
+  border-radius: 6px;
+  font-family: var(--font-nav);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #1A1512 !important; /* Black font only */
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 200ms ease;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.mobile-drawer__auth-btn:hover,
+.mobile-drawer__auth-btn:active {
+  background: #1A1512;
+  color: #FFFFFF !important;
+}
+
 .mobile-drawer__links {
   display: flex;
   flex-direction: column;
 }
+
 .mobile-drawer__links a,
 .mobile-drawer__links button,
 .mobile-drawer__link {
   font-family: var(--font-nav);
-  font-size: 15.5px;
+  font-size: 14.5px;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink-brown);
-  padding: 20px 0;
-  border-bottom: 1px solid var(--soft-gold-line);
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(184, 142, 24, 0.2);
   background: none;
   border-top: none;
   border-left: none;
@@ -775,17 +824,16 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   cursor: pointer;
   text-align: left;
   width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  display: block;
   line-height: 1;
-  transition: color 250ms ease, padding-left 250ms ease;
+  transition: color 200ms ease, padding-left 200ms ease;
 }
+
 .mobile-drawer__links a:hover,
 .mobile-drawer__links button:hover,
 .mobile-drawer__link:hover {
   color: var(--maharani-maroon);
-  padding-left: 4px;
+  padding-left: 6px;
 }
 
 /* ── 10. Footer (§8.8) ────────────────────────────────────── */
@@ -7261,24 +7309,25 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 }
 
 @media (max-width: 900px) {
+  /* Generous top padding for mobile status bar / notch breathing room */
   .navbar {
-    padding: 6px 0 8px 0 !important;
+    padding: 16px 0 10px 0 !important;
   }
 
   .navbar__inner {
-    padding: 0 14px !important;
+    padding: 0 16px !important;
     max-width: 100% !important;
     display: flex !important;
     flex-direction: column !important;
   }
 
-  /* 1. Top row: Logo on Left, Login + Hamburger on Right */
+  /* 1. Top row: Logo on Left, Scaled Login + Hamburger on Right */
   .navbar__top-row {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
     width: 100% !important;
-    height: 44px !important;
+    height: 52px !important;
     position: relative !important;
   }
 
@@ -7295,15 +7344,16 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     line-height: 0 !important;
   }
 
+  /* Noticeably scaled logo for mobile view */
   .navbar__logo-img {
-    height: 36px !important;
-    max-width: 155px !important;
+    height: 50px !important;
+    max-width: 210px !important;
     object-fit: contain !important;
   }
 
   .navbar--hero .navbar__logo-img--white {
     display: block !important;
-    height: 38px !important;
+    height: 54px !important;
   }
   .navbar--hero .navbar__logo-img--dark {
     display: none !important;
@@ -7313,7 +7363,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   }
   .navbar--scrolled .navbar__logo-img--dark {
     display: block !important;
-    height: 36px !important;
+    height: 50px !important;
   }
 
   .navbar__search-wrapper {
@@ -7325,7 +7375,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     display: flex !important;
     align-items: center !important;
     justify-content: flex-end !important;
-    gap: 8px !important;
+    gap: 10px !important;
     flex-shrink: 0 !important;
   }
 
@@ -7344,17 +7394,17 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     pointer-events: none !important;
   }
 
-  /* Compact luxury Login pill on mobile */
+  /* Scaled luxury Login button on mobile */
   .navbar__icons .navbar__login-pill-btn,
   .navbar__login-pill-btn {
-    padding: 6px 14px !important;
-    min-height: 32px !important;
-    height: 32px !important;
-    font-size: 11.5px !important;
+    padding: 8px 18px !important;
+    min-height: 38px !important;
+    height: 38px !important;
+    font-size: 13px !important;
     font-weight: 700 !important;
     letter-spacing: 0.08em !important;
     text-transform: uppercase !important;
-    border-radius: 6px !important;
+    border-radius: 7px !important;
     background: #7A2331 !important;
     border: 1.5px solid #7A2331 !important;
     color: #FFFFFF !important;
@@ -7363,7 +7413,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     align-items: center !important;
     justify-content: center !important;
     line-height: 1 !important;
-    box-shadow: none !important;
+    box-shadow: 0 2px 8px rgba(122, 35, 49, 0.25) !important;
   }
 
   /* Hamburger Menu Toggle on the Right-most */
@@ -7374,13 +7424,13 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     justify-content: center !important;
     background: transparent !important;
     border: none !important;
-    padding: 4px !important;
+    padding: 6px !important;
     margin: 0 !important;
     cursor: pointer !important;
     line-height: 1 !important;
     border-radius: 4px !important;
-    width: 36px !important;
-    height: 36px !important;
+    width: 40px !important;
+    height: 40px !important;
     flex-shrink: 0 !important;
     z-index: 10 !important;
   }
