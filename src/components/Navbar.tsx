@@ -294,6 +294,20 @@ export default function Navbar() {
                 </>
               )}
 
+              {/* Mobile Search Toggle Icon Button (Opens Search bar & modal on mobile) */}
+              <button
+                type="button"
+                className="navbar__mobile-search-btn"
+                onClick={() => {
+                  setMobileSearchOpen(!mobileSearchOpen);
+                  setSearchDropdownOpen(!mobileSearchOpen);
+                }}
+                aria-label="Search"
+                title="Search"
+              >
+                <SearchIcon size={23} />
+              </button>
+
               {/* Hamburger Menu Toggle — Right-most of screen on mobile */}
               <button
                 type="button"

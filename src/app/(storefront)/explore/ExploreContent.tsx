@@ -219,16 +219,28 @@ export default function ExploreContent() {
             )}
           </div>
 
-          {/* Mobile Filter Button */}
-          <button
-            type="button"
-            className="explore-mobile-filter-btn"
-            onClick={() => setMobileFilterOpen(true)}
-          >
-            <SlidersHorizontal size={14} />
-            <span>Filters</span>
-            {hasActiveFilters && <span className="explore-dot" />}
-          </button>
+          {/* Mobile Filter & Quick Sort Controls */}
+          <div className="explore-mobile-controls">
+            <button
+              type="button"
+              className="explore-mobile-filter-btn"
+              onClick={() => setMobileFilterOpen(true)}
+            >
+              <SlidersHorizontal size={14} />
+              <span>Filters</span>
+              {hasActiveFilters && <span className="explore-dot" />}
+            </button>
+            <div className="explore-mobile-sort-wrap">
+              <CustomDropdown
+                options={sortOptions}
+                value={selectedSort}
+                onChange={setSelectedSort}
+                placeholder="Sort: Featured"
+                showEmptyOption={false}
+                fullWidth
+              />
+            </div>
+          </div>
         </div>
 
         {/* ── 3. Product Grid: Exactly 4 Products Per Row using ProductCard ── */}
