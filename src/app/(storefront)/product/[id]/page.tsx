@@ -62,10 +62,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   };
 
   return (
-    <div className="section section--ivory" style={{ minHeight: '80vh', paddingTop: '100px', paddingBottom: '70px' }}>
+    <div className="section section--ivory section--pdp" style={{ minHeight: '80vh', paddingTop: '96px', paddingBottom: '70px' }}>
       <div className="container">
         {/* Breadcrumb */}
-        <nav className="breadcrumb" aria-label="Breadcrumb">
+        <nav className="breadcrumb pdp-breadcrumb" aria-label="Breadcrumb">
           <Link href="/">Home</Link>
           <span>/</span>
           <Link href={`/category/${product.category}`}>{categoryName}</Link>
@@ -217,7 +217,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     </button>
                   </div>
                   <Link href="/cart" className="btn btn--primary" style={{ flex: 1, padding: '15px 24px', fontSize: '15px' }}>
-                    View in Bag
+                    <span className="pdp-btn-label--desktop">View in Bag</span>
+                    <span className="pdp-btn-label--mobile">View Cart</span>
                   </Link>
                 </div>
               ) : (
@@ -226,7 +227,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   className="btn btn--primary pdp-btn-add" 
                   onClick={handleAddToCart}
                 >
-                  Add to Shopping Bag
+                  <span className="pdp-btn-label--desktop">Add to Shopping Bag</span>
+                  <span className="pdp-btn-label--mobile">Add to Cart</span>
                 </button>
               )}
 
