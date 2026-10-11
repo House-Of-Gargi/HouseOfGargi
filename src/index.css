@@ -6601,3 +6601,157 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 .navbar--hero .navbar__links a.is-active::after {
   background: var(--gargi-gold) !important;
 }
+
+
+/* ── Royal Bespoke Commission Form Refinements ───────────────── */
+.bespoke-container {
+  background: var(--ivory-silk, #FBF6EE) !important;
+  border: 1.5px solid var(--soft-gold-line, #E4D3AE) !important;
+  padding: 50px 46px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 24px 60px rgba(43, 31, 24, 0.12) !important;
+  position: relative !important;
+  overflow: visible !important;
+}
+
+.bespoke-container::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(184, 142, 24, 0.35);
+  border-radius: 5px;
+  pointer-events: none;
+}
+
+.bespoke-crest-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 14px auto 26px;
+  max-width: 280px;
+}
+
+.bespoke-crest-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gargi-gold, #B88E18), transparent);
+}
+
+.bespoke-crest-motif {
+  font-size: 13px;
+  color: var(--gargi-gold, #B88E18);
+  letter-spacing: 0.15em;
+}
+
+.bespoke-section-title {
+  font-family: var(--font-nav, 'Outfit', sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gargi-gold, #B88E18);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0 14px;
+}
+
+.bespoke-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(184, 142, 24, 0.35), transparent);
+}
+
+.bespoke-fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.bespoke-quick-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.bespoke-chip {
+  background: #FFFFFF;
+  border: 1px solid var(--soft-gold-line, #E4D3AE);
+  border-radius: 9999px;
+  padding: 4px 11px;
+  font-family: var(--font-nav, 'Outfit', sans-serif);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--stone-taupe, #5A4D41);
+  cursor: pointer;
+  transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+
+.bespoke-chip:hover {
+  border-color: var(--gargi-gold, #B88E18);
+  color: var(--maharani-maroon, #7A2331);
+  background: #FFFDF8;
+  transform: translateY(-1px);
+}
+
+.bespoke-chip.is-active {
+  background: var(--maharani-maroon, #7A2331) !important;
+  border-color: var(--maharani-maroon, #7A2331) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 6px rgba(122, 35, 49, 0.25);
+}
+
+.bespoke-submit-btn {
+  width: 100%;
+  margin-top: 26px;
+  padding: 16px 28px;
+  background: var(--maharani-maroon, #7A2331);
+  color: #FFFFFF;
+  border: 1px solid rgba(228, 211, 174, 0.6);
+  border-radius: 6px;
+  font-family: var(--font-nav, 'Outfit', sans-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 18px rgba(122, 35, 49, 0.3);
+  transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bespoke-submit-btn:hover {
+  background: #631C27;
+  border-color: var(--gargi-gold, #B88E18);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(122, 35, 49, 0.4);
+}
+
+.bespoke-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.bespoke-submit-sparkle {
+  color: var(--gargi-gold, #B88E18);
+  font-size: 14px;
+}
+
+@media (max-width: 680px) {
+  .bespoke-container {
+    padding: 34px 18px !important;
+  }
+  .bespoke-fields-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
