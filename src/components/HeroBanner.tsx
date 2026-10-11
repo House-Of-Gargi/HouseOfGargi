@@ -136,23 +136,31 @@ export default function HeroBanner() {
               zIndex: 1,
             }}
           >
-            <picture>
-              <source media="(max-width: 768px)" srcSet={slide.mobileWebp} type="image/webp" />
-              <source media="(max-width: 768px)" srcSet={slide.mobileJpg} type="image/jpeg" />
-              <source srcSet={slide.desktopWebp} type="image/webp" />
-              <img
-                src={slide.desktopJpg}
-                alt={slide.altText}
-                loading={index === 0 ? 'eager' : 'lazy'}
-                fetchPriority={index === 0 ? 'high' : 'auto'}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  objectPosition: 'center',
-                }}
-              />
-            </picture>
+            <Link
+              href={slide.primaryCtaLink}
+              className="hero__image-link"
+              tabIndex={isActive ? 0 : -1}
+              aria-label={slide.tagline}
+              style={{ display: 'block', width: '100%', height: '100%' }}
+            >
+              <picture>
+                <source media="(max-width: 768px)" srcSet={slide.mobileWebp} type="image/webp" />
+                <source media="(max-width: 768px)" srcSet={slide.mobileJpg} type="image/jpeg" />
+                <source srcSet={slide.desktopWebp} type="image/webp" />
+                <img
+                  src={slide.desktopJpg}
+                  alt={slide.altText}
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  fetchPriority={index === 0 ? 'high' : 'auto'}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center',
+                  }}
+                />
+              </picture>
+            </Link>
           </div>
         );
       })}
