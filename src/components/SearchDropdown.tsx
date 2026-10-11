@@ -2,12 +2,12 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Clock, Sparkles, X, ArrowRight, ArrowUpRight, Flame, TrendingUp } from 'lucide-react';
+import { Clock, Sparkles, X, ArrowRight, ArrowUpRight, Flame } from 'lucide-react';
 import { useCurrency } from '@/context/CurrencyContext';
 import { products } from '@/data/products';
 import { Product } from '@/types';
 
-// Exactly 3 top searched names bland (category / item keywords) pushed from our side only
+// Exactly 3 top searched names bland pushed from our side only
 export const TOP_3_SEARCH_TERMS = ['Saree', 'Kurti', 'Jewellery'] as const;
 
 export interface TopSearchItem {
@@ -210,10 +210,9 @@ export default function SearchDropdown({
           <div className="search-dropdown__section search-dropdown__section--matched">
             <div className="search-dropdown__section-header">
               <div className="search-dropdown__title">
-                <Sparkles size={14} className="search-dropdown__icon-gold" />
+                <Sparkles size={16} className="search-dropdown__icon-gold" />
                 <span>Matching Masterpieces ({matchedProducts.length})</span>
               </div>
-              <span className="search-dropdown__badge">Live Result</span>
             </div>
             <div className="search-dropdown__list">
               {matchedProducts.map(p => (
@@ -232,7 +231,7 @@ export default function SearchDropdown({
                   <div className="search-dropdown__item-info">
                     <div className="search-dropdown__item-name">{p.name}</div>
                     <div className="search-dropdown__item-sub">
-                      <span>{p.category.toUpperCase()}</span>
+                      <span className="search-dropdown__item-category">{p.category.toUpperCase()}</span>
                       <span className="search-dropdown__dot">•</span>
                       <span>{p.fabric}</span>
                       <span className="search-dropdown__dot">•</span>
@@ -241,7 +240,7 @@ export default function SearchDropdown({
                   </div>
                   <div className="search-dropdown__item-price">
                     {formatPrice(p.price)}
-                    <ArrowUpRight size={14} className="search-dropdown__arrow" />
+                    <ArrowUpRight size={16} className="search-dropdown__arrow" />
                   </div>
                 </div>
               ))}
@@ -297,7 +296,7 @@ export default function SearchDropdown({
           )}
         </div>
 
-        {/* SECTION 2: TOP SEARCHES (3 bland names only: Saree, Kurti, Jewellery) */}
+        {/* SECTION 2: TOP SEARCHES (Bland names: Saree, Kurti, Jewellery) */}
         <div className="search-dropdown__section search-dropdown__section--top">
           <div className="search-dropdown__section-header">
             <div className="search-dropdown__title">

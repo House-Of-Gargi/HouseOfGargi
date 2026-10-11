@@ -6274,3 +6274,168 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     font-size: 22px;
   }
 }
+
+
+/* ── Prominent Search Dropdown Product Cards & Results for Bar ── */
+.search-dropdown__item--product {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  padding: 12px 16px !important;
+  border-radius: 12px !important;
+  background: #FAF7F2 !important;
+  border: 1.5px solid rgba(228, 211, 174, 0.8) !important;
+  margin-bottom: 8px !important;
+  cursor: pointer !important;
+  transition: all 180ms ease !important;
+}
+
+.search-dropdown__item--product:hover {
+  background: #FFFFFF !important;
+  border-color: var(--gargi-gold) !important;
+  box-shadow: 0 4px 18px rgba(184, 142, 24, 0.16) !important;
+  transform: translateX(3px) !important;
+}
+
+.search-dropdown__item-thumb {
+  width: 58px !important;
+  height: 58px !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+  border: 1.5px solid var(--soft-gold-line) !important;
+  background: #FFFFFF !important;
+}
+
+.search-dropdown__item-thumb img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.search-dropdown__item-info {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+  gap: 3px !important;
+}
+
+.search-dropdown__item-name {
+  font-family: var(--font-display) !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: #231812 !important;
+  line-height: 1.25 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.search-dropdown__item-sub {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 13px !important;
+  color: #5C5043 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.search-dropdown__item-category {
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  color: #B88E18 !important;
+  font-size: 11.5px !important;
+}
+
+.search-dropdown__item-price {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-family: var(--font-nav) !important;
+  font-weight: 700 !important;
+  font-size: 16.5px !important;
+  color: #7A2331 !important;
+}
+
+/* ── Explore Page Results for: Header ────────────────────────── */
+.explore-results-bar {
+  padding: 24px 0 16px !important;
+  border-bottom: 1.5px solid var(--soft-gold-line) !important;
+  background: transparent !important;
+  margin-bottom: 24px !important;
+}
+
+.explore-results-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap !important;
+  gap: 16px !important;
+}
+
+.explore-results-title-wrap {
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+}
+
+.explore-results-label {
+  font-family: var(--font-display) !important;
+  font-size: 26px !important;
+  font-weight: 500 !important;
+  color: var(--stone-taupe) !important;
+  letter-spacing: 0.02em !important;
+}
+
+.explore-results-query {
+  font-family: var(--font-display) !important;
+  font-size: 28px !important;
+  font-weight: 600 !important;
+  color: var(--maharani-maroon) !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+}
+
+.explore-results-count {
+  font-size: 14.5px !important;
+  color: var(--stone-taupe) !important;
+  font-weight: 500 !important;
+}
+
+.explore-results-clear {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding: 4px 12px !important;
+  border-radius: 9999px !important;
+  background: #FFFFFF !important;
+  border: 1px solid var(--soft-gold-line) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: var(--stone-taupe) !important;
+  cursor: pointer !important;
+  transition: all 150ms ease !important;
+}
+
+.explore-results-clear:hover {
+  border-color: var(--maharani-maroon) !important;
+  color: var(--maharani-maroon) !important;
+  background: #FAF7F2 !important;
+}
+
+.explore-filters-right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+}
+
+@media (max-width: 900px) {
+  .explore-filters-right {
+    display: none !important;
+  }
+}

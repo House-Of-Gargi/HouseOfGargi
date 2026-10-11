@@ -12,13 +12,13 @@ import {
   Eye,
   ArrowRight
 } from 'lucide-react';
-import { products, categories } from '@/data/products';
+import { products } from '@/data/products';
 import { Product } from '@/types';
 import { useCurrency } from '@/context/CurrencyContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
 import { useCart } from '@/context/CartContext';
-import { TOP_3_SEARCH_TERMS, TOP_3_SEARCHES, saveSearchHistory } from '@/components/SearchDropdown';
+import { TOP_3_SEARCH_TERMS, saveSearchHistory } from '@/components/SearchDropdown';
 
 export default function ExploreContent() {
   const router = useRouter();
@@ -176,76 +176,33 @@ export default function ExploreContent() {
         </div>
       )}
 
-      {/* ── 1. Minimal Header ─────────────────────────────────────── */}
-      <div className="explore-header">
+      {/* ── 1. Results Header Bar (No Category Strip) ─────────────── */}
+      <div className="explore-results-bar">
         <div className="container">
-          <div className="explore-header__inner">
-            <div className="explore-header__titles">
-              <h1 className="explore-header__title">
-                {searchTerm ? (
-                  <>
-                    <span>Results for </span>
-                    <span className="explore-header__query">&ldquo;{searchTerm}&rdquo;</span>
-                  </>
-                ) : selectedCategory !== 'all' ? (
-                  categories.find(c => c.id === selectedCategory)?.name || 'Collection'
-                ) : (
-                  'Explore Collection'
-                )}
+          <div className="explore-results-row">
+            {/* Left: Prominent "Results for :" */}
+            <div className="explore-results-title-wrap">
+              <span className="explore-results-label">Results for :</span>
+              <h1 className="explore-results-query">
+                {searchTerm ? `"${searchTerm}"` : 'All Creations'}
               </h1>
-              <span className="explore-header__count">
-                {filteredProducts.length} {filteredProducts.length === 1 ? 'piece' : 'pieces'}
+              <span className="explore-results-count">
+                ({filteredProducts.length} {filteredProducts.length === 1 ? 'Piece' : 'Pieces'})
               </span>
+              {searchTerm && (
+                <button
+                  type="button"
+                  className="explore-results-clear"
+                  onClick={() => { setSearchTerm(''); router.push('/explore'); }}
+                  title="Clear search"
+                >
+                  Clear <X size={13} />
+                </button>
+              )}
             </div>
 
-            {/* Clear search chip if searching */}
-            {searchTerm && (
-              <button
-                type="button"
-                className="explore-header__clear-btn"
-                onClick={() => { setSearchTerm(''); router.push('/explore'); }}
-              >
-                Clear Search <X size={13} />
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* ── 2. Category Tabs Rail ─────────────────────────────────── */}
-      <div className="explore-tabs-bar">
-        <div className="container">
-          <div className="explore-tabs-rail">
-            <button
-              type="button"
-              className={`explore-tab-btn ${selectedCategory === 'all' ? 'is-active' : ''}`}
-              onClick={() => setSelectedCategory('all')}
-            >
-              All ({products.length})
-            </button>
-            {categories.map(cat => {
-              const count = products.filter(p => p.category === cat.id).length;
-              return (
-                <button
-                  key={cat.id}
-                  type="button"
-                  className={`explore-tab-btn ${selectedCategory === cat.id ? 'is-active' : ''}`}
-                  onClick={() => setSelectedCategory(cat.id)}
-                >
-                  {cat.name} ({count})
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      {/* ── 3. Streamlined Compact Filter Bar ─────────────────────── */}
-      <div className="explore-filters-bar">
-        <div className="container">
-          <div className="explore-filters-row">
-            {/* Desktop Filters */}
-            <div className="explore-filters-left">
+            {/* Right: Inline Dropdowns */}
+            <div className="explore-filters-right">
               <select
                 value={selectedFabric}
                 onChange={(e) => setSelectedFabric(e.target.value)}
@@ -309,13 +266,13 @@ export default function ExploreContent() {
         </div>
       </div>
 
-      {/* ── 4. Main Product Grid ──────────────────────────────────── */}
+      {/* ── 2. Main Product Grid (Immediately Below Header) ───────── */}
       <section className="explore-grid-section">
         <div className="container">
           {filteredProducts.length === 0 ? (
             /* Empty State */
             <div className="explore-empty-minimal">
-              <h2 className="explore-empty-minimal__title">No pieces found</h2>
+              <h2 className="explore-empty-minimal__title">No creations found</h2>
               <p className="explore-empty-minimal__desc">
                 Try searching one of our top categories:
               </p>
@@ -412,7 +369,7 @@ export default function ExploreContent() {
         </div>
       </section>
 
-      {/* ── 5. Mobile Filter Drawer ───────────────────────────────── */}
+      {/* ── 3. Mobile Filter Drawer ───────────────────────────────── */}
       {mobileFilterOpen && (
         <div className="explore-mobile-drawer-overlay" onClick={() => setMobileFilterOpen(false)}>
           <div className="explore-mobile-drawer" onClick={(e) => e.stopPropagation()}>
@@ -429,29 +386,6 @@ export default function ExploreContent() {
             </div>
 
             <div className="explore-mobile-drawer__body">
-              <div className="explore-drawer-group">
-                <label className="explore-drawer-label">Category</label>
-                <div className="explore-drawer-pills">
-                  <button
-                    type="button"
-                    className={`explore-drawer-pill ${selectedCategory === 'all' ? 'is-active' : ''}`}
-                    onClick={() => setSelectedCategory('all')}
-                  >
-                    All ({products.length})
-                  </button>
-                  {categories.map(c => (
-                    <button
-                      key={c.id}
-                      type="button"
-                      className={`explore-drawer-pill ${selectedCategory === c.id ? 'is-active' : ''}`}
-                      onClick={() => setSelectedCategory(c.id)}
-                    >
-                      {c.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               <div className="explore-drawer-group">
                 <label className="explore-drawer-label">Fabric</label>
                 <select
@@ -515,7 +449,7 @@ export default function ExploreContent() {
         </div>
       )}
 
-      {/* ── 6. Luxury Quick View Modal ────────────────────────────── */}
+      {/* ── 4. Luxury Quick View Modal ────────────────────────────── */}
       {quickViewProduct && (
         <div className="explore-modal-overlay" onClick={() => setQuickViewProduct(null)}>
           <div className="explore-modal-content" onClick={(e) => e.stopPropagation()}>
