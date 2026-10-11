@@ -851,50 +851,280 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   padding-left: 6px;
 }
 
-/* ── 10. Footer ───────────────────────────────────────────── */
+/* ── 10. Footer (Refined Atelier Brand Layout) ───────────── */
 .footer {
   background-size: cover;
   background-position: center;
   color: var(--ivory-silk);
-  padding: 80px 0 32px;
+  padding: 72px 0 32px;
   position: relative;
+  overflow: hidden;
 }
+
 .footer::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(50, 18, 24, 0.88);
+  background: rgba(45, 15, 22, 0.92);
+  pointer-events: none;
 }
-.footer > * { position: relative; z-index: 1; }
+
+.footer > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 3-Column Top Grid: Brand (45%) | Platform (27%) | Access & Support (28%) */
 .footer__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 40px;
+  grid-template-columns: 1.6fr 1fr 1fr;
+  gap: 60px;
   margin-bottom: 48px;
+  align-items: flex-start;
 }
+
+/* Left Brand Column */
+.footer__brand-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 440px;
+}
+
+.footer__logo-wrap {
+  display: inline-block;
+  margin-bottom: 16px;
+  transition: opacity 180ms ease;
+}
+
+.footer__logo-wrap:hover {
+  opacity: 0.88;
+}
+
+.footer__logo-img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.35));
+}
+
+.footer__brand-desc {
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: rgba(251, 246, 238, 0.82);
+  margin-bottom: 22px;
+  max-width: 390px;
+}
+
+/* Social Icon Box Buttons */
+.footer__social-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer__social-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(228, 211, 174, 0.28);
+  color: rgba(251, 246, 238, 0.85);
+  transition: all 200ms ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.footer__social-btn:hover {
+  border-color: var(--gargi-gold);
+  background: rgba(184, 142, 24, 0.16);
+  color: var(--gargi-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(184, 142, 24, 0.2);
+}
+
+/* Navigation Columns */
+.footer__nav-col {
+  display: flex;
+  flex-direction: column;
+}
+
 .footer__heading {
   font-family: var(--font-nav);
-  font-size: 14px;
-  letter-spacing: 0.16em;
+  font-size: 13.5px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--gargi-gold);
   font-weight: 700;
   margin-bottom: 20px;
 }
-.footer a {
-  display: block;
-  font-size: 15px;
-  color: rgba(251, 246, 238, 0.85);
-  margin-bottom: 10px;
-  transition: color 300ms;
+
+.footer__links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
-.footer a:hover { color: var(--gargi-gold); }
+
+.footer__links-list a {
+  display: inline-block;
+  font-size: 14.5px;
+  color: rgba(251, 246, 238, 0.85);
+  text-decoration: none;
+  transition: all 180ms ease;
+  line-height: 1.4;
+}
+
+.footer__links-list a:hover {
+  color: var(--gargi-gold);
+  transform: translateX(3px);
+}
+
+/* Special Support Items */
+.footer__portal-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  color: var(--gargi-gold) !important;
+  font-weight: 700 !important;
+  font-size: 14.5px !important;
+}
+
+.footer__portal-arrow {
+  transition: transform 180ms ease;
+}
+
+.footer__portal-link:hover .footer__portal-arrow {
+  transform: translateX(4px);
+}
+
+.footer__whatsapp-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  color: #25D366 !important;
+  font-weight: 600 !important;
+  font-size: 14.5px !important;
+  text-decoration: none !important;
+}
+
+.footer__whatsapp-link:hover {
+  opacity: 0.88;
+  transform: translateX(3px);
+}
+
+/* ── Bottom Footer Bar ────────────────────────────────────── */
 .footer__bottom {
-  border-top: 1px solid rgba(201, 162, 39, 0.2);
+  border-top: 1px solid rgba(228, 211, 174, 0.22);
   padding-top: 24px;
-  text-align: center;
-  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer__bottom-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.footer__made-in-india {
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  font-weight: 700;
+  color: #FFFFFF !important;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.footer__copyright {
+  font-size: 13.5px;
+  color: rgba(251, 246, 238, 0.72);
+  font-family: var(--font-body);
+}
+
+.footer__bottom-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13.5px;
   color: rgba(251, 246, 238, 0.75);
+  flex-wrap: wrap;
+}
+
+.footer__bottom-right a {
+  color: rgba(251, 246, 238, 0.75);
+  text-decoration: none;
+  transition: color 180ms ease;
+  font-size: 13.5px;
+}
+
+.footer__bottom-right a:hover {
+  color: var(--gargi-gold);
+}
+
+.footer__dot {
+  color: rgba(228, 211, 174, 0.35);
+  font-size: 13.5px;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 900px) {
+  .footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .footer__brand-col {
+    grid-column: 1 / -1;
+    max-width: 100%;
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer {
+    padding: 56px 0 28px;
+  }
+
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .footer__brand-desc {
+    font-size: 14px;
+    margin-bottom: 18px;
+  }
+
+  .footer__bottom-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .footer__bottom-left .footer__dot {
+    display: none;
+  }
+
+  .footer__bottom-right {
+    gap: 8px;
+    font-size: 13px;
+  }
 }
 
 /* ── 11. Diya SVG Loading Animation (§5) ──────────────────── */
