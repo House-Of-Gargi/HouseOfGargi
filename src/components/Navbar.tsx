@@ -180,28 +180,9 @@ export default function Navbar() {
         <div className="navbar__inner">
           {/* Top Line: Brand Logo on Left, Search Box in Middle, Actions on Right */}
           <div className="navbar__top-row">
+            {/* Left: Brand Logo */}
             <div className="navbar__left">
-              <button
-                type="button"
-                className="navbar__mobile-toggle"
-                onClick={() => setMobileOpen(true)}
-                aria-label="Menu"
-              >
-                <MenuIcon size={24} />
-              </button>
-              <button
-                type="button"
-                className="navbar__mobile-search-btn"
-                onClick={() => {
-                  setMobileSearchOpen(!mobileSearchOpen);
-                  setSearchDropdownOpen(!mobileSearchOpen);
-                }}
-                aria-label="Search"
-                title="Search"
-              >
-                <SearchIcon size={20} />
-              </button>
-              <Link href="/" className="navbar__logo navbar__logo--desktop" aria-label="House of Gargi">
+              <Link href="/" className="navbar__logo" aria-label="House of Gargi">
                 <img
                   src="/logo-images/new-white-logo.png"
                   alt="House of Gargi"
@@ -215,21 +196,7 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {/* Mobile Centered Brand Logo */}
-            <Link href="/" className="navbar__logo navbar__logo--mobile" aria-label="House of Gargi">
-              <img
-                src="/logo-images/new-white-logo.png"
-                alt="House of Gargi"
-                className="navbar__logo-img navbar__logo-img--white"
-              />
-              <img
-                src="/logo-images/new-logo.png"
-                alt="House of Gargi"
-                className="navbar__logo-img navbar__logo-img--dark"
-              />
-            </Link>
-
-            {/* Center: Search Box Container with Elastic Search Dropdown */}
+            {/* Center: Search Box Container with Elastic Search Dropdown (Desktop) */}
             <div className="navbar__search-wrapper" ref={searchContainerRef}>
               <form 
                 onSubmit={handleSearchSubmit} 
@@ -274,7 +241,7 @@ export default function Navbar() {
                 <>
                   <button 
                     type="button" 
-                    className="navbar__login-pill-btn navbar__login-pill-btn--desktop-only"
+                    className="navbar__login-pill-btn"
                     onClick={() => openLoginModal()}
                     aria-label="Login"
                   >
@@ -326,6 +293,16 @@ export default function Navbar() {
                   </button>
                 </>
               )}
+
+              {/* Hamburger Menu Toggle — Right-most of screen on mobile */}
+              <button
+                type="button"
+                className="navbar__mobile-toggle"
+                onClick={() => setMobileOpen(true)}
+                aria-label="Menu"
+              >
+                <MenuIcon size={26} />
+              </button>
             </div>
           </div>
 

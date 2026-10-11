@@ -7253,18 +7253,9 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 
 
 /* ═══════════════════════════════════════════════════════════════
-   Mobile Top Bar Luxury 3-Zone Architecture
+   Mobile Top Bar & Horizontal Category Scroll Architecture
    ═══════════════════════════════════════════════════════════════ */
-.navbar__logo--mobile {
-  display: none !important;
-}
-
-.navbar__logo--desktop {
-  display: flex !important;
-}
-
-.navbar__mobile-toggle,
-.navbar__mobile-search-btn {
+.navbar__mobile-toggle {
   display: none !important;
 }
 
@@ -7276,60 +7267,50 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   .navbar__inner {
     padding: 0 16px !important;
     max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
 
+  /* 1. Top row: Logo on Left, Login + Hamburger on Right */
   .navbar__top-row {
-    display: grid !important;
-    grid-template-columns: 1fr auto 1fr !important;
+    display: flex !important;
     align-items: center !important;
+    justify-content: space-between !important;
     width: 100% !important;
     height: 48px !important;
-    gap: 8px !important;
   }
 
   .navbar__left {
     display: flex !important;
     align-items: center !important;
-    gap: 12px !important;
     justify-content: flex-start !important;
   }
 
-  .navbar__mobile-toggle,
-  .navbar__mobile-search-btn {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background: transparent !important;
-    border: none !important;
-    padding: 6px !important;
-    margin: 0 !important;
-    cursor: pointer !important;
-    color: var(--ink-brown) !important;
-    line-height: 1 !important;
-    border-radius: 4px !important;
-  }
-
-  .navbar--hero .navbar__mobile-toggle,
-  .navbar--hero .navbar__mobile-search-btn {
-    color: #FFFFFF !important;
-  }
-
-  .navbar__logo--desktop {
-    display: none !important;
-  }
-
-  .navbar__logo--mobile {
+  .navbar__logo {
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
-    margin: 0 auto !important;
     line-height: 0 !important;
   }
 
-  .navbar__logo--mobile .navbar__logo-img {
+  .navbar__logo-img {
     height: 38px !important;
-    max-width: 155px !important;
+    max-width: 165px !important;
     object-fit: contain !important;
+  }
+
+  .navbar--hero .navbar__logo-img--white {
+    display: block !important;
+    height: 40px !important;
+  }
+  .navbar--hero .navbar__logo-img--dark {
+    display: none !important;
+  }
+  .navbar--scrolled .navbar__logo-img--white {
+    display: none !important;
+  }
+  .navbar--scrolled .navbar__logo-img--dark {
+    display: block !important;
+    height: 38px !important;
   }
 
   .navbar__search-wrapper {
@@ -7340,18 +7321,19 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     display: flex !important;
     align-items: center !important;
     justify-content: flex-end !important;
-    gap: 6px !important;
+    gap: 10px !important;
   }
 
-  /* Hide Join Us pill from top bar (already in mobile drawer) */
-  .navbar__join-pill-btn {
+  /* Hide Join Us pill on mobile top bar to eliminate clipping */
+  .navbar__join-pill-btn,
+  .navbar__join-pill-btn--desktop-only {
     display: none !important;
   }
 
-  /* Compact luxury Login pill on mobile - fits screen without cutting off */
+  /* Login button properly visible and scaled on mobile */
   .navbar__icons .navbar__login-pill-btn,
   .navbar__login-pill-btn {
-    padding: 7px 16px !important;
+    padding: 7px 15px !important;
     min-height: 34px !important;
     height: 34px !important;
     font-size: 12px !important;
@@ -7359,6 +7341,9 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     letter-spacing: 0.08em !important;
     text-transform: uppercase !important;
     border-radius: 6px !important;
+    background: #7A2331 !important;
+    border: 1.5px solid #7A2331 !important;
+    color: #FFFFFF !important;
     white-space: nowrap !important;
     display: inline-flex !important;
     align-items: center !important;
@@ -7366,8 +7351,101 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     box-shadow: none !important;
   }
 
-  /* In mobile view, wishlist pill in top bar can hide to preserve clean aesthetic */
-  .navbar__wishlist-pill-btn {
+  /* Hamburger Menu Toggle on the Right-most */
+  .navbar__mobile-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 6px !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+    border-radius: 4px !important;
+  }
+
+  .navbar--hero .navbar__mobile-toggle {
+    color: #FFFFFF !important;
+  }
+
+  .navbar--scrolled .navbar__mobile-toggle {
+    color: var(--ink-brown) !important;
+  }
+
+  .navbar__wishlist-pill-btn--desktop-only {
     display: none !important;
+  }
+
+  /* 2. Second Nav Bar: Categories Horizontally Scrollable & Properly Spaced */
+  .navbar:not(.navbar--sub-hidden) .navbar__sub-row,
+  .navbar__sub-row {
+    display: flex !important;
+    width: 100% !important;
+    max-height: 44px !important;
+    opacity: 1 !important;
+    transform: none !important;
+    margin-top: 6px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    pointer-events: auto !important;
+    padding: 0 !important;
+  }
+
+  .navbar.navbar--sub-hidden .navbar__sub-row {
+    display: none !important;
+  }
+
+  .navbar__sub-row::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  .navbar__links {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 22px !important;
+    padding: 4px 6px 6px 6px !important;
+    white-space: nowrap !important;
+    flex-wrap: nowrap !important;
+    width: max-content !important;
+  }
+
+  .navbar__links a {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    padding: 4px 2px !important;
+    position: relative !important;
+  }
+
+  .navbar--hero .navbar__links a {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+  .navbar--hero .navbar__links a.is-active {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+  }
+  .navbar--hero .navbar__links a.is-active::after {
+    background: var(--gargi-gold) !important;
+    width: 100% !important;
+  }
+
+  .navbar--scrolled .navbar__links a {
+    color: var(--ink-brown) !important;
+  }
+  .navbar--scrolled .navbar__links a.is-active {
+    color: var(--maharani-maroon) !important;
+    font-weight: 700 !important;
+  }
+  .navbar--scrolled .navbar__links a.is-active::after {
+    background: var(--maharani-maroon) !important;
+    width: 100% !important;
   }
 }
