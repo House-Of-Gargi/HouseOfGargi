@@ -2,10 +2,13 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Clock, Sparkles, X, ArrowRight, ArrowUpRight, Flame } from 'lucide-react';
+import { Clock, Sparkles, X, ArrowRight, ArrowUpRight, Flame, TrendingUp } from 'lucide-react';
 import { useCurrency } from '@/context/CurrencyContext';
 import { products } from '@/data/products';
 import { Product } from '@/types';
+
+// Exactly 3 top searched names bland (category / item keywords) pushed from our side only
+export const TOP_3_SEARCH_TERMS = ['Saree', 'Kurti', 'Jewellery'] as const;
 
 export interface TopSearchItem {
   id: string;
@@ -17,7 +20,6 @@ export interface TopSearchItem {
   artisan: string;
 }
 
-// Exactly 3 top searched items pushed from our side only
 export const TOP_3_SEARCHES: TopSearchItem[] = [
   {
     id: 'banarasi-gold-weave',
@@ -129,7 +131,7 @@ export default function SearchDropdown({
 
   const trimmedQuery = searchQuery.trim().toLowerCase();
 
-  // Elastic search live matching across products
+  // Elastic search live matching across products with synonym support
   const matchedProducts: Product[] = trimmedQuery
     ? products
         .map(p => {
@@ -141,15 +143,23 @@ export default function SearchDropdown({
           const artisanLower = (p.artisanName || '').toLowerCase();
           const regionLower = p.region.toLowerCase();
 
-          if (nameLower === trimmedQuery) score += 100;
-          else if (nameLower.startsWith(trimmedQuery)) score += 60;
-          else if (nameLower.includes(trimmedQuery)) score += 40;
+          const terms = [trimmedQuery];
+          if (trimmedQuery.includes('kurti')) terms.push('kurta', 'kurta-sets');
+          if (trimmedQuery.includes('kurta')) terms.push('kurti');
+          if (trimmedQuery.includes('jewel')) terms.push('accessories', 'necklace', 'jhumka', 'choker');
+          if (trimmedQuery.includes('saree') || trimmedQuery.includes('sari')) terms.push('saree', 'sarees');
 
-          if (categoryLower.includes(trimmedQuery)) score += 30;
-          if (fabricLower.includes(trimmedQuery)) score += 25;
-          if (techniqueLower.includes(trimmedQuery)) score += 20;
-          if (artisanLower.includes(trimmedQuery)) score += 15;
-          if (regionLower.includes(trimmedQuery)) score += 10;
+          for (const t of terms) {
+            if (nameLower === t) score += 100;
+            else if (nameLower.startsWith(t)) score += 60;
+            else if (nameLower.includes(t)) score += 40;
+
+            if (categoryLower.includes(t)) score += 30;
+            if (fabricLower.includes(t)) score += 25;
+            if (techniqueLower.includes(t)) score += 20;
+            if (artisanLower.includes(t)) score += 15;
+            if (regionLower.includes(t)) score += 10;
+          }
 
           return { product: p, score };
         })
@@ -287,38 +297,28 @@ export default function SearchDropdown({
           )}
         </div>
 
-        {/* SECTION 2: TOP SEARCHES (3 items pushed from our side only) */}
+        {/* SECTION 2: TOP SEARCHES (3 bland names only: Saree, Kurti, Jewellery) */}
         <div className="search-dropdown__section search-dropdown__section--top">
           <div className="search-dropdown__section-header">
             <div className="search-dropdown__title">
               <Flame size={14} className="search-dropdown__icon-maroon" />
               <span>Top Searches</span>
             </div>
-            <span className="search-dropdown__badge search-dropdown__badge--curated">Curated by Gargi</span>
+            <span className="search-dropdown__badge search-dropdown__badge--curated">Trending</span>
           </div>
 
-          <div className="search-dropdown__top-grid">
-            {TOP_3_SEARCHES.map((item, idx) => (
+          <div className="search-dropdown__top-terms">
+            {TOP_3_SEARCH_TERMS.map((term, idx) => (
               <div
-                key={item.id}
-                className="search-dropdown__top-card"
-                onClick={() => handleSelect(item.name, item.id)}
+                key={idx}
+                className="search-dropdown__top-term-pill"
+                onClick={() => handleSelect(term)}
+                role="button"
+                tabIndex={0}
               >
-                <div className="search-dropdown__top-rank">#{idx + 1}</div>
-                <div className="search-dropdown__top-thumb">
-                  <img src={item.image} alt={item.name} loading="lazy" />
-                </div>
-                <div className="search-dropdown__top-content">
-                  <div className="search-dropdown__top-tag">{item.badge}</div>
-                  <div className="search-dropdown__top-name">{item.name}</div>
-                  <div className="search-dropdown__top-bottom">
-                    <span className="search-dropdown__top-artisan">{item.artisan}</span>
-                    <span className="search-dropdown__top-price">{formatPrice(item.price)}</span>
-                  </div>
-                </div>
-                <div className="search-dropdown__top-action">
-                  <ArrowRight size={14} />
-                </div>
+                <span className="search-dropdown__term-rank">0{idx + 1}</span>
+                <span className="search-dropdown__term-name">{term}</span>
+                <ArrowUpRight size={13} className="search-dropdown__term-arrow" />
               </div>
             ))}
           </div>

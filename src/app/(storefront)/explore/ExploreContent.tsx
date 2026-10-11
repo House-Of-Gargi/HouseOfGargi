@@ -23,7 +23,7 @@ import { useCurrency } from '@/context/CurrencyContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
 import { useCart } from '@/context/CartContext';
-import { TOP_3_SEARCHES, saveSearchHistory } from '@/components/SearchDropdown';
+import { TOP_3_SEARCH_TERMS, TOP_3_SEARCHES, saveSearchHistory } from '@/components/SearchDropdown';
 
 export default function ExploreContent() {
   const router = useRouter();
@@ -73,16 +73,22 @@ export default function ExploreContent() {
     return Array.from(new Set(products.map(p => p.occasion))).filter(Boolean);
   }, []);
 
-  // Filter & sort logic
+  // Filter & sort logic with smart synonyms
   const filteredProducts = useMemo(() => {
     let result = [...products];
 
-    // Search query filter
+    // Search query filter with smart synonyms (e.g. kurti -> kurta, jewellery -> accessories)
     const q = searchTerm.trim().toLowerCase();
     if (q) {
+      const queryTerms = [q];
+      if (q.includes('kurti')) queryTerms.push('kurta', 'kurta-sets');
+      if (q.includes('kurta')) queryTerms.push('kurti');
+      if (q.includes('jewel')) queryTerms.push('accessories', 'necklace', 'jhumka', 'choker');
+      if (q.includes('saree') || q.includes('sari')) queryTerms.push('saree', 'sarees');
+
       result = result.filter(p => {
         const fullText = `${p.name} ${p.category} ${p.fabric} ${p.technique} ${p.artisanName || ''} ${p.region} ${p.occasion} ${p.description}`.toLowerCase();
-        return fullText.includes(q);
+        return queryTerms.some(term => fullText.includes(term));
       });
     }
 
@@ -209,7 +215,7 @@ export default function ExploreContent() {
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search by fabric, craft, artisan or occasion (e.g. Banarasi, Zardozi, Silk)..."
+                placeholder="Search by category, craft or fabric (e.g. Saree, Kurti, Jewellery)..."
                 className="explore-hero__search-input"
                 aria-label="Search masterpieces"
               />
@@ -228,21 +234,21 @@ export default function ExploreContent() {
               </button>
             </form>
 
-            {/* Quick Inspiration Pills */}
+            {/* Top Searches Pills (Saree, Kurti, Jewellery) */}
             <div className="explore-hero__suggestions">
-              <span className="explore-hero__suggestions-label">Popular:</span>
-              {['Banarasi Silk', 'Bridal Lehenga', 'Chanderi', 'Handloom Zari', 'Jhumka'].map((tag) => (
+              <span className="explore-hero__suggestions-label">Top Searches:</span>
+              {TOP_3_SEARCH_TERMS.map((term) => (
                 <button
-                  key={tag}
+                  key={term}
                   type="button"
                   className="explore-hero__suggestion-pill"
                   onClick={() => {
-                    setSearchTerm(tag);
-                    saveSearchHistory(tag);
-                    router.push(`/explore?q=${encodeURIComponent(tag)}`);
+                    setSearchTerm(term);
+                    saveSearchHistory(term);
+                    router.push(`/explore?q=${encodeURIComponent(term)}`);
                   }}
                 >
-                  {tag}
+                  {term}
                 </button>
               ))}
             </div>
@@ -455,46 +461,37 @@ export default function ExploreContent() {
               </div>
               <h2 className="explore-empty-state__title">No Handcrafted Pieces Found</h2>
               <p className="explore-empty-state__desc">
-                We could not find creations matching your exact criteria. You may reset your filters or explore our 3 most celebrated signatures below.
+                We could not find creations matching your exact search. Try exploring our top searched categories below:
               </p>
+              
+              {/* Top Searched Bland Terms (Saree, Kurti, Jewellery) */}
+              <div className="explore-empty-terms-row">
+                {TOP_3_SEARCH_TERMS.map((term, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    className="explore-empty-term-pill"
+                    onClick={() => {
+                      setSearchTerm(term);
+                      saveSearchHistory(term);
+                      router.push(`/explore?q=${encodeURIComponent(term)}`);
+                    }}
+                  >
+                    <span className="explore-empty-term-rank">0{idx + 1}</span>
+                    <span className="explore-empty-term-text">{term}</span>
+                    <ArrowRight size={13} />
+                  </button>
+                ))}
+              </div>
+
               <button
                 type="button"
                 className="btn btn--primary explore-empty-state__reset"
                 onClick={resetAllFilters}
+                style={{ marginTop: '28px' }}
               >
                 View All Atelier Masterpieces
               </button>
-
-              {/* Curated Top 3 Searches in Empty State */}
-              <div className="explore-empty-curations">
-                <div className="explore-empty-curations__header">
-                  <Flame size={16} className="text-maroon" />
-                  <span>Top Searched Signatures by House of Gargi</span>
-                </div>
-                <div className="explore-empty-curations__grid">
-                  {TOP_3_SEARCHES.map(item => (
-                    <div
-                      key={item.id}
-                      className="explore-curated-card"
-                      onClick={() => {
-                        setSearchTerm(item.name);
-                        saveSearchHistory(item.name);
-                        router.push(`/explore?q=${encodeURIComponent(item.name)}&id=${item.id}`);
-                      }}
-                    >
-                      <div className="explore-curated-card__image">
-                        <img src={item.image} alt={item.name} loading="lazy" />
-                        <span className="explore-curated-card__badge">{item.badge}</span>
-                      </div>
-                      <div className="explore-curated-card__info">
-                        <div className="explore-curated-card__name">{item.name}</div>
-                        <div className="explore-curated-card__artisan">{item.artisan}</div>
-                        <div className="explore-curated-card__price">{formatPrice(item.price)}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           ) : (
             <>
@@ -581,7 +578,7 @@ export default function ExploreContent() {
                 })}
               </div>
 
-              {/* ── 5. Curated Top Searches Spotlight Section ───────── */}
+              {/* ── 5. Signature Masterpieces Showcase ───────── */}
               <div className="explore-curated-showcase">
                 <div className="explore-curated-showcase__header">
                   <div>
@@ -589,10 +586,10 @@ export default function ExploreContent() {
                       <Flame size={14} />
                       <span>Curated by Gargi</span>
                     </div>
-                    <h2 className="explore-curated-showcase__title">The 3 Coveted Signatures</h2>
+                    <h2 className="explore-curated-showcase__title">Signature Atelier Pieces</h2>
                   </div>
                   <p className="explore-curated-showcase__desc">
-                    Hand-picked by our atelier connoisseurs as the most searched and revered heritage creations this season.
+                    Hand-picked by our connoisseurs as the most revered heritage masterworks this season.
                   </p>
                 </div>
 
