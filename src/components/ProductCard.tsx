@@ -81,14 +81,21 @@ export default function ProductCard({ product, style }: ProductCardProps) {
 
         </div>
         <div className="product-card__body" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+          {/* 1. First: Product Name */}
           <div className="product-card__name">{currentProduct.name}</div>
-          <div className="product-card__artisan">
+
+          {/* 2. Below Name: Price */}
+          <div className="product-card__price">
+            {formatPrice(currentProduct.price || (currentProduct as any).price_in_rupees || 0)}
+          </div>
+
+          {/* 3. Below Price: Product Description with Gold Diamond Bullet ✦ */}
+          <div className="product-card__desc">
             <span className="product-card__artisan-icon">✦</span>
-            <span className="product-card__artisan-text">
-              {currentProduct.artisanNote || (currentProduct as any).artisan_note || 'Crafted by master artisans'}
+            <span className="product-card__desc-text">
+              {currentProduct.artisanNote || (currentProduct as any).artisan_note || currentProduct.description || 'Crafted by master artisans'}
             </span>
           </div>
-          <div className="product-card__price" style={{ marginTop: 'auto' }}>{formatPrice(currentProduct.price || (currentProduct as any).price_in_rupees || 0)}</div>
         </div>
       </Link>
     </div>
