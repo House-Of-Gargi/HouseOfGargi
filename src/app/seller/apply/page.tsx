@@ -636,9 +636,6 @@ export default function ArtisanApplyPage() {
               <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#7A2331' }}>
                 Step {currentStep} of 5: {STEPS[currentStep - 1].titleEn}
               </span>
-              <div style={{ fontSize: '0.78rem', color: '#6A564C', fontStyle: 'italic', marginTop: '2px' }}>
-                {STEPS[currentStep - 1].titleBn}
-              </div>
             </div>
 
             {/* Error Notification */}

@@ -1,5 +1,6 @@
-import { PortalLoadingScreen } from '@/components/common/PortalLoadingScreen';
 'use client';
+
+import { PortalLoadingScreen } from '@/components/common/PortalLoadingScreen';
 
 import { ReactNode, useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
