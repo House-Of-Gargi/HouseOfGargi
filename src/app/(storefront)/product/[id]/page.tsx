@@ -2,12 +2,12 @@
 
 import { useState, use } from 'react';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import ScrollReveal from '@/components/ScrollReveal';
 import ProductCard from '@/components/ProductCard';
 import { getProduct, getRelatedProducts, categories, getArtisan, getArtisanByProductId } from '@/data/products';
 import { WishlistIcon, HeartFilledIcon, PlusIcon, MinusIcon } from '@/components/Icons';
-import { Crown, ArrowRight, Sparkles } from 'lucide-react';
+import { Crown, ArrowRight, ArrowLeft, Sparkles } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCurrency } from '@/context/CurrencyContext';
@@ -16,6 +16,7 @@ import { useCustomerAuth } from '@/context/CustomerAuthContext';
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
   const { id } = resolvedParams;
+  const router = useRouter();
 
   const product = getProduct(id);
   if (!product) {
@@ -62,16 +63,34 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   };
 
   return (
-    <div className="section section--ivory section--pdp" style={{ minHeight: '80vh', paddingTop: '96px', paddingBottom: '70px' }}>
+    <div className="section section--ivory section--pdp" style={{ minHeight: '80vh', paddingBottom: '70px' }}>
       <div className="container">
-        {/* Breadcrumb */}
-        <nav className="breadcrumb pdp-breadcrumb" aria-label="Breadcrumb">
-          <Link href="/">Home</Link>
-          <span>/</span>
-          <Link href={`/category/${product.category}`}>{categoryName}</Link>
-          <span>/</span>
-          <span style={{ color: 'var(--ink-brown)' }}>{product.name}</span>
-        </nav>
+        {/* Top Nav: Back Link with Underline & Breadcrumb */}
+        <div className="pdp-top-nav">
+          <button
+            type="button"
+            onClick={() => {
+              if (typeof window !== 'undefined' && window.history.length > 1) {
+                window.history.back();
+              } else {
+                router.push(`/category/${product.category}`);
+              }
+            }}
+            className="pdp-back-link"
+            aria-label="Back to previous page"
+          >
+            <ArrowLeft size={17} strokeWidth={2.2} className="pdp-back-icon" />
+            <span className="pdp-back-text">Back</span>
+          </button>
+
+          <nav className="breadcrumb pdp-breadcrumb" aria-label="Breadcrumb">
+            <Link href="/">Home</Link>
+            <span>/</span>
+            <Link href={`/category/${product.category}`}>{categoryName}</Link>
+            <span>/</span>
+            <span style={{ color: 'var(--ink-brown)' }}>{product.name}</span>
+          </nav>
+        </div>
 
         {/* Product Layout */}
         <div className="pdp-layout">

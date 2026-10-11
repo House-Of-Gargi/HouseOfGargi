@@ -7234,7 +7234,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     display: none !important;
   }
   .section--pdp {
-    padding-top: 76px !important;
+    padding-top: 96px !important;
   }
 
   /* 2. Specs aligned row-wise */
@@ -7853,5 +7853,80 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
+  }
+}
+
+
+/* ── PDP Top Nav: Underlined Black Back Link & Image Clearance ── */
+.section--pdp {
+  padding-top: 104px !important;
+}
+
+.pdp-top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.pdp-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent !important;
+  border: none !important;
+  padding: 4px 0 !important;
+  margin: 0 !important;
+  cursor: pointer;
+  font-family: var(--font-nav, 'Outfit', sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: #111111 !important; /* Visible crisp black */
+  line-height: 1;
+  text-decoration: none;
+  transition: opacity 150ms ease;
+}
+
+.pdp-back-link:hover {
+  opacity: 0.75;
+}
+
+.pdp-back-icon {
+  color: #111111 !important;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -2px; /* Precision optical vertical alignment with text center */
+  transition: transform 180ms ease;
+}
+
+.pdp-back-link:hover .pdp-back-icon {
+  transform: translateX(-3px);
+}
+
+.pdp-back-text {
+  color: #111111 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 4px !important;
+  text-decoration-thickness: 1.5px !important;
+  display: inline-block;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .section--pdp {
+    padding-top: 96px !important; /* Space between fixed top bar and content */
+    padding-bottom: 50px !important;
+  }
+  .pdp-top-nav {
+    margin-bottom: 20px !important;
+  }
+  .pdp-back-link {
+    font-size: 15px !important;
+  }
+  .pdp-breadcrumb {
+    display: none !important;
   }
 }
