@@ -187,7 +187,7 @@ export default function Navbar() {
                 onClick={() => setMobileOpen(true)}
                 aria-label="Menu"
               >
-                <MenuIcon size={26} />
+                <MenuIcon size={24} />
               </button>
               <button
                 type="button"
@@ -199,9 +199,9 @@ export default function Navbar() {
                 aria-label="Search"
                 title="Search"
               >
-                <SearchIcon size={22} />
+                <SearchIcon size={20} />
               </button>
-              <Link href="/" className="navbar__logo" aria-label="House of Gargi">
+              <Link href="/" className="navbar__logo navbar__logo--desktop" aria-label="House of Gargi">
                 <img
                   src="/logo-images/new-white-logo.png"
                   alt="House of Gargi"
@@ -214,6 +214,20 @@ export default function Navbar() {
                 />
               </Link>
             </div>
+
+            {/* Mobile Centered Brand Logo */}
+            <Link href="/" className="navbar__logo navbar__logo--mobile" aria-label="House of Gargi">
+              <img
+                src="/logo-images/new-white-logo.png"
+                alt="House of Gargi"
+                className="navbar__logo-img navbar__logo-img--white"
+              />
+              <img
+                src="/logo-images/new-logo.png"
+                alt="House of Gargi"
+                className="navbar__logo-img navbar__logo-img--dark"
+              />
+            </Link>
 
             {/* Center: Search Box Container with Elastic Search Dropdown */}
             <div className="navbar__search-wrapper" ref={searchContainerRef}>
