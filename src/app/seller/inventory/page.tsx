@@ -82,7 +82,7 @@ export default function ArtisanInventoryPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
           <Boxes style={{ width: 18, height: 18, color: 'var(--maharani-maroon)' }} />
           <span style={{ fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
-            Loom Stock & Quantity Manager • মজুত ও তাঁত
+            Loom Stock & Quantity Manager
           </span>
         </div>
         <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
@@ -97,11 +97,11 @@ export default function ArtisanInventoryPage() {
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
           <thead>
             <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              <th style={{ padding: '0.85rem 1rem' }}>Product Creation (পণ্য)</th>
-              <th style={{ padding: '0.85rem 1rem' }}>Craft Technique (শিল্পরীতি)</th>
+              <th style={{ padding: '0.85rem 1rem' }}>Product Creation</th>
+              <th style={{ padding: '0.85rem 1rem' }}>Craft Technique</th>
               <th style={{ padding: '0.85rem 1rem' }}>Retail Price</th>
-              <th style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>Live Loom Stock (মজুত সংখ্যা)</th>
-              <th style={{ padding: '0.85rem 1rem' }}>Loom Lead Time (সময়)</th>
+              <th style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>Live Loom Stock</th>
+              <th style={{ padding: '0.85rem 1rem' }}>Loom Lead Time</th>
               <th style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>Availability Toggle</th>
             </tr>
           </thead>

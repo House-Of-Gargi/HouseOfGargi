@@ -30,8 +30,7 @@ export interface SellerSidebarProps {
 
 export interface SellerNavItem {
   label: string;
-  bengaliLabel?: string;
-  href: string;
+    href: string;
   icon: React.ComponentType<{ style?: React.CSSProperties; className?: string }>;
   badge?: string;
   external?: boolean;
@@ -39,49 +38,43 @@ export interface SellerNavItem {
 
 export interface SellerNavGroup {
   section: string;
-  bengaliSection?: string;
-  items: SellerNavItem[];
+    items: SellerNavItem[];
 }
 
 const sellerNavGroups: SellerNavGroup[] = [
   {
     section: 'Overview',
-    bengaliSection: 'সারসংক্ষেপ',
-    items: [
-      { label: 'Dashboard', bengaliLabel: 'ড্যাশবোর্ড', href: '/artisan/dashboard', icon: LayoutDashboard },
-      { label: 'Performance Analytics', bengaliLabel: 'বিক্রয় তথ্য', href: '/seller/analytics', icon: TrendingUp },
+        items: [
+      { label: 'Dashboard', href: '/artisan/dashboard', icon: LayoutDashboard },
+      { label: 'Performance Analytics', href: '/seller/analytics', icon: TrendingUp },
     ],
   },
   {
     section: 'My Creations',
-    bengaliSection: 'আমার সৃষ্টি',
-    items: [
-      { label: 'My Products', bengaliLabel: 'আমার পণ্যতালিকা', href: '/seller/products', icon: Shirt },
-      { label: 'Add New Creation', bengaliLabel: 'নতুন সৃষ্টি যোগ করুন', href: '/seller/products/new', icon: PlusCircle },
-      { label: 'Inventory & Loom Stock', bengaliLabel: 'মজুত ও তাঁত সংখ্যা', href: '/seller/inventory', icon: Boxes, badge: 'Stock' },
+        items: [
+      { label: 'My Products', href: '/seller/products', icon: Shirt },
+      { label: 'Add New Creation', href: '/seller/products/new', icon: PlusCircle },
+      { label: 'Inventory & Loom Stock', href: '/seller/inventory', icon: Boxes, badge: 'Stock' },
     ],
   },
   {
     section: 'Orders & Dispatch',
-    bengaliSection: 'অর্ডার ও ডেলিভারি',
-    items: [
-      { label: 'Assigned Orders', bengaliLabel: 'প্রেরিত অর্ডার', href: '/seller/orders', icon: ShoppingBag, badge: 'Live' },
-      { label: 'Dispatch Slips', bengaliLabel: 'চালান ও প্যাকিং', href: '/seller/orders?filter=dispatch', icon: Truck },
+        items: [
+      { label: 'Assigned Orders', href: '/seller/orders', icon: ShoppingBag, badge: 'Live' },
+      { label: 'Dispatch Slips', href: '/seller/orders?filter=dispatch', icon: Truck },
     ],
   },
   {
     section: 'Finances & Payouts',
-    bengaliSection: 'আয় ও লেনদেন',
-    items: [
-      { label: 'Earnings Ledger', bengaliLabel: 'অর্জিত আয়', href: '/seller/earnings', icon: Wallet },
+        items: [
+      { label: 'Earnings Ledger', href: '/seller/earnings', icon: Wallet },
     ],
   },
   {
     section: 'Ethical Lineage',
-    bengaliSection: 'পরিচয় ও নীতি',
-    items: [
-      { label: 'Child Labor Agreement', bengaliLabel: 'নীতিগত চুক্তি', href: '/seller/compliance', icon: ShieldCheck },
-      { label: 'Preview Boutique', bengaliLabel: 'দোকান দেখুন', href: '/', icon: ExternalLink, external: true },
+        items: [
+      { label: 'Child Labor Agreement', href: '/seller/compliance', icon: ShieldCheck },
+      { label: 'Preview Boutique', href: '/', icon: ExternalLink, external: true },
     ],
   },
 ];
@@ -155,7 +148,7 @@ export function SellerSidebar({
             textOverflow: 'ellipsis',
           }}
         >
-          {group.section} {group.bengaliSection ? '• ' + group.bengaliSection : ''}
+          {group.section}
         </div>
       )}
       <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '3px' }}>
@@ -231,11 +224,7 @@ export function SellerSidebar({
                       >
                         {item.label}
                       </span>
-                      {item.bengaliLabel && (
-                        <span style={{ fontSize: '0.68rem', color: 'var(--stone-taupe)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                          {item.bengaliLabel}
-                        </span>
-                      )}
+                      
                     </div>
                     {item.badge && (
                       <span
@@ -311,7 +300,7 @@ export function SellerSidebar({
                 HOUSE OF GARGI
               </div>
               <div style={{ fontSize: '0.65rem', letterSpacing: '0.06em', color: 'var(--stone-taupe)', textTransform: 'uppercase', fontWeight: 600 }}>
-                Artisan Atelier • কারিগর
+                Artisan Atelier
               </div>
             </div>
           )}
@@ -361,10 +350,10 @@ export function SellerSidebar({
               fontSize: '0.78rem',
               fontWeight: 600,
             }}
-            title="প্রস্থান / Sign Out"
+            title="Sign Out"
           >
             <LogOut style={{ width: 16, height: 16 }} />
-            {isExpanded && <span>প্রস্থান / Sign Out</span>}
+            {isExpanded && <span>Sign Out</span>}
           </button>
         </div>
       </aside>
@@ -438,7 +427,7 @@ export function SellerSidebar({
                 }}
               >
                 <LogOut style={{ width: 16, height: 16 }} />
-                <span>প্রস্থান / Sign Out</span>
+                <span>Sign Out</span>
               </button>
             </div>
           </div>

@@ -20,7 +20,7 @@ export default function NewProductCreationPage() {
     <div>
       <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
         <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
-          Add New Craft Creation • নতুন সৃষ্টি যোগ করুন
+          Add New Craft Creation
         </h1>
         <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.88rem' }}>
           Submit handcrafted sarees, lehengas, or kurtas from your workshop looms for House of Gargi admin quality review.
@@ -48,7 +48,7 @@ export default function NewProductCreationPage() {
         <form onSubmit={handleSubmit} style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 4, padding: '2rem', maxWidth: '720px', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <div>
             <label style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--ink-brown)', display: 'block', marginBottom: '0.3rem' }}>
-              Creation Title (পণ্যের নাম)
+              Creation Title
             </label>
             <input
               type="text"
@@ -63,7 +63,7 @@ export default function NewProductCreationPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <div>
               <label style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--ink-brown)', display: 'block', marginBottom: '0.3rem' }}>
-                Category (বিভাগ)
+                Category
               </label>
               <select
                 value={category}
@@ -79,7 +79,7 @@ export default function NewProductCreationPage() {
 
             <div>
               <label style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--ink-brown)', display: 'block', marginBottom: '0.3rem' }}>
-                Craft Technique (শিল্পরীতি)
+                Craft Technique
               </label>
               <input
                 type="text"
@@ -93,7 +93,7 @@ export default function NewProductCreationPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <div>
               <label style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--ink-brown)', display: 'block', marginBottom: '0.3rem' }}>
-                Retail Price (₹) (বিক্রয় মূল্য)
+                Retail Price (₹)
               </label>
               <input
                 type="number"
@@ -107,7 +107,7 @@ export default function NewProductCreationPage() {
 
             <div>
               <label style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--ink-brown)', display: 'block', marginBottom: '0.3rem' }}>
-                Initial Stock Count (মজুত সংখ্যা)
+                Initial Stock Count
               </label>
               <input
                 type="number"

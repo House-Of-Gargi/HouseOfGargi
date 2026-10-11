@@ -31,7 +31,7 @@ export default function ArtisanAnalyticsPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
           <TrendingUp style={{ width: 18, height: 18, color: 'var(--maharani-maroon)' }} />
           <span style={{ fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
-            Sales Performance & Insights • বিক্রয় বিশ্লেষণ
+            Sales Performance & Insights
           </span>
         </div>
         <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
@@ -46,7 +46,7 @@ export default function ArtisanAnalyticsPage() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
         <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 4, padding: '1.5rem' }}>
           <span style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', fontWeight: 600, textTransform: 'uppercase' }}>
-            Total Workshop Sales (মোট বিক্রয়)
+            Total Workshop Sales
           </span>
           <div style={{ fontSize: '2.2rem', fontWeight: 700, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)', margin: '0.5rem 0' }}>
             ₹{totalGross.toLocaleString('en-IN')}
@@ -80,11 +80,11 @@ export default function ArtisanAnalyticsPage() {
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
           <thead>
             <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              <th style={{ padding: '0.85rem 1rem' }}>Creation Title (পণ্য)</th>
+              <th style={{ padding: '0.85rem 1rem' }}>Creation Title</th>
               <th style={{ padding: '0.85rem 1rem' }}>Category</th>
-              <th style={{ padding: '0.85rem 1rem' }}>Units Sold (বিক্রিত সংখ্যা)</th>
-              <th style={{ padding: '0.85rem 1rem' }}>Total Gross (মোট মূল্য)</th>
-              <th style={{ padding: '0.85rem 1rem' }}>Your 85% Share (আপনার আয়)</th>
+              <th style={{ padding: '0.85rem 1rem' }}>Units Sold</th>
+              <th style={{ padding: '0.85rem 1rem' }}>Total Gross</th>
+              <th style={{ padding: '0.85rem 1rem' }}>Your 85% Share</th>
               <th style={{ padding: '0.85rem 1rem' }}>Return Rate</th>
             </tr>
           </thead>

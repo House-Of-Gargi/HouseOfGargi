@@ -398,7 +398,7 @@ export default function AdminApplicationsPage() {
               {/* 14 Questionnaire Responses */}
               <div>
                 <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--ink-brown)', margin: '0 0 0.2rem' }}>
-                  Questionnaire Responses (শিল্পী প্রশ্নাবলী)
+                  Questionnaire Responses
                 </h3>
                 <p style={{ margin: '0 0 1rem', fontSize: '0.78rem', color: 'var(--stone-taupe)' }}>
                   14 qualitative craft, history, and workshop questions answered by the artisan

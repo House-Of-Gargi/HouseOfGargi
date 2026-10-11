@@ -22,53 +22,53 @@ interface FormData {
 }
 
 const INDIAN_STATES = [
-  'West Bengal (পশ্চিমবঙ্গ)',
-  'Uttar Pradesh (উত্তর প্রদেশ)',
-  'Rajasthan (রাজস্থান)',
-  'Gujarat (গুজরাট)',
-  'Madhya Pradesh (মধ্য প্রদেশ)',
-  'Maharashtra (মহারাষ্ট্র)',
-  'Tamil Nadu (তামিলনাড়ু)',
-  'Odisha (ওড়িশা)',
-  'Assam (আসাম)',
-  'Bihar (বিহার)',
-  'Karnataka (কর্ণাটক)',
-  'Andhra Pradesh (অন্ধ্র প্রদেশ)',
-  'Telangana (তেলেঙ্গানা)',
-  'Kerala (কেরালা)',
-  'Punjab (পাঞ্জাব)',
-  'Haryana (হরিয়ানা)',
-  'Himachal Pradesh (হিমাচল প্রদেশ)',
-  'Jammu & Kashmir (জম্মু ও কাশ্মীর)',
-  'Chhattisgarh (ছত্তিশগড়)',
-  'Jharkhand (ঝাড়খণ্ড)',
-  'Uttarakhand (উত্তরাখণ্ড)',
-  'Delhi NCR (দিল্লি)',
+  'West Bengal',
+  'Uttar Pradesh',
+  'Rajasthan',
+  'Gujarat',
+  'Madhya Pradesh',
+  'Maharashtra',
+  'Tamil Nadu',
+  'Odisha',
+  'Assam',
+  'Bihar',
+  'Karnataka',
+  'Andhra Pradesh',
+  'Telangana',
+  'Kerala',
+  'Punjab',
+  'Haryana',
+  'Himachal Pradesh',
+  'Jammu & Kashmir',
+  'Chhattisgarh',
+  'Jharkhand',
+  'Uttarakhand',
+  'Delhi NCR',
   'Other State / Union Territory',
 ];
 
 const CRAFT_TYPES = [
-  'Pure Silk Handloom Weaving (খাঁটি রেশম তাঁত শিল্প)',
-  'Jamdani Handloom Weaving (ঐতিহ্যবাহী জামদানি)',
-  'Kantha Stitch Embroidery (নকশি কাঁথা স্টিচ)',
-  'Awadhi Zardozi & Aari (জরদোসি ও আরি কারুকাজ)',
-  'Lucknowi Chikankari (লখনউ চিকনকারি)',
-  'Banarasi Kadwa Gold Weave (বেনারসি কড়ুয়া বুনন)',
-  'Chanderi Gossamer Silk (চান্দেরি সিল্ক ও সুতি)',
-  'Dokra Lost-Wax Metal Craft (ডোকরা ধাতব শিল্প)',
-  'Teak Wood Block Print & Dabu (কাঠের ব্লক প্রিন্ট)',
-  'Patola & Bandhani Tie-Dye (পাটোলা ও বান্ধনী)',
-  'Temple Jewellery & Meenakari (মন্দির গহনা ও মীনাকারি)',
-  'Terracotta & Clay Craft (টেরাকোটা ও মাটির শিল্প)',
-  'Other Traditional Craft (অন্যান্য ঐতিহ্যবাহী শিল্প)',
+  'Pure Silk Handloom Weaving',
+  'Jamdani Handloom Weaving',
+  'Kantha Stitch Embroidery',
+  'Awadhi Zardozi & Aari',
+  'Lucknowi Chikankari',
+  'Banarasi Kadwa Gold Weave',
+  'Chanderi Gossamer Silk',
+  'Dokra Lost-Wax Metal Craft',
+  'Teak Wood Block Print & Dabu',
+  'Patola & Bandhani Tie-Dye',
+  'Temple Jewellery & Meenakari',
+  'Terracotta & Clay Craft',
+  'Other Traditional Craft',
 ];
 
 const STEPS = [
-  { step: 1, labelEn: '1. Basic Info', labelBn: 'প্রাথমিক পরিচয়', titleEn: 'Basic Profile & Contact', titleBn: 'প্রাথমিক পরিচয় ও যোগাযোগ' },
-  { step: 2, labelEn: '2. Journey', labelBn: 'জীবনের গল্প', titleEn: 'Part I: Personal Life & Dreams', titleBn: 'প্রথম পর্ব: জীবন ও স্বপ্ন (Q1 - Q4)' },
-  { step: 3, labelEn: '3. Craft & Materials', labelBn: 'শিল্প ও উপকরণ', titleEn: 'Part II: Craft, Lineage & Materials', titleBn: 'দ্বিতীয় পর্ব: শিল্প, ঐতিহ্য ও উপকরণ (Q5 - Q8)' },
-  { step: 4, labelEn: '4. Atelier', labelBn: 'অনুপ্রেরণা ও দল', titleEn: 'Part III: Community, Inspiration & Design', titleBn: 'তৃতীয় পর্ব: সমাজ ও অনুপ্রেরণা (Q9 - Q14)' },
-  { step: 5, labelEn: '5. Agreement', labelBn: 'চুক্তি ও সম্মতি', titleEn: 'Ethical Agreement & Submission', titleBn: 'শিশুশ্রম বিরোধী চুক্তি ও স্বাক্ষর' },
+  { step: 1, labelEn: '1. Basic Info', titleEn: 'Basic Profile & Contact' },
+  { step: 2, labelEn: '2. Journey', titleEn: 'Part I: Personal Life & Dreams' },
+  { step: 3, labelEn: '3. Craft & Materials', titleEn: 'Part II: Craft, Lineage & Materials' },
+  { step: 4, labelEn: '4. Atelier', titleEn: 'Part III: Community, Inspiration & Design' },
+  { step: 5, labelEn: '5. Agreement', titleEn: 'Ethical Agreement & Submission' },
 ];
 
 export default function ArtisanApplyPage() {
@@ -118,16 +118,16 @@ export default function ArtisanApplyPage() {
   };
 
   const validateStep1 = () => {
-    if (!formData.name.trim()) return 'Please enter your full name / আপনার নাম লিখুন।';
+    if (!formData.name.trim()) return 'Please enter your full name';
     if (!formData.phone.trim() || formData.phone.replace(/\D/g, '').length < 10) {
-      return 'Please enter a valid 10-digit mobile number / সঠিক ১০ সংখ্যার ফোন নম্বর লিখুন।';
+      return 'Please enter a valid 10-digit mobile number';
     }
     if (!formData.email.trim() || !formData.email.includes('@')) {
-      return 'Please enter a valid email address / সঠিক ইমেইল ঠিকানা লিখুন।';
+      return 'Please enter a valid email address';
     }
-    if (!formData.gender) return 'Please select your gender / আপনার লিঙ্গ নির্বাচন করুন।';
-    if (!formData.state) return 'Please select your state / আপনার রাজ্য নির্বাচন করুন।';
-    if (!formData.typeOfArt) return 'Please select your craft type / আপনার শিল্পের ধরন নির্বাচন করুন।';
+    if (!formData.gender) return 'Please select your gender';
+    if (!formData.state) return 'Please select your state';
+    if (!formData.typeOfArt) return 'Please select your craft type';
     return null;
   };
 
@@ -154,11 +154,11 @@ export default function ArtisanApplyPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!formData.agreedChildLabor || !formData.agreedInspection) {
-      setError('Please check both compulsory agreement checkboxes to submit / উভয় চুক্তির বক্সে টিক দিয়ে সম্মতি জানান।');
+      setError('Please check both compulsory agreement checkboxes to submit');
       return;
     }
     if (!formData.signature.trim()) {
-      setError('Please enter your full legal name as your signature / স্বাক্ষরের স্থানে আপনার নাম লিখুন।');
+      setError('Please enter your full legal name as your signature');
       return;
     }
 
@@ -391,7 +391,7 @@ export default function ArtisanApplyPage() {
             }}
           >
             <ArrowLeft style={{ width: 14, height: 14 }} />
-            Artisan Login &bull; লগইন
+            Artisan Login
           </Link>
 
           <Link
@@ -441,7 +441,7 @@ export default function ArtisanApplyPage() {
               margin: '0 0 0.5rem',
               fontWeight: 600,
             }}>
-              Application Received &bull; আবেদন জমা হয়েছে
+              Application Received
             </h1>
 
             <p style={{
@@ -462,7 +462,7 @@ export default function ArtisanApplyPage() {
               margin: '0 auto 2rem',
               fontStyle: 'italic',
             }}>
-              হাউস অফ গার্গী কারিগর পরিবারে যোগদানের জন্য আপনার আবেদন সফলভাবে জমা পড়েছে। আমাদের কিউরেশন টিম অতি শীঘ্রই আপনার সাথে যোগাযোগ করবে।
+              Your application to join the House of Gargi Artisan Guild has been received. Our curation desk will review your submission and contact you shortly.
             </p>
 
             <div style={{
@@ -476,7 +476,7 @@ export default function ArtisanApplyPage() {
               boxSizing: 'border-box',
             }}>
               <span style={{ fontSize: '0.85rem', color: '#8C7B70', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                Application Reference ID / আবেদন নং:
+                Application Reference ID:
               </span>
               <div style={{
                 fontFamily: "'Courier New', monospace",
@@ -578,7 +578,7 @@ export default function ArtisanApplyPage() {
                 color: '#4A3C33',
                 margin: 0,
               }}>
-                শিল্পী প্রশ্নাবলী
+                Heritage Artisan Registry
               </h2>
             </div>
 
@@ -677,7 +677,7 @@ export default function ArtisanApplyPage() {
                   At House of Gargi we are especially interested in getting to know you, and introduce you to our customers around the world. Can you help us by providing the following information so we can write your story for the website?
                 </p>
                 <p style={{ margin: 0, fontSize: '0.88rem', lineHeight: 1.55, color: '#665349', fontStyle: 'italic' }}>
-                  আমরা হাউস অফ গার্গীতে বিশেষভাবে আপনাকে জানতে এবং বিশ্বজুড়ে আমাদের গ্রাহকদের কাছে আপনাকে পরিচয় করিয়ে দিতে আগ্রহী। আপনি কি আমাদের নিম্নলিখিত তথ্যগুলি দিয়ে সাহায্য করতে পারেন যাতে আমরা ওয়েবসাইটের জন্য আপনার জীবনের গল্পটি লিখতে পারি?
+                                  ।                  ?
                 </p>
               </div>
             )}
@@ -687,7 +687,7 @@ export default function ArtisanApplyPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.35rem' }}>
                 <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem', marginBottom: '0.25rem' }}>
                   <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 700 }}>
-                    1. Basic Profile &amp; Contact &bull; প্রাথমিক পরিচয় ও যোগাযোগ
+                    1. Basic Profile &amp; Contact &bull;    
                   </h3>
                   <p style={{ margin: '0.25rem 0 0', fontSize: '0.84rem', color: '#8C7B70' }}>
                     Please fill out your verified details to register on the Artisan Portal.
@@ -697,13 +697,13 @@ export default function ArtisanApplyPage() {
                 {/* ARTIST NAME */}
                 <div>
                   <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
-                    • ARTIST NAME: / শিল্পী নাম: <span style={{ color: '#7A2331' }}>*</span>
+                    • ARTIST NAME: /  : <span style={{ color: '#7A2331' }}>*</span>
                   </label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    placeholder="Enter full name (e.g., Ramdas Mishra / রামদাস মিশ্র)"
+                    placeholder="Enter full name (e.g., Ramdas Mishra /  )"
                     required
                     className="artisan-input-field"
                   />
@@ -713,7 +713,7 @@ export default function ArtisanApplyPage() {
                 <div className="artisan-form-grid-2">
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
-                      • DATE OF BIRTH: / জন্ম তারিখ:
+                      • DATE OF BIRTH: /  :
                     </label>
                     <input
                       type="date"
@@ -725,7 +725,7 @@ export default function ArtisanApplyPage() {
 
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
-                      AGE / বয়স:
+                      AGE / :
                     </label>
                     <input
                       type="number"
@@ -741,7 +741,7 @@ export default function ArtisanApplyPage() {
                 <div className="artisan-form-grid-2">
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
-                      GENDER / লিঙ্গ: <span style={{ color: '#7A2331' }}>*</span>
+                      GENDER / : <span style={{ color: '#7A2331' }}>*</span>
                     </label>
                     <select
                       value={formData.gender}
@@ -749,16 +749,16 @@ export default function ArtisanApplyPage() {
                       required
                       className="artisan-input-field"
                     >
-                      <option value="">Select Gender / নির্বাচন করুন</option>
-                      <option value="Male">Male / পুরুষ</option>
-                      <option value="Female">Female / মহিলা</option>
-                      <option value="Other">Other / অন্যান্য</option>
+                      <option value="">Select Gender /  </option>
+                      <option value="Male">Male / </option>
+                      <option value="Female">Female / </option>
+                      <option value="Other">Other / </option>
                     </select>
                   </div>
 
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
-                      STATE / রাজ্য: <span style={{ color: '#7A2331' }}>*</span>
+                      STATE / : <span style={{ color: '#7A2331' }}>*</span>
                     </label>
                     <select
                       value={formData.state}
@@ -766,7 +766,7 @@ export default function ArtisanApplyPage() {
                       required
                       className="artisan-input-field"
                     >
-                      <option value="">Select State / রাজ্য বেছে নিন</option>
+                      <option value="">Select State /   </option>
                       {INDIAN_STATES.map((st) => (
                         <option key={st} value={st}>{st}</option>
                       ))}
@@ -778,20 +778,20 @@ export default function ArtisanApplyPage() {
                 <div className="artisan-form-grid-2">
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
-                      • PLACE OF BIRTH: / জন্মস্থান:
+                      • PLACE OF BIRTH: / :
                     </label>
                     <input
                       type="text"
                       value={formData.placeOfBirth}
                       onChange={(e) => handleInputChange('placeOfBirth', e.target.value)}
-                      placeholder="Village / Town / District (গ্রাম বা শহর)"
+                      placeholder="Village / Town / District (  )"
                       className="artisan-input-field"
                     />
                   </div>
 
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
-                      • TYPE OF ART / CRAFT: / শিল্প ধরন: <span style={{ color: '#7A2331' }}>*</span>
+                      • TYPE OF ART / CRAFT: /  : <span style={{ color: '#7A2331' }}>*</span>
                     </label>
                     <select
                       value={formData.typeOfArt}
@@ -799,7 +799,7 @@ export default function ArtisanApplyPage() {
                       required
                       className="artisan-input-field"
                     >
-                      <option value="">Select Craft / শিল্পের ধরন</option>
+                      <option value="">Select Craft /  </option>
                       {CRAFT_TYPES.map((c) => (
                         <option key={c} value={c}>{c}</option>
                       ))}
@@ -811,7 +811,7 @@ export default function ArtisanApplyPage() {
                 <div className="artisan-form-grid-2">
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
-                      MOBILE NUMBER: / ফোন নম্বর: <span style={{ color: '#7A2331' }}>*</span>
+                      MOBILE NUMBER: /  : <span style={{ color: '#7A2331' }}>*</span>
                     </label>
                     <div style={{
                       display: 'flex',
@@ -858,7 +858,7 @@ export default function ArtisanApplyPage() {
 
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
-                      EMAIL ADDRESS: / ইমেইল ঠিকানা: <span style={{ color: '#7A2331' }}>*</span>
+                      EMAIL ADDRESS: /  : <span style={{ color: '#7A2331' }}>*</span>
                     </label>
                     <input
                       type="email"
@@ -878,7 +878,7 @@ export default function ArtisanApplyPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
                 <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
                   <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 700 }}>
-                    Part I: Personal Life &amp; Dreams &bull; প্রথম পর্ব: জীবন ও স্বপ্ন (Q1 - Q4)
+                    Part I: Personal Life &amp; Dreams &bull;  :    (Q1 - Q4)
                   </h3>
                 </div>
 
@@ -888,7 +888,7 @@ export default function ArtisanApplyPage() {
                     1) If friends were to describe you, what 3 things would they say about you?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                    বন্ধুরা যদি আপনার বর্ণনা দিতে চায়, তবে তারা আপনার সম্পর্কে কোন ৩টি কথা বলবে?
+                         ,        ?
                   </p>
                   <textarea
                     rows={3}
@@ -905,7 +905,7 @@ export default function ArtisanApplyPage() {
                     2) Have you ever experienced difficult moments in your life that you&apos;re proud to have overcome?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                    আপনি কি আপনার জীবনে এমন কোনো কঠিন মুহূর্তের সম্মুখীন হয়েছেন যা আপনি সফলভাবে কাটিয়ে উঠেছেন এবং যার জন্য আপনি গর্বিত?
+                                       ?
                   </p>
                   <textarea
                     rows={3}
@@ -922,7 +922,7 @@ export default function ArtisanApplyPage() {
                     3) Have you experienced funny, embarrassing or silly moments in your life that have made you laugh - would you share them with us?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                    আপনার জীবনে কি এমন কোনো মজার, অস্বস্তিকর বা হাসির মুহূর্ত ঘটেছে যা আপনাকে হাসিয়েছে? আপনি কি তা আমাদের সাথে শেয়ার করবেন?
+                         ,        ?       ?
                   </p>
                   <textarea
                     rows={3}
@@ -939,7 +939,7 @@ export default function ArtisanApplyPage() {
                     4) What are your hopes, plans and dreams for the future?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                    ভবিষ্যতের জন্য আপনার আশা, পরিকল্পনা এবং স্বপ্নগুলি কী কী?
+                       ,     ?
                   </p>
                   <textarea
                     rows={3}
@@ -957,7 +957,7 @@ export default function ArtisanApplyPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
                 <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
                   <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 700 }}>
-                    Part II: Craft, Lineage &amp; Materials &bull; দ্বিতীয় পর্ব: শিল্প, ঐতিহ্য ও উপকরণ (Q5 - Q8)
+                    Part II: Craft, Lineage &amp; Materials &bull;  : ,    (Q5 - Q8)
                   </h3>
                 </div>
 
@@ -967,7 +967,7 @@ export default function ArtisanApplyPage() {
                     5) How did you get interested in this art / craft, and what is it about this art that attracts you to it?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                    আপনি কীভাবে এই শিল্প / কারুশিল্পের প্রতি আগ্রহী হলেন, এবং এই শিল্প সম্পর্কে এমন কী আছে যা আপনাকে এর প্রতি আকৃষ্ট করে?
+                        /    ,             ?
                   </p>
                   <textarea
                     rows={3}
@@ -984,7 +984,7 @@ export default function ArtisanApplyPage() {
                     6) Who taught you? Do you also now teach to others? (please specify who and where)
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                    আপনাকে কে শিখিয়েছেন? আপনি কি এখন অন্যদেরও শেখান? (যদি শিখান, তবে কে এবং কোথায়, তা উল্লেখ করুন)
+                      ?     ? ( ,    ,   )
                   </p>
                   <textarea
                     rows={3}
@@ -1001,7 +1001,7 @@ export default function ArtisanApplyPage() {
                     7) What did you have to do to learn and master this art / craft?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                    এই শিল্প / কারুশিল্প শিখতে এবং আয়ত্ত করতে আপনাকে কী কী করতে হয়েছে?
+                      /          ?
                   </p>
                   <textarea
                     rows={3}
@@ -1018,7 +1018,7 @@ export default function ArtisanApplyPage() {
                     8) What kind of materials do you use? Are they easy / difficult to work with? How do you obtain them? Do you make / prepare any of them? Are any of your materials recycled, reclaimed or reused?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                    আপনি কী ধরনের উপকরণ ব্যবহার করেন? এগুলো কি ব্যবহার করতে সহজ / কঠিন? আপনি এগুলো কোথা থেকে সংগ্রহ করেন? আপনি কি নিজে এগুলো তৈরি / প্রস্তুত করেন? আপনার উপকরণের মধ্যে কি কোনওটি পুনর্ব্যবহার করা / পুনরুদ্ধার করা (recycled / reclaimed or reused) হয়?
+                         ?      / ?      ?      /  ?        /   (recycled / reclaimed or reused) ?
                   </p>
                   <textarea
                     rows={3}
@@ -1036,7 +1036,7 @@ export default function ArtisanApplyPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
                 <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
                   <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 700 }}>
-                    Part III: Community, Inspiration &amp; Design &bull; তৃতীয় পর্ব: সমাজ ও অনুপ্রেরণা (Q9 - Q14)
+                    Part III: Community, Inspiration &amp; Design &bull;  :    (Q9 - Q14)
                   </h3>
                 </div>
 
@@ -1046,7 +1046,7 @@ export default function ArtisanApplyPage() {
                     9) What is your favorite thing about your art / craft? What do you find the most challenging?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                    আপনার শিল্প / কারুশিল্পের কোন বিষয়টি আপনার সবচেয়ে প্রিয়? কোন বিষয়টি আপনার কাছে সবচেয়ে বেশি চ্যালেঞ্জিং মনে হয়?
+                      /      ?         ?
                   </p>
                   <textarea
                     rows={3}
@@ -1063,7 +1063,7 @@ export default function ArtisanApplyPage() {
                     10) Where do you get your inspiration from?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                    আপনি কোথা থেকে আপনার কাজের অনুপ্রেরণা পান?
+                          ?
                   </p>
                   <textarea
                     rows={3}
@@ -1080,7 +1080,7 @@ export default function ArtisanApplyPage() {
                     11) Describe what it has been like to get started on your own?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                    নিজের উদ্যোগে বা স্বাধীনভাবে কাজ শুরু করার অভিজ্ঞতা কেমন ছিল, তা বর্ণনা করুন।
+                             ,   ।
                   </p>
                   <textarea
                     rows={3}
@@ -1097,7 +1097,7 @@ export default function ArtisanApplyPage() {
                     12) If you work with family members, how do you organize the work? (Who does what?)
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                    আপনি যদি পরিবারের সদস্যদের সাথে কাজ করেন, তবে আপনারা কীভাবে কাজটিকে সংগঠিত করবেন? (কে কী করে?)
+                          ,      ? (  ?)
                   </p>
                   <textarea
                     rows={3}
@@ -1114,7 +1114,7 @@ export default function ArtisanApplyPage() {
                     13) If you only design, what qualities do you look for in artisans that would craft your designs?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                    যদি আপনি শুধুমাত্র ডিজাইন করেন, তাহলে আপনার ডিজাইনগুলি যারা তৈরি করবে সেই কারিগরদের মধ্যে আপনি কোন গুণাবলী খুঁজবেন?
+                        ,             ?
                   </p>
                   <textarea
                     rows={3}
@@ -1131,7 +1131,7 @@ export default function ArtisanApplyPage() {
                     14) Describe any benefits your craft / workshop brings to your local community.
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                    আপনার শিল্প / কর্মশালা আপনার স্থানীয় সম্প্রদায়ের জন্য কী কী সুবিধা নিয়ে আসে তা বর্ণনা করুন।
+                      /             ।
                   </p>
                   <textarea
                     rows={3}
@@ -1143,7 +1143,7 @@ export default function ArtisanApplyPage() {
                 </div>
 
                 <div style={{ textAlign: 'center', padding: '1rem', background: '#FAF7F2', borderRadius: '8px', color: '#7A2331', fontWeight: 700, letterSpacing: '0.1em' }}>
-                  THANK YOU! &bull; ধন্যবাদ!
+                  THANK YOU! &bull; !
                 </div>
               </div>
             )}
@@ -1153,7 +1153,7 @@ export default function ArtisanApplyPage() {
               <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
                 <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
                   <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 700 }}>
-                    Step 5: Ethical Agreement &amp; Submission &bull; শিশুশ্রম বিরোধী চুক্তি ও স্বাক্ষর
+                    Step 5: Ethical Agreement &amp; Submission &bull;     
                   </h3>
                   <p style={{ margin: '0.25rem 0 0', fontSize: '0.85rem', color: '#8C7B70' }}>
                     All master artisans and atelier suppliers must commit to international child labor standards.
@@ -1243,7 +1243,7 @@ export default function ArtisanApplyPage() {
                         1. I hereby agree to abide by the House of Gargi &amp; NOVICA Child Labor Agreement.
                       </strong>
                       <span style={{ display: 'block', fontSize: '0.84rem', color: '#6E5D53', fontStyle: 'italic', marginTop: '0.25rem', lineHeight: 1.4 }}>
-                        আমি শিশুশ্রম বিরোধী চুক্তিটি সম্পূর্ণ পড়েছি এবং মেনে চলার সম্মতি দিচ্ছি।
+                                  ।
                       </span>
                     </div>
                   </label>
@@ -1279,7 +1279,7 @@ export default function ArtisanApplyPage() {
                         2. I agree to make my workshop readily available for inspection and confirm all answers provided are true.
                       </strong>
                       <span style={{ display: 'block', fontSize: '0.84rem', color: '#6E5D53', fontStyle: 'italic', marginTop: '0.25rem', lineHeight: 1.4 }}>
-                        আমি আমার কর্মশালা পরিদর্শনের অনুমতি দিচ্ছি এবং নিশ্চিত করছি যে এই প্রশ্নাবলীতে দেওয়া সমস্ত তথ্য সত্য।
+                                       ।
                       </span>
                     </div>
                   </label>
@@ -1289,7 +1289,7 @@ export default function ArtisanApplyPage() {
                 <div className="artisan-form-grid-sig" style={{ borderTop: '1px solid #F0E6D2', paddingTop: '1.25rem' }}>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
-                      SIGNATURE OF ARTISAN / শিল্পীর পূর্ণ স্বাক্ষর: <span style={{ color: '#7A2331' }}>*</span>
+                      SIGNATURE OF ARTISAN /   : <span style={{ color: '#7A2331' }}>*</span>
                     </label>
                     <input
                       type="text"
@@ -1307,7 +1307,7 @@ export default function ArtisanApplyPage() {
 
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
-                      DATE / তারিখ:
+                      DATE / :
                     </label>
                     <input
                       type="text"
@@ -1357,7 +1357,7 @@ export default function ArtisanApplyPage() {
                   ) : (
                     <>
                       <ShieldCheck style={{ width: 20, height: 20 }} />
-                      Submit Artisan Application &bull; আবেদনপত্র জমা দিন
+                      Submit Artisan Application &bull;   
                     </>
                   )}
                 </button>
@@ -1416,7 +1416,7 @@ export default function ArtisanApplyPage() {
                     minHeight: '48px',
                   }}
                 >
-                  {currentStep === 4 ? 'Proceed to Agreement \u2022 চুক্তিতে যান' : 'Next \u2022 পরবর্তী'}
+                  {currentStep === 4 ? 'Proceed to Agreement \u2022  ' : 'Next \u2022 '}
                   <ArrowRight style={{ width: 15, height: 15 }} />
                 </button>
               </div>

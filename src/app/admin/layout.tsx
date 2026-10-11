@@ -7,6 +7,7 @@ import { AdminShell } from '@/components/admin/AdminShell';
 import { supabase } from '@/lib/supabaseClient';
 import { getUserRole, canAccessAdmin, AppRole } from '@/lib/rbac';
 import { ShieldAlert, ArrowLeft, Loader2 } from 'lucide-react';
+import { PortalLoadingScreen } from '@/components/common/PortalLoadingScreen';
 import '@/seller.css';
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
@@ -94,11 +95,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   }
 
   if (checking) {
-    return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FBF6EE', color: 'var(--maharani-maroon)' }}>
-        <Loader2 style={{ width: 32, height: 32, animation: 'spin 1s linear infinite' }} />
-      </div>
-    );
+    return <PortalLoadingScreen portalName="Operations Console" theme="light" message="Verifying Administrative credentials..." />;
   }
 
   if (!authorized) {

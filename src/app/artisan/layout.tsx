@@ -1,3 +1,4 @@
+import { PortalLoadingScreen } from '@/components/common/PortalLoadingScreen';
 'use client';
 
 import { ReactNode, useEffect, useState } from 'react';
@@ -63,13 +64,7 @@ export default function ArtisanLayout({ children }: { children: ReactNode }) {
   }, [pathname, router]);
 
   if (!authorized) {
-    return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FAFAF8', color: '#7A2331' }}>
-        <div style={{ width: 44, height: 44, borderRadius: 2, background: '#7A2331', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800 }}>
-          HG
-        </div>
-      </div>
-    );
+    return <PortalLoadingScreen portalName="Artisan Atelier" theme="light" message="Authorizing Artisan Atelier session..." />;
   }
 
   return (

@@ -42,7 +42,7 @@ const INITIAL_CATEGORIES = [
   {
     id: 'accessories',
     name: 'Courtly Jewellery & Dupattas',
-    sanskritLipi: 'শৃঙ্গার অলঙ্কার',
+    sanskritLipi: 'शृङ्गार अलङ्कार',
     slug: 'accessories',
     description: 'Kundan polki crafts and pure zari pashmina stoles handcrafted by heritage guild artisans.',
     imageUrl: '/images/category-accessories.png',
@@ -53,7 +53,7 @@ const INITIAL_CATEGORIES = [
   {
     id: 'bespoke',
     name: 'Bespoke Atelier Trousseau',
-    sanskritLipi: 'राजকীয় সৃষ্টি',
+    sanskritLipi: 'राजकीय सृष्टि',
     slug: 'bespoke',
     description: 'Commissioned heirloom textiles custom woven with personalized motifs and weaver signatures.',
     imageUrl: '/images/category-bespoke.png',

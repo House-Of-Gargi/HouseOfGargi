@@ -7,6 +7,7 @@ import { SuperAdminShell } from '@/components/super-admin/SuperAdminShell';
 import { supabase } from '@/lib/supabaseClient';
 import { getUserRole, canAccessSuperAdmin, AppRole } from '@/lib/rbac';
 import { ShieldAlert, ArrowLeft, Loader2 } from 'lucide-react';
+import { PortalLoadingScreen } from '@/components/common/PortalLoadingScreen';
 import '@/seller.css';
 
 export default function SuperAdminLayout({ children }: { children: ReactNode }) {
@@ -83,11 +84,7 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
   }, []);
 
   if (checking) {
-    return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1E140F', color: '#E4D3AE' }}>
-        <Loader2 style={{ width: 32, height: 32, animation: 'spin 1s linear infinite' }} />
-      </div>
-    );
+    return <PortalLoadingScreen portalName="Executive Command" theme="light" message="Verifying Super Admin credentials..." />;
   }
 
   if (!authorized) {

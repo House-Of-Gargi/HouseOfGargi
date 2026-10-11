@@ -1007,7 +1007,7 @@ export default function SellerLoginPage() {
                   transition: 'all 200ms ease',
                 }}
               >
-                <span>Join Us as Artisan &bull; কারিগর হিসেবে যুক্ত হোন</span>
+                <span>Join Us as an Artisan</span>
                 <ArrowRight style={{ width: 15, height: 15 }} />
               </Link>
             </div>

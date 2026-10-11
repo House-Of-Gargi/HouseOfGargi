@@ -137,22 +137,20 @@ export async function POST(req: Request) {
                   </tr>
                   <tr>
                     <td style="padding:30px 26px;">
-                      <h2 style="margin:0 0 12px;font-size:18px;color:#241A15;">Artisan Application Received &bull; আবেদন গৃহীত হয়েছে</h2>
+                      <h2 style="margin:0 0 12px;font-size:18px;color:#241A15;">Artisan Application Received</h2>
                       <p style="font-size:14px;line-height:1.6;color:#4A3C33;">
                         Dear <strong>${name}</strong>,<br/><br/>
                         Thank you for applying to join the House of Gargi Master Artisan Guild. We have received your questionnaire and ethical craft agreement.
                       </p>
-                      <p style="font-size:14px;line-height:1.6;color:#4A3C33;font-style:italic;">
-                        হাউস অফ গার্গী কারিগর গিল্ডে যোগদানের জন্য আপনার আবেদন সফলভাবে জমা হয়েছে। আমাদের অ্যাডমিন কিউরেশন টিম অতি শীঘ্রই আপনার সাথে যোগাযোগ করবে।
-                      </p>
+                      
 
                       <div style="background-color:#FAF7F2;border:1.5px solid #D4AF37;border-radius:8px;padding:16px 20px;margin:22px 0;">
-                        <p style="margin:0;font-size:13px;color:#8C7B70;">Application Reference / আবেদন নং:</p>
+                        <p style="margin:0;font-size:13px;color:#8C7B70;">Application Reference:</p>
                         <p style="margin:4px 0 0;font-size:20px;font-weight:700;color:#7A2331;font-family:'Courier New',monospace;">${applicationId}</p>
                         <p style="margin:10px 0 0;font-size:13px;color:#4A3C33;">
-                          <strong>Craft / শিল্প:</strong> ${typeOfArt || 'Master Artisan Craft'}<br/>
-                          <strong>State / রাজ্য:</strong> ${state || 'India'}<br/>
-                          <strong>Phone / ফোন:</strong> ${cleanPhone}
+                          <strong>Craft:</strong> ${typeOfArt || 'Master Artisan Craft'}<br/>
+                          <strong>State:</strong> ${state || 'India'}<br/>
+                          <strong>Phone:</strong> ${cleanPhone}
                         </p>
                       </div>
 
