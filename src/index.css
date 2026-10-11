@@ -6562,3 +6562,42 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     margin-bottom: 24px !important;
   }
 }
+
+
+/* ── Navbar Category Sub-Row Behavior ───────────────────────── */
+/* Second line remains visible on all pages until user scrolls */
+.navbar:not(.navbar--sub-hidden) .navbar__sub-row {
+  opacity: 1 !important;
+  max-height: 48px !important;
+  margin-top: 10px !important;
+  transform: translateY(0) !important;
+  pointer-events: auto !important;
+}
+
+/* Fades and collapses ONLY when user actually scrolls down */
+.navbar.navbar--sub-hidden .navbar__sub-row {
+  opacity: 0 !important;
+  max-height: 0 !important;
+  margin-top: 0 !important;
+  transform: translateY(-8px) !important;
+  pointer-events: none !important;
+}
+
+/* Active navigation item styling */
+.navbar__links a.is-active {
+  color: var(--maharani-maroon) !important;
+  font-weight: 700 !important;
+}
+
+.navbar__links a.is-active::after {
+  width: 100% !important;
+  background: var(--maharani-maroon) !important;
+}
+
+.navbar--hero .navbar__links a.is-active {
+  color: #FFFFFF !important;
+}
+
+.navbar--hero .navbar__links a.is-active::after {
+  background: var(--gargi-gold) !important;
+}

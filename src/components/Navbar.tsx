@@ -169,7 +169,9 @@ export default function Navbar() {
     )
   );
 
-  const cls = `navbar ${(scrolled || isDarkNavPage) ? 'navbar--scrolled' : 'navbar--hero'}`;
+  const isHome = pathname === '/';
+  const isHero = isHome && !scrolled;
+  const cls = `navbar ${isHero ? 'navbar--hero' : 'navbar--scrolled'} ${scrolled ? 'navbar--sub-hidden' : ''}`;
 
   return (
     <>
@@ -364,12 +366,12 @@ export default function Navbar() {
           {/* Second Line: Sub-bar with Categories (Smooth fade away on scroll) */}
           <div className="navbar__sub-row">
             <div className="navbar__links">
-              <Link href="/explore">Explore All</Link>
-              <Link href="/category/sarees">Sarees</Link>
-              <Link href="/category/lehengas">Lehengas</Link>
-              <Link href="/category/kurta-sets">Kurta Sets</Link>
-              <Link href="/category/accessories">Accessories</Link>
-              <Link href="/bespoke">Bespoke</Link>
+              <Link href="/explore" className={pathname === '/explore' ? 'is-active' : ''}>Explore All</Link>
+              <Link href="/category/sarees" className={pathname === '/category/sarees' ? 'is-active' : ''}>Sarees</Link>
+              <Link href="/category/lehengas" className={pathname === '/category/lehengas' ? 'is-active' : ''}>Lehengas</Link>
+              <Link href="/category/kurta-sets" className={pathname === '/category/kurta-sets' ? 'is-active' : ''}>Kurta Sets</Link>
+              <Link href="/category/accessories" className={pathname === '/category/accessories' ? 'is-active' : ''}>Accessories</Link>
+              <Link href="/bespoke" className={pathname === '/bespoke' ? 'is-active' : ''}>Bespoke</Link>
             </div>
           </div>
         </div>
