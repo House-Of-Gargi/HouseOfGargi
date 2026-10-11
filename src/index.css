@@ -5966,3 +5966,103 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     margin-bottom: 8px;
   }
 }
+
+
+/* ── Bland Top Searches Term Pills ───────────────────────────── */
+.search-dropdown__top-terms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.search-dropdown__top-term-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #FAF7F2;
+  border: 1.5px solid var(--soft-gold-line);
+  border-radius: 9999px;
+  font-family: var(--font-nav);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-brown);
+  cursor: pointer;
+  transition: all 180ms ease;
+  user-select: none;
+}
+
+.search-dropdown__top-term-pill:hover {
+  background: #FFFFFF;
+  border-color: var(--gargi-gold);
+  color: var(--maharani-maroon);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(184, 142, 24, 0.12);
+}
+
+.search-dropdown__term-rank {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gargi-gold);
+}
+
+.search-dropdown__term-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: inherit;
+}
+
+.search-dropdown__term-arrow {
+  color: var(--stone-taupe);
+  transition: transform 150ms ease, color 150ms ease;
+}
+
+.search-dropdown__top-term-pill:hover .search-dropdown__term-arrow {
+  color: var(--maharani-maroon);
+  transform: translate(1px, -1px);
+}
+
+/* Empty State Top Search Pills */
+.explore-empty-terms-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.explore-empty-term-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #FAF7F2;
+  border: 1.5px solid var(--soft-gold-line);
+  border-radius: 9999px;
+  font-family: var(--font-nav);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-brown);
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.explore-empty-term-pill:hover {
+  background: #FFFFFF;
+  border-color: var(--gargi-gold);
+  color: var(--maharani-maroon);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(184, 142, 24, 0.15);
+}
+
+.explore-empty-term-rank {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gargi-gold);
+}
+
+.explore-empty-term-text {
+  font-size: 14px;
+  font-weight: 600;
+}

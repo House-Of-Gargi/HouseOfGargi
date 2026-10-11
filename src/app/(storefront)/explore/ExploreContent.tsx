@@ -4,20 +4,15 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { 
-  Search, 
-  Filter, 
   X, 
-  Sparkles, 
-  Flame, 
-  ArrowRight, 
   SlidersHorizontal, 
-  Check, 
-  Eye, 
   RotateCcw,
   ShoppingBag,
-  Heart
+  Heart,
+  Eye,
+  ArrowRight
 } from 'lucide-react';
-import { products, categories, getProduct } from '@/data/products';
+import { products, categories } from '@/data/products';
 import { Product } from '@/types';
 import { useCurrency } from '@/context/CurrencyContext';
 import { useWishlist } from '@/context/WishlistContext';
@@ -69,15 +64,11 @@ export default function ExploreContent() {
     return Array.from(new Set(products.map(p => p.fabric))).filter(Boolean);
   }, []);
 
-  const allOccasions = useMemo(() => {
-    return Array.from(new Set(products.map(p => p.occasion))).filter(Boolean);
-  }, []);
-
   // Filter & sort logic with smart synonyms
   const filteredProducts = useMemo(() => {
     let result = [...products];
 
-    // Search query filter with smart synonyms (e.g. kurti -> kurta, jewellery -> accessories)
+    // Search query filter with smart synonyms
     const q = searchTerm.trim().toLowerCase();
     if (q) {
       const queryTerms = [q];
@@ -156,16 +147,6 @@ export default function ExploreContent() {
     router.push('/explore');
   };
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchTerm.trim()) {
-      saveSearchHistory(searchTerm.trim());
-      router.push(`/explore?q=${encodeURIComponent(searchTerm.trim())}`);
-    } else {
-      router.push('/explore');
-    }
-  };
-
   const handleWishlistClick = (e: React.MouseEvent, product: Product) => {
     e.preventDefault();
     e.stopPropagation();
@@ -181,8 +162,8 @@ export default function ExploreContent() {
     e.stopPropagation();
     const chosenSize = product.sizes && product.sizes[0] ? product.sizes[0] : null;
     addToCart(product, 1, chosenSize);
-    setAddedToast(`Added "${product.name}" to your bag`);
-    setTimeout(() => setAddedToast(null), 3000);
+    setAddedToast(`Added "${product.name}" to bag`);
+    setTimeout(() => setAddedToast(null), 2500);
   };
 
   return (
@@ -190,74 +171,49 @@ export default function ExploreContent() {
       {/* Toast Notification */}
       {addedToast && (
         <div className="explore-toast">
-          <ShoppingBag size={16} />
+          <ShoppingBag size={15} />
           <span>{addedToast}</span>
         </div>
       )}
 
-      {/* ── 1. Luxury Explore Hero ───────────────────────────────── */}
-      <section className="explore-hero">
+      {/* ── 1. Minimal Header ─────────────────────────────────────── */}
+      <div className="explore-header">
         <div className="container">
-          <div className="explore-hero__inner">
-            <div className="explore-hero__badge">
-              <Sparkles size={14} />
-              <span>House of Gargi Atelier Curation</span>
+          <div className="explore-header__inner">
+            <div className="explore-header__titles">
+              <h1 className="explore-header__title">
+                {searchTerm ? (
+                  <>
+                    <span>Results for </span>
+                    <span className="explore-header__query">&ldquo;{searchTerm}&rdquo;</span>
+                  </>
+                ) : selectedCategory !== 'all' ? (
+                  categories.find(c => c.id === selectedCategory)?.name || 'Collection'
+                ) : (
+                  'Explore Collection'
+                )}
+              </h1>
+              <span className="explore-header__count">
+                {filteredProducts.length} {filteredProducts.length === 1 ? 'piece' : 'pieces'}
+              </span>
             </div>
-            <h1 className="explore-hero__title">Explore Artisanal Masterpieces</h1>
-            <p className="explore-hero__subtitle">
-              Immerse yourself in handloom Banarasi silks, royal bridal zardozi, ethereal Chanderi weaves, and temple heirlooms.
-            </p>
 
-            {/* In-page Interactive Search Bar */}
-            <form onSubmit={handleSearchSubmit} className="explore-hero__search-box" role="search">
-              <Search size={20} className="explore-hero__search-icon" />
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search by category, craft or fabric (e.g. Saree, Kurti, Jewellery)..."
-                className="explore-hero__search-input"
-                aria-label="Search masterpieces"
-              />
-              {searchTerm && (
-                <button
-                  type="button"
-                  className="explore-hero__search-clear"
-                  onClick={() => { setSearchTerm(''); router.push('/explore'); }}
-                  aria-label="Clear search"
-                >
-                  <X size={16} />
-                </button>
-              )}
-              <button type="submit" className="explore-hero__search-submit">
-                Search
+            {/* Clear search chip if searching */}
+            {searchTerm && (
+              <button
+                type="button"
+                className="explore-header__clear-btn"
+                onClick={() => { setSearchTerm(''); router.push('/explore'); }}
+              >
+                Clear Search <X size={13} />
               </button>
-            </form>
-
-            {/* Top Searches Pills (Saree, Kurti, Jewellery) */}
-            <div className="explore-hero__suggestions">
-              <span className="explore-hero__suggestions-label">Top Searches:</span>
-              {TOP_3_SEARCH_TERMS.map((term) => (
-                <button
-                  key={term}
-                  type="button"
-                  className="explore-hero__suggestion-pill"
-                  onClick={() => {
-                    setSearchTerm(term);
-                    saveSearchHistory(term);
-                    router.push(`/explore?q=${encodeURIComponent(term)}`);
-                  }}
-                >
-                  {term}
-                </button>
-              ))}
-            </div>
+            )}
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* ── 2. Category Navigation Tabs ───────────────────────────── */}
-      <section className="explore-tabs-section">
+      {/* ── 2. Category Tabs Rail ─────────────────────────────────── */}
+      <div className="explore-tabs-bar">
         <div className="container">
           <div className="explore-tabs-rail">
             <button
@@ -265,7 +221,7 @@ export default function ExploreContent() {
               className={`explore-tab-btn ${selectedCategory === 'all' ? 'is-active' : ''}`}
               onClick={() => setSelectedCategory('all')}
             >
-              All Creations ({products.length})
+              All ({products.length})
             </button>
             {categories.map(cat => {
               const count = products.filter(p => p.category === cat.id).length;
@@ -282,374 +238,197 @@ export default function ExploreContent() {
             })}
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* ── 3. Atelier Refinement & Filter Bar ───────────────────── */}
-      <section className="explore-content-section section--ivory">
+      {/* ── 3. Streamlined Compact Filter Bar ─────────────────────── */}
+      <div className="explore-filters-bar">
         <div className="container">
-          {/* Active Search / Result Header */}
-          <div className="explore-results-header">
-            <div className="explore-results-info">
-              {searchTerm ? (
-                <div className="explore-query-badge">
-                  <span>Results for:</span>
-                  <strong>&ldquo;{searchTerm}&rdquo;</strong>
-                  <button
-                    type="button"
-                    onClick={() => { setSearchTerm(''); router.push('/explore'); }}
-                    aria-label="Remove search term"
-                  >
-                    <X size={14} />
-                  </button>
-                </div>
-              ) : (
-                <div className="explore-catalog-title">
-                  <span>Curated Creations</span>
-                </div>
-              )}
-              <span className="explore-count-tag">
-                Showing <strong>{filteredProducts.length}</strong> {filteredProducts.length === 1 ? 'Piece' : 'Pieces'}
-              </span>
-            </div>
-
-            {/* Mobile Filter Toggle Button */}
-            <button
-              type="button"
-              className="explore-mobile-filter-trigger"
-              onClick={() => setMobileFilterOpen(true)}
-              aria-label="Open filter options"
-            >
-              <SlidersHorizontal size={16} />
-              <span>Refine & Sort</span>
-              {hasActiveFilters && <span className="explore-filter-dot" />}
-            </button>
-          </div>
-
-          {/* Desktop Filter Bar */}
-          <div className="explore-filter-bar">
-            <div className="explore-filter-bar__group">
-              <label className="explore-filter-bar__label">Fabric</label>
+          <div className="explore-filters-row">
+            {/* Desktop Filters */}
+            <div className="explore-filters-left">
               <select
                 value={selectedFabric}
                 onChange={(e) => setSelectedFabric(e.target.value)}
-                className="explore-select"
+                className="explore-mini-select"
+                aria-label="Filter by Fabric"
               >
-                <option value="">All Fabrics</option>
+                <option value="">Fabric: All</option>
                 {allFabrics.map(f => (
                   <option key={f} value={f}>{f}</option>
                 ))}
               </select>
-            </div>
 
-            <div className="explore-filter-bar__group">
-              <label className="explore-filter-bar__label">Occasion</label>
-              <select
-                value={selectedOccasion}
-                onChange={(e) => setSelectedOccasion(e.target.value)}
-                className="explore-select"
-              >
-                <option value="">All Occasions</option>
-                {allOccasions.map(o => (
-                  <option key={o} value={o}>{o}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="explore-filter-bar__group">
-              <label className="explore-filter-bar__label">Price Range</label>
               <select
                 value={selectedPriceTier}
                 onChange={(e) => setSelectedPriceTier(e.target.value)}
-                className="explore-select"
+                className="explore-mini-select"
+                aria-label="Filter by Price"
               >
-                <option value="all">All Prices</option>
-                <option value="under-15k">Under ₹15,000</option>
-                <option value="15k-40k">₹15,000 – ₹40,000</option>
-                <option value="above-40k">Above ₹40,000</option>
+                <option value="all">Price: All</option>
+                <option value="under-15k">Under ₹15k</option>
+                <option value="15k-40k">₹15k – ₹40k</option>
+                <option value="above-40k">Above ₹40k</option>
               </select>
-            </div>
 
-            <div className="explore-filter-bar__group">
-              <label className="explore-filter-bar__label">Sort By</label>
               <select
                 value={selectedSort}
                 onChange={(e) => setSelectedSort(e.target.value)}
-                className="explore-select"
+                className="explore-mini-select"
+                aria-label="Sort options"
               >
-                <option value="">Featured Curation</option>
+                <option value="">Sort: Featured</option>
                 <option value="price-asc">Price: Low to High</option>
                 <option value="price-desc">Price: High to Low</option>
-                <option value="name-asc">Title: A to Z</option>
+                <option value="name-asc">Name: A–Z</option>
               </select>
+
+              {hasActiveFilters && (
+                <button
+                  type="button"
+                  className="explore-mini-reset"
+                  onClick={resetAllFilters}
+                  title="Reset filters"
+                >
+                  <RotateCcw size={12} />
+                  <span>Reset</span>
+                </button>
+              )}
             </div>
 
-            {hasActiveFilters && (
-              <button
-                type="button"
-                className="explore-clear-all-btn"
-                onClick={resetAllFilters}
-              >
-                <RotateCcw size={14} />
-                <span>Reset All</span>
-              </button>
-            )}
+            {/* Mobile Filter Button */}
+            <button
+              type="button"
+              className="explore-mobile-filter-btn"
+              onClick={() => setMobileFilterOpen(true)}
+            >
+              <SlidersHorizontal size={14} />
+              <span>Filters</span>
+              {hasActiveFilters && <span className="explore-dot" />}
+            </button>
           </div>
+        </div>
+      </div>
 
-          {/* Active Filter Chips */}
-          {hasActiveFilters && (
-            <div className="explore-chips-row">
-              <span className="explore-chips-label">Active:</span>
-              {selectedCategory !== 'all' && (
-                <button
-                  type="button"
-                  className="explore-chip"
-                  onClick={() => setSelectedCategory('all')}
-                >
-                  Category: {categories.find(c => c.id === selectedCategory)?.name || selectedCategory}
-                  <X size={12} />
-                </button>
-              )}
-              {selectedFabric && (
-                <button
-                  type="button"
-                  className="explore-chip"
-                  onClick={() => setSelectedFabric('')}
-                >
-                  Fabric: {selectedFabric}
-                  <X size={12} />
-                </button>
-              )}
-              {selectedOccasion && (
-                <button
-                  type="button"
-                  className="explore-chip"
-                  onClick={() => setSelectedOccasion('')}
-                >
-                  Occasion: {selectedOccasion}
-                  <X size={12} />
-                </button>
-              )}
-              {selectedPriceTier !== 'all' && (
-                <button
-                  type="button"
-                  className="explore-chip"
-                  onClick={() => setSelectedPriceTier('all')}
-                >
-                  Price: {selectedPriceTier === 'under-15k' ? 'Under ₹15k' : selectedPriceTier === '15k-40k' ? '₹15k–₹40k' : 'Above ₹40k'}
-                  <X size={12} />
-                </button>
-              )}
-              {selectedSort && (
-                <button
-                  type="button"
-                  className="explore-chip"
-                  onClick={() => setSelectedSort('')}
-                >
-                  Sort: {selectedSort === 'price-asc' ? 'Low-High' : selectedSort === 'price-desc' ? 'High-Low' : 'A-Z'}
-                  <X size={12} />
-                </button>
-              )}
-            </div>
-          )}
-
-          {/* ── 4. Main Product Grid ──────────────────────────────── */}
+      {/* ── 4. Main Product Grid ──────────────────────────────────── */}
+      <section className="explore-grid-section">
+        <div className="container">
           {filteredProducts.length === 0 ? (
             /* Empty State */
-            <div className="explore-empty-state">
-              <div className="explore-empty-state__icon">
-                <Sparkles size={44} />
-              </div>
-              <h2 className="explore-empty-state__title">No Handcrafted Pieces Found</h2>
-              <p className="explore-empty-state__desc">
-                We could not find creations matching your exact search. Try exploring our top searched categories below:
+            <div className="explore-empty-minimal">
+              <h2 className="explore-empty-minimal__title">No pieces found</h2>
+              <p className="explore-empty-minimal__desc">
+                Try searching one of our top categories:
               </p>
-              
-              {/* Top Searched Bland Terms (Saree, Kurti, Jewellery) */}
-              <div className="explore-empty-terms-row">
-                {TOP_3_SEARCH_TERMS.map((term, idx) => (
+              <div className="explore-empty-minimal__pills">
+                {TOP_3_SEARCH_TERMS.map((term) => (
                   <button
-                    key={idx}
+                    key={term}
                     type="button"
-                    className="explore-empty-term-pill"
+                    className="explore-empty-minimal__pill"
                     onClick={() => {
                       setSearchTerm(term);
                       saveSearchHistory(term);
                       router.push(`/explore?q=${encodeURIComponent(term)}`);
                     }}
                   >
-                    <span className="explore-empty-term-rank">0{idx + 1}</span>
-                    <span className="explore-empty-term-text">{term}</span>
-                    <ArrowRight size={13} />
+                    {term} <ArrowRight size={12} />
                   </button>
                 ))}
               </div>
-
               <button
                 type="button"
-                className="btn btn--primary explore-empty-state__reset"
+                className="btn btn--primary"
                 onClick={resetAllFilters}
-                style={{ marginTop: '28px' }}
+                style={{ marginTop: '20px' }}
               >
-                View All Atelier Masterpieces
+                View All Pieces
               </button>
             </div>
           ) : (
-            <>
-              {/* Product Grid */}
-              <div className="explore-grid">
-                {filteredProducts.map(product => {
-                  const isHighlighted = product.id === highlightedProductId;
-                  const isSaved = isLoggedIn && isInWishlist(product.id);
+            <div className="explore-grid">
+              {filteredProducts.map(product => {
+                const isSaved = isLoggedIn && isInWishlist(product.id);
 
-                  return (
-                    <div
-                      key={product.id}
-                      className={`explore-card ${isHighlighted ? 'explore-card--highlighted' : ''}`}
+                return (
+                  <div key={product.id} className="explore-card">
+                    {/* Wishlist Button */}
+                    <button
+                      type="button"
+                      className={`explore-card__wishlist ${isSaved ? 'is-saved' : ''}`}
+                      onClick={(e) => handleWishlistClick(e, product)}
+                      aria-label={isSaved ? 'Remove from wishlist' : 'Save to wishlist'}
                     >
-                      {/* Highlighted Banner */}
-                      {isHighlighted && (
-                        <div className="explore-card__spotlight-tag">
-                          <Sparkles size={12} />
-                          <span>Selected Piece</span>
-                        </div>
-                      )}
+                      <Heart size={16} fill={isSaved ? 'var(--maharani-maroon)' : 'none'} />
+                    </button>
 
-                      {/* Wishlist Button */}
-                      <button
-                        type="button"
-                        className={`explore-card__wishlist ${isSaved ? 'is-saved' : ''}`}
-                        onClick={(e) => handleWishlistClick(e, product)}
-                        aria-label={isSaved ? 'Remove from wishlist' : 'Save to wishlist'}
-                      >
-                        <Heart size={18} fill={isSaved ? 'var(--maharani-maroon)' : 'none'} />
-                      </button>
+                    {/* Image Wrap */}
+                    <Link href={`/product/${product.id}`} className="explore-card__image-wrap">
+                      <img
+                        src={(product.images && product.images[0]) || '/images/category-sarees.png'}
+                        alt={product.name}
+                        loading="lazy"
+                      />
+                      <div className="explore-card__overlay">
+                        <button
+                          type="button"
+                          className="explore-card__quick-view-btn"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setQuickViewProduct(product);
+                          }}
+                        >
+                          <Eye size={13} /> Quick View
+                        </button>
+                      </div>
+                    </Link>
 
-                      {/* Image Wrap */}
-                      <Link href={`/product/${product.id}`} className="explore-card__image-wrap">
-                        <img
-                          src={(product.images && product.images[0]) || '/images/category-sarees.png'}
-                          alt={product.name}
-                          loading="lazy"
-                        />
-                        <div className="explore-card__overlay">
-                          <button
-                            type="button"
-                            className="explore-card__quick-view-btn"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              setQuickViewProduct(product);
-                            }}
-                          >
-                            <Eye size={15} /> Quick View
-                          </button>
-                        </div>
-                      </Link>
-
-                      {/* Body */}
-                      <div className="explore-card__body">
-                        <div className="explore-card__lineage">
-                          <span className="explore-card__dot">✦</span>
-                          <span>{product.artisanNote || product.region}</span>
-                        </div>
-                        <h3 className="explore-card__name">
-                          <Link href={`/product/${product.id}`}>{product.name}</Link>
-                        </h3>
-                        <div className="explore-card__specs">
-                          <span>{product.fabric}</span>
-                          <span className="explore-card__specs-divider">•</span>
-                          <span>{product.technique}</span>
-                        </div>
-                        <div className="explore-card__footer">
-                          <div className="explore-card__price">{formatPrice(product.price)}</div>
-                          <button
-                            type="button"
-                            className="explore-card__bag-btn"
-                            onClick={(e) => handleQuickAddToCart(e, product)}
-                            title="Add to Bag"
-                            aria-label={`Add ${product.name} to bag`}
-                          >
-                            <ShoppingBag size={16} />
-                          </button>
-                        </div>
+                    {/* Body */}
+                    <div className="explore-card__body">
+                      <div className="explore-card__lineage">
+                        <span>{product.artisanNote || product.region}</span>
+                      </div>
+                      <h3 className="explore-card__name">
+                        <Link href={`/product/${product.id}`}>{product.name}</Link>
+                      </h3>
+                      <div className="explore-card__footer">
+                        <div className="explore-card__price">{formatPrice(product.price)}</div>
+                        <button
+                          type="button"
+                          className="explore-card__bag-btn"
+                          onClick={(e) => handleQuickAddToCart(e, product)}
+                          title="Add to Bag"
+                          aria-label={`Add ${product.name} to bag`}
+                        >
+                          <ShoppingBag size={14} />
+                        </button>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-
-              {/* ── 5. Signature Masterpieces Showcase ───────── */}
-              <div className="explore-curated-showcase">
-                <div className="explore-curated-showcase__header">
-                  <div>
-                    <div className="explore-curated-showcase__pill">
-                      <Flame size={14} />
-                      <span>Curated by Gargi</span>
-                    </div>
-                    <h2 className="explore-curated-showcase__title">Signature Atelier Pieces</h2>
                   </div>
-                  <p className="explore-curated-showcase__desc">
-                    Hand-picked by our connoisseurs as the most revered heritage masterworks this season.
-                  </p>
-                </div>
-
-                <div className="explore-curated-showcase__grid">
-                  {TOP_3_SEARCHES.map((item, index) => (
-                    <div
-                      key={item.id}
-                      className="explore-spotlight-card"
-                      onClick={() => {
-                        setSearchTerm(item.name);
-                        saveSearchHistory(item.name);
-                        router.push(`/explore?q=${encodeURIComponent(item.name)}&id=${item.id}`);
-                      }}
-                    >
-                      <div className="explore-spotlight-card__rank">0{index + 1}</div>
-                      <div className="explore-spotlight-card__image">
-                        <img src={item.image} alt={item.name} loading="lazy" />
-                        <span className="explore-spotlight-card__badge">{item.badge}</span>
-                      </div>
-                      <div className="explore-spotlight-card__details">
-                        <div className="explore-spotlight-card__category">{item.category}</div>
-                        <h4 className="explore-spotlight-card__name">{item.name}</h4>
-                        <div className="explore-spotlight-card__artisan">{item.artisan}</div>
-                        <div className="explore-spotlight-card__footer">
-                          <span className="explore-spotlight-card__price">{formatPrice(item.price)}</span>
-                          <span className="explore-spotlight-card__link">
-                            Explore <ArrowRight size={14} />
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </>
+                );
+              })}
+            </div>
           )}
         </div>
       </section>
 
-      {/* ── 6. Mobile Filter Drawer ───────────────────────────────── */}
+      {/* ── 5. Mobile Filter Drawer ───────────────────────────────── */}
       {mobileFilterOpen && (
         <div className="explore-mobile-drawer-overlay" onClick={() => setMobileFilterOpen(false)}>
           <div className="explore-mobile-drawer" onClick={(e) => e.stopPropagation()}>
             <div className="explore-mobile-drawer__header">
-              <div className="explore-mobile-drawer__title">
-                <SlidersHorizontal size={18} />
-                <span>Refine Collection</span>
-              </div>
+              <span className="explore-mobile-drawer__title">Filter & Sort</span>
               <button
                 type="button"
                 className="explore-mobile-drawer__close"
                 onClick={() => setMobileFilterOpen(false)}
-                aria-label="Close filters"
+                aria-label="Close"
               >
                 <X size={20} />
               </button>
             </div>
 
             <div className="explore-mobile-drawer__body">
-              {/* Category */}
               <div className="explore-drawer-group">
                 <label className="explore-drawer-label">Category</label>
                 <div className="explore-drawer-pills">
@@ -658,7 +437,7 @@ export default function ExploreContent() {
                     className={`explore-drawer-pill ${selectedCategory === 'all' ? 'is-active' : ''}`}
                     onClick={() => setSelectedCategory('all')}
                   >
-                    All Pieces
+                    All ({products.length})
                   </button>
                   {categories.map(c => (
                     <button
@@ -673,7 +452,6 @@ export default function ExploreContent() {
                 </div>
               </div>
 
-              {/* Fabric */}
               <div className="explore-drawer-group">
                 <label className="explore-drawer-label">Fabric</label>
                 <select
@@ -688,24 +466,8 @@ export default function ExploreContent() {
                 </select>
               </div>
 
-              {/* Occasion */}
               <div className="explore-drawer-group">
-                <label className="explore-drawer-label">Occasion</label>
-                <select
-                  value={selectedOccasion}
-                  onChange={(e) => setSelectedOccasion(e.target.value)}
-                  className="explore-select"
-                >
-                  <option value="">All Occasions</option>
-                  {allOccasions.map(o => (
-                    <option key={o} value={o}>{o}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Price Tier */}
-              <div className="explore-drawer-group">
-                <label className="explore-drawer-label">Price Range</label>
+                <label className="explore-drawer-label">Price</label>
                 <select
                   value={selectedPriceTier}
                   onChange={(e) => setSelectedPriceTier(e.target.value)}
@@ -718,18 +480,17 @@ export default function ExploreContent() {
                 </select>
               </div>
 
-              {/* Sort */}
               <div className="explore-drawer-group">
-                <label className="explore-drawer-label">Sort Order</label>
+                <label className="explore-drawer-label">Sort</label>
                 <select
                   value={selectedSort}
                   onChange={(e) => setSelectedSort(e.target.value)}
                   className="explore-select"
                 >
-                  <option value="">Featured Curation</option>
+                  <option value="">Featured</option>
                   <option value="price-asc">Price: Low to High</option>
                   <option value="price-desc">Price: High to Low</option>
-                  <option value="name-asc">Title: A to Z</option>
+                  <option value="name-asc">Name: A–Z</option>
                 </select>
               </div>
             </div>
@@ -747,14 +508,14 @@ export default function ExploreContent() {
                 className="btn btn--primary explore-drawer-apply-btn"
                 onClick={() => setMobileFilterOpen(false)}
               >
-                Show {filteredProducts.length} Pieces
+                Show {filteredProducts.length} pieces
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* ── 7. Luxury Quick View Modal ────────────────────────────── */}
+      {/* ── 6. Luxury Quick View Modal ────────────────────────────── */}
       {quickViewProduct && (
         <div className="explore-modal-overlay" onClick={() => setQuickViewProduct(null)}>
           <div className="explore-modal-content" onClick={(e) => e.stopPropagation()}>
@@ -764,7 +525,7 @@ export default function ExploreContent() {
               onClick={() => setQuickViewProduct(null)}
               aria-label="Close modal"
             >
-              <X size={22} />
+              <X size={20} />
             </button>
 
             <div className="explore-modal-body">
@@ -777,7 +538,7 @@ export default function ExploreContent() {
               <div className="explore-modal-details">
                 <div className="explore-modal-badge">
                   <span>{quickViewProduct.category.toUpperCase()}</span>
-                  <span className="explore-card__dot">✦</span>
+                  <span>•</span>
                   <span>{quickViewProduct.region}</span>
                 </div>
                 <h3 className="explore-modal-title">{quickViewProduct.name}</h3>
@@ -787,16 +548,12 @@ export default function ExploreContent() {
 
                 <div className="explore-modal-specs-list">
                   <div className="explore-modal-spec-row">
-                    <strong>Artisan Lineage:</strong>
+                    <strong>Artisan:</strong>
                     <span>{quickViewProduct.artisanNote || quickViewProduct.artisanName}</span>
                   </div>
                   <div className="explore-modal-spec-row">
-                    <strong>Fabric & Weave:</strong>
-                    <span>{quickViewProduct.fabric} ({quickViewProduct.technique})</span>
-                  </div>
-                  <div className="explore-modal-spec-row">
-                    <strong>Occasion:</strong>
-                    <span>{quickViewProduct.occasion}</span>
+                    <strong>Fabric:</strong>
+                    <span>{quickViewProduct.fabric}</span>
                   </div>
                 </div>
 
@@ -810,7 +567,6 @@ export default function ExploreContent() {
                       setQuickViewProduct(null);
                     }}
                   >
-                    <ShoppingBag size={16} style={{ marginRight: '8px' }} />
                     Add to Bag
                   </button>
                   <Link
@@ -818,7 +574,7 @@ export default function ExploreContent() {
                     className="btn btn--secondary"
                     onClick={() => setQuickViewProduct(null)}
                   >
-                    Full Details
+                    View Piece
                   </Link>
                 </div>
               </div>
