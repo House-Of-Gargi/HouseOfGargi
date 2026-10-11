@@ -62,7 +62,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   };
 
   return (
-    <div className="section section--ivory" style={{ minHeight: '80vh', paddingTop: 'calc(var(--navbar-height) + 24px)', paddingBottom: '80px' }}>
+    <div className="section section--ivory" style={{ minHeight: '80vh', paddingTop: '100px', paddingBottom: '70px' }}>
       <div className="container">
         {/* Breadcrumb */}
         <nav className="breadcrumb" aria-label="Breadcrumb">
@@ -99,70 +99,32 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
           {/* Right Column: Clean Minimalist Details */}
           <div className="pdp-info">
-            {/* Category and Region */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '8px',
-              flexWrap: 'wrap',
-              gap: '8px',
-            }}>
-              <div style={{
-                fontFamily: 'var(--font-nav)',
-                fontSize: '12px',
-                fontWeight: 700,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: 'var(--stone-taupe)',
-              }}>
-                {categoryName} &bull; {product.region}
-              </div>
+            {/* Category and Region Eyebrow */}
+            <div className="pdp-eyebrow">
+              {categoryName} &bull; {product.region}
             </div>
 
             {/* Title */}
-            <h1 style={{ marginBottom: '14px' }}>{product.name}</h1>
+            <h1 className="pdp-title">{product.name}</h1>
 
-            {/* Clean High-Legibility Price & Minimalist 2-way Currency Toggle */}
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px', marginBottom: '20px' }}>
+            {/* Price & Minimalist Currency Toggle */}
+            <div className="pdp-price-row">
               <span className="pdp-price__number">
                 {formatPrice(product.price)}
               </span>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontFamily: 'var(--font-nav)', fontWeight: 600 }}>
+              <div className="pdp-currency-toggle">
                 <button
                   type="button"
                   onClick={() => setCurrency('USD')}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    padding: 0,
-                    cursor: 'pointer',
-                    color: currency === 'USD' ? 'var(--maharani-maroon)' : 'var(--stone-taupe)',
-                    fontWeight: currency === 'USD' ? 700 : 500,
-                    textDecoration: currency === 'USD' ? 'underline' : 'none',
-                    textUnderlineOffset: '4px',
-                    fontFamily: 'inherit',
-                    fontSize: 'inherit',
-                  }}
+                  className={`pdp-currency-btn ${currency === 'USD' ? 'is-active' : ''}`}
                 >
                   USD ($)
                 </button>
-                <span style={{ opacity: 0.35, color: 'var(--stone-taupe)' }}>|</span>
+                <span className="pdp-currency-sep">|</span>
                 <button
                   type="button"
                   onClick={() => setCurrency('INR')}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    padding: 0,
-                    cursor: 'pointer',
-                    color: currency === 'INR' ? 'var(--maharani-maroon)' : 'var(--stone-taupe)',
-                    fontWeight: currency === 'INR' ? 700 : 500,
-                    textDecoration: currency === 'INR' ? 'underline' : 'none',
-                    textUnderlineOffset: '4px',
-                    fontFamily: 'inherit',
-                    fontSize: 'inherit',
-                  }}
+                  className={`pdp-currency-btn ${currency === 'INR' ? 'is-active' : ''}`}
                 >
                   INR (₹)
                 </button>
@@ -170,67 +132,40 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </div>
 
             {/* Description */}
-            <p className="pdp-desc" style={{ marginBottom: '24px' }}>{product.description}</p>
+            <p className="pdp-desc">{product.description}</p>
 
-            {/* Clean Minimalist Specs */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '16px',
-              padding: '16px 0',
-              borderTop: '1px solid var(--soft-gold-line)',
-              borderBottom: '1px solid var(--soft-gold-line)',
-              marginBottom: '22px'
-            }}>
-              <div>
-                <span style={{ display: 'block', fontSize: '11.5px', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', fontWeight: 700, marginBottom: '4px' }}>
-                  Fabric
-                </span>
-                <span style={{ fontSize: '15px', fontWeight: 600, color: 'var(--ink-brown)' }}>
-                  {product.fabric}
-                </span>
+            {/* Clean Royal Specs Card */}
+            <div className="pdp-specs-card">
+              <div className="pdp-specs-item">
+                <span className="pdp-specs-label">Fabric</span>
+                <span className="pdp-specs-val">{product.fabric}</span>
               </div>
-              <div>
-                <span style={{ display: 'block', fontSize: '11.5px', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', fontWeight: 700, marginBottom: '4px' }}>
-                  Technique
-                </span>
-                <span style={{ fontSize: '15px', fontWeight: 600, color: 'var(--ink-brown)' }}>
-                  {product.technique}
-                </span>
+              <div className="pdp-specs-item">
+                <span className="pdp-specs-label">Technique</span>
+                <span className="pdp-specs-val">{product.technique}</span>
               </div>
-              <div>
-                <span style={{ display: 'block', fontSize: '11.5px', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', fontWeight: 700, marginBottom: '4px' }}>
-                  Occasion
-                </span>
-                <span style={{ fontSize: '15px', fontWeight: 600, color: 'var(--ink-brown)' }}>
-                  {product.occasion}
-                </span>
+              <div className="pdp-specs-item">
+                <span className="pdp-specs-label">Occasion</span>
+                <span className="pdp-specs-val">{product.occasion}</span>
               </div>
             </div>
 
-            {/* Artisan Attribution on Same Background */}
+            {/* Artisan Attribution */}
             {artisan && (
-              <div style={{ marginBottom: '22px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '15px' }}>
-                <span style={{ fontFamily: 'var(--font-nav)', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--stone-taupe)', fontWeight: 600 }}>
-                  Artisan:
-                </span>
+              <div className="pdp-artisan-row">
+                <span className="pdp-artisan-row__label">Artisan:</span>
                 <Link 
                   href={`/artisan/${artisan.id}`} 
-                  style={{ 
-                    fontWeight: 600, 
-                    color: 'var(--ink-brown)', 
-                    textDecoration: 'underline',
-                    textUnderlineOffset: '3px'
-                  }}
+                  className="pdp-artisan-row__name"
                 >
-                  {artisan.name}
+                  {artisan.name} <ArrowRight size={13} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '3px' }} />
                 </Link>
               </div>
             )}
 
             {/* Size Selector (if applicable) */}
             {product.sizes.length > 1 && (
-              <div className="pdp-sizes" style={{ marginBottom: '24px' }}>
+              <div className="pdp-sizes" style={{ marginBottom: '22px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                   <label className="pdp-sizes__label" style={{ fontSize: '13px' }}>Select Size:</label>
                   <Link href="/size-guide" className="caption" style={{ textDecoration: 'underline', color: 'var(--gargi-gold)', fontWeight: 600 }}>
@@ -259,10 +194,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             )}
 
             {/* Actions */}
-            <div className="pdp-actions" style={{ marginBottom: '24px' }}>
+            <div className="pdp-actions">
               {cartItem ? (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', width: '100%' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--soft-gold-line)', borderRadius: '2px', background: '#FFFFFF' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '14px', width: '100%' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--soft-gold-line)', borderRadius: '4px', background: '#FFFFFF' }}>
                     <button 
                       type="button" 
                       onClick={() => updateQuantity(product.id, sizeToCart, cartItem.quantity - 1)}
@@ -288,8 +223,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               ) : (
                 <button 
                   type="button" 
-                  className="btn btn--primary" 
-                  style={{ width: '100%', padding: '15px 24px', fontSize: '15px' }}
+                  className="btn btn--primary pdp-btn-add" 
                   onClick={handleAddToCart}
                 >
                   Add to Shopping Bag
@@ -298,9 +232,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
               <button
                 type="button"
-                className="btn btn--outline"
+                className="btn btn--outline pdp-btn-wish"
                 onClick={handleToggleWishlist}
-                style={{ minWidth: '52px', padding: '15px 16px' }}
                 aria-label={saved ? 'Remove from wishlist' : 'Save to wishlist'}
                 title={saved ? 'Remove from wishlist' : 'Save to wishlist'}
               >

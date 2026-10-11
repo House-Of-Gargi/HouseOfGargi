@@ -171,7 +171,8 @@ export default function Navbar() {
 
   const isHome = pathname === '/';
   const isHero = isHome && !scrolled;
-  const cls = `navbar ${isHero ? 'navbar--hero' : 'navbar--scrolled'} ${scrolled ? 'navbar--sub-hidden' : ''}`;
+  const isProductPage = pathname?.startsWith('/product/');
+  const cls = `navbar ${isHero ? 'navbar--hero' : 'navbar--scrolled'} ${scrolled || isProductPage ? 'navbar--sub-hidden' : ''} ${isProductPage ? 'navbar--single-row' : ''}`;
 
   return (
     <>
@@ -363,8 +364,9 @@ export default function Navbar() {
             </div>
           )}
 
-          {/* Second Line: Sub-bar with Categories (Smooth fade away on scroll) */}
-          <div className="navbar__sub-row">
+          {/* Second Line: Sub-bar with Categories (Hidden on product description page) */}
+          {!isProductPage && (
+            <div className="navbar__sub-row">
             <div className="navbar__links">
               <Link href="/explore" className={pathname === '/explore' ? 'is-active' : ''}>Explore All</Link>
               <Link href="/category/sarees" className={pathname === '/category/sarees' ? 'is-active' : ''}>Sarees</Link>
@@ -374,6 +376,7 @@ export default function Navbar() {
               <Link href="/bespoke" className={pathname === '/bespoke' ? 'is-active' : ''}>Bespoke</Link>
             </div>
           </div>
+          )}
         </div>
       </nav>
 
