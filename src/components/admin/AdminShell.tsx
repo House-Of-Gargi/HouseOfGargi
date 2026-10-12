@@ -70,8 +70,12 @@ export function AdminShell({
             }}
           >
             <img
-              src="/logo-images/small-logo.png"
+              src="/logo-images/small-logo-dark.png"
               alt="House of Gargi"
+              onError={(e) => {
+                e.currentTarget.src = '/logo-images/small-logo.png';
+                e.currentTarget.style.filter = 'invert(18%) sepia(51%) saturate(2320%) hue-rotate(325deg) brightness(91%) contrast(93%)';
+              }}
               style={{
                 width: 28,
                 height: 28,

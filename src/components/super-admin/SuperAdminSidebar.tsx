@@ -273,16 +273,28 @@ export function SuperAdminSidebar({
           }}
         >
           {!isExpanded ? (
-            <img
-              src="/logo-images/small-logo.png"
-              alt="House of Gargi"
+            <div
               style={{
-                width: 38,
-                height: 38,
-                objectFit: 'contain',
+                width: 46,
+                height: 46,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 flexShrink: 0,
               }}
-            />
+              title="House of Gargi — Executive Governance"
+            >
+              <img
+                src="/logo-images/small-logo.png"
+                alt="House of Gargi"
+                style={{
+                  width: 42,
+                  height: 42,
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 1px 4px rgba(228,211,174,0.35))',
+                }}
+              />
+            </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', minWidth: 0, paddingLeft: '0.15rem' }}>
               <img

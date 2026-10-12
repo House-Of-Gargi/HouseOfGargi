@@ -257,16 +257,32 @@ export function AdminSidebar({
           }}
         >
           {!isExpanded ? (
-            <img
-              src="/logo-images/small-logo.png"
-              alt="House of Gargi"
+            <div
               style={{
-                width: 38,
-                height: 38,
-                objectFit: 'contain',
+                width: 46,
+                height: 46,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 flexShrink: 0,
               }}
-            />
+              title="House of Gargi — Operations Console"
+            >
+              <img
+                src="/logo-images/small-logo-dark.png"
+                alt="House of Gargi"
+                onError={(e) => {
+                  e.currentTarget.src = '/logo-images/small-logo.png';
+                  e.currentTarget.style.filter = 'invert(18%) sepia(51%) saturate(2320%) hue-rotate(325deg) brightness(91%) contrast(93%)';
+                }}
+                style={{
+                  width: 42,
+                  height: 42,
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 1px 2px rgba(122,35,49,0.15))',
+                }}
+              />
+            </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', minWidth: 0, paddingLeft: '0.15rem' }}>
               <img
@@ -378,9 +394,13 @@ export function AdminSidebar({
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                 <img
-                  src="/logo-images/small-logo.png"
+                  src="/logo-images/small-logo-dark.png"
                   alt="House of Gargi"
-                  style={{ width: 32, height: 32, objectFit: 'contain', flexShrink: 0 }}
+                  onError={(e) => {
+                    e.currentTarget.src = '/logo-images/small-logo.png';
+                    e.currentTarget.style.filter = 'invert(18%) sepia(51%) saturate(2320%) hue-rotate(325deg) brightness(91%) contrast(93%)';
+                  }}
+                  style={{ width: 34, height: 34, objectFit: 'contain', flexShrink: 0 }}
                 />
                 <img
                   src="/logo-images/new-logo.png"
