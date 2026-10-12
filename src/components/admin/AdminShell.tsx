@@ -69,20 +69,9 @@ export function AdminShell({
               gap: '0.5rem',
             }}
           >
-            <img
-              src="/logo-images/small-logo-dark.png"
-              alt="House of Gargi"
-              onError={(e) => {
-                e.currentTarget.src = '/logo-images/small-logo.png';
-                e.currentTarget.style.filter = 'invert(18%) sepia(51%) saturate(2320%) hue-rotate(325deg) brightness(91%) contrast(93%)';
-              }}
-              style={{
-                width: 28,
-                height: 28,
-                objectFit: 'contain',
-                flexShrink: 0,
-              }}
-            />
+            <div style={{ width: 30, height: 30, borderRadius: 4, background: 'var(--maharani-maroon)', border: '1.5px solid var(--gargi-gold)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <img src="/logo-images/small-logo.png" alt="House of Gargi" style={{ width: 22, height: 22, objectFit: 'contain' }} />
+            </div>
             <span>Operations Console</span>
           </Link>
         </header>

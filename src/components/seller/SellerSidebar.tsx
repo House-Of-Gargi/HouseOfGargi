@@ -259,40 +259,39 @@ export function SellerSidebar({
             backgroundColor: '#FAF7F2',
           }}
         >
-          {!isExpanded ? (
-            <div
+          <div
+            style={{
+              width: 42,
+              height: 42,
+              borderRadius: 6,
+              background: 'var(--maharani-maroon)',
+              border: '1.5px solid var(--gargi-gold)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(122, 35, 49, 0.22)',
+              flexShrink: 0,
+            }}
+            title="House of Gargi — Artisan Atelier"
+          >
+            <img
+              src="/logo-images/small-logo.png"
+              alt="House of Gargi"
               style={{
-                width: 46,
-                height: 46,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
+                width: 30,
+                height: 30,
+                objectFit: 'contain',
               }}
-              title="House of Gargi — Artisan Atelier"
-            >
-              <img
-                src="/logo-images/small-logo-dark.png"
-                alt="House of Gargi"
-                onError={(e) => {
-                  e.currentTarget.src = '/logo-images/small-logo.png';
-                  e.currentTarget.style.filter = 'invert(18%) sepia(51%) saturate(2320%) hue-rotate(325deg) brightness(91%) contrast(93%)';
-                }}
-                style={{
-                  width: 42,
-                  height: 42,
-                  objectFit: 'contain',
-                  filter: 'drop-shadow(0 1px 2px rgba(122,35,49,0.15))',
-                }}
-              />
-            </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', minWidth: 0, paddingLeft: '0.15rem' }}>
+            />
+          </div>
+
+          {isExpanded && (
+            <div style={{ marginLeft: '0.75rem', minWidth: 0, display: 'flex', flexDirection: 'column', gap: '2px' }}>
               <img
                 src="/logo-images/new-logo.png"
                 alt="House of Gargi"
                 style={{
-                  height: 34,
+                  height: 28,
                   width: 'auto',
                   objectFit: 'contain',
                   alignSelf: 'flex-start',

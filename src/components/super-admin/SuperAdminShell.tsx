@@ -69,16 +69,9 @@ export function SuperAdminShell({
               gap: '0.6rem',
             }}
           >
-            <img
-              src="/logo-images/small-logo.png"
-              alt="House of Gargi"
-              style={{
-                width: 28,
-                height: 28,
-                objectFit: 'contain',
-                flexShrink: 0,
-              }}
-            />
+            <div style={{ width: 30, height: 30, borderRadius: 4, background: 'var(--maharani-maroon)', border: '1.5px solid var(--gargi-gold)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <img src="/logo-images/small-logo.png" alt="House of Gargi" style={{ width: 22, height: 22, objectFit: 'contain' }} />
+            </div>
             <span>Super Admin Console</span>
           </Link>
         </header>

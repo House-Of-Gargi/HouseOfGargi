@@ -272,36 +272,39 @@ export function SuperAdminSidebar({
             backgroundColor: '#170E0B',
           }}
         >
-          {!isExpanded ? (
-            <div
+          <div
+            style={{
+              width: 42,
+              height: 42,
+              borderRadius: 6,
+              background: 'var(--maharani-maroon)',
+              border: '1.5px solid var(--gargi-gold)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.45)',
+              flexShrink: 0,
+            }}
+            title="House of Gargi — Executive Governance"
+          >
+            <img
+              src="/logo-images/small-logo.png"
+              alt="House of Gargi"
               style={{
-                width: 46,
-                height: 46,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
+                width: 30,
+                height: 30,
+                objectFit: 'contain',
               }}
-              title="House of Gargi — Executive Governance"
-            >
-              <img
-                src="/logo-images/small-logo.png"
-                alt="House of Gargi"
-                style={{
-                  width: 42,
-                  height: 42,
-                  objectFit: 'contain',
-                  filter: 'drop-shadow(0 1px 4px rgba(228,211,174,0.35))',
-                }}
-              />
-            </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', minWidth: 0, paddingLeft: '0.15rem' }}>
+            />
+          </div>
+
+          {isExpanded && (
+            <div style={{ marginLeft: '0.75rem', minWidth: 0, display: 'flex', flexDirection: 'column', gap: '2px' }}>
               <img
                 src="/logo-images/new-white-logo.png"
                 alt="House of Gargi"
                 style={{
-                  height: 34,
+                  height: 28,
                   width: 'auto',
                   objectFit: 'contain',
                   alignSelf: 'flex-start',
