@@ -89,7 +89,7 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
 
   if (!authorized) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#170E0B', color: '#FAF7F2', padding: '1.5rem', fontFamily: 'Georgia, serif' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#170E0B', color: '#FAF7F2', padding: '1.5rem', fontFamily: 'var(--font-body)' }}>
         <div style={{ maxWidth: '480px', width: '100%', background: '#1E140F', border: '1.5px solid rgba(228, 211, 174, 0.3)', borderRadius: 6, padding: '2.5rem', textAlign: 'center' }}>
           <ShieldAlert style={{ width: 48, height: 48, color: '#FF8A80', margin: '0 auto 1.25rem' }} />
           <h1 style={{ fontSize: '1.5rem', color: '#E4D3AE', margin: '0 0 0.5rem' }}>

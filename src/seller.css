@@ -19,9 +19,13 @@
   --peacock-teal: #1F6F6B;
   --marigold: #E08A1E;
 
+  /* Core Typography conforming to TYPOGRAPHY.md */
+  --font-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
   --font-serif: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --font-subtitle: 'Cormorant Garamond', Georgia, serif;
   --font-nav: 'Plus Jakarta Sans', 'Outfit', -apple-system, sans-serif;
-  --font-sans: 'Plus Jakarta Sans', 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Outfit', 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Outfit', 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   --seller-rail-width: 72px;
   --seller-expanded-width: 264px;
@@ -33,9 +37,37 @@
   width: 100%;
   background-color: var(--ivory-silk);
   color: var(--ink-brown);
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   display: flex;
   flex-direction: column;
+}
+
+/* Enforce TYPOGRAPHY.md across Artisan, Admin, and Super Admin portals */
+.seller-shell h1,
+.seller-shell h2,
+.seller-shell h3,
+.seller-shell h4 {
+  font-family: var(--font-display) !important;
+}
+
+.seller-shell button,
+.seller-shell .btn,
+.seller-shell nav,
+.seller-shell [role="tab"],
+.seller-shell .badge {
+  font-family: var(--font-nav) !important;
+}
+
+.seller-shell p,
+.seller-shell span,
+.seller-shell table,
+.seller-shell td,
+.seller-shell th,
+.seller-shell input,
+.seller-shell select,
+.seller-shell textarea,
+.seller-shell label {
+  font-family: var(--font-body);
 }
 
 @media (min-width: 1024px) {

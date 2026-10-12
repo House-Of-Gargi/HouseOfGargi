@@ -100,7 +100,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   if (!authorized) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FAF7F2', color: 'var(--ink-brown)', padding: '1.5rem', fontFamily: 'Georgia, serif' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FAF7F2', color: 'var(--ink-brown)', padding: '1.5rem', fontFamily: 'var(--font-body)' }}>
         <div style={{ maxWidth: '480px', width: '100%', background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 6, padding: '2.5rem', textAlign: 'center', boxShadow: '0 8px 30px rgba(0,0,0,0.06)' }}>
           <ShieldAlert style={{ width: 48, height: 48, color: 'var(--maharani-maroon)', margin: '0 auto 1.25rem' }} />
           <h1 style={{ fontSize: '1.5rem', color: 'var(--ink-brown)', margin: '0 0 0.5rem' }}>

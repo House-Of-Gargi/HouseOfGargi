@@ -17,10 +17,12 @@
   --pure-white: #FFFFFF;
 
   /* Typography (see TYPOGRAPHY.md) */
-  --font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --font-serif: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
   --font-subtitle: 'Cormorant Garamond', Georgia, serif;
   --font-nav: 'Plus Jakarta Sans', 'Outfit', -apple-system, sans-serif;
   --font-body: 'Outfit', 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+  --font-sans: 'Outfit', 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
   --font-script: 'Alex Brush', 'Italianno', cursive;
 
   /* Layout */
