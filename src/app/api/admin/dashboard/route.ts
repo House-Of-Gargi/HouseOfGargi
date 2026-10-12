@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+const DATA_FILE = path.join(process.cwd(), 'src', 'data', 'artisan_applications.json');
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabaseClient';
 
@@ -12,7 +15,19 @@ export async function GET() {
     ]);
 
     const artisanProfiles = artisansRes.data || [];
-    const applications = appsRes.data || [];
+    let applications = appsRes.data || [];
+    if (fs.existsSync(DATA_FILE)) {
+      try {
+        const localApps = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+        applications = applications.map((app: any) => {
+          const match = localApps.find((l: any) => l.applicationId === app.application_number || l.id === app.id);
+          if (match) {
+            return { ...app, status: match.status || app.status };
+          }
+          return app;
+        });
+      } catch (e) {}
+    }
     const products = prodsRes.data || [];
     const orders = ordersRes.data || [];
 

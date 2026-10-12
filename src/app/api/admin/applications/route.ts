@@ -6,6 +6,26 @@ import { resend, NOREPLY_EMAIL } from '@/lib/resend';
 
 const DATA_FILE = path.join(process.cwd(), 'src', 'data', 'artisan_applications.json');
 
+function getLocalApplications(): any[] {
+  if (fs.existsSync(DATA_FILE)) {
+    try {
+      const raw = fs.readFileSync(DATA_FILE, 'utf8');
+      return JSON.parse(raw);
+    } catch (e) {
+      console.warn('Error reading artisan_applications.json:', e);
+    }
+  }
+  return [];
+}
+
+function saveLocalApplications(apps: any[]) {
+  try {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(apps, null, 2), 'utf8');
+  } catch (e) {
+    console.error('Error writing artisan_applications.json:', e);
+  }
+}
+
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -13,7 +33,7 @@ export async function GET(req: Request) {
 
     let applications: any[] = [];
 
-    // Try fetching from Supabase first
+    // 1. Try fetching from Supabase first
     try {
       const { data, error } = await supabase
         .from('artisan_applications')
@@ -47,17 +67,37 @@ export async function GET(req: Request) {
       console.warn('Supabase read skipped for applications:', dbErr);
     }
 
-    // Fall back to JSON file if DB has none or is pending migration
-    if (applications.length === 0 && fs.existsSync(DATA_FILE)) {
-      try {
-        const raw = fs.readFileSync(DATA_FILE, 'utf8');
-        applications = JSON.parse(raw);
-      } catch (fErr) {
-        console.warn('Error reading artisan_applications.json:', fErr);
+    // 2. Merge local status overrides from DATA_FILE
+    const localApps = getLocalApplications();
+    if (localApps.length > 0) {
+      if (applications.length === 0) {
+        applications = [...localApps];
+      } else {
+        applications = applications.map((app) => {
+          const match = localApps.find(
+            (l: any) => l.applicationId === app.applicationId || l.id === app.applicationId
+          );
+          if (match) {
+            return {
+              ...app,
+              status: match.status || app.status,
+              reviewedBy: match.reviewedBy || app.reviewedBy,
+              reviewNotes: match.reviewNotes || app.reviewNotes,
+            };
+          }
+          return app;
+        });
+
+        // Add any local apps that are not in Supabase
+        localApps.forEach((l: any) => {
+          if (!applications.some((a) => a.applicationId === l.applicationId)) {
+            applications.push(l);
+          }
+        });
       }
     }
 
-    // Filter by status if provided
+    // 3. Filter by status if requested
     if (statusFilter && statusFilter !== 'all') {
       applications = applications.filter((a) => a.status === statusFilter);
     }
@@ -89,27 +129,79 @@ export async function PATCH(req: Request) {
 
     const newStatus = action === 'approve' ? 'approved' : action === 'reject' ? 'rejected' : 'under_review';
 
+    const localApps = getLocalApplications();
     let targetApp: any = null;
 
-    // Update in JSON file
-    if (fs.existsSync(DATA_FILE)) {
+    const idx = localApps.findIndex(
+      (a: any) => a.applicationId === applicationId || a.id === applicationId
+    );
+
+    if (idx !== -1) {
+      localApps[idx].status = newStatus;
+      localApps[idx].reviewedBy = adminEmail;
+      localApps[idx].reviewNotes = reviewNotes || '';
+      localApps[idx].updatedAt = new Date().toISOString();
+      targetApp = localApps[idx];
+    } else {
+      // Fetch details from Supabase to create the entry
       try {
-        const raw = fs.readFileSync(DATA_FILE, 'utf8');
-        const apps = JSON.parse(raw);
-        const idx = apps.findIndex((a: any) => a.applicationId === applicationId);
-        if (idx !== -1) {
-          apps[idx].status = newStatus;
-          apps[idx].reviewedBy = adminEmail;
-          apps[idx].reviewNotes = reviewNotes || '';
-          targetApp = apps[idx];
-          fs.writeFileSync(DATA_FILE, JSON.stringify(apps, null, 2), 'utf8');
+        const { data } = await supabase
+          .from('artisan_applications')
+          .select('*')
+          .or(`application_number.eq.${applicationId},id.eq.${applicationId}`)
+          .single();
+
+        if (data) {
+          targetApp = {
+            applicationId: data.application_number || data.id,
+            id: data.id,
+            submittedAt: data.created_at,
+            name: data.name,
+            dob: data.dob,
+            age: data.age,
+            gender: data.gender,
+            state: data.state,
+            placeOfBirth: data.place_of_birth,
+            typeOfArt: data.type_of_art,
+            phone: data.phone,
+            email: data.email,
+            answers: data.answers || {},
+            agreedChildLabor: data.agreed_child_labor,
+            agreedInspection: data.agreed_inspection,
+            signature: data.signature,
+            signatureDate: data.signature_date,
+            status: newStatus,
+            reviewedBy: adminEmail,
+            reviewNotes: reviewNotes || '',
+            updatedAt: new Date().toISOString(),
+          };
+          localApps.push(targetApp);
+        } else {
+          targetApp = {
+            applicationId,
+            status: newStatus,
+            reviewedBy: adminEmail,
+            reviewNotes: reviewNotes || '',
+            updatedAt: new Date().toISOString(),
+          };
+          localApps.push(targetApp);
         }
-      } catch (fErr) {
-        console.warn('JSON file update error:', fErr);
+      } catch (dbErr) {
+        targetApp = {
+          applicationId,
+          status: newStatus,
+          reviewedBy: adminEmail,
+          reviewNotes: reviewNotes || '',
+          updatedAt: new Date().toISOString(),
+        };
+        localApps.push(targetApp);
       }
     }
 
-    // Update in Supabase
+    // Save guaranteed local state
+    saveLocalApplications(localApps);
+
+    // Also attempt to update Supabase in background
     try {
       await supabase
         .from('artisan_applications')
@@ -119,9 +211,9 @@ export async function PATCH(req: Request) {
           review_notes: reviewNotes || '',
           updated_at: new Date().toISOString(),
         })
-        .eq('application_number', applicationId);
-    } catch (dbErr) {
-      console.warn('Supabase update skipped:', dbErr);
+        .or(`application_number.eq.${applicationId},id.eq.${applicationId}`);
+    } catch (sbErr) {
+      console.warn('Supabase update attempt:', sbErr);
     }
 
     // If approved, onboard into user_roles as 'artisan' & notify

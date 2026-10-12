@@ -1,1 +1,29 @@
-[]
+[
+  {
+    "applicationId": "HG-ART-260501",
+    "id": "58b07794-9185-42a8-9bb8-3bc69e1b3303",
+    "submittedAt": "2026-10-10T21:19:31.884177+00:00",
+    "name": "Gopal Chandra Dey",
+    "email": "gopal.jamdani@example.com",
+    "phone": "+91 98321 55678",
+    "dob": null,
+    "age": 48,
+    "gender": "Male",
+    "state": "West Bengal",
+    "placeOfBirth": "Shantipur, Nadia",
+    "typeOfArt": "Tangail Jamdani Pit Loom",
+    "answers": {
+      "Loom Count": "4 traditional pit looms with Jacquard attachments.",
+      "Fiber Purity": "100% fine cotton and mulberry silk with tested zari.",
+      "Craft History": "Practicing for 32 years learned from my father in Shantipur."
+    },
+    "agreedChildLabor": true,
+    "agreedInspection": true,
+    "signature": "Gopal Chandra Dey",
+    "signatureDate": "2026-10-11",
+    "status": "rejected",
+    "reviewedBy": "admin@gargisaha.com",
+    "reviewNotes": "Rejected by admin desk",
+    "updatedAt": "2026-10-12T11:48:40.501Z"
+  }
+]
