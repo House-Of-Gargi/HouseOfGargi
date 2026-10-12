@@ -50,20 +50,20 @@ const adminNavGroups: AdminNavGroup[] = [
     section: 'Command Center',
     items: [
       { label: 'Operational Hub', href: '/admin/dashboard', icon: Gauge },
-      { label: 'Bespoke Commissions', href: '/admin/bespoke', icon: Sparkles, badge: 'Patron', badgeColor: '#B88E18' },
+      { label: 'Bespoke Commissions', href: '/admin/bespoke', icon: Sparkles },
     ],
   },
   {
     section: 'Artisan Governance',
     items: [
-      { label: 'Application Inbox', href: '/admin/artisans/applications', icon: Inbox, badge: 'New', badgeColor: '#B88E18' },
+      { label: 'Application Inbox', href: '/admin/artisans/applications', icon: Inbox },
       { label: 'Verified Guilds', href: '/admin/artisans', icon: Users },
     ],
   },
   {
     section: 'Catalog Curation & QC',
     items: [
-      { label: 'Product Approvals', href: '/admin/products/approvals', icon: Sparkles, badge: 'QC Pending', badgeColor: '#7A2331' },
+      { label: 'Product Approvals', href: '/admin/products/approvals', icon: Sparkles },
       { label: 'Total Catalog', href: '/admin/products', icon: Layers },
     ],
   },
@@ -220,22 +220,7 @@ export function AdminSidebar({
                     >
                       {item.label}
                     </span>
-                    {item.badge && (
-                      <span
-                        style={{
-                          fontSize: '0.62rem',
-                          fontWeight: 700,
-                          padding: '0.15rem 0.45rem',
-                          borderRadius: '2px',
-                          backgroundColor: item.badgeColor || 'var(--maharani-maroon)',
-                          color: '#FFFFFF',
-                          letterSpacing: '0.04em',
-                          textTransform: 'uppercase',
-                        }}
-                      >
-                        {item.badge}
-                      </span>
-                    )}
+
                   </div>
                 )}
               </Link>
@@ -271,31 +256,30 @@ export function AdminSidebar({
             backgroundColor: '#FAF7F2',
           }}
         >
-          <div
-            style={{
-              width: 38,
-              height: 38,
-              borderRadius: 2,
-              background: 'var(--maharani-maroon)',
-              border: '1px solid var(--gargi-gold)',
-              color: 'var(--ivory-silk)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 700,
-              fontSize: '0.92rem',
-              flexShrink: 0,
-            }}
-          >
-            HG
-          </div>
-
-          {isExpanded && (
-            <div style={{ marginLeft: '0.75rem', minWidth: 0 }}>
-              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.02rem', letterSpacing: '0.03em', color: 'var(--maharani-maroon)' }}>
-                HOUSE OF GARGI
-              </div>
-              <div style={{ fontSize: '0.65rem', letterSpacing: '0.06em', color: 'var(--stone-taupe)', textTransform: 'uppercase', fontWeight: 600 }}>
+          {!isExpanded ? (
+            <img
+              src="/logo-images/small-logo.png"
+              alt="House of Gargi"
+              style={{
+                width: 38,
+                height: 38,
+                objectFit: 'contain',
+                flexShrink: 0,
+              }}
+            />
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', minWidth: 0, paddingLeft: '0.15rem' }}>
+              <img
+                src="/logo-images/new-logo.png"
+                alt="House of Gargi"
+                style={{
+                  height: 34,
+                  width: 'auto',
+                  objectFit: 'contain',
+                  alignSelf: 'flex-start',
+                }}
+              />
+              <div style={{ fontSize: '0.62rem', letterSpacing: '0.08em', color: 'var(--stone-taupe)', textTransform: 'uppercase', fontWeight: 700, fontFamily: 'var(--font-nav)' }}>
                 Operations Console
               </div>
             </div>
@@ -393,12 +377,16 @@ export function AdminSidebar({
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                <div style={{ width: 32, height: 32, borderRadius: 2, background: 'var(--maharani-maroon)', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>
-                  HG
-                </div>
-                <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, color: 'var(--maharani-maroon)', fontSize: '0.95rem' }}>
-                  ADMIN CONSOLE
-                </span>
+                <img
+                  src="/logo-images/small-logo.png"
+                  alt="House of Gargi"
+                  style={{ width: 32, height: 32, objectFit: 'contain', flexShrink: 0 }}
+                />
+                <img
+                  src="/logo-images/new-logo.png"
+                  alt="House of Gargi"
+                  style={{ height: 26, width: 'auto', objectFit: 'contain' }}
+                />
               </div>
               <button onClick={onMobileClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-brown)' }}>
                 <X style={{ width: 20, height: 20 }} />

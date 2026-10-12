@@ -69,23 +69,16 @@ export function AdminShell({
               gap: '0.5rem',
             }}
           >
-            <span
+            <img
+              src="/logo-images/small-logo.png"
+              alt="House of Gargi"
               style={{
                 width: 28,
                 height: 28,
-                borderRadius: 2,
-                background: 'var(--maharani-maroon)',
-                border: '1px solid var(--gargi-gold)',
-                color: 'var(--ivory-silk)',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '0.82rem',
-                fontWeight: 700,
+                objectFit: 'contain',
+                flexShrink: 0,
               }}
-            >
-              HG
-            </span>
+            />
             <span>Operations Console</span>
           </Link>
         </header>

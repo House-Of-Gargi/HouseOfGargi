@@ -59,16 +59,26 @@ export function SuperAdminShell({
           <Link
             href="/super-admin/dashboard"
             style={{
-              fontFamily: 'var(--font-serif)',
+              fontFamily: 'var(--font-nav)',
               fontWeight: 700,
-              fontSize: '1.1rem',
+              fontSize: '1.05rem',
               color: '#E4D3AE',
               textDecoration: 'none',
               display: 'flex',
               alignItems: 'center',
-              gap: '0.5rem',
+              gap: '0.6rem',
             }}
           >
+            <img
+              src="/logo-images/small-logo.png"
+              alt="House of Gargi"
+              style={{
+                width: 28,
+                height: 28,
+                objectFit: 'contain',
+                flexShrink: 0,
+              }}
+            />
             <span>Super Admin Console</span>
           </Link>
         </header>

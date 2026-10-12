@@ -54,13 +54,13 @@ const sellerNavGroups: SellerNavGroup[] = [
     items: [
       { label: 'My Products', href: '/seller/products', icon: Shirt },
       { label: 'Add New Creation', href: '/seller/products/new', icon: PlusCircle },
-      { label: 'Inventory & Loom Stock', href: '/seller/inventory', icon: Boxes, badge: 'Stock' },
+      { label: 'Inventory & Loom Stock', href: '/seller/inventory', icon: Boxes },
     ],
   },
   {
     section: 'Orders & Dispatch',
     items: [
-      { label: 'Assigned Orders', href: '/seller/orders', icon: ShoppingBag, badge: 'Live' },
+      { label: 'Assigned Orders', href: '/seller/orders', icon: ShoppingBag },
       { label: 'Dispatch Slips', href: '/seller/orders?filter=dispatch', icon: Truck },
     ],
   },
@@ -225,22 +225,7 @@ export function SellerSidebar({
                       </span>
                       
                     </div>
-                    {item.badge && (
-                      <span
-                        style={{
-                          fontSize: '0.62rem',
-                          fontWeight: 700,
-                          padding: '0.15rem 0.45rem',
-                          borderRadius: '2px',
-                          backgroundColor: 'var(--maharani-maroon)',
-                          color: '#FFFFFF',
-                          letterSpacing: '0.04em',
-                          textTransform: 'uppercase',
-                        }}
-                      >
-                        {item.badge}
-                      </span>
-                    )}
+
                   </div>
                 )}
               </Link>
@@ -274,31 +259,30 @@ export function SellerSidebar({
             backgroundColor: '#FAF7F2',
           }}
         >
-          <div
-            style={{
-              width: 38,
-              height: 38,
-              borderRadius: 2,
-              background: 'var(--maharani-maroon)',
-              border: '1px solid var(--gargi-gold)',
-              color: 'var(--ivory-silk)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 700,
-              fontSize: '0.92rem',
-              flexShrink: 0,
-            }}
-          >
-            HG
-          </div>
-
-          {isExpanded && (
-            <div style={{ marginLeft: '0.75rem', minWidth: 0 }}>
-              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.02rem', letterSpacing: '0.03em', color: 'var(--maharani-maroon)' }}>
-                HOUSE OF GARGI
-              </div>
-              <div style={{ fontSize: '0.65rem', letterSpacing: '0.06em', color: 'var(--stone-taupe)', textTransform: 'uppercase', fontWeight: 600 }}>
+          {!isExpanded ? (
+            <img
+              src="/logo-images/small-logo.png"
+              alt="House of Gargi"
+              style={{
+                width: 38,
+                height: 38,
+                objectFit: 'contain',
+                flexShrink: 0,
+              }}
+            />
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', minWidth: 0, paddingLeft: '0.15rem' }}>
+              <img
+                src="/logo-images/new-logo.png"
+                alt="House of Gargi"
+                style={{
+                  height: 34,
+                  width: 'auto',
+                  objectFit: 'contain',
+                  alignSelf: 'flex-start',
+                }}
+              />
+              <div style={{ fontSize: '0.62rem', letterSpacing: '0.08em', color: 'var(--stone-taupe)', textTransform: 'uppercase', fontWeight: 700, fontFamily: 'var(--font-nav)' }}>
                 Artisan Atelier
               </div>
             </div>

@@ -48,13 +48,13 @@ const superAdminNavGroups: SuperAdminNavGroup[] = [
     items: [
       { label: 'Executive Overview', href: '/super-admin/dashboard', icon: Landmark },
       { label: 'Revenue Analytics', href: '/super-admin/revenue', icon: DollarSign },
-      { label: 'Hot & Best Sellers', href: '/super-admin/bestsellers', icon: Flame, badge: 'HOT', badgeColor: '#B88E18' },
+      { label: 'Hot & Best Sellers', href: '/super-admin/bestsellers', icon: Flame },
     ],
   },
   {
     section: 'Team & Privilege',
     items: [
-      { label: 'Admin Management', href: '/super-admin/admins', icon: ShieldAlert, badge: 'Staff', badgeColor: '#7A2331' },
+      { label: 'Admin Management', href: '/super-admin/admins', icon: ShieldAlert },
     ],
   },
   {
@@ -272,32 +272,31 @@ export function SuperAdminSidebar({
             backgroundColor: '#170E0B',
           }}
         >
-          <div
-            style={{
-              width: 38,
-              height: 38,
-              borderRadius: 2,
-              background: 'var(--maharani-maroon)',
-              border: '1px solid var(--gargi-gold)',
-              color: '#FFFFFF',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 700,
-              fontSize: '0.92rem',
-              flexShrink: 0,
-            }}
-          >
-            HG
-          </div>
-
-          {isExpanded && (
-            <div style={{ marginLeft: '0.75rem', minWidth: 0 }}>
-              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.02rem', letterSpacing: '0.03em', color: '#E4D3AE' }}>
-                HOUSE OF GARGI
-              </div>
-              <div style={{ fontSize: '0.65rem', letterSpacing: '0.06em', color: '#C9A227', textTransform: 'uppercase', fontWeight: 700 }}>
-                Super Admin Console
+          {!isExpanded ? (
+            <img
+              src="/logo-images/small-logo.png"
+              alt="House of Gargi"
+              style={{
+                width: 38,
+                height: 38,
+                objectFit: 'contain',
+                flexShrink: 0,
+              }}
+            />
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', minWidth: 0, paddingLeft: '0.15rem' }}>
+              <img
+                src="/logo-images/new-white-logo.png"
+                alt="House of Gargi"
+                style={{
+                  height: 34,
+                  width: 'auto',
+                  objectFit: 'contain',
+                  alignSelf: 'flex-start',
+                }}
+              />
+              <div style={{ fontSize: '0.62rem', letterSpacing: '0.08em', color: '#C9A227', textTransform: 'uppercase', fontWeight: 700, fontFamily: 'var(--font-nav)' }}>
+                Executive Governance
               </div>
             </div>
           )}
