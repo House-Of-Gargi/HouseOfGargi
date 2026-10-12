@@ -130,20 +130,28 @@ export default function AdminDashboardPage() {
             boxShadow: '0 2px 10px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             minHeight: '138px',
           }}
         >
+          {/* Top-right Icon Badge: Outline in black, light page bg, black outline border, not solid filled */}
           <div
             style={{
               position: 'absolute',
               top: '1.25rem',
               right: '1.25rem',
-              color: 'rgba(122, 35, 49, 0.18)',
-              pointerEvents: 'none',
+              width: '42px',
+              height: '42px',
+              borderRadius: '8px',
+              backgroundColor: '#FAF7F2',
+              border: '1.5px solid #1A120B',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
             }}
           >
-            <Users style={{ width: 38, height: 38 }} />
+            <Users style={{ width: 22, height: 22, color: '#1A120B' }} strokeWidth={1.75} />
           </div>
           <div>
             <div
@@ -154,18 +162,19 @@ export default function AdminDashboardPage() {
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
                 fontFamily: 'var(--font-nav)',
-                marginBottom: '0.5rem',
+                marginBottom: '0.45rem',
               }}
             >
               Total Artisans
             </div>
             <div
               style={{
-                fontSize: '2.4rem',
+                fontSize: '2.5rem',
                 fontWeight: 700,
                 color: 'var(--ink-brown)',
-                fontFamily: 'var(--font-display)',
-                lineHeight: 1,
+                fontFamily: "'Plus Jakarta Sans', 'Outfit', sans-serif",
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em',
               }}
             >
               {loading ? '—' : totalArtisans}
@@ -184,20 +193,28 @@ export default function AdminDashboardPage() {
             boxShadow: '0 2px 10px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             minHeight: '138px',
           }}
         >
+          {/* Top-right Icon Badge */}
           <div
             style={{
               position: 'absolute',
               top: '1.25rem',
               right: '1.25rem',
-              color: 'rgba(122, 35, 49, 0.18)',
-              pointerEvents: 'none',
+              width: '42px',
+              height: '42px',
+              borderRadius: '8px',
+              backgroundColor: '#FAF7F2',
+              border: '1.5px solid #1A120B',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
             }}
           >
-            <Package style={{ width: 38, height: 38 }} />
+            <Package style={{ width: 22, height: 22, color: '#1A120B' }} strokeWidth={1.75} />
           </div>
           <div>
             <div
@@ -208,18 +225,19 @@ export default function AdminDashboardPage() {
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
                 fontFamily: 'var(--font-nav)',
-                marginBottom: '0.5rem',
+                marginBottom: '0.45rem',
               }}
             >
               Total Products
             </div>
             <div
               style={{
-                fontSize: '2.4rem',
+                fontSize: '2.5rem',
                 fontWeight: 700,
                 color: 'var(--ink-brown)',
-                fontFamily: 'var(--font-display)',
-                lineHeight: 1,
+                fontFamily: "'Plus Jakarta Sans', 'Outfit', sans-serif",
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em',
               }}
             >
               {loading ? '—' : totalProducts}
@@ -238,20 +256,28 @@ export default function AdminDashboardPage() {
             boxShadow: '0 2px 10px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             minHeight: '138px',
           }}
         >
+          {/* Top-right Icon Badge */}
           <div
             style={{
               position: 'absolute',
               top: '1.25rem',
               right: '1.25rem',
-              color: 'rgba(122, 35, 49, 0.18)',
-              pointerEvents: 'none',
+              width: '42px',
+              height: '42px',
+              borderRadius: '8px',
+              backgroundColor: '#FAF7F2',
+              border: '1.5px solid #1A120B',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
             }}
           >
-            <IndianRupee style={{ width: 38, height: 38 }} />
+            <IndianRupee style={{ width: 22, height: 22, color: '#1A120B' }} strokeWidth={1.75} />
           </div>
           <div>
             <div
@@ -262,18 +288,19 @@ export default function AdminDashboardPage() {
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
                 fontFamily: 'var(--font-nav)',
-                marginBottom: '0.5rem',
+                marginBottom: '0.45rem',
               }}
             >
               Total Sales
             </div>
             <div
               style={{
-                fontSize: '2.4rem',
+                fontSize: '2.5rem',
                 fontWeight: 700,
                 color: 'var(--maharani-maroon)',
-                fontFamily: 'var(--font-display)',
-                lineHeight: 1,
+                fontFamily: "'Plus Jakarta Sans', 'Outfit', sans-serif",
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em',
               }}
             >
               {loading ? '—' : `₹${totalSales.toLocaleString('en-IN')}`}
@@ -281,9 +308,11 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* Box 4: Pending Queues (with 2 quick links) */}
-        <div
+        {/* Box 4: Pending Artisans (Simple, matches other 3 boxes) */}
+        <Link
+          href="/admin/artisans/applications"
           style={{
+            textDecoration: 'none',
             background: '#FFFFFF',
             border: '1.5px solid var(--soft-gold-line)',
             borderRadius: '8px',
@@ -292,20 +321,30 @@ export default function AdminDashboardPage() {
             boxShadow: '0 2px 10px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             minHeight: '138px',
+            cursor: 'pointer',
+            transition: 'transform 0.18s ease, box-shadow 0.18s ease',
           }}
         >
+          {/* Top-right Icon Badge */}
           <div
             style={{
               position: 'absolute',
               top: '1.25rem',
               right: '1.25rem',
-              color: 'rgba(122, 35, 49, 0.18)',
-              pointerEvents: 'none',
+              width: '42px',
+              height: '42px',
+              borderRadius: '8px',
+              backgroundColor: '#FAF7F2',
+              border: '1.5px solid #1A120B',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
             }}
           >
-            <Clock style={{ width: 38, height: 38 }} />
+            <Clock style={{ width: 22, height: 22, color: '#1A120B' }} strokeWidth={1.75} />
           </div>
 
           <div>
@@ -317,98 +356,25 @@ export default function AdminDashboardPage() {
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
                 fontFamily: 'var(--font-nav)',
-                marginBottom: '0.5rem',
+                marginBottom: '0.45rem',
               }}
             >
-              Pending Queues
+              Pending Artisans
             </div>
             <div
               style={{
-                fontSize: '2.4rem',
+                fontSize: '2.5rem',
                 fontWeight: 700,
                 color: 'var(--ink-brown)',
-                fontFamily: 'var(--font-display)',
-                lineHeight: 1,
+                fontFamily: "'Plus Jakarta Sans', 'Outfit', sans-serif",
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em',
               }}
             >
-              {loading ? '—' : totalPending}
+              {loading ? '—' : pendingArtisans}
             </div>
           </div>
-
-          {/* Two Quick Links */}
-          <div
-            style={{
-              marginTop: '1.1rem',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.45rem',
-              borderTop: '1px solid #F0E8DC',
-              paddingTop: '0.75rem',
-            }}
-          >
-            <Link
-              href="/admin/artisans/applications"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                fontSize: '0.78rem',
-                color: 'var(--maharani-maroon)',
-                textDecoration: 'none',
-                fontWeight: 600,
-                fontFamily: 'var(--font-nav)',
-                transition: 'opacity 0.15s ease',
-              }}
-            >
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                Pending Artisans <ArrowUpRight style={{ width: 13, height: 13 }} />
-              </span>
-              <span
-                style={{
-                  background: pendingArtisans > 0 ? '#FFF3E0' : '#F5F5F5',
-                  color: pendingArtisans > 0 ? '#E65100' : 'var(--stone-taupe)',
-                  padding: '0.12rem 0.5rem',
-                  borderRadius: 3,
-                  fontSize: '0.7rem',
-                  fontWeight: 700,
-                }}
-              >
-                {pendingArtisans}
-              </span>
-            </Link>
-
-            <Link
-              href="/admin/products/approvals"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                fontSize: '0.78rem',
-                color: 'var(--maharani-maroon)',
-                textDecoration: 'none',
-                fontWeight: 600,
-                fontFamily: 'var(--font-nav)',
-                transition: 'opacity 0.15s ease',
-              }}
-            >
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                Pending Products <ArrowUpRight style={{ width: 13, height: 13 }} />
-              </span>
-              <span
-                style={{
-                  background: pendingProducts > 0 ? '#FFF3E0' : '#F5F5F5',
-                  color: pendingProducts > 0 ? '#E65100' : 'var(--stone-taupe)',
-                  padding: '0.12rem 0.5rem',
-                  borderRadius: 3,
-                  fontSize: '0.7rem',
-                  fontWeight: 700,
-                }}
-              >
-                {pendingProducts}
-              </span>
-            </Link>
-          </div>
-        </div>
+        </Link>
       </div>
 
       {/* ════════════ 2. BAR GRAPH OF SALES PER DAY ════════════ */}

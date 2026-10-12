@@ -39,7 +39,7 @@ export async function GET() {
     const now = new Date();
 
     const getDailySales = (daysCount: number) => {
-      const days = [];
+      const days: any[] = [];
       for (let i = daysCount - 1; i >= 0; i--) {
         const d = new Date(now);
         d.setDate(d.getDate() - i);
