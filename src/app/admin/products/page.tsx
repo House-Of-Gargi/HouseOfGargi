@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
+import { AdminPageLoadingBlock } from '@/components/admin/AdminLoadingSpinner';
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<any[]>([]);
@@ -53,8 +54,8 @@ export default function AdminProductsPage() {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={6} style={{ padding: '2.5rem', textAlign: 'center', color: 'var(--stone-taupe)' }}>
-                  Loading catalog...
+                <td colSpan={6} style={{ padding: '2.5rem 1rem', textAlign: 'center' }}>
+                  <AdminPageLoadingBlock minHeight="140px" message="Loading catalog directory..." />
                 </td>
               </tr>
             ) : products.length === 0 ? (

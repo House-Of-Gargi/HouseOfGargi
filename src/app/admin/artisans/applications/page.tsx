@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { AdminPageLoadingBlock } from '@/components/admin/AdminLoadingSpinner';
 import {
   Inbox,
   Search,
@@ -192,10 +193,7 @@ export default function AdminApplicationsPage() {
       {/* Applications Table */}
       <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 4, overflow: 'hidden', boxShadow: '0 2px 8px rgba(43,31,24,0.04)' }}>
         {loading ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--stone-taupe)' }}>
-            <Loader2 style={{ width: 28, height: 28, animation: 'spin 1s linear infinite', margin: '0 auto 0.5rem', color: 'var(--maharani-maroon)' }} />
-            Loading artisan submissions...
-          </div>
+          <AdminPageLoadingBlock minHeight="220px" message="Loading artisan applications..." />
         ) : filteredApps.length === 0 ? (
           <div style={{ padding: '3.5rem', textAlign: 'center', color: 'var(--stone-taupe)', background: '#FAF7F2' }}>
             No artisan applications found for this filter.

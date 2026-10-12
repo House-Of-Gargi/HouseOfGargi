@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Sparkles, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
+import { AdminPageLoadingBlock } from '@/components/admin/AdminLoadingSpinner';
 
 export default function ProductApprovalsPage() {
   const [products, setProducts] = useState<any[]>([]);
@@ -53,9 +54,7 @@ export default function ProductApprovalsPage() {
       </div>
 
       {loading ? (
-        <div style={{ padding: '3.5rem', textAlign: 'center', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)' }}>
-          Loading pending queue...
-        </div>
+        <AdminPageLoadingBlock minHeight="220px" message="Loading pending curation queue..." />
       ) : products.length === 0 ? (
         <div
           style={{

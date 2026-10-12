@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { AdminPageLoadingBlock } from '@/components/admin/AdminLoadingSpinner';
 import {
   Sparkles,
   Phone,
@@ -286,9 +287,7 @@ export default function AdminBespokePage() {
 
       {/* Commissions List */}
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--stone-taupe)' }}>
-          Loading bespoke commissions...
-        </div>
+        <AdminPageLoadingBlock minHeight="220px" message="Loading bespoke commissions queue..." />
       ) : filtered.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 20px', background: '#FFFFFF', border: '1px solid var(--soft-gold-line)', borderRadius: 6 }}>
           <Sparkles size={36} color="var(--gargi-gold)" style={{ margin: '0 auto 12px' }} />

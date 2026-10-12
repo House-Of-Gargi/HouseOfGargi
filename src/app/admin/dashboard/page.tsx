@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { AdminLoadingSpinner, AdminPageLoadingBlock } from '@/components/admin/AdminLoadingSpinner';
 import {
   Users,
   Package,
@@ -11,6 +12,8 @@ import {
   TrendingUp,
   ShoppingBag,
   Award,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 
 interface DailySale {
@@ -59,6 +62,9 @@ export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<'7' | '30'>('7');
   const [hoveredBarIndex, setHoveredBarIndex] = useState<number | null>(null);
+  const [artisanPage, setArtisanPage] = useState<number>(1);
+  const [productPage, setProductPage] = useState<number>(1);
+  const PAGE_SIZE = 5;
 
   useEffect(() => {
     async function fetchStats() {
@@ -89,6 +95,12 @@ export default function AdminDashboardPage() {
 
   const topProducts = data?.topProducts || [];
   const topArtisans = data?.topArtisans || [];
+
+  const paginatedArtisans = topArtisans.slice((artisanPage - 1) * PAGE_SIZE, artisanPage * PAGE_SIZE);
+  const totalArtisanPages = Math.ceil(topArtisans.length / PAGE_SIZE) || 1;
+
+  const paginatedProducts = topProducts.slice((productPage - 1) * PAGE_SIZE, productPage * PAGE_SIZE);
+  const totalProductPages = Math.ceil(topProducts.length / PAGE_SIZE) || 1;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -177,7 +189,7 @@ export default function AdminDashboardPage() {
                 letterSpacing: '-0.02em',
               }}
             >
-              {loading ? '—' : totalArtisans}
+              {loading ? <AdminLoadingSpinner size={26} /> : totalArtisans}
             </div>
           </div>
         </div>
@@ -240,7 +252,7 @@ export default function AdminDashboardPage() {
                 letterSpacing: '-0.02em',
               }}
             >
-              {loading ? '—' : totalProducts}
+              {loading ? <AdminLoadingSpinner size={26} /> : totalProducts}
             </div>
           </div>
         </div>
@@ -303,7 +315,7 @@ export default function AdminDashboardPage() {
                 letterSpacing: '-0.02em',
               }}
             >
-              {loading ? '—' : `₹${totalSales.toLocaleString('en-IN')}`}
+              {loading ? <AdminLoadingSpinner size={26} /> : `₹${totalSales.toLocaleString('en-IN')}`}
             </div>
           </div>
         </div>
@@ -371,7 +383,7 @@ export default function AdminDashboardPage() {
                 letterSpacing: '-0.02em',
               }}
             >
-              {loading ? '—' : pendingArtisans}
+              {loading ? <AdminLoadingSpinner size={26} /> : pendingArtisans}
             </div>
           </div>
         </Link>
@@ -643,7 +655,9 @@ export default function AdminDashboardPage() {
             </p>
           </div>
 
-          {topArtisans.length === 0 ? (
+          {loading ? (
+            <AdminPageLoadingBlock minHeight="180px" message="Loading artisan rankings..." />
+          ) : topArtisans.length === 0 ? (
             <div
               style={{
                 flex: 1,
@@ -668,59 +682,153 @@ export default function AdminDashboardPage() {
               </div>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-              {topArtisans.map((artisan, index) => (
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                {paginatedArtisans.map((artisan, index) => {
+                  const rank = (artisanPage - 1) * PAGE_SIZE + index + 1;
+                  return (
+                    <div
+                      key={artisan.id}
+                      style={{
+                        padding: '0.75rem 0.95rem',
+                        border: '1px solid #F0E8DC',
+                        borderRadius: '6px',
+                        backgroundColor: '#FAF7F2',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <span
+                          style={{
+                            width: '26px',
+                            height: '26px',
+                            borderRadius: '50%',
+                            backgroundColor: rank <= 3 ? 'var(--maharani-maroon)' : '#EAE2D5',
+                            color: rank <= 3 ? '#FFFFFF' : 'var(--ink-brown)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '0.72rem',
+                            fontWeight: 700,
+                            fontFamily: 'var(--font-nav)',
+                            flexShrink: 0,
+                          }}
+                        >
+                          #{rank}
+                        </span>
+                        <div>
+                          <div style={{ fontWeight: 700, fontSize: '0.86rem', color: 'var(--ink-brown)' }}>
+                            {artisan.name}
+                          </div>
+                          <div style={{ fontSize: '0.72rem', color: 'var(--stone-taupe)' }}>
+                            {artisan.craft} &bull; {artisan.state}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style={{ textAlign: 'right' }}>
+                        <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
+                          ₹{artisan.totalSales.toLocaleString('en-IN')}
+                        </div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--stone-taupe)' }}>
+                          {artisan.unitsSold} sold
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Artisan Pagination Controls (5 per page) */}
+              {topArtisans.length > PAGE_SIZE && (
                 <div
-                  key={artisan.id}
                   style={{
-                    padding: '0.75rem 0.95rem',
-                    border: '1px solid #F0E8DC',
-                    borderRadius: '6px',
-                    backgroundColor: '#FAF7F2',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
+                    marginTop: '1.25rem',
+                    paddingTop: '0.85rem',
+                    borderTop: '1px solid #F0E8DC',
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <span
+                  <span style={{ fontSize: '0.74rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)', fontWeight: 500 }}>
+                    Showing {(artisanPage - 1) * PAGE_SIZE + 1}–{Math.min(artisanPage * PAGE_SIZE, topArtisans.length)} of {topArtisans.length}
+                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <button
+                      type="button"
+                      disabled={artisanPage === 1}
+                      onClick={() => setArtisanPage((p) => Math.max(1, p - 1))}
                       style={{
-                        width: '26px',
-                        height: '26px',
-                        borderRadius: '50%',
-                        backgroundColor: index < 3 ? 'var(--maharani-maroon)' : '#EAE2D5',
-                        color: index < 3 ? '#FFFFFF' : 'var(--ink-brown)',
+                        width: '28px',
+                        height: '28px',
+                        borderRadius: '4px',
+                        border: '1px solid var(--soft-gold-line)',
+                        background: artisanPage === 1 ? '#FAF7F2' : '#FFFFFF',
+                        color: artisanPage === 1 ? 'var(--stone-taupe)' : 'var(--ink-brown)',
+                        cursor: artisanPage === 1 ? 'not-allowed' : 'pointer',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '0.72rem',
-                        fontWeight: 700,
-                        fontFamily: 'var(--font-nav)',
-                        flexShrink: 0,
+                        opacity: artisanPage === 1 ? 0.5 : 1,
                       }}
+                      aria-label="Previous Page"
                     >
-                      #{index + 1}
-                    </span>
-                    <div>
-                      <div style={{ fontWeight: 700, fontSize: '0.86rem', color: 'var(--ink-brown)' }}>
-                        {artisan.name}
-                      </div>
-                      <div style={{ fontSize: '0.72rem', color: 'var(--stone-taupe)' }}>
-                        {artisan.craft} &bull; {artisan.state}
-                      </div>
-                    </div>
-                  </div>
+                      <ChevronLeft style={{ width: 14, height: 14 }} />
+                    </button>
 
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
-                      ₹{artisan.totalSales.toLocaleString('en-IN')}
-                    </div>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--stone-taupe)' }}>
-                      {artisan.unitsSold} sold
-                    </div>
+                    {Array.from({ length: totalArtisanPages }, (_, i) => i + 1).map((pageNum) => (
+                      <button
+                        key={pageNum}
+                        type="button"
+                        onClick={() => setArtisanPage(pageNum)}
+                        style={{
+                          minWidth: '28px',
+                          height: '28px',
+                          padding: '0 0.4rem',
+                          borderRadius: '4px',
+                          border: pageNum === artisanPage ? '1px solid var(--maharani-maroon)' : '1px solid var(--soft-gold-line)',
+                          background: pageNum === artisanPage ? 'var(--maharani-maroon)' : '#FFFFFF',
+                          color: pageNum === artisanPage ? '#FFFFFF' : 'var(--ink-brown)',
+                          fontSize: '0.75rem',
+                          fontWeight: 700,
+                          fontFamily: "'Plus Jakarta Sans', sans-serif",
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        {pageNum}
+                      </button>
+                    ))}
+
+                    <button
+                      type="button"
+                      disabled={artisanPage === totalArtisanPages}
+                      onClick={() => setArtisanPage((p) => Math.min(totalArtisanPages, p + 1))}
+                      style={{
+                        width: '28px',
+                        height: '28px',
+                        borderRadius: '4px',
+                        border: '1px solid var(--soft-gold-line)',
+                        background: artisanPage === totalArtisanPages ? '#FAF7F2' : '#FFFFFF',
+                        color: artisanPage === totalArtisanPages ? 'var(--stone-taupe)' : 'var(--ink-brown)',
+                        cursor: artisanPage === totalArtisanPages ? 'not-allowed' : 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        opacity: artisanPage === totalArtisanPages ? 0.5 : 1,
+                      }}
+                      aria-label="Next Page"
+                    >
+                      <ChevronRight style={{ width: 14, height: 14 }} />
+                    </button>
                   </div>
                 </div>
-              ))}
+              )}
             </div>
           )}
         </div>
@@ -754,7 +862,9 @@ export default function AdminDashboardPage() {
             </p>
           </div>
 
-          {topProducts.length === 0 ? (
+          {loading ? (
+            <AdminPageLoadingBlock minHeight="180px" message="Loading product bestsellers..." />
+          ) : topProducts.length === 0 ? (
             <div
               style={{
                 flex: 1,
@@ -776,77 +886,171 @@ export default function AdminDashboardPage() {
               <div>No catalog products registered yet.</div>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-              {topProducts.map((product, index) => (
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                {paginatedProducts.map((product, index) => {
+                  const rank = (productPage - 1) * PAGE_SIZE + index + 1;
+                  return (
+                    <div
+                      key={product.id}
+                      style={{
+                        padding: '0.75rem 0.95rem',
+                        border: '1px solid #F0E8DC',
+                        borderRadius: '6px',
+                        backgroundColor: '#FAF7F2',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
+                        <span
+                          style={{
+                            width: '26px',
+                            height: '26px',
+                            borderRadius: '50%',
+                            backgroundColor: rank <= 3 ? 'var(--maharani-maroon)' : '#EAE2D5',
+                            color: rank <= 3 ? '#FFFFFF' : 'var(--ink-brown)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '0.72rem',
+                            fontWeight: 700,
+                            fontFamily: 'var(--font-nav)',
+                            flexShrink: 0,
+                          }}
+                        >
+                          #{rank}
+                        </span>
+                        <div style={{ minWidth: 0 }}>
+                          <div
+                            style={{
+                              fontWeight: 700,
+                              fontSize: '0.86rem',
+                              color: 'var(--ink-brown)',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                            }}
+                            title={product.name}
+                          >
+                            {product.name}
+                          </div>
+                          <div style={{ fontSize: '0.72rem', color: 'var(--stone-taupe)', textTransform: 'capitalize' }}>
+                            {product.category} &bull; ₹{product.price.toLocaleString('en-IN')}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: '0.75rem' }}>
+                        <span
+                          style={{
+                            display: 'inline-block',
+                            padding: '0.2rem 0.55rem',
+                            borderRadius: '4px',
+                            backgroundColor: product.unitsSold > 0 ? '#E8F5E9' : '#F0E8DC',
+                            color: product.unitsSold > 0 ? '#2E7D32' : 'var(--stone-taupe)',
+                            fontWeight: 700,
+                            fontSize: '0.74rem',
+                            fontFamily: 'var(--font-nav)',
+                          }}
+                        >
+                          {product.unitsSold} sold
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Product Pagination Controls (5 per page) */}
+              {topProducts.length > PAGE_SIZE && (
                 <div
-                  key={product.id}
                   style={{
-                    padding: '0.75rem 0.95rem',
-                    border: '1px solid #F0E8DC',
-                    borderRadius: '6px',
-                    backgroundColor: '#FAF7F2',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
+                    marginTop: '1.25rem',
+                    paddingTop: '0.85rem',
+                    borderTop: '1px solid #F0E8DC',
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
-                    <span
+                  <span style={{ fontSize: '0.74rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)', fontWeight: 500 }}>
+                    Showing {(productPage - 1) * PAGE_SIZE + 1}–{Math.min(productPage * PAGE_SIZE, topProducts.length)} of {topProducts.length}
+                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <button
+                      type="button"
+                      disabled={productPage === 1}
+                      onClick={() => setProductPage((p) => Math.max(1, p - 1))}
                       style={{
-                        width: '26px',
-                        height: '26px',
-                        borderRadius: '50%',
-                        backgroundColor: index < 3 ? 'var(--maharani-maroon)' : '#EAE2D5',
-                        color: index < 3 ? '#FFFFFF' : 'var(--ink-brown)',
+                        width: '28px',
+                        height: '28px',
+                        borderRadius: '4px',
+                        border: '1px solid var(--soft-gold-line)',
+                        background: productPage === 1 ? '#FAF7F2' : '#FFFFFF',
+                        color: productPage === 1 ? 'var(--stone-taupe)' : 'var(--ink-brown)',
+                        cursor: productPage === 1 ? 'not-allowed' : 'pointer',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '0.72rem',
-                        fontWeight: 700,
-                        fontFamily: 'var(--font-nav)',
-                        flexShrink: 0,
+                        opacity: productPage === 1 ? 0.5 : 1,
                       }}
+                      aria-label="Previous Page"
                     >
-                      #{index + 1}
-                    </span>
-                    <div style={{ minWidth: 0 }}>
-                      <div
-                        style={{
-                          fontWeight: 700,
-                          fontSize: '0.86rem',
-                          color: 'var(--ink-brown)',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                        }}
-                        title={product.name}
-                      >
-                        {product.name}
-                      </div>
-                      <div style={{ fontSize: '0.72rem', color: 'var(--stone-taupe)', textTransform: 'capitalize' }}>
-                        {product.category} &bull; ₹{product.price.toLocaleString('en-IN')}
-                      </div>
-                    </div>
-                  </div>
+                      <ChevronLeft style={{ width: 14, height: 14 }} />
+                    </button>
 
-                  <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: '0.75rem' }}>
-                    <span
+                    {Array.from({ length: totalProductPages }, (_, i) => i + 1).map((pageNum) => (
+                      <button
+                        key={pageNum}
+                        type="button"
+                        onClick={() => setProductPage(pageNum)}
+                        style={{
+                          minWidth: '28px',
+                          height: '28px',
+                          padding: '0 0.4rem',
+                          borderRadius: '4px',
+                          border: pageNum === productPage ? '1px solid var(--maharani-maroon)' : '1px solid var(--soft-gold-line)',
+                          background: pageNum === productPage ? 'var(--maharani-maroon)' : '#FFFFFF',
+                          color: pageNum === productPage ? '#FFFFFF' : 'var(--ink-brown)',
+                          fontSize: '0.75rem',
+                          fontWeight: 700,
+                          fontFamily: "'Plus Jakarta Sans', sans-serif",
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        {pageNum}
+                      </button>
+                    ))}
+
+                    <button
+                      type="button"
+                      disabled={productPage === totalProductPages}
+                      onClick={() => setProductPage((p) => Math.min(totalProductPages, p + 1))}
                       style={{
-                        display: 'inline-block',
-                        padding: '0.2rem 0.55rem',
+                        width: '28px',
+                        height: '28px',
                         borderRadius: '4px',
-                        backgroundColor: product.unitsSold > 0 ? '#E8F5E9' : '#F0E8DC',
-                        color: product.unitsSold > 0 ? '#2E7D32' : 'var(--stone-taupe)',
-                        fontWeight: 700,
-                        fontSize: '0.74rem',
-                        fontFamily: 'var(--font-nav)',
+                        border: '1px solid var(--soft-gold-line)',
+                        background: productPage === totalProductPages ? '#FAF7F2' : '#FFFFFF',
+                        color: productPage === totalProductPages ? 'var(--stone-taupe)' : 'var(--ink-brown)',
+                        cursor: productPage === totalProductPages ? 'not-allowed' : 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        opacity: productPage === totalProductPages ? 0.5 : 1,
                       }}
+                      aria-label="Next Page"
                     >
-                      {product.unitsSold} sold
-                    </span>
+                      <ChevronRight style={{ width: 14, height: 14 }} />
+                    </button>
                   </div>
                 </div>
-              ))}
+              )}
             </div>
           )}
         </div>

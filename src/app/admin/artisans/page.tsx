@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Users, Mail, Phone, MapPin, Award } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
+import { AdminPageLoadingBlock } from '@/components/admin/AdminLoadingSpinner';
 
 export default function VerifiedArtisansPage() {
   const [artisans, setArtisans] = useState<any[]>([]);
@@ -42,9 +43,7 @@ export default function VerifiedArtisansPage() {
       </div>
 
       {loading ? (
-        <div style={{ padding: '3.5rem', textAlign: 'center', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)' }}>
-          Loading verified artisans...
-        </div>
+        <AdminPageLoadingBlock minHeight="220px" message="Loading verified artisan roster..." />
       ) : artisans.length === 0 ? (
         <div
           style={{
