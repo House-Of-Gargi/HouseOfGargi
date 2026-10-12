@@ -1,114 +1,114 @@
 'use client';
 
-import { Users, MapPin, Award, CheckCircle2, Phone, Mail } from 'lucide-react';
-
-const GUILDS = [
-  {
-    id: 'gld-01',
-    name: 'Ramdas Mishra Pit Loom Guild',
-    region: 'Madanpura, Varanasi, Uttar Pradesh',
-    craft: 'Pure Mulberry Katan Silk Kadwa Weaving',
-    looms: 8,
-    masterWeaver: 'Ramdas Mishra',
-    phone: '+91 98391 20492',
-    email: 'mishra.looms@gargisaha.com',
-    experienceYears: 42,
-    verified: true,
-  },
-  {
-    id: 'gld-02',
-    name: 'Kanchipuram Heritage Silk Weavers Society',
-    region: 'Kanchipuram, Tamil Nadu',
-    craft: 'Temple Border Korvai Handloom Sarees',
-    looms: 12,
-    masterWeaver: 'Sundaramurthy Chettiar',
-    phone: '+91 94441 83920',
-    email: 'chettiar.silk@gargisaha.com',
-    experienceYears: 36,
-    verified: true,
-  },
-  {
-    id: 'gld-03',
-    name: 'Khatri Artisan Ajrakh Atelier',
-    region: 'Dhamadka, Kutch, Gujarat',
-    craft: '16-Stage Natural Indigo & Madder Ajrakh Block Print',
-    looms: 4,
-    masterWeaver: 'Ismail Khatri',
-    phone: '+91 98252 74819',
-    email: 'khatri.craft@gargisaha.com',
-    experienceYears: 28,
-    verified: true,
-  },
-  {
-    id: 'gld-04',
-    name: 'Awadh Zardozi Master Guild',
-    region: 'Chowk, Lucknow, Uttar Pradesh',
-    craft: 'Pure Silver & Gold Dabka Zardozi Needlework',
-    looms: 6,
-    masterWeaver: 'Haji Mohammed Rafi',
-    phone: '+91 94150 91823',
-    email: 'rafi.zardozi@gargisaha.com',
-    experienceYears: 30,
-    verified: true,
-  },
-];
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { Users, Mail, Phone, MapPin, Award } from 'lucide-react';
+import { supabase } from '@/lib/supabaseClient';
 
 export default function VerifiedArtisansPage() {
+  const [artisans, setArtisans] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadArtisans() {
+      try {
+        const { data, error } = await supabase
+          .from('artisan_applications')
+          .select('*')
+          .eq('status', 'approved')
+          .order('created_at', { ascending: false });
+
+        if (!error && data) {
+          setArtisans(data);
+        }
+      } catch (err) {
+        console.error('Error fetching verified artisans:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadArtisans();
+  }, []);
+
   return (
     <div>
       <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
-          Verified Artisan Guilds Directory
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
+          Verified Guilds & Master Artisans ({artisans.length})
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.88rem' }}>
-          Certified master weavers, active workshops, and pit loom collectives partnered with House of Gargi.
+        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.88rem', fontFamily: 'var(--font-body)' }}>
+          Directory of all officially approved artisan partners preserving India&apos;s heritage weaves.
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
-        {GUILDS.map((g) => (
-          <div
-            key={g.id}
+      {loading ? (
+        <div style={{ padding: '3.5rem', textAlign: 'center', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)' }}>
+          Loading verified artisans...
+        </div>
+      ) : artisans.length === 0 ? (
+        <div
+          style={{
+            padding: '3.5rem 2rem',
+            textAlign: 'center',
+            background: '#FFFFFF',
+            border: '1.5px solid var(--soft-gold-line)',
+            borderRadius: '8px',
+            color: 'var(--stone-taupe)',
+          }}
+        >
+          <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem', color: 'var(--gargi-gold)' }}>
+            <Award style={{ width: 22, height: 22 }} />
+          </div>
+          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', color: 'var(--ink-brown)', margin: '0 0 0.5rem' }}>
+            No Verified Artisans Yet
+          </h3>
+          <p style={{ margin: '0 0 1.25rem', fontSize: '0.85rem', color: 'var(--stone-taupe)', maxWidth: '420px', marginLeft: 'auto', marginRight: 'auto' }}>
+            Artisans approved through the Application Inbox will be listed here.
+          </p>
+          <Link
+            href="/admin/artisans/applications"
             style={{
-              background: '#FFFFFF',
-              border: '1.5px solid var(--soft-gold-line)',
-              borderRadius: 4,
-              padding: '1.5rem',
-              boxShadow: '0 2px 8px rgba(43,31,24,0.04)',
+              display: 'inline-block',
+              padding: '0.55rem 1.2rem',
+              backgroundColor: 'var(--maharani-maroon)',
+              color: '#FFFFFF',
+              textDecoration: 'none',
+              borderRadius: '4px',
+              fontWeight: 600,
+              fontSize: '0.82rem',
+              fontFamily: 'var(--font-nav)',
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', fontWeight: 700, margin: 0, color: 'var(--ink-brown)' }}>
-                  {g.name}
-                </h3>
-                <span style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', display: 'flex', alignItems: 'center', gap: '0.3rem', marginTop: 4 }}>
-                  <MapPin style={{ width: 14, height: 14, color: 'var(--maharani-maroon)' }} />
-                  {g.region}
-                </span>
+            Review Applications Queue
+          </Link>
+        </div>
+      ) : (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.25rem' }}>
+          {artisans.map((a) => (
+            <div
+              key={a.id}
+              style={{
+                background: '#FFFFFF',
+                border: '1.5px solid var(--soft-gold-line)',
+                borderRadius: '8px',
+                padding: '1.5rem',
+                boxShadow: '0 2px 10px rgba(43,31,24,0.03)',
+              }}
+            >
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.15rem', color: 'var(--ink-brown)', margin: '0 0 0.25rem' }}>
+                {a.name}
+              </h3>
+              <div style={{ fontSize: '0.8rem', color: 'var(--stone-taupe)', marginBottom: '0.75rem' }}>
+                {a.type_of_art || 'Master Handloom'} &bull; {a.state || 'India'}
               </div>
-              <span style={{ background: '#E8F5E9', color: '#2E7D32', fontSize: '0.65rem', fontWeight: 700, padding: '0.15rem 0.5rem', borderRadius: 2 }}>
-                VERIFIED
-              </span>
-            </div>
-
-            <div style={{ background: '#FAF7F2', padding: '0.85rem', borderRadius: 4, margin: '1rem 0', fontSize: '0.82rem' }}>
-              <div style={{ color: 'var(--maharani-maroon)', fontWeight: 700 }}>{g.craft}</div>
-              <div style={{ color: 'var(--stone-taupe)', marginTop: 4 }}>
-                Master Craftsman: <strong>{g.masterWeaver}</strong> ({g.experienceYears} Years Lineage)
-              </div>
-              <div style={{ color: 'var(--stone-taupe)', marginTop: 2 }}>
-                Active Pit Looms: <strong>{g.looms} Looms</strong>
+              <div style={{ fontSize: '0.78rem', color: 'var(--ink-brown)', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                <div>Email: {a.email || '—'}</div>
+                <div>Phone: {a.phone || '—'}</div>
               </div>
             </div>
-
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--stone-taupe)' }}>
-              <span>{g.phone}</span>
-              <span>{g.email}</span>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

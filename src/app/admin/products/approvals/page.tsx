@@ -1,123 +1,148 @@
 'use client';
 
-import { useState } from 'react';
-import { Sparkles, CheckCircle2, XCircle } from 'lucide-react';
-
-const PENDING_PRODUCTS = [
-  {
-    id: 'qc-01',
-    name: 'Varanasi Shikargah Animal Motif Katan Saree',
-    artisan: 'Ramdas Mishra Pit Loom Guild',
-    craft: 'Shikargah Weave Pit Loom',
-    price: 36000,
-    silkMark: true,
-    leadTime: 'Ready to Ship',
-    images: 4,
-  },
-  {
-    id: 'qc-02',
-    name: 'Korvai Peacock Border Contrast Saree',
-    artisan: 'Sundaramurthy Chettiar',
-    craft: 'Korvai Interlocked Warp',
-    price: 29500,
-    silkMark: true,
-    leadTime: '14 Days Loom Weave',
-    images: 3,
-  },
-];
+import { useState, useEffect } from 'react';
+import { Sparkles, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
+import { supabase } from '@/lib/supabaseClient';
 
 export default function ProductApprovalsPage() {
-  const [products, setProducts] = useState(PENDING_PRODUCTS);
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleAction = (id: string, action: 'approve' | 'reject') => {
-    setProducts((prev) => prev.filter((p) => p.id !== id));
-    alert('Product ' + id + ' marked as ' + action.toUpperCase() + '.');
+  useEffect(() => {
+    async function loadPending() {
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('*')
+          .eq('curation_status', 'pending');
+
+        if (!error && data) {
+          setProducts(data);
+        }
+      } catch (err) {
+        console.error('Error fetching pending products:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadPending();
+  }, []);
+
+  const handleAction = async (id: string, action: 'approved' | 'rejected') => {
+    try {
+      await supabase
+        .from('products')
+        .update({ curation_status: action })
+        .eq('id', id);
+
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+    } catch (err) {
+      console.error('Error updating product status:', err);
+    }
   };
 
   return (
     <div>
       <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
           Product QC & Storefront Approvals
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.88rem' }}>
-          Inspect newly added artisan products, verify photography quality and craft attributes before making visible on the boutique.
+        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.88rem', fontFamily: 'var(--font-body)' }}>
+          Review artisan submissions and verify craft authenticity before publishing to the boutique catalog.
         </p>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-        {products.length === 0 ? (
-          <div style={{ padding: '3.5rem', textAlign: 'center', background: '#FAF7F2', borderRadius: 4, color: 'var(--stone-taupe)' }}>
-            All submitted products have been reviewed and curated!
+      {loading ? (
+        <div style={{ padding: '3.5rem', textAlign: 'center', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)' }}>
+          Loading pending queue...
+        </div>
+      ) : products.length === 0 ? (
+        <div
+          style={{
+            padding: '3.5rem 2rem',
+            textAlign: 'center',
+            background: '#FFFFFF',
+            border: '1.5px solid var(--soft-gold-line)',
+            borderRadius: '8px',
+            color: 'var(--stone-taupe)',
+          }}
+        >
+          <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem', color: 'var(--gargi-gold)' }}>
+            <Sparkles style={{ width: 22, height: 22 }} />
           </div>
-        ) : (
-          products.map((p) => (
+          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', color: 'var(--ink-brown)', margin: '0 0 0.5rem' }}>
+            No Products Pending QC
+          </h3>
+          <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--stone-taupe)', maxWidth: '420px', marginLeft: 'auto', marginRight: 'auto' }}>
+            The curation queue is clear. When artisans upload new creations via their atelier portal, they will appear here for quality inspection.
+          </p>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          {products.map((p) => (
             <div
               key={p.id}
               style={{
                 background: '#FFFFFF',
                 border: '1.5px solid var(--soft-gold-line)',
-                borderRadius: 4,
+                borderRadius: '8px',
                 padding: '1.5rem',
                 display: 'flex',
-                flexWrap: 'wrap',
-                justifyContent: 'space-between',
                 alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
                 gap: '1rem',
               }}
             >
               <div>
-                <span style={{ fontSize: '0.72rem', color: 'var(--maharani-maroon)', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                  {p.artisan}
-                </span>
-                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.2rem', fontWeight: 700, margin: '0.2rem 0', color: 'var(--ink-brown)' }}>
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.15rem', color: 'var(--ink-brown)', margin: '0 0 0.25rem' }}>
                   {p.name}
                 </h3>
-                <div style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)', display: 'flex', gap: '1rem', marginTop: 4 }}>
-                  <span>Craft: <strong>{p.craft}</strong></span>
-                  <span>Retail Price: <strong>₹{p.price.toLocaleString('en-IN')}</strong></span>
-                  <span>Lead Time: <strong>{p.leadTime}</strong></span>
+                <div style={{ fontSize: '0.8rem', color: 'var(--stone-taupe)' }}>
+                  Category: {p.category} &bull; Price: ₹{Number(p.price_in_rupees || 0).toLocaleString('en-IN')} &bull; Stock: {p.stock || 0}
                 </div>
               </div>
 
               <div style={{ display: 'flex', gap: '0.75rem' }}>
                 <button
                   type="button"
-                  onClick={() => handleAction(p.id, 'approve')}
+                  onClick={() => handleAction(p.id, 'approved')}
                   style={{
-                    padding: '0.65rem 1.25rem',
-                    borderRadius: 2,
-                    border: 'none',
-                    backgroundColor: 'var(--maharani-maroon)',
+                    padding: '0.5rem 1rem',
+                    background: 'var(--maharani-maroon)',
                     color: '#FFFFFF',
-                    fontWeight: 700,
-                    fontSize: '0.82rem',
-                    cursor: 'pointer',
-                  }}
-                >
-                  Approve for Storefront
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleAction(p.id, 'reject')}
-                  style={{
-                    padding: '0.65rem 1.25rem',
-                    borderRadius: 2,
-                    border: '1px solid #D8CBB6',
-                    backgroundColor: 'transparent',
-                    color: 'var(--stone-taupe)',
+                    border: 'none',
+                    borderRadius: '4px',
                     fontWeight: 600,
                     fontSize: '0.82rem',
                     cursor: 'pointer',
+                    fontFamily: 'var(--font-nav)',
                   }}
                 >
-                  Request Edits
+                  Approve & Publish
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleAction(p.id, 'rejected')}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    background: 'transparent',
+                    color: 'var(--ink-brown)',
+                    border: '1px solid var(--soft-gold-line)',
+                    borderRadius: '4px',
+                    fontWeight: 600,
+                    fontSize: '0.82rem',
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-nav)',
+                  }}
+                >
+                  Reject
                 </button>
               </div>
             </div>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
