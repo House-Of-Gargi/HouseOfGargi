@@ -54,8 +54,7 @@ const superAdminNavGroups: SuperAdminNavGroup[] = [
   {
     section: 'Team & Privilege',
     items: [
-      { label: 'Admin Management', href: '/super-admin/admins', icon: ShieldAlert, badge: '4 Staff', badgeColor: '#7A2331' },
-      { label: 'Security Audit Trail', href: '/super-admin/audit-logs', icon: FileText },
+      { label: 'Admin Management', href: '/super-admin/admins', icon: ShieldAlert, badge: 'Staff', badgeColor: '#7A2331' },
     ],
   },
   {
@@ -63,19 +62,11 @@ const superAdminNavGroups: SuperAdminNavGroup[] = [
     items: [
       { label: 'Categories & Taxonomies', href: '/super-admin/categories', icon: FolderTree },
       { label: 'Master Catalog Display', href: '/super-admin/catalog', icon: Grid },
-      { label: 'Featured Curations', href: '/super-admin/curations', icon: Sliders },
     ],
   },
   {
-    section: 'Financial Settlements',
+    section: 'Storefront',
     items: [
-      { label: 'Artisan Payouts', href: '/super-admin/payouts', icon: CheckCircle2, badge: 'Pending', badgeColor: '#1B5E20' },
-    ],
-  },
-  {
-    section: 'Infrastructure & External',
-    items: [
-      { label: 'Email Engine & Resend', href: '/super-admin/emails', icon: Send },
       { label: 'View Public Boutique', href: '/', icon: ExternalLink, external: true },
     ],
   },
@@ -302,7 +293,7 @@ export function SuperAdminSidebar({
 
           {isExpanded && (
             <div style={{ marginLeft: '0.75rem', minWidth: 0 }}>
-              <div style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, fontSize: '0.98rem', color: '#E4D3AE' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.02rem', letterSpacing: '0.03em', color: '#E4D3AE' }}>
                 HOUSE OF GARGI
               </div>
               <div style={{ fontSize: '0.65rem', letterSpacing: '0.06em', color: '#C9A227', textTransform: 'uppercase', fontWeight: 700 }}>
@@ -402,7 +393,7 @@ export function SuperAdminSidebar({
                 backgroundColor: '#170E0B',
               }}
             >
-              <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, color: '#E4D3AE', fontSize: '0.95rem' }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, color: '#E4D3AE', fontSize: '0.95rem' }}>
                 SUPER ADMIN
               </span>
               <button onClick={onMobileClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#E4D3AE' }}>

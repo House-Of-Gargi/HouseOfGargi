@@ -50,39 +50,27 @@ const adminNavGroups: AdminNavGroup[] = [
     section: 'Command Center',
     items: [
       { label: 'Operational Hub', href: '/admin/dashboard', icon: Gauge },
-      { label: 'Urgent Action Queue', href: '/admin/queue', icon: AlertOctagon, badge: '3', badgeColor: '#7A2331' },
       { label: 'Bespoke Commissions', href: '/admin/bespoke', icon: Sparkles, badge: 'Patron', badgeColor: '#B88E18' },
     ],
   },
   {
-    section: 'Artisan Management',
+    section: 'Artisan Governance',
     items: [
       { label: 'Application Inbox', href: '/admin/artisans/applications', icon: Inbox, badge: 'New', badgeColor: '#B88E18' },
       { label: 'Verified Guilds', href: '/admin/artisans', icon: Users },
-      { label: 'Compliance & Ethics', href: '/admin/artisans/inspections', icon: ClipboardCheck },
     ],
   },
   {
     section: 'Catalog Curation & QC',
     items: [
-      { label: 'Product Approvals', href: '/admin/products/approvals', icon: Sparkles, badge: 'Pending', badgeColor: '#7A2331' },
+      { label: 'Product Approvals', href: '/admin/products/approvals', icon: Sparkles, badge: 'QC Pending', badgeColor: '#7A2331' },
       { label: 'Total Catalog', href: '/admin/products', icon: Layers },
-      { label: 'Pricing & Tags Audit', href: '/admin/products/pricing', icon: Tag },
     ],
   },
   {
-    section: 'Fulfillment & Logistics',
+    section: 'Storefront',
     items: [
-      { label: 'Global Orders', href: '/admin/orders', icon: Package },
-      { label: 'Courier Partners', href: '/admin/logistics', icon: Truck },
-      { label: 'Returns & Disputes', href: '/admin/returns', icon: RotateCcw },
-    ],
-  },
-  {
-    section: 'Editorial & Heritage',
-    items: [
-      { label: 'Artisan Stories CMS', href: '/admin/editorial/stories', icon: BookOpen },
-      { label: 'Storefront Preview', href: '/', icon: ExternalLink, external: true },
+      { label: 'View Public Boutique', href: '/', icon: ExternalLink, external: true },
     ],
   },
 ];
@@ -304,7 +292,7 @@ export function AdminSidebar({
 
           {isExpanded && (
             <div style={{ marginLeft: '0.75rem', minWidth: 0 }}>
-              <div style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, fontSize: '0.98rem', color: 'var(--maharani-maroon)' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.02rem', letterSpacing: '0.03em', color: 'var(--maharani-maroon)' }}>
                 HOUSE OF GARGI
               </div>
               <div style={{ fontSize: '0.65rem', letterSpacing: '0.06em', color: 'var(--stone-taupe)', textTransform: 'uppercase', fontWeight: 600 }}>
@@ -408,7 +396,7 @@ export function AdminSidebar({
                 <div style={{ width: 32, height: 32, borderRadius: 2, background: 'var(--maharani-maroon)', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>
                   HG
                 </div>
-                <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, color: 'var(--maharani-maroon)', fontSize: '0.95rem' }}>
+                <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, color: 'var(--maharani-maroon)', fontSize: '0.95rem' }}>
                   ADMIN CONSOLE
                 </span>
               </div>

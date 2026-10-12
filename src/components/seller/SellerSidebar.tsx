@@ -44,14 +44,14 @@ export interface SellerNavGroup {
 const sellerNavGroups: SellerNavGroup[] = [
   {
     section: 'Overview',
-        items: [
+    items: [
       { label: 'Dashboard', href: '/artisan/dashboard', icon: LayoutDashboard },
       { label: 'Performance Analytics', href: '/seller/analytics', icon: TrendingUp },
     ],
   },
   {
     section: 'My Creations',
-        items: [
+    items: [
       { label: 'My Products', href: '/seller/products', icon: Shirt },
       { label: 'Add New Creation', href: '/seller/products/new', icon: PlusCircle },
       { label: 'Inventory & Loom Stock', href: '/seller/inventory', icon: Boxes, badge: 'Stock' },
@@ -59,22 +59,21 @@ const sellerNavGroups: SellerNavGroup[] = [
   },
   {
     section: 'Orders & Dispatch',
-        items: [
+    items: [
       { label: 'Assigned Orders', href: '/seller/orders', icon: ShoppingBag, badge: 'Live' },
       { label: 'Dispatch Slips', href: '/seller/orders?filter=dispatch', icon: Truck },
     ],
   },
   {
-    section: 'Finances & Payouts',
-        items: [
+    section: 'Finances',
+    items: [
       { label: 'Earnings Ledger', href: '/seller/earnings', icon: Wallet },
     ],
   },
   {
-    section: 'Ethical Lineage',
-        items: [
-      { label: 'Child Labor Agreement', href: '/seller/compliance', icon: ShieldCheck },
-      { label: 'Preview Boutique', href: '/', icon: ExternalLink, external: true },
+    section: 'Storefront',
+    items: [
+      { label: 'Preview Public Boutique', href: '/', icon: ExternalLink, external: true },
     ],
   },
 ];
@@ -296,7 +295,7 @@ export function SellerSidebar({
 
           {isExpanded && (
             <div style={{ marginLeft: '0.75rem', minWidth: 0 }}>
-              <div style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, fontSize: '0.98rem', color: 'var(--maharani-maroon)' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.02rem', letterSpacing: '0.03em', color: 'var(--maharani-maroon)' }}>
                 HOUSE OF GARGI
               </div>
               <div style={{ fontSize: '0.65rem', letterSpacing: '0.06em', color: 'var(--stone-taupe)', textTransform: 'uppercase', fontWeight: 600 }}>
@@ -394,7 +393,7 @@ export function SellerSidebar({
                 backgroundColor: '#FAF7F2',
               }}
             >
-              <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, color: 'var(--maharani-maroon)', fontSize: '0.95rem' }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, color: 'var(--maharani-maroon)', fontSize: '0.95rem' }}>
                 ARTISAN ATELIER
               </span>
               <button onClick={onMobileClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-brown)' }}>
