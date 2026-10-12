@@ -319,11 +319,19 @@ export function AdminSidebar({
           }}
         >
           {isExpanded && (
-            <div style={{ minWidth: 0, marginBottom: '0.25rem' }}>
-              <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--ink-brown)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {adminName}
-              </div>
-              <div style={{ fontSize: '0.68rem', color: 'var(--stone-taupe)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <div style={{ minWidth: 0, marginBottom: '0.25rem', width: '100%' }}>
+              <div
+                style={{
+                  fontSize: '0.74rem',
+                  color: 'var(--stone-taupe)',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  fontFamily: 'var(--font-nav)',
+                  fontWeight: 500,
+                }}
+                title={adminEmail}
+              >
                 {adminEmail}
               </div>
             </div>
@@ -346,11 +354,12 @@ export function AdminSidebar({
               cursor: 'pointer',
               fontSize: '0.78rem',
               fontWeight: 600,
+              fontFamily: 'var(--font-nav)',
             }}
             title="Sign out of Operations Console"
           >
             <LogOut style={{ width: 16, height: 16 }} />
-            {isExpanded && <span>Exit Console</span>}
+            {isExpanded && <span>Sign Out</span>}
           </button>
         </div>
       </aside>
