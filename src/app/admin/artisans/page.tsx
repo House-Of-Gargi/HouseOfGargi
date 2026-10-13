@@ -35,7 +35,7 @@ export default function VerifiedArtisansPage() {
     <div>
       <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
-          Verified Guilds & Master Artisans ({artisans.length})
+          Verified Guilds & Master <span style={{ color: 'var(--maharani-maroon)' }}>Artisans</span> ({artisans.length})
         </h1>
         <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.88rem', fontFamily: 'var(--font-body)' }}>
           Directory of all officially approved artisan partners preserving India&apos;s heritage weaves.
@@ -50,8 +50,9 @@ export default function VerifiedArtisansPage() {
             padding: '3.5rem 2rem',
             textAlign: 'center',
             background: '#FFFFFF',
-            border: '1.5px solid var(--soft-gold-line)',
-            borderRadius: '8px',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '10px',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
             color: 'var(--stone-taupe)',
           }}
         >
@@ -88,10 +89,10 @@ export default function VerifiedArtisansPage() {
               key={a.id}
               style={{
                 background: '#FFFFFF',
-                border: '1.5px solid var(--soft-gold-line)',
-                borderRadius: '8px',
+                border: '1px solid var(--soft-gold-line)',
+                borderRadius: '10px',
                 padding: '1.5rem',
-                boxShadow: '0 2px 10px rgba(43,31,24,0.03)',
+                boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
               }}
             >
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.15rem', color: 'var(--ink-brown)', margin: '0 0 0.25rem' }}>

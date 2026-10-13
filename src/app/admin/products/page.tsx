@@ -32,14 +32,14 @@ export default function AdminProductsPage() {
     <div>
       <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
-          Total Catalog Directory ({products.length})
+          Total Catalog <span style={{ color: 'var(--maharani-maroon)' }}>Directory</span> ({products.length})
         </h1>
         <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.88rem', fontFamily: 'var(--font-body)' }}>
           Live inventory of handcrafted pieces registered across the boutique.
         </p>
       </div>
 
-      <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '8px', overflow: 'hidden' }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid var(--soft-gold-line)', borderRadius: '10px', overflow: 'hidden', boxShadow: '0 2px 14px rgba(43,31,24,0.03)' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
           <thead>
             <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontFamily: 'var(--font-nav)' }}>

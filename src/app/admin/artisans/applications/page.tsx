@@ -134,7 +134,7 @@ export default function AdminApplicationsPage() {
           </span>
         </div>
         <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
-          Artisan Questionnaire Applications Inbox
+          Artisan Questionnaire Applications <span style={{ color: 'var(--maharani-maroon)' }}>Inbox</span>
         </h1>
         <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.88rem' }}>
           Review the complete 14-question heritage submissions sent by artisans to join House of Gargi. Verify child labor agreements and approve logins.
@@ -144,7 +144,7 @@ export default function AdminApplicationsPage() {
       {/* Search & Status Filters */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         {/* Status Filter Tabs */}
-        <div style={{ display: 'flex', gap: '0.35rem', background: '#FAF7F2', padding: '0.3rem', borderRadius: 4, border: '1px solid var(--soft-gold-line)' }}>
+        <div style={{ display: 'flex', gap: '0.35rem', background: '#FAF7F2', padding: '0.35rem', borderRadius: '8px', border: '1px solid var(--soft-gold-line)', boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.02)' }}>
           {['all', 'pending', 'approved', 'rejected'].map((st) => (
             <button
               key={st}
@@ -169,7 +169,7 @@ export default function AdminApplicationsPage() {
         </div>
 
         {/* Search Input */}
-        <div style={{ position: 'relative', width: '300px', maxWidth: '100%' }}>
+        <div style={{ position: 'relative', width: '320px', maxWidth: '100%' }}>
           <Search style={{ position: 'absolute', left: 10, top: 11, width: 16, height: 16, color: 'var(--stone-taupe)' }} />
           <input
             type="text"
@@ -191,7 +191,7 @@ export default function AdminApplicationsPage() {
       </div>
 
       {/* Applications Table */}
-      <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 4, overflow: 'hidden', boxShadow: '0 2px 8px rgba(43,31,24,0.04)' }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid var(--soft-gold-line)', borderRadius: '10px', overflow: 'hidden', boxShadow: '0 2px 14px rgba(43,31,24,0.03)' }}>
         {loading ? (
           <AdminPageLoadingBlock minHeight="220px" message="Loading artisan applications..." />
         ) : filteredApps.length === 0 ? (

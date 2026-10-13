@@ -169,7 +169,7 @@ export default function AdminBespokePage() {
             color: 'var(--ink-brown)',
             margin: 0,
           }}>
-            Bespoke Commissions Queue
+            Bespoke Commissions <span style={{ color: 'var(--maharani-maroon)' }}>Queue</span>
           </h1>
           <p style={{ margin: '4px 0 0', color: 'var(--stone-taupe)', fontSize: '0.92rem' }}>
             Manage custom bridal lehenga, heritage saree, and royal jewellery orders submitted by patrons.
@@ -194,37 +194,100 @@ export default function AdminBespokePage() {
         gap: '1.25rem',
         marginBottom: '2rem',
       }}>
-        <div style={{ background: '#FFFFFF', border: '1px solid var(--soft-gold-line)', borderRadius: 6, padding: '1.25rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '10px',
+            padding: '1.4rem 1.5rem',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+            transition: 'all 0.22s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(43,31,24,0.06)';
+            e.currentTarget.style.borderColor = 'var(--gargi-gold)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 2px 12px rgba(43,31,24,0.03)';
+            e.currentTarget.style.borderColor = 'var(--soft-gold-line)';
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, fontFamily: 'var(--font-nav)' }}>
             <span>Pending Curation</span>
-            <AlertCircle size={16} color="#7A2331" />
+            <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <AlertCircle size={17} color="#7A2331" />
+            </div>
           </div>
-          <div style={{ fontSize: '2rem', fontWeight: 700, color: '#7A2331', marginTop: '0.5rem' }}>
+          <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#7A2331', marginTop: '0.4rem', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em', lineHeight: 1.1 }}>
             {pendingCount}
           </div>
-          <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', marginTop: '0.2rem' }}>Awaiting initial patron consultation</div>
+          <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', marginTop: '0.35rem' }}>Awaiting initial patron consultation</div>
         </div>
 
-        <div style={{ background: '#FFFFFF', border: '1px solid var(--soft-gold-line)', borderRadius: 6, padding: '1.25rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '10px',
+            padding: '1.4rem 1.5rem',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+            transition: 'all 0.22s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(43,31,24,0.06)';
+            e.currentTarget.style.borderColor = 'var(--gargi-gold)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 2px 12px rgba(43,31,24,0.03)';
+            e.currentTarget.style.borderColor = 'var(--soft-gold-line)';
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, fontFamily: 'var(--font-nav)' }}>
             <span>In Consultation</span>
-            <Clock size={16} color="#B88E18" />
+            <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Clock size={17} color="#B88E18" />
+            </div>
           </div>
-          <div style={{ fontSize: '2rem', fontWeight: 700, color: '#B88E18', marginTop: '0.5rem' }}>
+          <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#B88E18', marginTop: '0.4rem', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em', lineHeight: 1.1 }}>
             {inConsultCount}
           </div>
-          <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', marginTop: '0.2rem' }}>Artisan concierge actively discussing vision</div>
+          <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', marginTop: '0.35rem' }}>Artisan concierge actively discussing vision</div>
         </div>
 
-        <div style={{ background: '#FFFFFF', border: '1px solid var(--soft-gold-line)', borderRadius: 6, padding: '1.25rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '10px',
+            padding: '1.4rem 1.5rem',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+            transition: 'all 0.22s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(43,31,24,0.06)';
+            e.currentTarget.style.borderColor = 'var(--gargi-gold)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 2px 12px rgba(43,31,24,0.03)';
+            e.currentTarget.style.borderColor = 'var(--soft-gold-line)';
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, fontFamily: 'var(--font-nav)' }}>
             <span>Completed / Delivered</span>
-            <CheckCircle2 size={16} color="#2E7D32" />
+            <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <CheckCircle2 size={17} color="#2E7D32" />
+            </div>
           </div>
-          <div style={{ fontSize: '2rem', fontWeight: 700, color: '#2E7D32', marginTop: '0.5rem' }}>
+          <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#2E7D32', marginTop: '0.4rem', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em', lineHeight: 1.1 }}>
             {completedCount}
           </div>
-          <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', marginTop: '0.2rem' }}>Bespoke masterpieces fulfilled</div>
+          <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', marginTop: '0.35rem' }}>Bespoke masterpieces fulfilled</div>
         </div>
       </div>
 
@@ -239,7 +302,8 @@ export default function AdminBespokePage() {
         padding: '12px 16px',
         background: '#FFFFFF',
         border: '1px solid var(--soft-gold-line)',
-        borderRadius: 6,
+        borderRadius: '10px',
+        boxShadow: '0 2px 10px rgba(43,31,24,0.02)',
       }}>
         {/* Status Filters */}
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -317,9 +381,9 @@ export default function AdminBespokePage() {
                 style={{
                   background: '#FFFFFF',
                   border: '1px solid var(--soft-gold-line)',
-                  borderRadius: 6,
+                  borderRadius: '10px',
                   padding: '20px 24px',
-                  boxShadow: '0 2px 8px rgba(43, 31, 24, 0.03)',
+                  boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '14px',

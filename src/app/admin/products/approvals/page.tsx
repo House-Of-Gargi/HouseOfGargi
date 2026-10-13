@@ -46,7 +46,7 @@ export default function ProductApprovalsPage() {
     <div>
       <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
-          Product QC & Storefront Approvals
+          Product QC & Storefront <span style={{ color: 'var(--maharani-maroon)' }}>Approvals</span>
         </h1>
         <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.88rem', fontFamily: 'var(--font-body)' }}>
           Review artisan submissions and verify craft authenticity before publishing to the boutique catalog.
@@ -61,8 +61,9 @@ export default function ProductApprovalsPage() {
             padding: '3.5rem 2rem',
             textAlign: 'center',
             background: '#FFFFFF',
-            border: '1.5px solid var(--soft-gold-line)',
-            borderRadius: '8px',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '10px',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
             color: 'var(--stone-taupe)',
           }}
         >
@@ -83,8 +84,9 @@ export default function ProductApprovalsPage() {
               key={p.id}
               style={{
                 background: '#FFFFFF',
-                border: '1.5px solid var(--soft-gold-line)',
-                borderRadius: '8px',
+                border: '1px solid var(--soft-gold-line)',
+                borderRadius: '10px',
+                boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
                 padding: '1.5rem',
                 display: 'flex',
                 alignItems: 'center',

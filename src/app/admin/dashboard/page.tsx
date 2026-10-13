@@ -2,19 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { AdminLoadingSpinner, AdminPageLoadingBlock } from '@/components/admin/AdminLoadingSpinner';
 import {
   Users,
   Package,
   IndianRupee,
   Clock,
-  ArrowUpRight,
-  TrendingUp,
   ShoppingBag,
   Award,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
+import { AdminLoadingSpinner, AdminPageLoadingBlock } from '@/components/admin/AdminLoadingSpinner';
 
 interface DailySale {
   date: string;
@@ -87,8 +85,6 @@ export default function AdminDashboardPage() {
   const totalProducts = data?.totalProducts ?? 0;
   const totalSales = data?.totalSales ?? 0;
   const pendingArtisans = data?.pendingQueues?.pendingArtisans ?? 0;
-  const pendingProducts = data?.pendingQueues?.pendingProducts ?? 0;
-  const totalPending = data?.pendingQueues?.total ?? 0;
 
   const currentSalesData = timeRange === '7' ? (data?.sales7Days || []) : (data?.sales30Days || []);
   const maxSales = Math.max(...currentSalesData.map((d) => d.sales), 1000);
@@ -116,7 +112,7 @@ export default function AdminDashboardPage() {
             letterSpacing: '-0.01em',
           }}
         >
-          Operations Dashboard
+          Operations <span style={{ color: 'var(--maharani-maroon)' }}>Dashboard</span>
         </h1>
         <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.86rem', fontFamily: 'var(--font-body)' }}>
           Real-time enterprise metrics, active catalog queues, and live revenue analytics.
@@ -135,18 +131,28 @@ export default function AdminDashboardPage() {
         <div
           style={{
             background: '#FFFFFF',
-            border: '1.5px solid var(--soft-gold-line)',
-            borderRadius: '8px',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '10px',
             padding: '1.4rem 1.5rem',
             position: 'relative',
-            boxShadow: '0 2px 10px rgba(43,31,24,0.03)',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: '138px',
+            minHeight: '142px',
+            transition: 'all 0.22s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(43,31,24,0.06)';
+            e.currentTarget.style.borderColor = 'var(--gargi-gold)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 2px 12px rgba(43,31,24,0.03)';
+            e.currentTarget.style.borderColor = 'var(--soft-gold-line)';
           }}
         >
-          {/* Top-right Icon Badge: Outline in black, light page bg, black outline border, not solid filled */}
           <div
             style={{
               position: 'absolute',
@@ -154,25 +160,26 @@ export default function AdminDashboardPage() {
               right: '1.25rem',
               width: '42px',
               height: '42px',
-              borderRadius: '8px',
+              borderRadius: '50%',
               backgroundColor: '#FAF7F2',
-              border: '1.5px solid #1A120B',
+              border: '1.5px solid #231812',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0,
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
             }}
           >
-            <Users style={{ width: 22, height: 22, color: '#1A120B' }} strokeWidth={1.75} />
+            <Users style={{ width: 20, height: 20, color: '#231812' }} strokeWidth={1.75} />
           </div>
           <div>
             <div
               style={{
-                fontSize: '0.74rem',
+                fontSize: '0.72rem',
                 color: 'var(--stone-taupe)',
                 fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.08em',
+                letterSpacing: '0.09em',
                 fontFamily: 'var(--font-nav)',
                 marginBottom: '0.45rem',
               }}
@@ -181,12 +188,12 @@ export default function AdminDashboardPage() {
             </div>
             <div
               style={{
-                fontSize: '2.5rem',
+                fontSize: '2.6rem',
                 fontWeight: 700,
                 color: 'var(--ink-brown)',
-                fontFamily: "'Plus Jakarta Sans', 'Outfit', sans-serif",
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
                 lineHeight: 1.1,
-                letterSpacing: '-0.02em',
+                letterSpacing: '-0.03em',
               }}
             >
               {loading ? <AdminLoadingSpinner size={26} /> : totalArtisans}
@@ -198,18 +205,28 @@ export default function AdminDashboardPage() {
         <div
           style={{
             background: '#FFFFFF',
-            border: '1.5px solid var(--soft-gold-line)',
-            borderRadius: '8px',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '10px',
             padding: '1.4rem 1.5rem',
             position: 'relative',
-            boxShadow: '0 2px 10px rgba(43,31,24,0.03)',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: '138px',
+            minHeight: '142px',
+            transition: 'all 0.22s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(43,31,24,0.06)';
+            e.currentTarget.style.borderColor = 'var(--gargi-gold)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 2px 12px rgba(43,31,24,0.03)';
+            e.currentTarget.style.borderColor = 'var(--soft-gold-line)';
           }}
         >
-          {/* Top-right Icon Badge */}
           <div
             style={{
               position: 'absolute',
@@ -217,25 +234,26 @@ export default function AdminDashboardPage() {
               right: '1.25rem',
               width: '42px',
               height: '42px',
-              borderRadius: '8px',
+              borderRadius: '50%',
               backgroundColor: '#FAF7F2',
-              border: '1.5px solid #1A120B',
+              border: '1.5px solid #231812',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0,
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
             }}
           >
-            <Package style={{ width: 22, height: 22, color: '#1A120B' }} strokeWidth={1.75} />
+            <Package style={{ width: 20, height: 20, color: '#231812' }} strokeWidth={1.75} />
           </div>
           <div>
             <div
               style={{
-                fontSize: '0.74rem',
+                fontSize: '0.72rem',
                 color: 'var(--stone-taupe)',
                 fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.08em',
+                letterSpacing: '0.09em',
                 fontFamily: 'var(--font-nav)',
                 marginBottom: '0.45rem',
               }}
@@ -244,12 +262,12 @@ export default function AdminDashboardPage() {
             </div>
             <div
               style={{
-                fontSize: '2.5rem',
+                fontSize: '2.6rem',
                 fontWeight: 700,
                 color: 'var(--ink-brown)',
-                fontFamily: "'Plus Jakarta Sans', 'Outfit', sans-serif",
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
                 lineHeight: 1.1,
-                letterSpacing: '-0.02em',
+                letterSpacing: '-0.03em',
               }}
             >
               {loading ? <AdminLoadingSpinner size={26} /> : totalProducts}
@@ -261,18 +279,28 @@ export default function AdminDashboardPage() {
         <div
           style={{
             background: '#FFFFFF',
-            border: '1.5px solid var(--soft-gold-line)',
-            borderRadius: '8px',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '10px',
             padding: '1.4rem 1.5rem',
             position: 'relative',
-            boxShadow: '0 2px 10px rgba(43,31,24,0.03)',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: '138px',
+            minHeight: '142px',
+            transition: 'all 0.22s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(43,31,24,0.06)';
+            e.currentTarget.style.borderColor = 'var(--gargi-gold)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 2px 12px rgba(43,31,24,0.03)';
+            e.currentTarget.style.borderColor = 'var(--soft-gold-line)';
           }}
         >
-          {/* Top-right Icon Badge */}
           <div
             style={{
               position: 'absolute',
@@ -280,25 +308,26 @@ export default function AdminDashboardPage() {
               right: '1.25rem',
               width: '42px',
               height: '42px',
-              borderRadius: '8px',
+              borderRadius: '50%',
               backgroundColor: '#FAF7F2',
-              border: '1.5px solid #1A120B',
+              border: '1.5px solid #231812',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0,
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
             }}
           >
-            <IndianRupee style={{ width: 22, height: 22, color: '#1A120B' }} strokeWidth={1.75} />
+            <IndianRupee style={{ width: 20, height: 20, color: '#231812' }} strokeWidth={1.75} />
           </div>
           <div>
             <div
               style={{
-                fontSize: '0.74rem',
+                fontSize: '0.72rem',
                 color: 'var(--stone-taupe)',
                 fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.08em',
+                letterSpacing: '0.09em',
                 fontFamily: 'var(--font-nav)',
                 marginBottom: '0.45rem',
               }}
@@ -307,39 +336,48 @@ export default function AdminDashboardPage() {
             </div>
             <div
               style={{
-                fontSize: '2.5rem',
+                fontSize: '2.6rem',
                 fontWeight: 700,
                 color: 'var(--maharani-maroon)',
-                fontFamily: "'Plus Jakarta Sans', 'Outfit', sans-serif",
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
                 lineHeight: 1.1,
-                letterSpacing: '-0.02em',
+                letterSpacing: '-0.03em',
               }}
             >
-              {loading ? <AdminLoadingSpinner size={26} /> : `₹${totalSales.toLocaleString('en-IN')}`}
+              {loading ? <AdminLoadingSpinner size={26} /> : ('₹' + totalSales.toLocaleString('en-IN'))}
             </div>
           </div>
         </div>
 
-        {/* Box 4: Pending Artisans (Simple, matches other 3 boxes) */}
+        {/* Box 4: Pending Artisans */}
         <Link
           href="/admin/artisans/applications"
           style={{
             textDecoration: 'none',
             background: '#FFFFFF',
-            border: '1.5px solid var(--soft-gold-line)',
-            borderRadius: '8px',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '10px',
             padding: '1.4rem 1.5rem',
             position: 'relative',
-            boxShadow: '0 2px 10px rgba(43,31,24,0.03)',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: '138px',
+            minHeight: '142px',
             cursor: 'pointer',
-            transition: 'transform 0.18s ease, box-shadow 0.18s ease',
+            transition: 'all 0.22s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(43,31,24,0.06)';
+            e.currentTarget.style.borderColor = 'var(--gargi-gold)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 2px 12px rgba(43,31,24,0.03)';
+            e.currentTarget.style.borderColor = 'var(--soft-gold-line)';
           }}
         >
-          {/* Top-right Icon Badge */}
           <div
             style={{
               position: 'absolute',
@@ -347,26 +385,27 @@ export default function AdminDashboardPage() {
               right: '1.25rem',
               width: '42px',
               height: '42px',
-              borderRadius: '8px',
+              borderRadius: '50%',
               backgroundColor: '#FAF7F2',
-              border: '1.5px solid #1A120B',
+              border: '1.5px solid #231812',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0,
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
             }}
           >
-            <Clock style={{ width: 22, height: 22, color: '#1A120B' }} strokeWidth={1.75} />
+            <Clock style={{ width: 20, height: 20, color: '#231812' }} strokeWidth={1.75} />
           </div>
 
           <div>
             <div
               style={{
-                fontSize: '0.74rem',
+                fontSize: '0.72rem',
                 color: 'var(--stone-taupe)',
                 fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.08em',
+                letterSpacing: '0.09em',
                 fontFamily: 'var(--font-nav)',
                 marginBottom: '0.45rem',
               }}
@@ -375,12 +414,12 @@ export default function AdminDashboardPage() {
             </div>
             <div
               style={{
-                fontSize: '2.5rem',
+                fontSize: '2.6rem',
                 fontWeight: 700,
                 color: 'var(--ink-brown)',
-                fontFamily: "'Plus Jakarta Sans', 'Outfit', sans-serif",
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
                 lineHeight: 1.1,
-                letterSpacing: '-0.02em',
+                letterSpacing: '-0.03em',
               }}
             >
               {loading ? <AdminLoadingSpinner size={26} /> : pendingArtisans}
@@ -393,10 +432,10 @@ export default function AdminDashboardPage() {
       <div
         style={{
           background: '#FFFFFF',
-          border: '1.5px solid var(--soft-gold-line)',
-          borderRadius: '8px',
+          border: '1px solid var(--soft-gold-line)',
+          borderRadius: '10px',
           padding: '1.75rem',
-          boxShadow: '0 2px 10px rgba(43,31,24,0.03)',
+          boxShadow: '0 2px 14px rgba(43,31,24,0.03)',
         }}
       >
         <div
@@ -406,7 +445,7 @@ export default function AdminDashboardPage() {
             justifyContent: 'space-between',
             flexWrap: 'wrap',
             gap: '1rem',
-            marginBottom: '1.75rem',
+            marginBottom: '1.5rem',
           }}
         >
           <div>
@@ -432,8 +471,9 @@ export default function AdminDashboardPage() {
               display: 'inline-flex',
               padding: '3px',
               borderRadius: '9999px',
-              backgroundColor: '#F5EFE6',
+              backgroundColor: '#FAF7F2',
               border: '1px solid var(--soft-gold-line)',
+              boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.03)',
             }}
           >
             <button
@@ -442,7 +482,7 @@ export default function AdminDashboardPage() {
               style={{
                 border: 'none',
                 background: timeRange === '7' ? 'var(--maharani-maroon)' : 'transparent',
-                color: timeRange === '7' ? '#FFFFFF' : 'var(--ink-brown)',
+                color: timeRange === '7' ? '#FFFFFF' : 'var(--stone-taupe)',
                 padding: '0.35rem 0.95rem',
                 borderRadius: '9999px',
                 fontSize: '0.75rem',
@@ -450,6 +490,7 @@ export default function AdminDashboardPage() {
                 cursor: 'pointer',
                 fontFamily: 'var(--font-nav)',
                 transition: 'all 0.18s ease',
+                boxShadow: timeRange === '7' ? '0 2px 6px rgba(122, 35, 49, 0.25)' : 'none',
               }}
             >
               Last 7 Days
@@ -460,7 +501,7 @@ export default function AdminDashboardPage() {
               style={{
                 border: 'none',
                 background: timeRange === '30' ? 'var(--maharani-maroon)' : 'transparent',
-                color: timeRange === '30' ? '#FFFFFF' : 'var(--ink-brown)',
+                color: timeRange === '30' ? '#FFFFFF' : 'var(--stone-taupe)',
                 padding: '0.35rem 0.95rem',
                 borderRadius: '9999px',
                 fontSize: '0.75rem',
@@ -468,6 +509,7 @@ export default function AdminDashboardPage() {
                 cursor: 'pointer',
                 fontFamily: 'var(--font-nav)',
                 transition: 'all 0.18s ease',
+                boxShadow: timeRange === '30' ? '0 2px 6px rgba(122, 35, 49, 0.25)' : 'none',
               }}
             >
               Last 30 Days
@@ -475,9 +517,9 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* Bar Chart Area */}
-        <div style={{ position: 'relative', width: '100%', height: '240px', paddingTop: '10px' }}>
-          {/* Y-Axis Guidelines */}
+        {/* Bar Chart Area with Subtle Y-Axis Gridlines */}
+        <div style={{ position: 'relative', width: '100%', height: '230px', paddingTop: '10px' }}>
+          {/* Subtle Y-Axis Guidelines & Metric Scales */}
           <div
             style={{
               position: 'absolute',
@@ -487,11 +529,29 @@ export default function AdminDashboardPage() {
               justifyContent: 'space-between',
               pointerEvents: 'none',
               paddingBottom: '30px',
+              paddingLeft: '45px',
             }}
           >
-            <div style={{ borderBottom: '1px dashed #EAE2D5', width: '100%', height: 0 }} />
-            <div style={{ borderBottom: '1px dashed #EAE2D5', width: '100%', height: 0 }} />
-            <div style={{ borderBottom: '1px solid var(--soft-gold-line)', width: '100%', height: 0 }} />
+            <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+              <span style={{ fontSize: '0.65rem', color: '#B5A99B', width: '42px', marginLeft: '-45px', fontFamily: 'var(--font-nav)', textAlign: 'right', paddingRight: '8px' }}>
+                {maxSales > 1000 ? (maxSales >= 100000 ? ('₹' + (maxSales / 100000).toFixed(1) + 'L') : ('₹' + (maxSales / 1000).toFixed(0) + 'k')) : '₹1k'}
+              </span>
+              <div style={{ borderBottom: '1px dashed rgba(228, 211, 174, 0.55)', flex: 1 }} />
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+              <span style={{ fontSize: '0.65rem', color: '#B5A99B', width: '42px', marginLeft: '-45px', fontFamily: 'var(--font-nav)', textAlign: 'right', paddingRight: '8px' }}>
+                {maxSales > 1000 ? ('₹' + Math.round(maxSales / 2000) + 'k') : '₹500'}
+              </span>
+              <div style={{ borderBottom: '1px dashed rgba(228, 211, 174, 0.55)', flex: 1 }} />
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+              <span style={{ fontSize: '0.65rem', color: '#B5A99B', width: '42px', marginLeft: '-45px', fontFamily: 'var(--font-nav)', textAlign: 'right', paddingRight: '8px' }}>
+                ₹0
+              </span>
+              <div style={{ borderBottom: '1px solid var(--soft-gold-line)', flex: 1 }} />
+            </div>
           </div>
 
           {/* Interactive Bars Container */}
@@ -502,7 +562,7 @@ export default function AdminDashboardPage() {
               display: 'flex',
               alignItems: 'flex-end',
               gap: timeRange === '7' ? '1.5rem' : '0.35rem',
-              padding: '0 0.5rem',
+              padding: '0 0.5rem 0 45px',
               justifyContent: 'space-between',
             }}
           >
@@ -531,24 +591,24 @@ export default function AdminDashboardPage() {
                     <div
                       style={{
                         position: 'absolute',
-                        bottom: `${Math.max(heightPercent, 12) + 12}%`,
+                        bottom: Math.max(heightPercent, 12) + 14 + '%',
                         left: '50%',
                         transform: 'translateX(-50%)',
                         backgroundColor: 'var(--ink-brown)',
                         color: '#FFFFFF',
-                        padding: '0.35rem 0.6rem',
-                        borderRadius: '4px',
+                        padding: '0.4rem 0.75rem',
+                        borderRadius: '6px',
                         fontSize: '0.72rem',
                         whiteSpace: 'nowrap',
                         zIndex: 20,
                         pointerEvents: 'none',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                        boxShadow: '0 4px 14px rgba(0,0,0,0.22)',
                         textAlign: 'center',
                         fontFamily: 'var(--font-nav)',
                       }}
                     >
                       <div style={{ fontWeight: 700, color: 'var(--soft-gold-line)' }}>
-                        ₹{item.sales.toLocaleString('en-IN')}
+                        {'₹' + item.sales.toLocaleString('en-IN')}
                       </div>
                       <div style={{ fontSize: '0.65rem', opacity: 0.85 }}>{item.label}</div>
                     </div>
@@ -558,20 +618,19 @@ export default function AdminDashboardPage() {
                   <div
                     style={{
                       width: '100%',
-                      maxWidth: timeRange === '7' ? '56px' : '18px',
-                      height: `${Math.max(heightPercent, 4)}%`,
+                      maxWidth: timeRange === '7' ? '54px' : '16px',
+                      height: item.sales > 0 ? Math.max(heightPercent, 4) + '%' : '6px',
                       background:
                         item.sales > 0
                           ? isHovered
                             ? 'var(--gargi-gold)'
                             : 'linear-gradient(180deg, var(--gargi-gold) 0%, var(--maharani-maroon) 100%)'
                           : isHovered
-                          ? '#E8DCBE'
-                          : '#F2E8D8',
-                      borderRadius: '4px 4px 0 0',
-                      transition: 'all 0.18s ease',
-                      border: item.sales > 0 ? 'none' : '1px solid rgba(228, 211, 174, 0.6)',
-                      borderBottom: 'none',
+                          ? 'var(--gargi-gold)'
+                          : '#EFE6D8',
+                      borderRadius: item.sales > 0 ? '4px 4px 0 0' : '3px',
+                      transition: 'all 0.2s ease',
+                      boxShadow: isHovered && item.sales > 0 ? '0 0 10px rgba(184, 142, 24, 0.4)' : 'none',
                     }}
                   />
                 </div>
@@ -586,13 +645,12 @@ export default function AdminDashboardPage() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              padding: '0 0.5rem',
+              padding: '0 0.5rem 0 45px',
               gap: timeRange === '7' ? '1.5rem' : '0.35rem',
               borderTop: '1px solid var(--soft-gold-line)',
             }}
           >
             {currentSalesData.map((item, idx) => {
-              // On 30-day view, show label every 3 days to avoid crowding
               const showLabel = timeRange === '7' || idx % 4 === 0 || idx === currentSalesData.length - 1;
 
               return (
@@ -630,10 +688,10 @@ export default function AdminDashboardPage() {
         <div
           style={{
             background: '#FFFFFF',
-            border: '1.5px solid var(--soft-gold-line)',
-            borderRadius: '8px',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '10px',
             padding: '1.5rem',
-            boxShadow: '0 2px 10px rgba(43,31,24,0.03)',
+            boxShadow: '0 2px 14px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
           }}
@@ -665,8 +723,8 @@ export default function AdminDashboardPage() {
                 textAlign: 'center',
                 color: 'var(--stone-taupe)',
                 background: '#FAF7F2',
-                borderRadius: '6px',
-                border: '1px dashed var(--soft-gold-line)',
+                borderRadius: '8px',
+                border: '1px solid #EAE2D5',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -675,8 +733,23 @@ export default function AdminDashboardPage() {
                 lineHeight: 1.6,
               }}
             >
-              <Award style={{ width: 36, height: 36, color: 'var(--gargi-gold)', marginBottom: '0.75rem', opacity: 0.6 }} />
-              <div>No verified artisan rankings yet.</div>
+              <div
+                style={{
+                  width: '50px',
+                  height: '50px',
+                  borderRadius: '50%',
+                  background: '#FFFFFF',
+                  border: '1.5px solid var(--soft-gold-line)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '0.75rem',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+                }}
+              >
+                <Award style={{ width: 24, height: 24, color: 'var(--gargi-gold)' }} />
+              </div>
+              <div style={{ fontWeight: 600, color: 'var(--ink-brown)' }}>No verified artisan rankings yet.</div>
               <div style={{ fontSize: '0.76rem', color: 'var(--stone-taupe)', marginTop: '0.25rem' }}>
                 Artisans approved through the application queue will appear here as orders generate.
               </div>
@@ -692,11 +765,22 @@ export default function AdminDashboardPage() {
                       style={{
                         padding: '0.75rem 0.95rem',
                         border: '1px solid #F0E8DC',
-                        borderRadius: '6px',
+                        borderRadius: '8px',
                         backgroundColor: '#FAF7F2',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
+                        transition: 'all 0.2s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = '#FFFFFF';
+                        e.currentTarget.style.borderColor = 'var(--gargi-gold)';
+                        e.currentTarget.style.boxShadow = '0 2px 8px rgba(43,31,24,0.04)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = '#FAF7F2';
+                        e.currentTarget.style.borderColor = '#F0E8DC';
+                        e.currentTarget.style.boxShadow = 'none';
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -716,7 +800,7 @@ export default function AdminDashboardPage() {
                             flexShrink: 0,
                           }}
                         >
-                          #{rank}
+                          {'#' + rank}
                         </span>
                         <div>
                           <div style={{ fontWeight: 700, fontSize: '0.86rem', color: 'var(--ink-brown)' }}>
@@ -730,7 +814,7 @@ export default function AdminDashboardPage() {
 
                       <div style={{ textAlign: 'right' }}>
                         <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
-                          ₹{artisan.totalSales.toLocaleString('en-IN')}
+                          {'₹' + artisan.totalSales.toLocaleString('en-IN')}
                         </div>
                         <div style={{ fontSize: '0.7rem', color: 'var(--stone-taupe)' }}>
                           {artisan.unitsSold} sold
@@ -741,7 +825,7 @@ export default function AdminDashboardPage() {
                 })}
               </div>
 
-              {/* Artisan Pagination Controls (5 per page) */}
+              {/* Artisan Pagination Controls */}
               {topArtisans.length > PAGE_SIZE && (
                 <div
                   style={{
@@ -837,10 +921,10 @@ export default function AdminDashboardPage() {
         <div
           style={{
             background: '#FFFFFF',
-            border: '1.5px solid var(--soft-gold-line)',
-            borderRadius: '8px',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '10px',
             padding: '1.5rem',
-            boxShadow: '0 2px 10px rgba(43,31,24,0.03)',
+            boxShadow: '0 2px 14px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
           }}
@@ -872,8 +956,8 @@ export default function AdminDashboardPage() {
                 textAlign: 'center',
                 color: 'var(--stone-taupe)',
                 background: '#FAF7F2',
-                borderRadius: '6px',
-                border: '1px dashed var(--soft-gold-line)',
+                borderRadius: '8px',
+                border: '1px solid #EAE2D5',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -882,8 +966,23 @@ export default function AdminDashboardPage() {
                 lineHeight: 1.6,
               }}
             >
-              <ShoppingBag style={{ width: 36, height: 36, color: 'var(--gargi-gold)', marginBottom: '0.75rem', opacity: 0.6 }} />
-              <div>No catalog products registered yet.</div>
+              <div
+                style={{
+                  width: '50px',
+                  height: '50px',
+                  borderRadius: '50%',
+                  background: '#FFFFFF',
+                  border: '1.5px solid var(--soft-gold-line)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '0.75rem',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+                }}
+              >
+                <ShoppingBag style={{ width: 24, height: 24, color: 'var(--gargi-gold)' }} />
+              </div>
+              <div style={{ fontWeight: 600, color: 'var(--ink-brown)' }}>No catalog products registered yet.</div>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
@@ -896,11 +995,22 @@ export default function AdminDashboardPage() {
                       style={{
                         padding: '0.75rem 0.95rem',
                         border: '1px solid #F0E8DC',
-                        borderRadius: '6px',
+                        borderRadius: '8px',
                         backgroundColor: '#FAF7F2',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
+                        transition: 'all 0.2s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = '#FFFFFF';
+                        e.currentTarget.style.borderColor = 'var(--gargi-gold)';
+                        e.currentTarget.style.boxShadow = '0 2px 8px rgba(43,31,24,0.04)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = '#FAF7F2';
+                        e.currentTarget.style.borderColor = '#F0E8DC';
+                        e.currentTarget.style.boxShadow = 'none';
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
@@ -920,8 +1030,41 @@ export default function AdminDashboardPage() {
                             flexShrink: 0,
                           }}
                         >
-                          #{rank}
+                          {'#' + rank}
                         </span>
+
+                        {/* Product Thumbnail */}
+                        {product.imageUrl ? (
+                          <img
+                            src={product.imageUrl}
+                            alt={product.name}
+                            style={{
+                              width: '38px',
+                              height: '38px',
+                              borderRadius: '6px',
+                              objectFit: 'cover',
+                              border: '1px solid var(--soft-gold-line)',
+                              flexShrink: 0,
+                            }}
+                          />
+                        ) : (
+                          <div
+                            style={{
+                              width: '38px',
+                              height: '38px',
+                              borderRadius: '6px',
+                              backgroundColor: '#EAE2D5',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              color: 'var(--stone-taupe)',
+                              flexShrink: 0,
+                            }}
+                          >
+                            <Package style={{ width: 18, height: 18 }} />
+                          </div>
+                        )}
+
                         <div style={{ minWidth: 0 }}>
                           <div
                             style={{
@@ -937,7 +1080,7 @@ export default function AdminDashboardPage() {
                             {product.name}
                           </div>
                           <div style={{ fontSize: '0.72rem', color: 'var(--stone-taupe)', textTransform: 'capitalize' }}>
-                            {product.category} &bull; ₹{product.price.toLocaleString('en-IN')}
+                            {product.category} &bull; <span style={{ color: 'var(--maharani-maroon)', fontWeight: 600 }}>{'₹' + product.price.toLocaleString('en-IN')}</span>
                           </div>
                         </div>
                       </div>
@@ -946,13 +1089,14 @@ export default function AdminDashboardPage() {
                         <span
                           style={{
                             display: 'inline-block',
-                            padding: '0.2rem 0.55rem',
-                            borderRadius: '4px',
+                            padding: '0.2rem 0.6rem',
+                            borderRadius: '9999px',
                             backgroundColor: product.unitsSold > 0 ? '#E8F5E9' : '#F0E8DC',
                             color: product.unitsSold > 0 ? '#2E7D32' : 'var(--stone-taupe)',
-                            fontWeight: 700,
-                            fontSize: '0.74rem',
+                            fontWeight: 600,
+                            fontSize: '0.72rem',
                             fontFamily: 'var(--font-nav)',
+                            border: '1px solid rgba(228, 211, 174, 0.7)',
                           }}
                         >
                           {product.unitsSold} sold
@@ -963,7 +1107,7 @@ export default function AdminDashboardPage() {
                 })}
               </div>
 
-              {/* Product Pagination Controls (5 per page) */}
+              {/* Product Pagination Controls */}
               {topProducts.length > PAGE_SIZE && (
                 <div
                   style={{
