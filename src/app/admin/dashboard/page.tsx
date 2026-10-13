@@ -100,31 +100,39 @@ export default function AdminDashboardPage() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-      {/* Page Title Lockup */}
-      <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem' }}>
+      {/* Page Title Lockup - Accessible High-Contrast Sizing */}
+      <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.5rem' }}>
         <h1
           style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: '1.9rem',
-            fontWeight: 700,
+            fontSize: '2.35rem',
+            fontWeight: 800,
             color: 'var(--ink-brown)',
             margin: 0,
-            letterSpacing: '-0.01em',
+            letterSpacing: '-0.025em',
+            lineHeight: 1.2,
           }}
         >
           Operations <span style={{ color: 'var(--maharani-maroon)' }}>Dashboard</span>
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.92rem', fontFamily: 'var(--font-subtitle)' }}>
+        <p
+          style={{
+            margin: '0.5rem 0 0',
+            color: '#4A3E36',
+            fontSize: '1.05rem',
+            lineHeight: 1.55,
+            fontWeight: 500,
+          }}
+        >
           Real-time enterprise metrics, active catalog queues, and live revenue analytics.
         </p>
       </div>
 
-      {/* ════════════ 1. THE 4 SLEEK BOXES ════════════ */}
+      {/* ════════════ 1. THE 4 METRIC BOXES ════════════ */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-          gap: '1.25rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+          gap: '1.5rem',
         }}
       >
         {/* Box 1: Total Artisans */}
@@ -132,15 +140,15 @@ export default function AdminDashboardPage() {
           style={{
             background: '#FFFFFF',
             border: '1px solid var(--soft-gold-line)',
-            borderRadius: '10px',
-            padding: '1.4rem 1.5rem',
+            borderRadius: '12px',
+            padding: '1.75rem 1.65rem',
             position: 'relative',
             boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: '142px',
-            transition: 'all 0.22s cubic-bezier(0.16, 1, 0.3, 1)',
+            minHeight: '155px',
+            transition: 'all 0.22s ease',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateY(-2px)';
@@ -156,10 +164,10 @@ export default function AdminDashboardPage() {
           <div
             style={{
               position: 'absolute',
-              top: '1.25rem',
-              right: '1.25rem',
-              width: '42px',
-              height: '42px',
+              top: '1.5rem',
+              right: '1.5rem',
+              width: '46px',
+              height: '46px',
               borderRadius: '50%',
               backgroundColor: '#FAF7F2',
               border: '1.5px solid #231812',
@@ -170,33 +178,31 @@ export default function AdminDashboardPage() {
               boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
             }}
           >
-            <Users style={{ width: 20, height: 20, color: '#231812' }} strokeWidth={1.75} />
+            <Users style={{ width: 22, height: 22, color: '#231812' }} strokeWidth={1.8} />
           </div>
           <div>
             <div
               style={{
-                fontSize: '0.72rem',
-                color: 'var(--stone-taupe)',
+                fontSize: '0.92rem',
+                color: '#5C5043',
                 fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.09em',
-                fontFamily: 'var(--font-display)',
-                marginBottom: '0.45rem',
+                letterSpacing: '0.06em',
+                marginBottom: '0.5rem',
               }}
             >
               Total Artisans
             </div>
             <div
               style={{
-                fontSize: '2.6rem',
-                fontWeight: 700,
+                fontSize: '3rem',
+                fontWeight: 800,
                 color: 'var(--ink-brown)',
-                fontFamily: 'var(--font-display)',
-                lineHeight: 1.1,
+                lineHeight: 1.05,
                 letterSpacing: '-0.03em',
               }}
             >
-              {loading ? <AdminLoadingSpinner size={26} /> : totalArtisans}
+              {loading ? <AdminLoadingSpinner size={32} /> : totalArtisans}
             </div>
           </div>
         </div>
@@ -206,15 +212,15 @@ export default function AdminDashboardPage() {
           style={{
             background: '#FFFFFF',
             border: '1px solid var(--soft-gold-line)',
-            borderRadius: '10px',
-            padding: '1.4rem 1.5rem',
+            borderRadius: '12px',
+            padding: '1.75rem 1.65rem',
             position: 'relative',
             boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: '142px',
-            transition: 'all 0.22s cubic-bezier(0.16, 1, 0.3, 1)',
+            minHeight: '155px',
+            transition: 'all 0.22s ease',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateY(-2px)';
@@ -230,10 +236,10 @@ export default function AdminDashboardPage() {
           <div
             style={{
               position: 'absolute',
-              top: '1.25rem',
-              right: '1.25rem',
-              width: '42px',
-              height: '42px',
+              top: '1.5rem',
+              right: '1.5rem',
+              width: '46px',
+              height: '46px',
               borderRadius: '50%',
               backgroundColor: '#FAF7F2',
               border: '1.5px solid #231812',
@@ -244,33 +250,31 @@ export default function AdminDashboardPage() {
               boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
             }}
           >
-            <Package style={{ width: 20, height: 20, color: '#231812' }} strokeWidth={1.75} />
+            <Package style={{ width: 22, height: 22, color: '#231812' }} strokeWidth={1.8} />
           </div>
           <div>
             <div
               style={{
-                fontSize: '0.72rem',
-                color: 'var(--stone-taupe)',
+                fontSize: '0.92rem',
+                color: '#5C5043',
                 fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.09em',
-                fontFamily: 'var(--font-display)',
-                marginBottom: '0.45rem',
+                letterSpacing: '0.06em',
+                marginBottom: '0.5rem',
               }}
             >
               Total Products
             </div>
             <div
               style={{
-                fontSize: '2.6rem',
-                fontWeight: 700,
+                fontSize: '3rem',
+                fontWeight: 800,
                 color: 'var(--ink-brown)',
-                fontFamily: 'var(--font-display)',
-                lineHeight: 1.1,
+                lineHeight: 1.05,
                 letterSpacing: '-0.03em',
               }}
             >
-              {loading ? <AdminLoadingSpinner size={26} /> : totalProducts}
+              {loading ? <AdminLoadingSpinner size={32} /> : totalProducts}
             </div>
           </div>
         </div>
@@ -280,15 +284,15 @@ export default function AdminDashboardPage() {
           style={{
             background: '#FFFFFF',
             border: '1px solid var(--soft-gold-line)',
-            borderRadius: '10px',
-            padding: '1.4rem 1.5rem',
+            borderRadius: '12px',
+            padding: '1.75rem 1.65rem',
             position: 'relative',
             boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: '142px',
-            transition: 'all 0.22s cubic-bezier(0.16, 1, 0.3, 1)',
+            minHeight: '155px',
+            transition: 'all 0.22s ease',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateY(-2px)';
@@ -304,10 +308,10 @@ export default function AdminDashboardPage() {
           <div
             style={{
               position: 'absolute',
-              top: '1.25rem',
-              right: '1.25rem',
-              width: '42px',
-              height: '42px',
+              top: '1.5rem',
+              right: '1.5rem',
+              width: '46px',
+              height: '46px',
               borderRadius: '50%',
               backgroundColor: '#FAF7F2',
               border: '1.5px solid #231812',
@@ -318,33 +322,31 @@ export default function AdminDashboardPage() {
               boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
             }}
           >
-            <IndianRupee style={{ width: 20, height: 20, color: '#231812' }} strokeWidth={1.75} />
+            <IndianRupee style={{ width: 22, height: 22, color: '#231812' }} strokeWidth={1.8} />
           </div>
           <div>
             <div
               style={{
-                fontSize: '0.72rem',
-                color: 'var(--stone-taupe)',
+                fontSize: '0.92rem',
+                color: '#5C5043',
                 fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.09em',
-                fontFamily: 'var(--font-display)',
-                marginBottom: '0.45rem',
+                letterSpacing: '0.06em',
+                marginBottom: '0.5rem',
               }}
             >
               Total Sales
             </div>
             <div
               style={{
-                fontSize: '2.6rem',
-                fontWeight: 700,
+                fontSize: '3rem',
+                fontWeight: 800,
                 color: 'var(--maharani-maroon)',
-                fontFamily: 'var(--font-display)',
-                lineHeight: 1.1,
+                lineHeight: 1.05,
                 letterSpacing: '-0.03em',
               }}
             >
-              {loading ? <AdminLoadingSpinner size={26} /> : ('₹' + totalSales.toLocaleString('en-IN'))}
+              {loading ? <AdminLoadingSpinner size={32} /> : ('₹' + totalSales.toLocaleString('en-IN'))}
             </div>
           </div>
         </div>
@@ -356,16 +358,16 @@ export default function AdminDashboardPage() {
             textDecoration: 'none',
             background: '#FFFFFF',
             border: '1px solid var(--soft-gold-line)',
-            borderRadius: '10px',
-            padding: '1.4rem 1.5rem',
+            borderRadius: '12px',
+            padding: '1.75rem 1.65rem',
             position: 'relative',
             boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: '142px',
+            minHeight: '155px',
             cursor: 'pointer',
-            transition: 'all 0.22s cubic-bezier(0.16, 1, 0.3, 1)',
+            transition: 'all 0.22s ease',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateY(-2px)';
@@ -381,10 +383,10 @@ export default function AdminDashboardPage() {
           <div
             style={{
               position: 'absolute',
-              top: '1.25rem',
-              right: '1.25rem',
-              width: '42px',
-              height: '42px',
+              top: '1.5rem',
+              right: '1.5rem',
+              width: '46px',
+              height: '46px',
               borderRadius: '50%',
               backgroundColor: '#FAF7F2',
               border: '1.5px solid #231812',
@@ -395,34 +397,32 @@ export default function AdminDashboardPage() {
               boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
             }}
           >
-            <Clock style={{ width: 20, height: 20, color: '#231812' }} strokeWidth={1.75} />
+            <Clock style={{ width: 22, height: 22, color: '#231812' }} strokeWidth={1.8} />
           </div>
 
           <div>
             <div
               style={{
-                fontSize: '0.72rem',
-                color: 'var(--stone-taupe)',
+                fontSize: '0.92rem',
+                color: '#5C5043',
                 fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.09em',
-                fontFamily: 'var(--font-display)',
-                marginBottom: '0.45rem',
+                letterSpacing: '0.06em',
+                marginBottom: '0.5rem',
               }}
             >
               Pending Artisans
             </div>
             <div
               style={{
-                fontSize: '2.6rem',
-                fontWeight: 700,
+                fontSize: '3rem',
+                fontWeight: 800,
                 color: 'var(--ink-brown)',
-                fontFamily: 'var(--font-display)',
-                lineHeight: 1.1,
+                lineHeight: 1.05,
                 letterSpacing: '-0.03em',
               }}
             >
-              {loading ? <AdminLoadingSpinner size={26} /> : pendingArtisans}
+              {loading ? <AdminLoadingSpinner size={32} /> : pendingArtisans}
             </div>
           </div>
         </Link>
@@ -433,8 +433,8 @@ export default function AdminDashboardPage() {
         style={{
           background: '#FFFFFF',
           border: '1px solid var(--soft-gold-line)',
-          borderRadius: '10px',
-          padding: '1.75rem',
+          borderRadius: '12px',
+          padding: '2rem',
           boxShadow: '0 2px 14px rgba(43,31,24,0.03)',
         }}
       >
@@ -445,22 +445,29 @@ export default function AdminDashboardPage() {
             justifyContent: 'space-between',
             flexWrap: 'wrap',
             gap: '1rem',
-            marginBottom: '1.5rem',
+            marginBottom: '1.75rem',
           }}
         >
           <div>
             <h2
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '1.25rem',
+                fontSize: '1.5rem',
                 fontWeight: 700,
                 color: 'var(--ink-brown)',
                 margin: 0,
+                letterSpacing: '-0.015em',
               }}
             >
               Daily Sales Revenue
             </h2>
-            <p style={{ margin: '0.2rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.84rem', fontFamily: 'var(--font-subtitle)' }}>
+            <p
+              style={{
+                margin: '0.35rem 0 0',
+                color: '#5C5043',
+                fontSize: '0.98rem',
+                lineHeight: 1.5,
+              }}
+            >
               Actual transaction totals aggregated per day from the orders ledger
             </p>
           </div>
@@ -469,7 +476,7 @@ export default function AdminDashboardPage() {
           <div
             style={{
               display: 'inline-flex',
-              padding: '3px',
+              padding: '4px',
               borderRadius: '9999px',
               backgroundColor: '#FAF7F2',
               border: '1px solid var(--soft-gold-line)',
@@ -482,13 +489,12 @@ export default function AdminDashboardPage() {
               style={{
                 border: 'none',
                 background: timeRange === '7' ? 'var(--maharani-maroon)' : 'transparent',
-                color: timeRange === '7' ? '#FFFFFF' : 'var(--stone-taupe)',
-                padding: '0.35rem 0.95rem',
+                color: timeRange === '7' ? '#FFFFFF' : '#4A3E36',
+                padding: '0.5rem 1.25rem',
                 borderRadius: '9999px',
-                fontSize: '0.75rem',
-                fontWeight: 600,
+                fontSize: '0.92rem',
+                fontWeight: 700,
                 cursor: 'pointer',
-                fontFamily: 'var(--font-display)',
                 transition: 'all 0.18s ease',
                 boxShadow: timeRange === '7' ? '0 2px 6px rgba(122, 35, 49, 0.25)' : 'none',
               }}
@@ -501,13 +507,12 @@ export default function AdminDashboardPage() {
               style={{
                 border: 'none',
                 background: timeRange === '30' ? 'var(--maharani-maroon)' : 'transparent',
-                color: timeRange === '30' ? '#FFFFFF' : 'var(--stone-taupe)',
-                padding: '0.35rem 0.95rem',
+                color: timeRange === '30' ? '#FFFFFF' : '#4A3E36',
+                padding: '0.5rem 1.25rem',
                 borderRadius: '9999px',
-                fontSize: '0.75rem',
-                fontWeight: 600,
+                fontSize: '0.92rem',
+                fontWeight: 700,
                 cursor: 'pointer',
-                fontFamily: 'var(--font-display)',
                 transition: 'all 0.18s ease',
                 boxShadow: timeRange === '30' ? '0 2px 6px rgba(122, 35, 49, 0.25)' : 'none',
               }}
@@ -517,8 +522,8 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* Bar Chart Area with Subtle Y-Axis Gridlines */}
-        <div style={{ position: 'relative', width: '100%', height: '230px', paddingTop: '10px' }}>
+        {/* Bar Chart Area with High-Contrast Accessible Labels */}
+        <div style={{ position: 'relative', width: '100%', height: '260px', paddingTop: '15px' }}>
           {/* Subtle Y-Axis Guidelines & Metric Scales */}
           <div
             style={{
@@ -528,29 +533,29 @@ export default function AdminDashboardPage() {
               flexDirection: 'column',
               justifyContent: 'space-between',
               pointerEvents: 'none',
-              paddingBottom: '30px',
-              paddingLeft: '45px',
+              paddingBottom: '36px',
+              paddingLeft: '65px',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-              <span style={{ fontSize: '0.65rem', color: '#B5A99B', width: '42px', marginLeft: '-45px', fontFamily: 'var(--font-display)', textAlign: 'right', paddingRight: '8px' }}>
+              <span style={{ fontSize: '0.88rem', fontWeight: 600, color: '#5C5043', width: '60px', marginLeft: '-65px', textAlign: 'right', paddingRight: '12px' }}>
                 {maxSales > 1000 ? (maxSales >= 100000 ? ('₹' + (maxSales / 100000).toFixed(1) + 'L') : ('₹' + (maxSales / 1000).toFixed(0) + 'k')) : '₹1k'}
               </span>
-              <div style={{ borderBottom: '1px dashed rgba(228, 211, 174, 0.55)', flex: 1 }} />
+              <div style={{ borderBottom: '1px dashed rgba(228, 211, 174, 0.75)', flex: 1 }} />
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-              <span style={{ fontSize: '0.65rem', color: '#B5A99B', width: '42px', marginLeft: '-45px', fontFamily: 'var(--font-display)', textAlign: 'right', paddingRight: '8px' }}>
+              <span style={{ fontSize: '0.88rem', fontWeight: 600, color: '#5C5043', width: '60px', marginLeft: '-65px', textAlign: 'right', paddingRight: '12px' }}>
                 {maxSales > 1000 ? ('₹' + Math.round(maxSales / 2000) + 'k') : '₹500'}
               </span>
-              <div style={{ borderBottom: '1px dashed rgba(228, 211, 174, 0.55)', flex: 1 }} />
+              <div style={{ borderBottom: '1px dashed rgba(228, 211, 174, 0.75)', flex: 1 }} />
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-              <span style={{ fontSize: '0.65rem', color: '#B5A99B', width: '42px', marginLeft: '-45px', fontFamily: 'var(--font-display)', textAlign: 'right', paddingRight: '8px' }}>
+              <span style={{ fontSize: '0.88rem', fontWeight: 600, color: '#5C5043', width: '60px', marginLeft: '-65px', textAlign: 'right', paddingRight: '12px' }}>
                 ₹0
               </span>
-              <div style={{ borderBottom: '1px solid var(--soft-gold-line)', flex: 1 }} />
+              <div style={{ borderBottom: '1.5px solid var(--soft-gold-line)', flex: 1 }} />
             </div>
           </div>
 
@@ -558,11 +563,11 @@ export default function AdminDashboardPage() {
           <div
             style={{
               position: 'relative',
-              height: 'calc(100% - 30px)',
+              height: 'calc(100% - 36px)',
               display: 'flex',
               alignItems: 'flex-end',
               gap: timeRange === '7' ? '1.5rem' : '0.35rem',
-              padding: '0 0.5rem 0 45px',
+              padding: '0 0.5rem 0 65px',
               justifyContent: 'space-between',
             }}
           >
@@ -596,21 +601,20 @@ export default function AdminDashboardPage() {
                         transform: 'translateX(-50%)',
                         backgroundColor: 'var(--ink-brown)',
                         color: '#FFFFFF',
-                        padding: '0.4rem 0.75rem',
+                        padding: '0.5rem 0.9rem',
                         borderRadius: '6px',
-                        fontSize: '0.72rem',
+                        fontSize: '0.88rem',
                         whiteSpace: 'nowrap',
                         zIndex: 20,
                         pointerEvents: 'none',
                         boxShadow: '0 4px 14px rgba(0,0,0,0.22)',
                         textAlign: 'center',
-                        fontFamily: 'var(--font-nav)',
                       }}
                     >
-                      <div style={{ fontWeight: 700, color: 'var(--soft-gold-line)' }}>
+                      <div style={{ fontWeight: 800, color: 'var(--soft-gold-line)', fontSize: '0.98rem' }}>
                         {'₹' + item.sales.toLocaleString('en-IN')}
                       </div>
-                      <div style={{ fontSize: '0.65rem', opacity: 0.85 }}>{item.label}</div>
+                      <div style={{ fontSize: '0.8rem', opacity: 0.9, marginTop: '2px' }}>{item.label}</div>
                     </div>
                   )}
 
@@ -638,16 +642,16 @@ export default function AdminDashboardPage() {
             })}
           </div>
 
-          {/* X-Axis Date Labels */}
+          {/* X-Axis Date Labels - Readable 14px */}
           <div
             style={{
-              height: '30px',
+              height: '36px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              padding: '0 0.5rem 0 45px',
+              padding: '0 0.5rem 0 65px',
               gap: timeRange === '7' ? '1.5rem' : '0.35rem',
-              borderTop: '1px solid var(--soft-gold-line)',
+              borderTop: '1.5px solid var(--soft-gold-line)',
             }}
           >
             {currentSalesData.map((item, idx) => {
@@ -659,9 +663,8 @@ export default function AdminDashboardPage() {
                   style={{
                     flex: 1,
                     textAlign: 'center',
-                    fontSize: '0.68rem',
-                    color: 'var(--stone-taupe)',
-                    fontFamily: 'var(--font-display)',
+                    fontSize: '0.88rem',
+                    color: '#4A3E36',
                     fontWeight: 600,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -680,7 +683,7 @@ export default function AdminDashboardPage() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(440px, 1fr))',
           gap: '1.75rem',
         }}
       >
@@ -689,26 +692,26 @@ export default function AdminDashboardPage() {
           style={{
             background: '#FFFFFF',
             border: '1px solid var(--soft-gold-line)',
-            borderRadius: '10px',
-            padding: '1.5rem',
+            borderRadius: '12px',
+            padding: '1.75rem',
             boxShadow: '0 2px 14px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
           }}
         >
-          <div style={{ marginBottom: '1.25rem' }}>
+          <div style={{ marginBottom: '1.5rem' }}>
             <h2
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '1.2rem',
+                fontSize: '1.45rem',
                 fontWeight: 700,
                 color: 'var(--ink-brown)',
                 margin: 0,
+                letterSpacing: '-0.015em',
               }}
             >
               Top 10 Artisans
             </h2>
-            <p style={{ margin: '0.2rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.78rem', fontFamily: 'var(--font-body)' }}>
+            <p style={{ margin: '0.35rem 0 0', color: '#5C5043', fontSize: '0.98rem' }}>
               Ranked by verified craft volume and performance
             </p>
           </div>
@@ -719,53 +722,53 @@ export default function AdminDashboardPage() {
             <div
               style={{
                 flex: 1,
-                padding: '2.5rem 1.5rem',
+                padding: '3rem 2rem',
                 textAlign: 'center',
-                color: 'var(--stone-taupe)',
+                color: '#5C5043',
                 background: '#FAF7F2',
-                borderRadius: '8px',
+                borderRadius: '10px',
                 border: '1px solid #EAE2D5',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '0.84rem',
+                fontSize: '1.05rem',
                 lineHeight: 1.6,
               }}
             >
               <div
                 style={{
-                  width: '50px',
-                  height: '50px',
+                  width: '56px',
+                  height: '56px',
                   borderRadius: '50%',
                   background: '#FFFFFF',
                   border: '1.5px solid var(--soft-gold-line)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginBottom: '0.75rem',
-                  boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+                  marginBottom: '1rem',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
                 }}
               >
-                <Award style={{ width: 24, height: 24, color: 'var(--gargi-gold)' }} />
+                <Award style={{ width: 28, height: 28, color: 'var(--gargi-gold)' }} />
               </div>
-              <div style={{ fontWeight: 600, color: 'var(--ink-brown)' }}>No verified artisan rankings yet.</div>
-              <div style={{ fontSize: '0.76rem', color: 'var(--stone-taupe)', marginTop: '0.25rem' }}>
+              <div style={{ fontWeight: 700, color: 'var(--ink-brown)', fontSize: '1.15rem' }}>No verified artisan rankings yet.</div>
+              <div style={{ fontSize: '0.95rem', color: '#5C5043', marginTop: '0.35rem', maxWidth: '360px' }}>
                 Artisans approved through the application queue will appear here as orders generate.
               </div>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                 {paginatedArtisans.map((artisan, index) => {
                   const rank = (artisanPage - 1) * PAGE_SIZE + index + 1;
                   return (
                     <div
                       key={artisan.id}
                       style={{
-                        padding: '0.75rem 0.95rem',
+                        padding: '1rem 1.15rem',
                         border: '1px solid #F0E8DC',
-                        borderRadius: '8px',
+                        borderRadius: '10px',
                         backgroundColor: '#FAF7F2',
                         display: 'flex',
                         alignItems: 'center',
@@ -783,40 +786,39 @@ export default function AdminDashboardPage() {
                         e.currentTarget.style.boxShadow = 'none';
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                         <span
                           style={{
-                            width: '26px',
-                            height: '26px',
+                            width: '32px',
+                            height: '32px',
                             borderRadius: '50%',
                             backgroundColor: rank <= 3 ? 'var(--maharani-maroon)' : '#EAE2D5',
                             color: rank <= 3 ? '#FFFFFF' : 'var(--ink-brown)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            fontSize: '0.72rem',
-                            fontWeight: 700,
-                            fontFamily: 'var(--font-display)',
+                            fontSize: '0.88rem',
+                            fontWeight: 800,
                             flexShrink: 0,
                           }}
                         >
                           {'#' + rank}
                         </span>
                         <div>
-                          <div style={{ fontWeight: 700, fontSize: '0.94rem', fontFamily: 'var(--font-display)', color: 'var(--ink-brown)' }}>
+                          <div style={{ fontWeight: 700, fontSize: '1.05rem', color: 'var(--ink-brown)' }}>
                             {artisan.name}
                           </div>
-                          <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-subtitle)' }}>
+                          <div style={{ fontSize: '0.9rem', color: '#5C5043', marginTop: '2px' }}>
                             {artisan.craft} &bull; {artisan.state}
                           </div>
                         </div>
                       </div>
 
                       <div style={{ textAlign: 'right' }}>
-                        <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--maharani-maroon)', fontFamily: 'var(--font-display)' }}>
+                        <div style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--maharani-maroon)' }}>
                           {'₹' + artisan.totalSales.toLocaleString('en-IN')}
                         </div>
-                        <div style={{ fontSize: '0.72rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-display)' }}>
+                        <div style={{ fontSize: '0.85rem', color: '#5C5043', fontWeight: 600, marginTop: '2px' }}>
                           {artisan.unitsSold} sold
                         </div>
                       </div>
@@ -832,23 +834,23 @@ export default function AdminDashboardPage() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    marginTop: '1.25rem',
-                    paddingTop: '0.85rem',
+                    marginTop: '1.5rem',
+                    paddingTop: '1rem',
                     borderTop: '1px solid #F0E8DC',
                   }}
                 >
-                  <span style={{ fontSize: '0.74rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)', fontWeight: 500 }}>
+                  <span style={{ fontSize: '0.9rem', color: '#5C5043', fontWeight: 600 }}>
                     Showing {(artisanPage - 1) * PAGE_SIZE + 1}–{Math.min(artisanPage * PAGE_SIZE, topArtisans.length)} of {topArtisans.length}
                   </span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
                     <button
                       type="button"
                       disabled={artisanPage === 1}
                       onClick={() => setArtisanPage((p) => Math.max(1, p - 1))}
                       style={{
-                        width: '28px',
-                        height: '28px',
-                        borderRadius: '4px',
+                        width: '34px',
+                        height: '34px',
+                        borderRadius: '6px',
                         border: '1px solid var(--soft-gold-line)',
                         background: artisanPage === 1 ? '#FAF7F2' : '#FFFFFF',
                         color: artisanPage === 1 ? 'var(--stone-taupe)' : 'var(--ink-brown)',
@@ -860,7 +862,7 @@ export default function AdminDashboardPage() {
                       }}
                       aria-label="Previous Page"
                     >
-                      <ChevronLeft style={{ width: 14, height: 14 }} />
+                      <ChevronLeft style={{ width: 16, height: 16 }} />
                     </button>
 
                     {Array.from({ length: totalArtisanPages }, (_, i) => i + 1).map((pageNum) => (
@@ -869,16 +871,15 @@ export default function AdminDashboardPage() {
                         type="button"
                         onClick={() => setArtisanPage(pageNum)}
                         style={{
-                          minWidth: '28px',
-                          height: '28px',
-                          padding: '0 0.4rem',
-                          borderRadius: '4px',
+                          minWidth: '34px',
+                          height: '34px',
+                          padding: '0 0.5rem',
+                          borderRadius: '6px',
                           border: pageNum === artisanPage ? '1px solid var(--maharani-maroon)' : '1px solid var(--soft-gold-line)',
                           background: pageNum === artisanPage ? 'var(--maharani-maroon)' : '#FFFFFF',
                           color: pageNum === artisanPage ? '#FFFFFF' : 'var(--ink-brown)',
-                          fontSize: '0.75rem',
+                          fontSize: '0.9rem',
                           fontWeight: 700,
-                          fontFamily: 'var(--font-display)',
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
@@ -894,9 +895,9 @@ export default function AdminDashboardPage() {
                       disabled={artisanPage === totalArtisanPages}
                       onClick={() => setArtisanPage((p) => Math.min(totalArtisanPages, p + 1))}
                       style={{
-                        width: '28px',
-                        height: '28px',
-                        borderRadius: '4px',
+                        width: '34px',
+                        height: '34px',
+                        borderRadius: '6px',
                         border: '1px solid var(--soft-gold-line)',
                         background: artisanPage === totalArtisanPages ? '#FAF7F2' : '#FFFFFF',
                         color: artisanPage === totalArtisanPages ? 'var(--stone-taupe)' : 'var(--ink-brown)',
@@ -908,7 +909,7 @@ export default function AdminDashboardPage() {
                       }}
                       aria-label="Next Page"
                     >
-                      <ChevronRight style={{ width: 14, height: 14 }} />
+                      <ChevronRight style={{ width: 16, height: 16 }} />
                     </button>
                   </div>
                 </div>
@@ -922,26 +923,26 @@ export default function AdminDashboardPage() {
           style={{
             background: '#FFFFFF',
             border: '1px solid var(--soft-gold-line)',
-            borderRadius: '10px',
-            padding: '1.5rem',
+            borderRadius: '12px',
+            padding: '1.75rem',
             boxShadow: '0 2px 14px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
           }}
         >
-          <div style={{ marginBottom: '1.25rem' }}>
+          <div style={{ marginBottom: '1.5rem' }}>
             <h2
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '1.2rem',
+                fontSize: '1.45rem',
                 fontWeight: 700,
                 color: 'var(--ink-brown)',
                 margin: 0,
+                letterSpacing: '-0.015em',
               }}
             >
               Top 10 Most Sold Items
             </h2>
-            <p style={{ margin: '0.2rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.78rem', fontFamily: 'var(--font-body)' }}>
+            <p style={{ margin: '0.35rem 0 0', color: '#5C5043', fontSize: '0.98rem' }}>
               Live catalog bestsellers ranked by verified units purchased
             </p>
           </div>
@@ -952,50 +953,50 @@ export default function AdminDashboardPage() {
             <div
               style={{
                 flex: 1,
-                padding: '2.5rem 1.5rem',
+                padding: '3rem 2rem',
                 textAlign: 'center',
-                color: 'var(--stone-taupe)',
+                color: '#5C5043',
                 background: '#FAF7F2',
-                borderRadius: '8px',
+                borderRadius: '10px',
                 border: '1px solid #EAE2D5',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '0.84rem',
+                fontSize: '1.05rem',
                 lineHeight: 1.6,
               }}
             >
               <div
                 style={{
-                  width: '50px',
-                  height: '50px',
+                  width: '56px',
+                  height: '56px',
                   borderRadius: '50%',
                   background: '#FFFFFF',
                   border: '1.5px solid var(--soft-gold-line)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginBottom: '0.75rem',
-                  boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+                  marginBottom: '1rem',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
                 }}
               >
-                <ShoppingBag style={{ width: 24, height: 24, color: 'var(--gargi-gold)' }} />
+                <ShoppingBag style={{ width: 28, height: 28, color: 'var(--gargi-gold)' }} />
               </div>
-              <div style={{ fontWeight: 600, color: 'var(--ink-brown)' }}>No catalog products registered yet.</div>
+              <div style={{ fontWeight: 700, color: 'var(--ink-brown)', fontSize: '1.15rem' }}>No catalog products registered yet.</div>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                 {paginatedProducts.map((product, index) => {
                   const rank = (productPage - 1) * PAGE_SIZE + index + 1;
                   return (
                     <div
                       key={product.id}
                       style={{
-                        padding: '0.75rem 0.95rem',
+                        padding: '1rem 1.15rem',
                         border: '1px solid #F0E8DC',
-                        borderRadius: '8px',
+                        borderRadius: '10px',
                         backgroundColor: '#FAF7F2',
                         display: 'flex',
                         alignItems: 'center',
@@ -1013,20 +1014,19 @@ export default function AdminDashboardPage() {
                         e.currentTarget.style.boxShadow = 'none';
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', minWidth: 0 }}>
                         <span
                           style={{
-                            width: '26px',
-                            height: '26px',
+                            width: '32px',
+                            height: '32px',
                             borderRadius: '50%',
                             backgroundColor: rank <= 3 ? 'var(--maharani-maroon)' : '#EAE2D5',
                             color: rank <= 3 ? '#FFFFFF' : 'var(--ink-brown)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            fontSize: '0.72rem',
-                            fontWeight: 700,
-                            fontFamily: 'var(--font-display)',
+                            fontSize: '0.88rem',
+                            fontWeight: 800,
                             flexShrink: 0,
                           }}
                         >
@@ -1039,20 +1039,20 @@ export default function AdminDashboardPage() {
                             src={product.imageUrl}
                             alt={product.name}
                             style={{
-                              width: '38px',
-                              height: '38px',
-                              borderRadius: '6px',
+                              width: '44px',
+                              height: '44px',
+                              borderRadius: '8px',
                               objectFit: 'cover',
-                              border: '1px solid var(--soft-gold-line)',
+                              border: '1.5px solid var(--soft-gold-line)',
                               flexShrink: 0,
                             }}
                           />
                         ) : (
                           <div
                             style={{
-                              width: '38px',
-                              height: '38px',
-                              borderRadius: '6px',
+                              width: '44px',
+                              height: '44px',
+                              borderRadius: '8px',
                               backgroundColor: '#EAE2D5',
                               display: 'flex',
                               alignItems: 'center',
@@ -1061,7 +1061,7 @@ export default function AdminDashboardPage() {
                               flexShrink: 0,
                             }}
                           >
-                            <Package style={{ width: 18, height: 18 }} />
+                            <Package style={{ width: 20, height: 20 }} />
                           </div>
                         )}
 
@@ -1069,8 +1069,7 @@ export default function AdminDashboardPage() {
                           <div
                             style={{
                               fontWeight: 700,
-                              fontSize: '0.94rem',
-                              fontFamily: 'var(--font-display)',
+                              fontSize: '1.05rem',
                               color: 'var(--ink-brown)',
                               overflow: 'hidden',
                               textOverflow: 'ellipsis',
@@ -1080,24 +1079,23 @@ export default function AdminDashboardPage() {
                           >
                             {product.name}
                           </div>
-                          <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-subtitle)', textTransform: 'capitalize' }}>
-                            {product.category} &bull; <span style={{ color: 'var(--maharani-maroon)', fontWeight: 600 }}>{'₹' + product.price.toLocaleString('en-IN')}</span>
+                          <div style={{ fontSize: '0.9rem', color: '#5C5043', textTransform: 'capitalize', marginTop: '2px' }}>
+                            {product.category} &bull; <span style={{ color: 'var(--maharani-maroon)', fontWeight: 700 }}>{'₹' + product.price.toLocaleString('en-IN')}</span>
                           </div>
                         </div>
                       </div>
 
-                      <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: '0.75rem' }}>
+                      <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: '1rem' }}>
                         <span
                           style={{
                             display: 'inline-block',
-                            padding: '0.2rem 0.6rem',
+                            padding: '0.35rem 0.85rem',
                             borderRadius: '9999px',
                             backgroundColor: product.unitsSold > 0 ? '#E8F5E9' : '#F0E8DC',
-                            color: product.unitsSold > 0 ? '#2E7D32' : 'var(--stone-taupe)',
-                            fontWeight: 600,
-                            fontSize: '0.72rem',
-                            fontFamily: 'var(--font-display)',
-                            border: '1px solid rgba(228, 211, 174, 0.7)',
+                            color: product.unitsSold > 0 ? '#1B5E20' : '#4A3E36',
+                            fontWeight: 700,
+                            fontSize: '0.88rem',
+                            border: '1px solid rgba(228, 211, 174, 0.8)',
                           }}
                         >
                           {product.unitsSold} sold
@@ -1115,23 +1113,23 @@ export default function AdminDashboardPage() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    marginTop: '1.25rem',
-                    paddingTop: '0.85rem',
+                    marginTop: '1.5rem',
+                    paddingTop: '1rem',
                     borderTop: '1px solid #F0E8DC',
                   }}
                 >
-                  <span style={{ fontSize: '0.74rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)', fontWeight: 500 }}>
+                  <span style={{ fontSize: '0.9rem', color: '#5C5043', fontWeight: 600 }}>
                     Showing {(productPage - 1) * PAGE_SIZE + 1}–{Math.min(productPage * PAGE_SIZE, topProducts.length)} of {topProducts.length}
                   </span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
                     <button
                       type="button"
                       disabled={productPage === 1}
                       onClick={() => setProductPage((p) => Math.max(1, p - 1))}
                       style={{
-                        width: '28px',
-                        height: '28px',
-                        borderRadius: '4px',
+                        width: '34px',
+                        height: '34px',
+                        borderRadius: '6px',
                         border: '1px solid var(--soft-gold-line)',
                         background: productPage === 1 ? '#FAF7F2' : '#FFFFFF',
                         color: productPage === 1 ? 'var(--stone-taupe)' : 'var(--ink-brown)',
@@ -1143,7 +1141,7 @@ export default function AdminDashboardPage() {
                       }}
                       aria-label="Previous Page"
                     >
-                      <ChevronLeft style={{ width: 14, height: 14 }} />
+                      <ChevronLeft style={{ width: 16, height: 16 }} />
                     </button>
 
                     {Array.from({ length: totalProductPages }, (_, i) => i + 1).map((pageNum) => (
@@ -1152,16 +1150,15 @@ export default function AdminDashboardPage() {
                         type="button"
                         onClick={() => setProductPage(pageNum)}
                         style={{
-                          minWidth: '28px',
-                          height: '28px',
-                          padding: '0 0.4rem',
-                          borderRadius: '4px',
+                          minWidth: '34px',
+                          height: '34px',
+                          padding: '0 0.5rem',
+                          borderRadius: '6px',
                           border: pageNum === productPage ? '1px solid var(--maharani-maroon)' : '1px solid var(--soft-gold-line)',
                           background: pageNum === productPage ? 'var(--maharani-maroon)' : '#FFFFFF',
                           color: pageNum === productPage ? '#FFFFFF' : 'var(--ink-brown)',
-                          fontSize: '0.75rem',
+                          fontSize: '0.9rem',
                           fontWeight: 700,
-                          fontFamily: 'var(--font-display)',
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
@@ -1177,9 +1174,9 @@ export default function AdminDashboardPage() {
                       disabled={productPage === totalProductPages}
                       onClick={() => setProductPage((p) => Math.min(totalProductPages, p + 1))}
                       style={{
-                        width: '28px',
-                        height: '28px',
-                        borderRadius: '4px',
+                        width: '34px',
+                        height: '34px',
+                        borderRadius: '6px',
                         border: '1px solid var(--soft-gold-line)',
                         background: productPage === totalProductPages ? '#FAF7F2' : '#FFFFFF',
                         color: productPage === totalProductPages ? 'var(--stone-taupe)' : 'var(--ink-brown)',
@@ -1191,7 +1188,7 @@ export default function AdminDashboardPage() {
                       }}
                       aria-label="Next Page"
                     >
-                      <ChevronRight style={{ width: 14, height: 14 }} />
+                      <ChevronRight style={{ width: 16, height: 16 }} />
                     </button>
                   </div>
                 </div>

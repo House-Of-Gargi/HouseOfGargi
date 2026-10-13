@@ -42,34 +42,34 @@
   flex-direction: column;
 }
 
-/* Enforce TYPOGRAPHY.md across Artisan, Admin, and Super Admin portals */
-.seller-shell h1,
-.seller-shell h2,
-.seller-shell h3,
-.seller-shell h4,
-.seller-shell .admin-display-font,
-.seller-shell .seller-heading {
-  font-family: var(--font-display) !important;
+/* Enforce High-Legibility International Standard Typography across Admin & Seller Portals */
+.seller-shell,
+.seller-shell * {
+  font-family: 'Plus Jakarta Sans', 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 
-.seller-shell button,
-.seller-shell .btn,
-.seller-shell nav,
-.seller-shell [role="tab"],
-.seller-shell .badge {
-  font-family: var(--font-nav) !important;
+.seller-shell h1 {
+  font-size: 2.35rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.025em !important;
+  line-height: 1.2 !important;
 }
 
-.seller-shell p,
-.seller-shell span,
-.seller-shell table,
-.seller-shell td,
-.seller-shell th,
-.seller-shell input,
-.seller-shell select,
-.seller-shell textarea,
-.seller-shell label {
-  font-family: var(--font-body);
+.seller-shell h2 {
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.seller-shell h3 {
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+}
+
+.seller-shell p {
+  font-size: 1rem !important;
+  line-height: 1.6 !important;
+  color: #4A3E36 !important;
 }
 
 @media (min-width: 1024px) {

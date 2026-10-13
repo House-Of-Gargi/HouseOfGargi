@@ -149,7 +149,7 @@ export default function AdminBespokePage() {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.3rem' }}>
             <span style={{
-              fontSize: '0.72rem',
+              fontSize: '0.85rem',
               fontWeight: 700,
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
@@ -164,14 +164,15 @@ export default function AdminBespokePage() {
           </div>
           <h1 style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '1.9rem',
-            fontWeight: 700,
+            fontSize: '2.35rem',
+            fontWeight: 800,
+            letterSpacing: '-0.025em',
             color: 'var(--ink-brown)',
             margin: 0,
           }}>
             Bespoke Commissions <span style={{ color: 'var(--maharani-maroon)' }}>Queue</span>
           </h1>
-          <p style={{ margin: '4px 0 0', color: 'var(--stone-taupe)', fontSize: '0.98rem', fontFamily: 'var(--font-subtitle)' }}>
+          <p style={{ margin: '4px 0 0', color: 'var(--stone-taupe)', fontSize: '1.05rem', color: '#4A3E36', fontFamily: 'var(--font-subtitle)' }}>
             Manage custom bridal lehenga, heritage saree, and royal jewellery orders submitted by patrons.
           </p>
         </div>
@@ -180,7 +181,7 @@ export default function AdminBespokePage() {
           type="button"
           onClick={loadCommissions}
           className="btn btn--outline"
-          style={{ padding: '10px 18px', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: 6 }}
+          style={{ padding: '10px 18px', fontSize: '15px', display: 'inline-flex', alignItems: 'center', gap: 6 }}
         >
           <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
           <span>Refresh</span>
@@ -214,16 +215,16 @@ export default function AdminBespokePage() {
             e.currentTarget.style.borderColor = 'var(--soft-gold-line)';
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.09em', fontWeight: 700, fontFamily: 'var(--font-display)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.92rem', textTransform: 'uppercase', letterSpacing: '0.09em', fontWeight: 700, fontFamily: 'var(--font-display)' }}>
             <span>Pending Curation</span>
             <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <AlertCircle size={17} color="#7A2331" />
             </div>
           </div>
-          <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#7A2331', marginTop: '0.4rem', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+          <div style={{ fontSize: '3rem', fontWeight: 800, color: '#7A2331', marginTop: '0.4rem', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
             {pendingCount}
           </div>
-          <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', marginTop: '0.35rem' }}>Awaiting initial patron consultation</div>
+          <div style={{ fontSize: '0.92rem', color: '#5C5043', color: 'var(--stone-taupe)', marginTop: '0.35rem' }}>Awaiting initial patron consultation</div>
         </div>
 
         <div
@@ -246,16 +247,16 @@ export default function AdminBespokePage() {
             e.currentTarget.style.borderColor = 'var(--soft-gold-line)';
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.09em', fontWeight: 700, fontFamily: 'var(--font-display)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.92rem', textTransform: 'uppercase', letterSpacing: '0.09em', fontWeight: 700, fontFamily: 'var(--font-display)' }}>
             <span>In Consultation</span>
             <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Clock size={17} color="#B88E18" />
             </div>
           </div>
-          <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#B88E18', marginTop: '0.4rem', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+          <div style={{ fontSize: '3rem', fontWeight: 800, color: '#B88E18', marginTop: '0.4rem', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
             {inConsultCount}
           </div>
-          <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', marginTop: '0.35rem' }}>Artisan concierge actively discussing vision</div>
+          <div style={{ fontSize: '0.92rem', color: '#5C5043', color: 'var(--stone-taupe)', marginTop: '0.35rem' }}>Artisan concierge actively discussing vision</div>
         </div>
 
         <div
@@ -278,16 +279,16 @@ export default function AdminBespokePage() {
             e.currentTarget.style.borderColor = 'var(--soft-gold-line)';
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.09em', fontWeight: 700, fontFamily: 'var(--font-display)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.92rem', textTransform: 'uppercase', letterSpacing: '0.09em', fontWeight: 700, fontFamily: 'var(--font-display)' }}>
             <span>Completed / Delivered</span>
             <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <CheckCircle2 size={17} color="#2E7D32" />
             </div>
           </div>
-          <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#2E7D32', marginTop: '0.4rem', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+          <div style={{ fontSize: '3rem', fontWeight: 800, color: '#2E7D32', marginTop: '0.4rem', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
             {completedCount}
           </div>
-          <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', marginTop: '0.35rem' }}>Bespoke masterpieces fulfilled</div>
+          <div style={{ fontSize: '0.92rem', color: '#5C5043', color: 'var(--stone-taupe)', marginTop: '0.35rem' }}>Bespoke masterpieces fulfilled</div>
         </div>
       </div>
 
@@ -344,7 +345,7 @@ export default function AdminBespokePage() {
             placeholder="Search patron, phone, id..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ border: 'none', outline: 'none', fontSize: '13px', width: '100%', background: 'transparent' }}
+            style={{ border: 'none', outline: 'none', fontSize: '15px', width: '100%', background: 'transparent' }}
           />
         </div>
       </div>
@@ -403,7 +404,7 @@ export default function AdminBespokePage() {
                     }}>
                       {comm.request_number}
                     </span>
-                    <span style={{ fontSize: '13px', color: 'var(--stone-taupe)' }}>
+                    <span style={{ fontSize: '15px', color: 'var(--stone-taupe)' }}>
                       {new Date(comm.created_at).toLocaleDateString('en-IN', {
                         day: 'numeric',
                         month: 'short',
@@ -443,7 +444,7 @@ export default function AdminBespokePage() {
                   </div>
                   <div>
                     <div style={{ fontSize: '11px', color: 'var(--stone-taupe)', textTransform: 'uppercase', fontWeight: 700 }}>Contact</div>
-                    <div style={{ fontSize: '13px', color: 'var(--ink-brown)', marginTop: '2px' }}>
+                    <div style={{ fontSize: '15px', color: 'var(--ink-brown)', marginTop: '2px' }}>
                       <a href={`tel:${comm.phone}`} style={{ color: 'var(--maharani-maroon)', textDecoration: 'none' }}>{comm.phone}</a>
                       <span style={{ margin: '0 6px', color: 'var(--soft-gold-line)' }}>•</span>
                       <a href={`mailto:${comm.email}`} style={{ color: 'var(--ink-brown)', textDecoration: 'none' }}>{comm.email}</a>
@@ -457,7 +458,7 @@ export default function AdminBespokePage() {
                   </div>
                   <div>
                     <div style={{ fontSize: '11px', color: 'var(--stone-taupe)', textTransform: 'uppercase', fontWeight: 700 }}>Size / Measurements</div>
-                    <div style={{ fontSize: '13px', color: 'var(--ink-brown)', marginTop: '2px' }}>
+                    <div style={{ fontSize: '15px', color: 'var(--ink-brown)', marginTop: '2px' }}>
                       {comm.size || 'Not specified'}
                     </div>
                   </div>
@@ -634,7 +635,7 @@ export default function AdminBespokePage() {
                 type="button"
                 onClick={() => setSelectedCommission(null)}
                 className="btn btn--outline"
-                style={{ padding: '10px 18px', fontSize: '13px' }}
+                style={{ padding: '10px 18px', fontSize: '15px' }}
               >
                 Cancel
               </button>
@@ -643,7 +644,7 @@ export default function AdminBespokePage() {
                 onClick={() => handleUpdateStatus(selectedCommission.request_number, selectedCommission.status)}
                 disabled={updating}
                 className="btn btn--primary"
-                style={{ padding: '10px 22px', fontSize: '13px' }}
+                style={{ padding: '10px 22px', fontSize: '15px' }}
               >
                 {updating ? 'Saving...' : 'Save Notes'}
               </button>

@@ -45,10 +45,10 @@ export default function ProductApprovalsPage() {
   return (
     <div>
       <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
           Product QC & Storefront <span style={{ color: 'var(--maharani-maroon)' }}>Approvals</span>
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.94rem', fontFamily: 'var(--font-subtitle)' }}>
+        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '1.05rem', color: '#4A3E36', fontFamily: 'var(--font-subtitle)' }}>
           Review artisan submissions and verify craft authenticity before publishing to the boutique catalog.
         </p>
       </div>
@@ -99,7 +99,7 @@ export default function ProductApprovalsPage() {
                 <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 700, color: 'var(--ink-brown)', margin: '0 0 0.25rem' }}>
                   {p.name}
                 </h3>
-                <div style={{ fontSize: '0.8rem', color: 'var(--stone-taupe)' }}>
+                <div style={{ fontSize: '0.95rem', color: 'var(--stone-taupe)' }}>
                   Category: {p.category} &bull; Price: ₹{Number(p.price_in_rupees || 0).toLocaleString('en-IN')} &bull; Stock: {p.stock || 0}
                 </div>
               </div>
@@ -115,7 +115,7 @@ export default function ProductApprovalsPage() {
                     border: 'none',
                     borderRadius: '4px',
                     fontWeight: 600,
-                    fontSize: '0.82rem',
+                    fontSize: '0.95rem',
                     cursor: 'pointer',
                     fontFamily: 'var(--font-nav)',
                   }}
@@ -132,7 +132,7 @@ export default function ProductApprovalsPage() {
                     border: '1px solid var(--soft-gold-line)',
                     borderRadius: '4px',
                     fontWeight: 600,
-                    fontSize: '0.82rem',
+                    fontSize: '0.95rem',
                     cursor: 'pointer',
                     fontFamily: 'var(--font-nav)',
                   }}

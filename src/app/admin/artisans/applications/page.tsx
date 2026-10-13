@@ -129,14 +129,14 @@ export default function AdminApplicationsPage() {
       {/* Header */}
       <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
-          <span style={{ fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
+          <span style={{ fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
             Admin Curation Desk
           </span>
         </div>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
           Artisan Questionnaire Applications <span style={{ color: 'var(--maharani-maroon)' }}>Inbox</span>
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.94rem', fontFamily: 'var(--font-subtitle)' }}>
+        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '1.05rem', color: '#4A3E36', fontFamily: 'var(--font-subtitle)' }}>
           Review the complete 14-question heritage submissions sent by artisans to join House of Gargi. Verify child labor agreements and approve logins.
         </p>
       </div>
@@ -157,7 +157,7 @@ export default function AdminApplicationsPage() {
                 background: statusFilter === st ? 'var(--maharani-maroon)' : 'transparent',
                 color: statusFilter === st ? '#FFFFFF' : 'var(--ink-brown)',
                 fontWeight: statusFilter === st ? 700 : 500,
-                fontSize: '0.78rem',
+                fontSize: '0.92rem',
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em',
                 cursor: 'pointer',
@@ -182,7 +182,7 @@ export default function AdminApplicationsPage() {
               borderRadius: 2,
               border: '1.5px solid var(--soft-gold-line)',
               background: '#FFFFFF',
-              fontSize: '0.84rem',
+              fontSize: '0.95rem',
               color: 'var(--ink-brown)',
               outline: 'none',
             }}
@@ -202,7 +202,7 @@ export default function AdminApplicationsPage() {
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
               <thead>
-                <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontFamily: 'var(--font-display)' }}>
+                <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.88rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontFamily: 'var(--font-display)' }}>
                   <th style={{ padding: '0.85rem 1rem' }}>Application ID</th>
                   <th style={{ padding: '0.85rem 1rem' }}>Artisan Name</th>
                   <th style={{ padding: '0.85rem 1rem' }}>Craft / Specialty</th>
@@ -288,7 +288,7 @@ export default function AdminApplicationsPage() {
                           border: '1.5px solid var(--soft-gold-line)',
                           backgroundColor: '#FAF7F2',
                           color: 'var(--maharani-maroon)',
-                          fontSize: '0.78rem',
+                          fontSize: '0.92rem',
                           fontWeight: 700,
                           cursor: 'pointer',
                         }}
@@ -398,7 +398,7 @@ export default function AdminApplicationsPage() {
                 <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--ink-brown)', margin: '0 0 0.2rem' }}>
                   Questionnaire Responses
                 </h3>
-                <p style={{ margin: '0 0 1rem', fontSize: '0.78rem', color: 'var(--stone-taupe)' }}>
+                <p style={{ margin: '0 0 1rem', fontSize: '0.92rem', color: 'var(--stone-taupe)' }}>
                   14 qualitative craft, history, and workshop questions answered by the artisan
                 </p>
 
@@ -430,7 +430,7 @@ export default function AdminApplicationsPage() {
                   <ShieldCheck style={{ width: 20, height: 20 }} />
                   Child Labor Agreement & Inspection Consent
                 </div>
-                <p style={{ margin: '0 0 0.85rem', fontSize: '0.82rem', color: '#33691E', lineHeight: 1.5 }}>
+                <p style={{ margin: '0 0 0.85rem', fontSize: '0.95rem', color: '#33691E', lineHeight: 1.5 }}>
                   The applicant has legally certified that <strong>no child labor</strong> is engaged in their atelier and granted House of Gargi unrestricted physical inspection rights to their looms.
                 </p>
                 <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #DCEDC8', paddingTop: '0.75rem', fontSize: '0.82rem', color: '#1B5E20' }}>

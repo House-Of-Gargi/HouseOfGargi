@@ -34,10 +34,10 @@ export default function VerifiedArtisansPage() {
   return (
     <div>
       <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
           Verified Guilds & Master <span style={{ color: 'var(--maharani-maroon)' }}>Artisans</span> ({artisans.length})
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.94rem', fontFamily: 'var(--font-subtitle)' }}>
+        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '1.05rem', color: '#4A3E36', fontFamily: 'var(--font-subtitle)' }}>
           Directory of all officially approved artisan partners preserving India&apos;s heritage weaves.
         </p>
       </div>
@@ -98,10 +98,10 @@ export default function VerifiedArtisansPage() {
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 700, color: 'var(--ink-brown)', margin: '0 0 0.25rem' }}>
                 {a.name}
               </h3>
-              <div style={{ fontSize: '0.8rem', color: 'var(--stone-taupe)', marginBottom: '0.75rem' }}>
+              <div style={{ fontSize: '0.95rem', color: 'var(--stone-taupe)', marginBottom: '0.75rem' }}>
                 {a.type_of_art || 'Master Handloom'} &bull; {a.state || 'India'}
               </div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--ink-brown)', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+              <div style={{ fontSize: '0.92rem', color: 'var(--ink-brown)', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                 <div>Email: {a.email || '—'}</div>
                 <div>Phone: {a.phone || '—'}</div>
               </div>
