@@ -206,10 +206,10 @@ export default function AdminBespokePage() {
         }}
       >
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.3rem' }}>
+          <div style={{ marginBottom: '0.4rem' }}>
             <span
               style={{
-                fontSize: '0.85rem',
+                fontSize: '0.88rem',
                 fontWeight: 700,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
@@ -217,9 +217,6 @@ export default function AdminBespokePage() {
               }}
             >
               Private Atelier Commissions
-            </span>
-            <span style={{ fontSize: '0.75rem', background: '#FFF3E0', color: '#B88E18', padding: '0.2rem 0.55rem', borderRadius: 4, fontWeight: 700 }}>
-              Concierge Desk
             </span>
           </div>
           <h1

@@ -17,12 +17,9 @@ export default function SuperAdminOverviewPage() {
   return (
     <div>
       <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.5rem', marginBottom: '2rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.3rem' }}>
-          <span style={{ fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
+        <div style={{ marginBottom: '0.4rem' }}>
+          <span style={{ fontSize: '0.88rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
             Executive Platform Governance
-          </span>
-          <span style={{ fontSize: '0.65rem', background: '#FFF3E0', color: '#E65100', padding: '0.15rem 0.5rem', borderRadius: 2, fontWeight: 700 }}>
-            Super Admin Only
           </span>
         </div>
         <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>

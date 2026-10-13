@@ -85,15 +85,9 @@ export default function SellerOrdersPage() {
             <ShoppingBag style={{ width: 22, height: 22 }} />
           </div>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
-              <h1 className="atelier-page-title">
-                Client Order Manifests &amp; <span style={{ color: 'var(--maharani-maroon)' }}>Fulfillment</span>
-              </h1>
-              <span className="atelier-live-pill">
-                <span className="atelier-live-dot" />
-                {orders.length} LIVE ORDERS
-              </span>
-            </div>
+            <h1 className="atelier-page-title">
+              Client Order Manifests &amp; <span style={{ color: 'var(--maharani-maroon)' }}>Fulfillment</span>
+            </h1>
             <p style={{ fontSize: '1.05rem', color: '#4A3E36', margin: '0.35rem 0 0 0', fontWeight: 500 }}>
               Direct live sync with Supabase table &apos;orders&apos; &bull; Manage bespoke commissions &amp; courier manifests
             </p>

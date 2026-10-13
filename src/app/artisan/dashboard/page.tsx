@@ -156,15 +156,9 @@ export default function SellerDashboardPage() {
             <Sparkles style={{ width: 24, height: 24 }} />
           </div>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
-              <h1 className="atelier-page-title">
-                Atelier Seller <span style={{ color: 'var(--maharani-maroon)' }}>Dashboard</span>
-              </h1>
-              <span className="atelier-live-pill">
-                <span className="atelier-live-dot" />
-                SUPABASE LIVE
-              </span>
-            </div>
+            <h1 className="atelier-page-title">
+              Atelier Seller <span style={{ color: 'var(--maharani-maroon)' }}>Dashboard</span>
+            </h1>
             <p style={{ fontSize: '1.05rem', color: '#4A3E36', margin: '0.35rem 0 0 0', fontWeight: 500 }}>
               Handcrafted Indian Couture &bull; Live Order Fulfillment &amp; Catalog Management
             </p>
