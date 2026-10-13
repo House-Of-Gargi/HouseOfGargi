@@ -224,7 +224,7 @@ export default function AdminBespokePage() {
           <div style={{ fontSize: '3rem', fontWeight: 800, color: '#7A2331', marginTop: '0.4rem', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
             {pendingCount}
           </div>
-          <div style={{ fontSize: '0.92rem', color: '#5C5043', color: 'var(--stone-taupe)', marginTop: '0.35rem' }}>Awaiting initial patron consultation</div>
+          <div style={{ fontSize: '0.92rem', color: '#5C5043', marginTop: '0.35rem' }}>Awaiting initial patron consultation</div>
         </div>
 
         <div
@@ -256,7 +256,7 @@ export default function AdminBespokePage() {
           <div style={{ fontSize: '3rem', fontWeight: 800, color: '#B88E18', marginTop: '0.4rem', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
             {inConsultCount}
           </div>
-          <div style={{ fontSize: '0.92rem', color: '#5C5043', color: 'var(--stone-taupe)', marginTop: '0.35rem' }}>Artisan concierge actively discussing vision</div>
+          <div style={{ fontSize: '0.92rem', color: '#5C5043', marginTop: '0.35rem' }}>Artisan concierge actively discussing vision</div>
         </div>
 
         <div
@@ -288,7 +288,7 @@ export default function AdminBespokePage() {
           <div style={{ fontSize: '3rem', fontWeight: 800, color: '#2E7D32', marginTop: '0.4rem', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
             {completedCount}
           </div>
-          <div style={{ fontSize: '0.92rem', color: '#5C5043', color: 'var(--stone-taupe)', marginTop: '0.35rem' }}>Bespoke masterpieces fulfilled</div>
+          <div style={{ fontSize: '0.92rem', color: '#5C5043', marginTop: '0.35rem' }}>Bespoke masterpieces fulfilled</div>
         </div>
       </div>
 
