@@ -133,10 +133,10 @@ export default function AdminApplicationsPage() {
             Admin Curation Desk
           </span>
         </div>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
           Artisan Questionnaire Applications <span style={{ color: 'var(--maharani-maroon)' }}>Inbox</span>
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.88rem' }}>
+        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.94rem', fontFamily: 'var(--font-subtitle)' }}>
           Review the complete 14-question heritage submissions sent by artisans to join House of Gargi. Verify child labor agreements and approve logins.
         </p>
       </div>
@@ -202,7 +202,7 @@ export default function AdminApplicationsPage() {
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
               <thead>
-                <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontFamily: 'var(--font-display)' }}>
                   <th style={{ padding: '0.85rem 1rem' }}>Application ID</th>
                   <th style={{ padding: '0.85rem 1rem' }}>Artisan Name</th>
                   <th style={{ padding: '0.85rem 1rem' }}>Craft / Specialty</th>
@@ -226,7 +226,7 @@ export default function AdminApplicationsPage() {
                     <td style={{ padding: '0.85rem 1rem', fontFamily: 'monospace', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
                       {app.applicationId}
                     </td>
-                    <td style={{ padding: '0.85rem 1rem', fontWeight: 600, color: 'var(--ink-brown)' }}>
+                    <td style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--ink-brown)', fontFamily: 'var(--font-display)' }}>
                       {app.name}
                       {app.gender && <span style={{ fontSize: '0.72rem', color: 'var(--stone-taupe)', display: 'block' }}>{app.gender} {app.age ? '• ' + app.age + ' yrs' : ''}</span>}
                     </td>

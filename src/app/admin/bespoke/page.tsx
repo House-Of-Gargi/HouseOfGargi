@@ -163,7 +163,7 @@ export default function AdminBespokePage() {
             </span>
           </div>
           <h1 style={{
-            fontFamily: 'var(--font-serif)',
+            fontFamily: 'var(--font-display)',
             fontSize: '1.9rem',
             fontWeight: 700,
             color: 'var(--ink-brown)',
@@ -171,7 +171,7 @@ export default function AdminBespokePage() {
           }}>
             Bespoke Commissions <span style={{ color: 'var(--maharani-maroon)' }}>Queue</span>
           </h1>
-          <p style={{ margin: '4px 0 0', color: 'var(--stone-taupe)', fontSize: '0.92rem' }}>
+          <p style={{ margin: '4px 0 0', color: 'var(--stone-taupe)', fontSize: '0.98rem', fontFamily: 'var(--font-subtitle)' }}>
             Manage custom bridal lehenga, heritage saree, and royal jewellery orders submitted by patrons.
           </p>
         </div>
@@ -214,13 +214,13 @@ export default function AdminBespokePage() {
             e.currentTarget.style.borderColor = 'var(--soft-gold-line)';
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, fontFamily: 'var(--font-nav)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.09em', fontWeight: 700, fontFamily: 'var(--font-display)' }}>
             <span>Pending Curation</span>
             <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <AlertCircle size={17} color="#7A2331" />
             </div>
           </div>
-          <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#7A2331', marginTop: '0.4rem', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+          <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#7A2331', marginTop: '0.4rem', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
             {pendingCount}
           </div>
           <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', marginTop: '0.35rem' }}>Awaiting initial patron consultation</div>
@@ -246,13 +246,13 @@ export default function AdminBespokePage() {
             e.currentTarget.style.borderColor = 'var(--soft-gold-line)';
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, fontFamily: 'var(--font-nav)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.09em', fontWeight: 700, fontFamily: 'var(--font-display)' }}>
             <span>In Consultation</span>
             <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Clock size={17} color="#B88E18" />
             </div>
           </div>
-          <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#B88E18', marginTop: '0.4rem', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+          <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#B88E18', marginTop: '0.4rem', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
             {inConsultCount}
           </div>
           <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', marginTop: '0.35rem' }}>Artisan concierge actively discussing vision</div>
@@ -278,13 +278,13 @@ export default function AdminBespokePage() {
             e.currentTarget.style.borderColor = 'var(--soft-gold-line)';
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, fontFamily: 'var(--font-nav)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--stone-taupe)', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.09em', fontWeight: 700, fontFamily: 'var(--font-display)' }}>
             <span>Completed / Delivered</span>
             <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <CheckCircle2 size={17} color="#2E7D32" />
             </div>
           </div>
-          <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#2E7D32', marginTop: '0.4rem', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+          <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#2E7D32', marginTop: '0.4rem', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
             {completedCount}
           </div>
           <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', marginTop: '0.35rem' }}>Bespoke masterpieces fulfilled</div>

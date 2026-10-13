@@ -46,7 +46,9 @@
 .seller-shell h1,
 .seller-shell h2,
 .seller-shell h3,
-.seller-shell h4 {
+.seller-shell h4,
+.seller-shell .admin-display-font,
+.seller-shell .seller-heading {
   font-family: var(--font-display) !important;
 }
 

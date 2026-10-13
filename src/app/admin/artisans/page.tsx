@@ -37,7 +37,7 @@ export default function VerifiedArtisansPage() {
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
           Verified Guilds & Master <span style={{ color: 'var(--maharani-maroon)' }}>Artisans</span> ({artisans.length})
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.88rem', fontFamily: 'var(--font-body)' }}>
+        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.94rem', fontFamily: 'var(--font-subtitle)' }}>
           Directory of all officially approved artisan partners preserving India&apos;s heritage weaves.
         </p>
       </div>
@@ -95,7 +95,7 @@ export default function VerifiedArtisansPage() {
                 boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
               }}
             >
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.15rem', color: 'var(--ink-brown)', margin: '0 0 0.25rem' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 700, color: 'var(--ink-brown)', margin: '0 0 0.25rem' }}>
                 {a.name}
               </h3>
               <div style={{ fontSize: '0.8rem', color: 'var(--stone-taupe)', marginBottom: '0.75rem' }}>

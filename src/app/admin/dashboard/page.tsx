@@ -114,7 +114,7 @@ export default function AdminDashboardPage() {
         >
           Operations <span style={{ color: 'var(--maharani-maroon)' }}>Dashboard</span>
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.86rem', fontFamily: 'var(--font-body)' }}>
+        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.92rem', fontFamily: 'var(--font-subtitle)' }}>
           Real-time enterprise metrics, active catalog queues, and live revenue analytics.
         </p>
       </div>
@@ -180,7 +180,7 @@ export default function AdminDashboardPage() {
                 fontWeight: 700,
                 textTransform: 'uppercase',
                 letterSpacing: '0.09em',
-                fontFamily: 'var(--font-nav)',
+                fontFamily: 'var(--font-display)',
                 marginBottom: '0.45rem',
               }}
             >
@@ -191,7 +191,7 @@ export default function AdminDashboardPage() {
                 fontSize: '2.6rem',
                 fontWeight: 700,
                 color: 'var(--ink-brown)',
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontFamily: 'var(--font-display)',
                 lineHeight: 1.1,
                 letterSpacing: '-0.03em',
               }}
@@ -254,7 +254,7 @@ export default function AdminDashboardPage() {
                 fontWeight: 700,
                 textTransform: 'uppercase',
                 letterSpacing: '0.09em',
-                fontFamily: 'var(--font-nav)',
+                fontFamily: 'var(--font-display)',
                 marginBottom: '0.45rem',
               }}
             >
@@ -265,7 +265,7 @@ export default function AdminDashboardPage() {
                 fontSize: '2.6rem',
                 fontWeight: 700,
                 color: 'var(--ink-brown)',
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontFamily: 'var(--font-display)',
                 lineHeight: 1.1,
                 letterSpacing: '-0.03em',
               }}
@@ -328,7 +328,7 @@ export default function AdminDashboardPage() {
                 fontWeight: 700,
                 textTransform: 'uppercase',
                 letterSpacing: '0.09em',
-                fontFamily: 'var(--font-nav)',
+                fontFamily: 'var(--font-display)',
                 marginBottom: '0.45rem',
               }}
             >
@@ -339,7 +339,7 @@ export default function AdminDashboardPage() {
                 fontSize: '2.6rem',
                 fontWeight: 700,
                 color: 'var(--maharani-maroon)',
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontFamily: 'var(--font-display)',
                 lineHeight: 1.1,
                 letterSpacing: '-0.03em',
               }}
@@ -406,7 +406,7 @@ export default function AdminDashboardPage() {
                 fontWeight: 700,
                 textTransform: 'uppercase',
                 letterSpacing: '0.09em',
-                fontFamily: 'var(--font-nav)',
+                fontFamily: 'var(--font-display)',
                 marginBottom: '0.45rem',
               }}
             >
@@ -417,7 +417,7 @@ export default function AdminDashboardPage() {
                 fontSize: '2.6rem',
                 fontWeight: 700,
                 color: 'var(--ink-brown)',
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontFamily: 'var(--font-display)',
                 lineHeight: 1.1,
                 letterSpacing: '-0.03em',
               }}
@@ -460,7 +460,7 @@ export default function AdminDashboardPage() {
             >
               Daily Sales Revenue
             </h2>
-            <p style={{ margin: '0.2rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.78rem', fontFamily: 'var(--font-body)' }}>
+            <p style={{ margin: '0.2rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.84rem', fontFamily: 'var(--font-subtitle)' }}>
               Actual transaction totals aggregated per day from the orders ledger
             </p>
           </div>
@@ -488,7 +488,7 @@ export default function AdminDashboardPage() {
                 fontSize: '0.75rem',
                 fontWeight: 600,
                 cursor: 'pointer',
-                fontFamily: 'var(--font-nav)',
+                fontFamily: 'var(--font-display)',
                 transition: 'all 0.18s ease',
                 boxShadow: timeRange === '7' ? '0 2px 6px rgba(122, 35, 49, 0.25)' : 'none',
               }}
@@ -507,7 +507,7 @@ export default function AdminDashboardPage() {
                 fontSize: '0.75rem',
                 fontWeight: 600,
                 cursor: 'pointer',
-                fontFamily: 'var(--font-nav)',
+                fontFamily: 'var(--font-display)',
                 transition: 'all 0.18s ease',
                 boxShadow: timeRange === '30' ? '0 2px 6px rgba(122, 35, 49, 0.25)' : 'none',
               }}
@@ -533,21 +533,21 @@ export default function AdminDashboardPage() {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-              <span style={{ fontSize: '0.65rem', color: '#B5A99B', width: '42px', marginLeft: '-45px', fontFamily: 'var(--font-nav)', textAlign: 'right', paddingRight: '8px' }}>
+              <span style={{ fontSize: '0.65rem', color: '#B5A99B', width: '42px', marginLeft: '-45px', fontFamily: 'var(--font-display)', textAlign: 'right', paddingRight: '8px' }}>
                 {maxSales > 1000 ? (maxSales >= 100000 ? ('₹' + (maxSales / 100000).toFixed(1) + 'L') : ('₹' + (maxSales / 1000).toFixed(0) + 'k')) : '₹1k'}
               </span>
               <div style={{ borderBottom: '1px dashed rgba(228, 211, 174, 0.55)', flex: 1 }} />
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-              <span style={{ fontSize: '0.65rem', color: '#B5A99B', width: '42px', marginLeft: '-45px', fontFamily: 'var(--font-nav)', textAlign: 'right', paddingRight: '8px' }}>
+              <span style={{ fontSize: '0.65rem', color: '#B5A99B', width: '42px', marginLeft: '-45px', fontFamily: 'var(--font-display)', textAlign: 'right', paddingRight: '8px' }}>
                 {maxSales > 1000 ? ('₹' + Math.round(maxSales / 2000) + 'k') : '₹500'}
               </span>
               <div style={{ borderBottom: '1px dashed rgba(228, 211, 174, 0.55)', flex: 1 }} />
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-              <span style={{ fontSize: '0.65rem', color: '#B5A99B', width: '42px', marginLeft: '-45px', fontFamily: 'var(--font-nav)', textAlign: 'right', paddingRight: '8px' }}>
+              <span style={{ fontSize: '0.65rem', color: '#B5A99B', width: '42px', marginLeft: '-45px', fontFamily: 'var(--font-display)', textAlign: 'right', paddingRight: '8px' }}>
                 ₹0
               </span>
               <div style={{ borderBottom: '1px solid var(--soft-gold-line)', flex: 1 }} />
@@ -661,8 +661,8 @@ export default function AdminDashboardPage() {
                     textAlign: 'center',
                     fontSize: '0.68rem',
                     color: 'var(--stone-taupe)',
-                    fontFamily: 'var(--font-nav)',
-                    fontWeight: 500,
+                    fontFamily: 'var(--font-display)',
+                    fontWeight: 600,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
@@ -796,27 +796,27 @@ export default function AdminDashboardPage() {
                             justifyContent: 'center',
                             fontSize: '0.72rem',
                             fontWeight: 700,
-                            fontFamily: 'var(--font-nav)',
+                            fontFamily: 'var(--font-display)',
                             flexShrink: 0,
                           }}
                         >
                           {'#' + rank}
                         </span>
                         <div>
-                          <div style={{ fontWeight: 700, fontSize: '0.86rem', color: 'var(--ink-brown)' }}>
+                          <div style={{ fontWeight: 700, fontSize: '0.94rem', fontFamily: 'var(--font-display)', color: 'var(--ink-brown)' }}>
                             {artisan.name}
                           </div>
-                          <div style={{ fontSize: '0.72rem', color: 'var(--stone-taupe)' }}>
+                          <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-subtitle)' }}>
                             {artisan.craft} &bull; {artisan.state}
                           </div>
                         </div>
                       </div>
 
                       <div style={{ textAlign: 'right' }}>
-                        <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
+                        <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--maharani-maroon)', fontFamily: 'var(--font-display)' }}>
                           {'₹' + artisan.totalSales.toLocaleString('en-IN')}
                         </div>
-                        <div style={{ fontSize: '0.7rem', color: 'var(--stone-taupe)' }}>
+                        <div style={{ fontSize: '0.72rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-display)' }}>
                           {artisan.unitsSold} sold
                         </div>
                       </div>
@@ -878,7 +878,7 @@ export default function AdminDashboardPage() {
                           color: pageNum === artisanPage ? '#FFFFFF' : 'var(--ink-brown)',
                           fontSize: '0.75rem',
                           fontWeight: 700,
-                          fontFamily: "'Plus Jakarta Sans', sans-serif",
+                          fontFamily: 'var(--font-display)',
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
@@ -1026,7 +1026,7 @@ export default function AdminDashboardPage() {
                             justifyContent: 'center',
                             fontSize: '0.72rem',
                             fontWeight: 700,
-                            fontFamily: 'var(--font-nav)',
+                            fontFamily: 'var(--font-display)',
                             flexShrink: 0,
                           }}
                         >
@@ -1069,7 +1069,8 @@ export default function AdminDashboardPage() {
                           <div
                             style={{
                               fontWeight: 700,
-                              fontSize: '0.86rem',
+                              fontSize: '0.94rem',
+                              fontFamily: 'var(--font-display)',
                               color: 'var(--ink-brown)',
                               overflow: 'hidden',
                               textOverflow: 'ellipsis',
@@ -1079,7 +1080,7 @@ export default function AdminDashboardPage() {
                           >
                             {product.name}
                           </div>
-                          <div style={{ fontSize: '0.72rem', color: 'var(--stone-taupe)', textTransform: 'capitalize' }}>
+                          <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-subtitle)', textTransform: 'capitalize' }}>
                             {product.category} &bull; <span style={{ color: 'var(--maharani-maroon)', fontWeight: 600 }}>{'₹' + product.price.toLocaleString('en-IN')}</span>
                           </div>
                         </div>
@@ -1095,7 +1096,7 @@ export default function AdminDashboardPage() {
                             color: product.unitsSold > 0 ? '#2E7D32' : 'var(--stone-taupe)',
                             fontWeight: 600,
                             fontSize: '0.72rem',
-                            fontFamily: 'var(--font-nav)',
+                            fontFamily: 'var(--font-display)',
                             border: '1px solid rgba(228, 211, 174, 0.7)',
                           }}
                         >
@@ -1160,7 +1161,7 @@ export default function AdminDashboardPage() {
                           color: pageNum === productPage ? '#FFFFFF' : 'var(--ink-brown)',
                           fontSize: '0.75rem',
                           fontWeight: 700,
-                          fontFamily: "'Plus Jakarta Sans', sans-serif",
+                          fontFamily: 'var(--font-display)',
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
