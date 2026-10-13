@@ -48,7 +48,7 @@ export default function ProductApprovalsPage() {
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
           Product QC & Storefront <span style={{ color: 'var(--maharani-maroon)' }}>Approvals</span>
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '1.05rem', color: '#4A3E36', fontFamily: 'var(--font-subtitle)' }}>
+        <p style={{ margin: '0.35rem 0 0', color: '#4A3E36', fontSize: '1.05rem', fontFamily: 'var(--font-subtitle)' }}>
           Review artisan submissions and verify craft authenticity before publishing to the boutique catalog.
         </p>
       </div>

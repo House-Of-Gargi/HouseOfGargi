@@ -172,7 +172,7 @@ export default function AdminBespokePage() {
           }}>
             Bespoke Commissions <span style={{ color: 'var(--maharani-maroon)' }}>Queue</span>
           </h1>
-          <p style={{ margin: '4px 0 0', color: 'var(--stone-taupe)', fontSize: '1.05rem', color: '#4A3E36', fontFamily: 'var(--font-subtitle)' }}>
+          <p style={{ margin: '4px 0 0', color: '#4A3E36', fontSize: '1.05rem', fontFamily: 'var(--font-subtitle)' }}>
             Manage custom bridal lehenga, heritage saree, and royal jewellery orders submitted by patrons.
           </p>
         </div>

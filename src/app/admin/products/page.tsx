@@ -34,7 +34,7 @@ export default function AdminProductsPage() {
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
           Total Catalog <span style={{ color: 'var(--maharani-maroon)' }}>Directory</span> ({products.length})
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '1.05rem', color: '#4A3E36', fontFamily: 'var(--font-subtitle)' }}>
+        <p style={{ margin: '0.35rem 0 0', color: '#4A3E36', fontSize: '1.05rem', fontFamily: 'var(--font-subtitle)' }}>
           Live inventory of handcrafted pieces registered across the boutique.
         </p>
       </div>
