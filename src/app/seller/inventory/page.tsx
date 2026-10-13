@@ -88,7 +88,7 @@ export default function ArtisanInventoryPage() {
         <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
           Manage Product Quantities & <span style={{ color: 'var(--maharani-maroon)' }}>Inventory</span>
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '1.05rem', color: '#4A3E36' }}>
+        <p style={{ margin: '0.35rem 0 0', fontSize: '1.05rem', color: '#4A3E36' }}>
           Real-time quantity stepper: add or reduce pieces on your workshop looms, toggle stock availability, and set handloom weaving lead times.
         </p>
       </div>
