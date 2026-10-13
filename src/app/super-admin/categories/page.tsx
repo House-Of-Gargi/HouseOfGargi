@@ -68,10 +68,10 @@ export default function SuperAdminCategoriesPage() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
         <div>
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
-            Categories & Storefront Taxonomies
+          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
+            Categories & Storefront <span style={{ color: 'var(--maharani-maroon)' }}>Taxonomies</span>
           </h1>
-          <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.88rem' }}>
+          <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '1.05rem', color: '#4A3E36' }}>
             Exclusive Super Admin function: manage categories, Sanskrit lipi subtitles, hero banners, and display order.
           </p>
         </div>
@@ -86,7 +86,7 @@ export default function SuperAdminCategoriesPage() {
             backgroundColor: 'var(--maharani-maroon)',
             color: '#FFFFFF',
             fontWeight: 700,
-            fontSize: '0.82rem',
+            fontSize: '0.92rem',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
@@ -105,7 +105,7 @@ export default function SuperAdminCategoriesPage() {
             style={{
               background: '#FFFFFF',
               border: '1.5px solid var(--soft-gold-line)',
-              borderRadius: 4,
+              borderRadius: '12px',
               padding: '1.5rem',
               boxShadow: '0 2px 8px rgba(43,31,24,0.04)',
             }}
@@ -127,7 +127,7 @@ export default function SuperAdminCategoriesPage() {
               </span>
             </div>
 
-            <p style={{ margin: '1rem 0', fontSize: '0.82rem', color: 'var(--stone-taupe)', lineHeight: 1.5 }}>
+            <p style={{ margin: '1rem 0', fontSize: '0.92rem', color: 'var(--stone-taupe)', lineHeight: 1.5 }}>
               {cat.description}
             </p>
 
@@ -164,7 +164,7 @@ export default function SuperAdminCategoriesPage() {
               width: '480px',
               maxWidth: '100%',
               backgroundColor: '#FFFFFF',
-              borderRadius: 4,
+              borderRadius: '12px',
               border: '1.5px solid var(--soft-gold-line)',
               boxShadow: '0 12px 36px rgba(0,0,0,0.2)',
               overflow: 'hidden',

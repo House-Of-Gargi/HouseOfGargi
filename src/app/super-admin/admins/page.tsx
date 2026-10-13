@@ -85,10 +85,10 @@ export default function SuperAdminAdminsPage() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
         <div>
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
-            Admin & Staff Privilege Management
+          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
+            Admin & Staff Privilege <span style={{ color: 'var(--maharani-maroon)' }}>Management</span>
           </h1>
-          <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.88rem' }}>
+          <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '1.05rem', color: '#4A3E36' }}>
             Exclusive Super Admin function: control operations team access, invite curators, and assign permissions.
           </p>
         </div>
@@ -103,7 +103,7 @@ export default function SuperAdminAdminsPage() {
             backgroundColor: 'var(--maharani-maroon)',
             color: '#FFFFFF',
             fontWeight: 700,
-            fontSize: '0.82rem',
+            fontSize: '0.92rem',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
@@ -116,16 +116,16 @@ export default function SuperAdminAdminsPage() {
       </div>
 
       {/* Admins Table */}
-      <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 4, overflow: 'hidden' }}>
+      <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 2px 14px rgba(43,31,24,0.03)' }}>
         {loading ? (
           <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--stone-taupe)' }}>
             <Loader2 style={{ width: 24, height: 24, animation: 'spin 1s linear infinite', margin: '0 auto 0.5rem', color: 'var(--maharani-maroon)' }} />
             Loading admin staff...
           </div>
         ) : (
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.95rem' }}>
             <thead>
-              <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.88rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                 <th style={{ padding: '0.85rem 1rem' }}>Staff Member</th>
                 <th style={{ padding: '0.85rem 1rem' }}>Email Address</th>
                 <th style={{ padding: '0.85rem 1rem' }}>Role Tier</th>

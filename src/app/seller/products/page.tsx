@@ -163,14 +163,14 @@ export default function SellerProductsPage() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
               <h1 className="atelier-page-title">
-                Artisan Catalog &amp; Loom Inventory
+                Artisan Catalog &amp; Loom <span style={{ color: 'var(--maharani-maroon)' }}>Inventory</span>
               </h1>
               <span className="atelier-live-pill">
                 <span className="atelier-live-dot" />
                 {products.length} MASTER PIECES
               </span>
             </div>
-            <p style={{ fontSize: '0.98rem', color: 'var(--stone-taupe)', margin: '0.35rem 0 0 0', fontWeight: 500 }}>
+            <p style={{ fontSize: '1.05rem', color: '#4A3E36', margin: '0.35rem 0 0 0', fontWeight: 500 }}>
               Real-time catalog pieces stored in Supabase &bull; Zero placeholder data
             </p>
           </div>

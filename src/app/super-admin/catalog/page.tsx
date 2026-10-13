@@ -23,18 +23,18 @@ export default function MasterCatalogPage() {
   return (
     <div>
       <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
-          Master Catalog Governance & Storefront Display
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
+          Master Catalog Governance & Storefront <span style={{ color: 'var(--maharani-maroon)' }}>Display</span>
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.88rem' }}>
+        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '1.05rem', color: '#4A3E36' }}>
           Exclusive Super Admin control: toggle global product display visibility and select pieces for the boutique hero carousel.
         </p>
       </div>
 
-      <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 4, overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
+      <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 2px 14px rgba(43,31,24,0.03)' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.95rem' }}>
           <thead>
-            <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.88rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               <th style={{ padding: '0.85rem 1rem' }}>Creation Title</th>
               <th style={{ padding: '0.85rem 1rem' }}>Artisan Partner</th>
               <th style={{ padding: '0.85rem 1rem' }}>Display State</th>
@@ -47,7 +47,7 @@ export default function MasterCatalogPage() {
                 <td style={{ padding: '0.85rem 1rem', fontWeight: 600, color: 'var(--ink-brown)' }}>{it.title}</td>
                 <td style={{ padding: '0.85rem 1rem', color: 'var(--stone-taupe)' }}>{it.artisan}</td>
                 <td style={{ padding: '0.85rem 1rem' }}>
-                  <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '0.15rem 0.5rem', borderRadius: 2, background: it.isVisible ? '#E8F5E9' : '#FFEBEE', color: it.isVisible ? '#2E7D32' : '#C62828' }}>
+                  <span style={{ fontSize: '0.88rem', fontWeight: 700, padding: '0.15rem 0.5rem', borderRadius: 2, background: it.isVisible ? '#E8F5E9' : '#FFEBEE', color: it.isVisible ? '#2E7D32' : '#C62828' }}>
                     {it.isVisible ? 'VISIBLE' : 'HIDDEN'}
                   </span>
                 </td>

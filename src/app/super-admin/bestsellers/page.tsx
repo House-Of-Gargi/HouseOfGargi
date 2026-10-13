@@ -70,22 +70,22 @@ export default function SuperAdminBestsellersPage() {
       <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
           <Flame style={{ width: 18, height: 18, color: '#E65100' }} />
-          <span style={{ fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#E65100' }}>
+          <span style={{ fontSize: '0.88rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#E65100' }}>
             Product Sales Velocity Intelligence
           </span>
         </div>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
-          Hot & Most Selling Products
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
+          Hot & Most Selling <span style={{ color: 'var(--maharani-maroon)' }}>Products</span>
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.88rem' }}>
+        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '1.05rem', color: '#4A3E36' }}>
           Ranked catalog performance by units sold and gross revenue. Promote bestselling creations to the Hero Carousel or Featured Curations.
         </p>
       </div>
 
-      <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 4, overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
+      <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 2px 14px rgba(43,31,24,0.03)' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.95rem' }}>
           <thead>
-            <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.88rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               <th style={{ padding: '0.85rem 1rem' }}>Velocity Rank</th>
               <th style={{ padding: '0.85rem 1rem' }}>Creation Title</th>
               <th style={{ padding: '0.85rem 1rem' }}>Artisan Guild</th>
@@ -105,7 +105,7 @@ export default function SuperAdminBestsellersPage() {
                 </td>
                 <td style={{ padding: '0.85rem 1rem', fontWeight: 600, color: 'var(--ink-brown)' }}>
                   {it.title}
-                  <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--stone-taupe)' }}>{it.category}</span>
+                  <span style={{ display: 'block', fontSize: '0.88rem', color: 'var(--stone-taupe)' }}>{it.category}</span>
                 </td>
                 <td style={{ padding: '0.85rem 1rem', color: 'var(--stone-taupe)' }}>{it.artisan}</td>
                 <td style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--ink-brown)' }}>{it.unitsSold} units</td>

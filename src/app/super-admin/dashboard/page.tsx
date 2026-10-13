@@ -25,10 +25,10 @@ export default function SuperAdminOverviewPage() {
             Super Admin Only
           </span>
         </div>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.1rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
-          House of Gargi Executive Dashboard
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
+          House of Gargi Executive <span style={{ color: 'var(--maharani-maroon)' }}>Dashboard</span>
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.92rem' }}>
+        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '1.05rem', color: '#4A3E36', lineHeight: 1.55 }}>
           Global marketplace oversight: platform GMV, take-rate revenue, admin team privileges, category architecture, and sales velocity.
         </p>
       </div>
@@ -36,67 +36,67 @@ export default function SuperAdminOverviewPage() {
       {/* 4 Macro Metric Tiles */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '2.5rem' }}>
         {/* Metric 1: Total GMV */}
-        <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 4, padding: '1.25rem' }}>
-          <span style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', fontWeight: 600, textTransform: 'uppercase' }}>
+        <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', padding: '1.75rem 1.65rem', boxShadow: '0 2px 12px rgba(43,31,24,0.03)' }}>
+          <span style={{ fontSize: '0.92rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
             Gross Merchandise Value (GMV)
           </span>
           <div style={{ margin: '0.75rem 0 0.25rem' }}>
-            <span style={{ fontSize: '2.2rem', fontWeight: 700, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)' }}>
+            <span style={{ fontSize: '3rem', fontWeight: 800, lineHeight: 1.05, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)' }}>
               ₹14,84,000
             </span>
           </div>
-          <span style={{ fontSize: '0.78rem', color: '#2E7D32', fontWeight: 600 }}>
+          <span style={{ fontSize: '0.92rem', color: '#2E7D32', fontWeight: 600 }}>
             +28.4% MTD Growth
           </span>
         </div>
 
         {/* Metric 2: Net House of Gargi Commission */}
-        <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 4, padding: '1.25rem' }}>
-          <span style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', fontWeight: 600, textTransform: 'uppercase' }}>
+        <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', padding: '1.75rem 1.65rem', boxShadow: '0 2px 12px rgba(43,31,24,0.03)' }}>
+          <span style={{ fontSize: '0.92rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
             Net Platform Take-Rate (15%)
           </span>
           <div style={{ margin: '0.75rem 0 0.25rem' }}>
-            <span style={{ fontSize: '2.2rem', fontWeight: 700, color: 'var(--maharani-maroon)', fontFamily: 'var(--font-serif)' }}>
+            <span style={{ fontSize: '3rem', fontWeight: 800, lineHeight: 1.05, color: 'var(--maharani-maroon)', fontFamily: 'var(--font-serif)' }}>
               ₹2,22,600
             </span>
           </div>
-          <span style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)' }}>
+          <span style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)' }}>
             Cleared commission profit
           </span>
         </div>
 
         {/* Metric 3: Hot Products */}
-        <Link href="/super-admin/bestsellers" style={{ textDecoration: 'none', background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 4, padding: '1.25rem' }}>
+        <Link href="/super-admin/bestsellers" style={{ textDecoration: 'none', background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', padding: '1.75rem 1.65rem', boxShadow: '0 2px 12px rgba(43,31,24,0.03)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', fontWeight: 600, textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.92rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
               Hot Velocity Products
             </span>
             <Flame style={{ width: 18, height: 18, color: '#E65100' }} />
           </div>
           <div style={{ margin: '0.75rem 0 0.25rem' }}>
-            <span style={{ fontSize: '2.2rem', fontWeight: 700, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)' }}>
+            <span style={{ fontSize: '3rem', fontWeight: 800, lineHeight: 1.05, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)' }}>
               5 Top Items
             </span>
           </div>
-          <span style={{ fontSize: '0.78rem', color: 'var(--maharani-maroon)', fontWeight: 600 }}>
+          <span style={{ fontSize: '0.92rem', color: 'var(--maharani-maroon)', fontWeight: 600 }}>
             View Bestsellers Intelligence &rarr;
           </span>
         </Link>
 
         {/* Metric 4: Admin Team Count */}
-        <Link href="/super-admin/admins" style={{ textDecoration: 'none', background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 4, padding: '1.25rem' }}>
+        <Link href="/super-admin/admins" style={{ textDecoration: 'none', background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', padding: '1.75rem 1.65rem', boxShadow: '0 2px 12px rgba(43,31,24,0.03)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', fontWeight: 600, textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.92rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
               Admin Operations Staff
             </span>
             <Users style={{ width: 18, height: 18, color: 'var(--peacock-teal)' }} />
           </div>
           <div style={{ margin: '0.75rem 0 0.25rem' }}>
-            <span style={{ fontSize: '2.2rem', fontWeight: 700, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)' }}>
+            <span style={{ fontSize: '3rem', fontWeight: 800, lineHeight: 1.05, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)' }}>
               4 Active
             </span>
           </div>
-          <span style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', fontWeight: 600 }}>
+          <span style={{ fontSize: '0.92rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em' }}>
             Manage Admins & Privileges &rarr;
           </span>
         </Link>

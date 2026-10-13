@@ -34,44 +34,44 @@ export default function ArtisanAnalyticsPage() {
             Sales Performance & Insights
           </span>
         </div>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.85rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
-          Which Product Did How Much
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
+          Which Product Did How <span style={{ color: 'var(--maharani-maroon)' }}>Much</span>
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '0.88rem' }}>
+        <p style={{ margin: '0.35rem 0 0', color: 'var(--stone-taupe)', fontSize: '1.05rem', color: '#4A3E36' }}>
           Transparent artisan financial telemetry: examine exact units sold, gross sales, and your direct 85% workshop payout per handcrafted piece.
         </p>
       </div>
 
       {/* 3 Summary Tiles */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
-        <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 4, padding: '1.5rem' }}>
-          <span style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', fontWeight: 600, textTransform: 'uppercase' }}>
+        <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', padding: '1.75rem 1.65rem', boxShadow: '0 2px 12px rgba(43,31,24,0.03)' }}>
+          <span style={{ fontSize: '0.92rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
             Total Workshop Sales
           </span>
-          <div style={{ fontSize: '2.2rem', fontWeight: 700, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)', margin: '0.5rem 0' }}>
+          <div style={{ fontSize: '3rem', fontWeight: 800, lineHeight: 1.05, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)', margin: '0.5rem 0' }}>
             ₹{totalGross.toLocaleString('en-IN')}
           </div>
-          <span style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)' }}>Gross value across all creations</span>
+          <span style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)' }}>Gross value across all creations</span>
         </div>
 
-        <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 4, padding: '1.5rem' }}>
-          <span style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', fontWeight: 600, textTransform: 'uppercase' }}>
+        <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', padding: '1.75rem 1.65rem', boxShadow: '0 2px 12px rgba(43,31,24,0.03)' }}>
+          <span style={{ fontSize: '0.92rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
             Your Net Atelier Earnings (85%)
           </span>
-          <div style={{ fontSize: '2.2rem', fontWeight: 700, color: 'var(--maharani-maroon)', fontFamily: 'var(--font-serif)', margin: '0.5rem 0' }}>
+          <div style={{ fontSize: '3rem', fontWeight: 800, lineHeight: 1.05, color: 'var(--maharani-maroon)', fontFamily: 'var(--font-serif)', margin: '0.5rem 0' }}>
             ₹{totalArtisanShare.toLocaleString('en-IN')}
           </div>
-          <span style={{ fontSize: '0.78rem', color: '#2E7D32', fontWeight: 600 }}>Direct payout to your bank account</span>
+          <span style={{ fontSize: '0.92rem', color: '#2E7D32', fontWeight: 600 }}>Direct payout to your bank account</span>
         </div>
 
-        <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 4, padding: '1.5rem' }}>
-          <span style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)', fontWeight: 600, textTransform: 'uppercase' }}>
+        <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', padding: '1.75rem 1.65rem', boxShadow: '0 2px 12px rgba(43,31,24,0.03)' }}>
+          <span style={{ fontSize: '0.92rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
             Total Pieces Dispatched
           </span>
-          <div style={{ fontSize: '2.2rem', fontWeight: 700, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)', margin: '0.5rem 0' }}>
+          <div style={{ fontSize: '3rem', fontWeight: 800, lineHeight: 1.05, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)', margin: '0.5rem 0' }}>
             {totalUnits} Sarees & Ensembles
           </div>
-          <span style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)' }}>0.0% return rate on verified pieces</span>
+          <span style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)' }}>0.0% return rate on verified pieces</span>
         </div>
       </div>
 
