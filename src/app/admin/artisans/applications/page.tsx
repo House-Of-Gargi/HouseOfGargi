@@ -260,7 +260,7 @@ export default function AdminApplicationsPage() {
         </div>
       </div>
 
-      {/* ════════════ SINGLE-ROW COMPACT APPLICATIONS LIST (ESSENTIAL INFO ONLY) ════════════ */}
+      {/* ════════════ APPLICATIONS TABLE WITH EXACT REQUESTED COLUMN HEADERS ════════════ */}
       {loading ? (
         <AdminPageLoadingBlock minHeight="240px" message="Loading artisan applications..." />
       ) : filteredApps.length === 0 ? (
@@ -301,160 +301,165 @@ export default function AdminApplicationsPage() {
           </p>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
-          {filteredApps.map((app) => {
-            const currentBadge = statusColors[app.status] || { bg: '#EEEEEE', text: '#424242' };
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            boxShadow: '0 2px 14px rgba(43,31,24,0.03)',
+          }}
+        >
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+              <thead>
+                <tr
+                  style={{
+                    background: '#FAF7F2',
+                    borderBottom: '1.5px solid var(--soft-gold-line)',
+                    color: '#5C5043',
+                    fontWeight: 800,
+                    fontSize: '0.85rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                  }}
+                >
+                  <th style={{ padding: '1rem 1.4rem', width: '180px' }}>Art No.</th>
+                  <th style={{ padding: '1rem 1.4rem' }}>Name</th>
+                  <th style={{ padding: '1rem 1.4rem' }}>Phone Number</th>
+                  <th style={{ padding: '1rem 1.4rem', width: '150px' }}>Status</th>
+                  <th style={{ padding: '1rem 1.4rem', textAlign: 'right', width: '280px' }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredApps.map((app) => {
+                  const currentBadge = statusColors[app.status] || { bg: '#EEEEEE', text: '#424242' };
 
-            return (
-              <div
-                key={app.applicationId}
-                style={{
-                  background: '#FFFFFF',
-                  border: '1px solid var(--soft-gold-line)',
-                  borderRadius: '12px',
-                  padding: '1.15rem 1.65rem',
-                  boxShadow: '0 2px 10px rgba(43,31,24,0.03)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  flexWrap: 'wrap',
-                  gap: '1.25rem',
-                  transition: 'all 0.2s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--gargi-gold)';
-                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(43,31,24,0.06)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--soft-gold-line)';
-                  e.currentTarget.style.boxShadow = '0 2px 10px rgba(43,31,24,0.03)';
-                }}
-              >
-                {/* Left Section: Essential Info in One Row */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap', flex: 1, minWidth: '320px' }}>
-                  {/* Application ID Pill */}
-                  <span
-                    style={{
-                      fontFamily: 'monospace',
-                      fontWeight: 800,
-                      fontSize: '0.95rem',
-                      color: 'var(--maharani-maroon)',
-                      background: 'rgba(122, 35, 49, 0.08)',
-                      padding: '0.4rem 0.85rem',
-                      borderRadius: '6px',
-                      letterSpacing: '0.04em',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {app.applicationId}
-                  </span>
-
-                  {/* Artisan Name */}
-                  <div style={{ minWidth: '180px' }}>
-                    <div style={{ fontWeight: 800, color: 'var(--ink-brown)', fontSize: '1.08rem', lineHeight: 1.2 }}>
-                      {app.name}
-                    </div>
-                    <div style={{ fontSize: '0.86rem', color: '#5C5043', marginTop: '3px' }}>
-                      {app.gender ? `${app.gender} • ` : ''}{app.age ? `${app.age} yrs` : ''}
-                    </div>
-                  </div>
-
-                  {/* Craft & Region */}
-                  <div style={{ minWidth: '180px' }}>
-                    <div style={{ fontWeight: 700, color: 'var(--ink-brown)', fontSize: '0.98rem' }}>
-                      {app.typeOfArt || 'Master Handloom'}
-                    </div>
-                    <div style={{ fontSize: '0.86rem', color: '#5C5043', marginTop: '2px' }}>
-                      {app.state || 'India'}
-                    </div>
-                  </div>
-
-                  {/* Contact Snippet */}
-                  <div style={{ minWidth: '180px' }}>
-                    <div style={{ fontWeight: 600, color: 'var(--ink-brown)', fontSize: '0.92rem' }}>
-                      {app.phone}
-                    </div>
-                    <div style={{ fontSize: '0.84rem', color: '#5C5043', marginTop: '2px' }}>
-                      {app.email}
-                    </div>
-                  </div>
-
-                  {/* Status Pill Badge */}
-                  <span
-                    style={{
-                      fontSize: '0.84rem',
-                      fontWeight: 800,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.08em',
-                      padding: '0.35rem 0.85rem',
-                      borderRadius: 9999,
-                      background: currentBadge.bg,
-                      color: currentBadge.text,
-                      flexShrink: 0,
-                    }}
-                  >
-                    {app.status}
-                  </span>
-                </div>
-
-                {/* Right Section: The Two Required Buttons */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexShrink: 0 }}>
-                  {/* Button 1: View Details */}
-                  <button
-                    type="button"
-                    onClick={() => setViewingApp(app)}
-                    style={{
-                      padding: '0.6rem 1.2rem',
-                      borderRadius: '6px',
-                      border: '1.5px solid var(--soft-gold-line)',
-                      backgroundColor: '#FFFFFF',
-                      color: 'var(--ink-brown)',
-                      fontWeight: 700,
-                      fontSize: '0.9rem',
-                      cursor: 'pointer',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.45rem',
-                      transition: 'all 0.18s ease',
-                    }}
-                  >
-                    <FileText size={15} />
-                    <span>View Details</span>
-                  </button>
-
-                  {/* Button 2: Actions Dropdown Selector */}
-                  <div style={{ position: 'relative' }}>
-                    <select
-                      value={app.status}
-                      onChange={(e) => {
-                        const val = e.target.value as 'approve' | 'reject' | 'pending';
-                        if (val !== app.status) {
-                          handleOpenConfirm(app, val);
-                        }
-                      }}
+                  return (
+                    <tr
+                      key={app.applicationId}
                       style={{
-                        padding: '0.6rem 1.15rem',
-                        borderRadius: '6px',
-                        border: '1.5px solid var(--maharani-maroon)',
-                        backgroundColor: 'var(--maharani-maroon)',
-                        color: '#FFFFFF',
-                        fontWeight: 700,
-                        fontSize: '0.9rem',
-                        cursor: 'pointer',
-                        outline: 'none',
-                        boxShadow: '0 2px 6px rgba(122, 35, 49, 0.2)',
+                        borderBottom: '1px solid #F0E8DC',
+                        transition: 'background-color 0.15s ease',
                       }}
+                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#FAF7F2')}
+                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFFFFF')}
                     >
-                      <option value="" disabled style={{ color: '#231812', background: '#FFFFFF' }}>Action / Change Status ▾</option>
-                      <option value="approved" style={{ color: '#2E7D32', background: '#FFFFFF', fontWeight: 700 }}>✓ Approve Application</option>
-                      <option value="rejected" style={{ color: '#C62828', background: '#FFFFFF', fontWeight: 700 }}>✕ Reject Application</option>
-                      <option value="pending" style={{ color: '#E65100', background: '#FFFFFF', fontWeight: 700 }}>⟳ Mark as Pending</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+                      {/* 1. Art No. */}
+                      <td style={{ padding: '1.1rem 1.4rem', whiteSpace: 'nowrap' }}>
+                        <span
+                          style={{
+                            fontFamily: 'monospace',
+                            fontWeight: 800,
+                            fontSize: '0.92rem',
+                            color: 'var(--maharani-maroon)',
+                            background: 'rgba(122, 35, 49, 0.08)',
+                            padding: '0.4rem 0.85rem',
+                            borderRadius: '6px',
+                            letterSpacing: '0.04em',
+                            display: 'inline-block',
+                          }}
+                        >
+                          {app.applicationId}
+                        </span>
+                      </td>
+
+                      {/* 2. Name */}
+                      <td style={{ padding: '1.1rem 1.4rem', whiteSpace: 'nowrap' }}>
+                        <span style={{ fontWeight: 800, color: 'var(--ink-brown)', fontSize: '1.08rem' }}>
+                          {app.name}
+                        </span>
+                      </td>
+
+                      {/* 3. Phone Number */}
+                      <td style={{ padding: '1.1rem 1.4rem', whiteSpace: 'nowrap' }}>
+                        <span style={{ fontWeight: 600, color: 'var(--ink-brown)', fontSize: '0.98rem' }}>
+                          {app.phone || 'N/A'}
+                        </span>
+                      </td>
+
+                      {/* 4. Status */}
+                      <td style={{ padding: '1.1rem 1.4rem', whiteSpace: 'nowrap' }}>
+                        <span
+                          style={{
+                            fontSize: '0.82rem',
+                            fontWeight: 800,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.08em',
+                            padding: '0.35rem 0.85rem',
+                            borderRadius: 9999,
+                            background: currentBadge.bg,
+                            color: currentBadge.text,
+                            display: 'inline-block',
+                          }}
+                        >
+                          {app.status}
+                        </span>
+                      </td>
+
+                      {/* 5. The Two Buttons */}
+                      <td style={{ padding: '1.1rem 1.4rem', textAlign: 'right', whiteSpace: 'nowrap' }}>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem' }}>
+                          {/* Button 1: View Details */}
+                          <button
+                            type="button"
+                            onClick={() => setViewingApp(app)}
+                            style={{
+                              padding: '0.55rem 1.15rem',
+                              borderRadius: '6px',
+                              border: '1.5px solid var(--soft-gold-line)',
+                              backgroundColor: '#FFFFFF',
+                              color: 'var(--ink-brown)',
+                              fontWeight: 700,
+                              fontSize: '0.88rem',
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.45rem',
+                              whiteSpace: 'nowrap',
+                              transition: 'all 0.18s ease',
+                            }}
+                          >
+                            <FileText size={15} />
+                            <span>View Details</span>
+                          </button>
+
+                          {/* Button 2: Actions Dropdown Selector */}
+                          <select
+                            value={app.status}
+                            onChange={(e) => {
+                              const val = e.target.value as 'approve' | 'reject' | 'pending';
+                              if (val !== app.status) {
+                                handleOpenConfirm(app, val);
+                              }
+                            }}
+                            style={{
+                              padding: '0.55rem 1.15rem',
+                              borderRadius: '6px',
+                              border: '1.5px solid var(--maharani-maroon)',
+                              backgroundColor: 'var(--maharani-maroon)',
+                              color: '#FFFFFF',
+                              fontWeight: 700,
+                              fontSize: '0.88rem',
+                              cursor: 'pointer',
+                              outline: 'none',
+                              whiteSpace: 'nowrap',
+                              boxShadow: '0 2px 6px rgba(122, 35, 49, 0.2)',
+                            }}
+                          >
+                            <option value="" disabled style={{ color: '#231812', background: '#FFFFFF' }}>Action / Change Status ▾</option>
+                            <option value="approved" style={{ color: '#2E7D32', background: '#FFFFFF', fontWeight: 700 }}>✓ Approve Application</option>
+                            <option value="rejected" style={{ color: '#C62828', background: '#FFFFFF', fontWeight: 700 }}>✕ Reject Application</option>
+                            <option value="pending" style={{ color: '#E65100', background: '#FFFFFF', fontWeight: 700 }}>⟳ Mark as Pending</option>
+                          </select>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
