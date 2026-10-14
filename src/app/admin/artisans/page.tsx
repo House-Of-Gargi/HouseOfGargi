@@ -2,259 +2,151 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import {
   Users,
   Search,
-  ChevronDown,
-  ChevronUp,
-  Award,
-  Sparkles,
-  ShoppingBag,
+  Package,
+  X,
   ExternalLink,
-  MapPin,
-  CheckCircle2,
-  PackageCheck,
-  TrendingUp,
+  Edit2,
+  Check,
+  Loader2,
+  Sparkles,
 } from 'lucide-react';
-import { supabase } from '@/lib/supabaseClient';
 import { AdminPageLoadingBlock } from '@/components/admin/AdminLoadingSpinner';
-import { artisans as masterArtisans } from '@/data/artisans';
-import { products as catalogProducts } from '@/data/products';
 
 interface ProductItem {
   id: string;
   name: string;
   category: string;
   price: number;
+  stock: number;
   image: string;
-  technique?: string;
-  piecesSold: number;
-  inStock?: boolean;
+  created_at?: string;
 }
 
 interface VerifiedArtisan {
+  applicationId: string;
   id: string;
+  artisanNo: string;
   name: string;
-  role: string;
-  region: string;
-  lineage?: string;
-  verifiedBadge: string;
-  totalPiecesSold: number;
+  email: string;
+  phone: string;
+  state: string;
+  typeOfArt: string;
+  totalRegisteredProducts: number;
+  totalSales: number;
   products: ProductItem[];
-  email?: string;
-  phone?: string;
 }
 
-// Realistic deterministic sales units for catalog items
-const PRODUCT_SALES_MAP: Record<string, number> = {
-  'banarasi-gold-weave': 86,
-  'kanchipuram-temple-border': 64,
-  'chanderi-floral-jaal': 112,
-  'tussar-block-print': 95,
-  'paithani-peacock': 38,
-  'royal-zardozi-lehenga': 24,
-  'gota-patti-lehenga': 45,
-  'chikankari-white-kurta': 142,
-  'sanganeri-block-print-kurta': 168,
-  'shantipur-tangail-saree': 52,
-  'nadia-mulberry-jamdani': 31,
-};
-
 export default function VerifiedArtisansPage() {
-  const [artisansList, setArtisansList] = useState<VerifiedArtisan[]>([]);
+  const [artisans, setArtisans] = useState<VerifiedArtisan[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [expandedArtisans, setExpandedArtisans] = useState<Record<string, boolean>>({});
+
+  // Modal for "View All Products"
+  const [selectedArtisanForProducts, setSelectedArtisanForProducts] = useState<VerifiedArtisan | null>(null);
+
+  // Manual code assignment modal
+  const [editingArtisan, setEditingArtisan] = useState<VerifiedArtisan | null>(null);
+  const [newCodeInput, setNewCodeInput] = useState('');
+  const [assigningCode, setAssigningCode] = useState(false);
+  const [assignError, setAssignError] = useState('');
+
+  const fetchVerifiedArtisans = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch('/api/admin/artisans');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.artisans)) {
+        setArtisans(data.artisans);
+      } else {
+        setArtisans([]);
+      }
+    } catch (err) {
+      console.error('Error fetching verified artisans:', err);
+      setArtisans([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    async function fetchVerifiedArtisans() {
-      try {
-        setLoading(true);
-
-        // 1. Fetch approved applications from API
-        let approvedApplications: any[] = [];
-        try {
-          const res = await fetch('/api/admin/applications?status=approved');
-          const data = await res.json();
-          if (data.success && data.applications) {
-            approvedApplications = data.applications;
-          }
-        } catch (apiErr) {
-          console.warn('API fetch warning:', apiErr);
-        }
-
-        // 2. Build catalog products lookup map by artisanId or artisanName
-        const productsByArtisan: Record<string, ProductItem[]> = {};
-
-        catalogProducts.forEach((p) => {
-          const artKey = p.artisanId || p.artisanName || 'unassigned';
-          if (!productsByArtisan[artKey]) productsByArtisan[artKey] = [];
-
-          productsByArtisan[artKey].push({
-            id: p.id,
-            name: p.name,
-            category: p.category,
-            price: p.price,
-            image: (p.images && p.images[0]) || '/images/category-sarees.png',
-            technique: p.technique,
-            piecesSold: PRODUCT_SALES_MAP[p.id] || 42,
-            inStock: true,
-          });
-        });
-
-        // 3. Transform master artisans into verified artisans list
-        const verifiedList: VerifiedArtisan[] = masterArtisans.map((a) => {
-          const associatedProducts = productsByArtisan[a.id] || [];
-          const totalSold = associatedProducts.reduce((sum, item) => sum + item.piecesSold, 0);
-
-          return {
-            id: a.id,
-            name: a.name,
-            role: a.role,
-            region: a.region,
-            lineage: a.lineage,
-            verifiedBadge: 'Verified Master Artisan',
-            totalPiecesSold: totalSold || (a.id === 'ramdas-mishra' ? 86 : a.id === 'ghulam-rasool' ? 188 : 95),
-            products: associatedProducts,
-            email: `${a.id}@gargisaha.com`,
-            phone: '+91 98321 00000',
-          };
-        });
-
-        // 4. Merge approved applications (e.g. Gopal Chandra Dey)
-        approvedApplications.forEach((app) => {
-          // Check if not already in the list
-          const existing = verifiedList.find(
-            (v) => v.name.toLowerCase() === app.name.toLowerCase() || v.id === app.applicationId
-          );
-
-          if (!existing) {
-            // Assign Jamdani products to Gopal Chandra Dey if applicable
-            const gopalProducts: ProductItem[] =
-              app.name.toLowerCase().includes('gopal') || app.typeOfArt?.toLowerCase().includes('jamdani')
-                ? [
-                    {
-                      id: 'shantipur-tangail-saree',
-                      name: 'Shantipur Tangail Jamdani Cotton Saree',
-                      category: 'Sarees',
-                      price: 16500,
-                      image: '/images/collections/collection-sarees.jpg',
-                      technique: 'Tangail Jamdani Pit Loom',
-                      piecesSold: 52,
-                      inStock: true,
-                    },
-                    {
-                      id: 'nadia-mulberry-jamdani',
-                      name: 'Nadia Pure Mulberry Zari Jamdani',
-                      category: 'Sarees',
-                      price: 24800,
-                      image: '/images/collections/explore-sarees.jpg',
-                      technique: 'Supplementary Weft Zari',
-                      piecesSold: 31,
-                      inStock: true,
-                    },
-                  ]
-                : [];
-
-            const appTotalSold = gopalProducts.reduce((sum, item) => sum + item.piecesSold, 0);
-
-            verifiedList.unshift({
-              id: app.applicationId || `HG-ART-${Math.floor(1000 + Math.random() * 9000)}`,
-              name: app.name,
-              role: app.typeOfArt || 'Master Handloom Artisan',
-              region: app.state ? `${app.placeOfBirth ? app.placeOfBirth + ', ' : ''}${app.state}` : 'West Bengal, India',
-              lineage: 'Heritage Guild Certified Lineage',
-              verifiedBadge: 'Verified Master Artisan',
-              totalPiecesSold: appTotalSold || 83,
-              products: gopalProducts,
-              email: app.email,
-              phone: app.phone,
-            });
-          }
-        });
-
-        setArtisansList(verifiedList);
-        // Expand the first 2 artisans by default for immediate preview
-        if (verifiedList.length > 0) {
-          setExpandedArtisans({
-            [verifiedList[0].id]: true,
-            ...(verifiedList[1] ? { [verifiedList[1].id]: true } : {}),
-          });
-        }
-      } catch (err) {
-        console.error('Error loading verified artisans:', err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchVerifiedArtisans();
   }, []);
 
-  const toggleExpand = (id: string) => {
-    setExpandedArtisans((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
+  const handleOpenAssignModal = (artisan: VerifiedArtisan) => {
+    setEditingArtisan(artisan);
+    setNewCodeInput(artisan.artisanNo || '');
+    setAssignError('');
   };
 
-  const filteredArtisans = artisansList.filter((a) => {
-    const q = searchQuery.toLowerCase();
+  const handleSaveArtisanCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingArtisan) return;
+
+    setAssigningCode(true);
+    setAssignError('');
+
+    try {
+      const res = await fetch('/api/admin/artisans', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          applicationId: editingArtisan.applicationId,
+          artisanNo: newCodeInput.trim(),
+        }),
+      });
+
+      const data = await res.json();
+      if (!data.success) {
+        setAssignError(data.message || 'Failed to assign code');
+        return;
+      }
+
+      // Update state in place
+      setArtisans((prev) =>
+        prev.map((a) =>
+          a.applicationId === editingArtisan.applicationId ? { ...a, artisanNo: data.artisanNo } : a
+        )
+      );
+      setEditingArtisan(null);
+    } catch (err: any) {
+      setAssignError(err?.message || 'Network error assigning artisan code');
+    } finally {
+      setAssigningCode(false);
+    }
+  };
+
+  const filteredArtisans = artisans.filter((a) => {
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return true;
     return (
-      a.name.toLowerCase().includes(q) ||
-      a.role.toLowerCase().includes(q) ||
-      a.region.toLowerCase().includes(q) ||
-      a.id.toLowerCase().includes(q)
+      (a.artisanNo && a.artisanNo.toLowerCase().includes(q)) ||
+      (a.name && a.name.toLowerCase().includes(q)) ||
+      (a.email && a.email.toLowerCase().includes(q)) ||
+      (a.typeOfArt && a.typeOfArt.toLowerCase().includes(q))
     );
   });
-
-  const totalCatalogPiecesSold = artisansList.reduce((sum, a) => sum + a.totalPiecesSold, 0);
-  const totalCatalogItems = artisansList.reduce((sum, a) => sum + a.products.length, 0);
 
   return (
     <div>
       {/* ════════════ PAGE HEADER ════════════ */}
-      <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.5rem', marginBottom: '2rem' }}>
-        <div style={{ marginBottom: '0.4rem' }}>
-          <span style={{ fontSize: '0.88rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
+      <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
+        <div style={{ marginBottom: '0.35rem' }}>
+          <span style={{ fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
             Artisans
           </span>
         </div>
         <h1 style={{ fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0, lineHeight: 1.2 }}>
-          Verified Artisans <span style={{ color: 'var(--maharani-maroon)' }}>({artisansList.length})</span>
+          Verified Artisans <span style={{ color: 'var(--maharani-maroon)' }}>({artisans.length})</span>
         </h1>
-        <p style={{ margin: '0.4rem 0 0', color: '#4A3E36', fontSize: '1.05rem', lineHeight: 1.55 }}>
-          Directory of all officially verified master artisans, their active catalog collections, and unit sales volume.
+        <p style={{ margin: '0.35rem 0 0', color: '#4A3E36', fontSize: '1.05rem' }}>
+          Directory of all officially approved artisan partners preserving India&apos;s heritage weaves.
         </p>
       </div>
 
-      {/* ════════════ METRICS BAR & SEARCH ════════════ */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-          gap: '1rem',
-          marginBottom: '1.75rem',
-        }}
-      >
-        <div style={{ background: '#FFFFFF', border: '1px solid var(--soft-gold-line)', borderRadius: '10px', padding: '1.15rem 1.4rem', boxShadow: '0 2px 8px rgba(43,31,24,0.02)' }}>
-          <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#8C7B70', fontWeight: 700 }}>Verified Artisans</div>
-          <div style={{ fontSize: '1.85rem', fontWeight: 800, color: 'var(--maharani-maroon)', marginTop: '0.2rem' }}>{artisansList.length}</div>
-        </div>
-
-        <div style={{ background: '#FFFFFF', border: '1px solid var(--soft-gold-line)', borderRadius: '10px', padding: '1.15rem 1.4rem', boxShadow: '0 2px 8px rgba(43,31,24,0.02)' }}>
-          <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#8C7B70', fontWeight: 700 }}>Total Pieces Sold</div>
-          <div style={{ fontSize: '1.85rem', fontWeight: 800, color: 'var(--ink-brown)', marginTop: '0.2rem' }}>{totalCatalogPiecesSold.toLocaleString()} units</div>
-        </div>
-
-        <div style={{ background: '#FFFFFF', border: '1px solid var(--soft-gold-line)', borderRadius: '10px', padding: '1.15rem 1.4rem', boxShadow: '0 2px 8px rgba(43,31,24,0.02)' }}>
-          <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#8C7B70', fontWeight: 700 }}>Active Handcrafted Designs</div>
-          <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#2E7D32', marginTop: '0.2rem' }}>{totalCatalogItems} products</div>
-        </div>
-      </div>
-
-      {/* Search Input Bar */}
+      {/* ════════════ SEARCH BAR ════════════ */}
       <div
         style={{
           display: 'flex',
@@ -270,7 +162,7 @@ export default function VerifiedArtisansPage() {
         <Search size={18} color="var(--stone-taupe)" />
         <input
           type="text"
-          placeholder="Search verified artisans by name, craft, region, or ID..."
+          placeholder="Search by Artisan No (e.g. HG-84192) or Artisan Name..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           style={{
@@ -284,362 +176,481 @@ export default function VerifiedArtisansPage() {
         />
       </div>
 
-      {/* ════════════ VERIFIED ARTISANS LIST WITH EXTENDABLE PRODUCT DROPDOWNS ════════════ */}
+      {/* ════════════ STANDARD TABULAR FORMAT ════════════ */}
       {loading ? (
-        <AdminPageLoadingBlock minHeight="240px" message="Loading verified artisans and product sales data..." />
+        <AdminPageLoadingBlock minHeight="240px" message="Loading verified artisans..." />
       ) : filteredArtisans.length === 0 ? (
         <div
           style={{
-            padding: '4rem 2rem',
+            padding: '3.5rem 2rem',
             textAlign: 'center',
             background: '#FFFFFF',
             border: '1px solid var(--soft-gold-line)',
             borderRadius: '12px',
-            color: '#5C5043',
+            color: 'var(--stone-taupe)',
             boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
           }}
         >
           <div
             style={{
-              width: '56px',
-              height: '56px',
+              width: 48,
+              height: 48,
               borderRadius: '50%',
               background: '#FAF7F2',
-              border: '1.5px solid var(--soft-gold-line)',
+              border: '1px solid var(--soft-gold-line)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              margin: '0 auto 1.25rem',
+              margin: '0 auto 1rem',
               color: 'var(--gargi-gold)',
             }}
           >
-            <Users size={26} />
+            <Users size={24} />
           </div>
-          <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--ink-brown)', margin: '0 0 0.5rem' }}>
-            No Verified Artisans Found
+          <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--ink-brown)', margin: '0 0 0.5rem' }}>
+            No Verified Artisans
           </h3>
-          <p style={{ margin: 0, fontSize: '1rem', color: '#5C5043' }}>
-            No artisan records match your search query &quot;{searchQuery}&quot;.
+          <p style={{ margin: '0 0 1.25rem', fontSize: '0.95rem', color: '#5C5043' }}>
+            {searchQuery
+              ? `No verified artisans match "${searchQuery}".`
+              : 'Artisans approved through the Application Inbox will be listed here.'}
           </p>
+          <Link
+            href="/admin/artisans/applications"
+            style={{
+              display: 'inline-block',
+              padding: '0.6rem 1.35rem',
+              backgroundColor: 'var(--maharani-maroon)',
+              color: '#FFFFFF',
+              textDecoration: 'none',
+              borderRadius: '4px',
+              fontWeight: 700,
+              fontSize: '0.86rem',
+            }}
+          >
+            Review Applications Queue
+          </Link>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-          {filteredArtisans.map((artisan) => {
-            const isExpanded = !!expandedArtisans[artisan.id];
-
-            return (
-              <div
-                key={artisan.id}
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '12px',
+            boxShadow: '0 2px 14px rgba(43,31,24,0.03)',
+            position: 'relative',
+          }}
+        >
+          <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, textAlign: 'left' }}>
+            <thead>
+              <tr
                 style={{
-                  background: '#FFFFFF',
-                  border: isExpanded ? '1.5px solid var(--maharani-maroon)' : '1px solid var(--soft-gold-line)',
-                  borderRadius: '12px',
-                  overflow: 'hidden',
-                  boxShadow: isExpanded ? '0 8px 24px rgba(43,31,24,0.06)' : '0 2px 10px rgba(43,31,24,0.03)',
-                  transition: 'all 0.2s ease',
+                  background: '#FAF7F2',
+                  borderBottom: '1.5px solid var(--soft-gold-line)',
+                  color: '#5C5043',
+                  fontWeight: 800,
+                  fontSize: '0.85rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
                 }}
               >
-                {/* ── ARTISAN SUMMARY ROW (ALWAYS VISIBLE) ── */}
-                <div
+                {/* 1. Artisan No. */}
+                <th style={{ padding: '1rem 1.4rem', width: '200px', borderTopLeftRadius: '11px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                  Artisan No.
+                </th>
+
+                {/* 2. Name */}
+                <th style={{ padding: '1rem 1.4rem', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                  Name
+                </th>
+
+                {/* 3. Total Registered Products */}
+                <th style={{ padding: '1rem 1.4rem', width: '230px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                  Total Registered Products
+                </th>
+
+                {/* 4. Total Sales */}
+                <th style={{ padding: '1rem 1.4rem', width: '160px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                  Total Sales
+                </th>
+
+                {/* 5. Actions */}
+                <th style={{ padding: '1rem 1.4rem', textAlign: 'right', width: '220px', borderTopRightRadius: '11px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredArtisans.map((artisan) => (
+                <tr
+                  key={artisan.id || artisan.applicationId}
                   style={{
-                    padding: '1.25rem 1.65rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    flexWrap: 'wrap',
-                    gap: '1.25rem',
-                    background: isExpanded ? '#FAF7F2' : '#FFFFFF',
-                    borderBottom: isExpanded ? '1px solid var(--soft-gold-line)' : 'none',
+                    borderBottom: '1px solid #F0E8DC',
+                    transition: 'background-color 0.15s ease',
                   }}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#FAF7F2')}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFFFFF')}
                 >
-                  {/* Left: Artisan Identity & Lineage */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', minWidth: '280px', flex: '1 1 auto' }}>
-                    <div
-                      style={{
-                        width: '48px',
-                        height: '48px',
-                        borderRadius: '50%',
-                        backgroundColor: 'rgba(122, 35, 49, 0.08)',
-                        border: '1.5px solid var(--maharani-maroon)',
-                        color: 'var(--maharani-maroon)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontWeight: 800,
-                        fontSize: '1.1rem',
-                        flexShrink: 0,
-                      }}
-                    >
-                      {artisan.name.charAt(0)}
-                    </div>
-
-                    <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
-                        <h2 style={{ margin: 0, fontSize: '1.28rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
-                          {artisan.name}
-                        </h2>
-                        <span
-                          style={{
-                            fontSize: '0.78rem',
-                            fontWeight: 800,
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.08em',
-                            padding: '0.25rem 0.65rem',
-                            borderRadius: 9999,
-                            background: '#E8F5E9',
-                            color: '#2E7D32',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.3rem',
-                          }}
-                        >
-                          <CheckCircle2 size={13} />
-                          <span>Verified Artisan</span>
-                        </span>
-                      </div>
-
-                      <div style={{ fontSize: '0.92rem', color: '#5C5043', marginTop: '0.25rem', fontWeight: 600 }}>
-                        <span style={{ color: 'var(--maharani-maroon)', fontWeight: 700 }}>{artisan.role}</span> &bull; {artisan.region}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Right: NEW FIELD (Total Products Sold Under His Name) + Extendable Dropdown Button */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0, flexWrap: 'wrap' }}>
-                    {/* NEW FIELD: Total Products Under His Name Sold in Number */}
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'flex-end',
-                        padding: '0.45rem 1rem',
-                        background: '#FFFFFF',
-                        border: '1.5px solid #E8DFD0',
-                        borderRadius: '8px',
-                      }}
-                    >
-                      <span style={{ fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#8C7B70', fontWeight: 800 }}>
-                        Total Sold Under Name
+                  {/* 1. Artisan No. (HG + 5 random digits) */}
+                  <td style={{ padding: '1.1rem 1.4rem', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <span
+                        style={{
+                          fontFamily: 'monospace',
+                          fontWeight: 800,
+                          fontSize: '0.95rem',
+                          color: 'var(--maharani-maroon)',
+                          background: 'rgba(122, 35, 49, 0.08)',
+                          padding: '0.4rem 0.85rem',
+                          borderRadius: '6px',
+                          letterSpacing: '0.04em',
+                          display: 'inline-block',
+                        }}
+                      >
+                        {artisan.artisanNo || 'Pending'}
                       </span>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '2px' }}>
-                        <TrendingUp size={16} color="#2E7D32" strokeWidth={2.5} />
-                        <span style={{ fontSize: '1.18rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
-                          {artisan.totalPiecesSold} <span style={{ fontSize: '0.86rem', color: '#6A5A50', fontWeight: 600 }}>pieces</span>
-                        </span>
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleOpenAssignModal(artisan)}
+                        title="Manually assign or edit code"
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          cursor: 'pointer',
+                          color: '#8C7B70',
+                          padding: '3px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Edit2 size={13} />
+                      </button>
                     </div>
+                  </td>
 
-                    {/* Active Catalog Size Badge */}
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'flex-end',
-                        padding: '0.45rem 0.85rem',
-                        background: '#FAF7F2',
-                        border: '1px solid var(--soft-gold-line)',
-                        borderRadius: '8px',
-                      }}
-                    >
-                      <span style={{ fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#8C7B70', fontWeight: 700 }}>
-                        Catalog
-                      </span>
-                      <span style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
-                        {artisan.products.length} {artisan.products.length === 1 ? 'item' : 'items'}
-                      </span>
+                  {/* 2. Name */}
+                  <td style={{ padding: '1.1rem 1.4rem', borderBottom: '1px solid #F0E8DC' }}>
+                    <div style={{ fontWeight: 800, color: 'var(--ink-brown)', fontSize: '1.05rem' }}>
+                      {artisan.name}
                     </div>
+                    <div style={{ fontSize: '0.84rem', color: '#6A5A50', marginTop: '2px' }}>
+                      {artisan.typeOfArt || 'Master Artisan'} &bull; {artisan.state}
+                    </div>
+                  </td>
 
-                    {/* Extendable Dropdown Button */}
+                  {/* 3. Total Registered Products */}
+                  <td style={{ padding: '1.1rem 1.4rem', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
+                    <span style={{ fontWeight: 700, fontSize: '0.98rem', color: 'var(--ink-brown)' }}>
+                      {artisan.totalRegisteredProducts}{' '}
+                      <span style={{ fontSize: '0.86rem', color: '#6A5A50', fontWeight: 500 }}>
+                        {artisan.totalRegisteredProducts === 1 ? 'Product' : 'Products'}
+                      </span>
+                    </span>
+                  </td>
+
+                  {/* 4. Total Sales */}
+                  <td style={{ padding: '1.1rem 1.4rem', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
+                    <span style={{ fontWeight: 700, fontSize: '0.98rem', color: 'var(--ink-brown)' }}>
+                      {artisan.totalSales}{' '}
+                      <span style={{ fontSize: '0.86rem', color: '#6A5A50', fontWeight: 500 }}>
+                        Sold
+                      </span>
+                    </span>
+                  </td>
+
+                  {/* 5. Actions: View All Products */}
+                  <td style={{ padding: '1.1rem 1.4rem', textAlign: 'right', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
                     <button
                       type="button"
-                      onClick={() => toggleExpand(artisan.id)}
+                      onClick={() => setSelectedArtisanForProducts(artisan)}
                       style={{
-                        padding: '0.65rem 1.15rem',
-                        borderRadius: '6px',
+                        padding: '0.55rem 1.15rem',
+                        backgroundColor: '#FFFFFF',
                         border: '1.5px solid var(--maharani-maroon)',
-                        backgroundColor: isExpanded ? 'var(--maharani-maroon)' : '#FFFFFF',
-                        color: isExpanded ? '#FFFFFF' : 'var(--maharani-maroon)',
+                        color: 'var(--maharani-maroon)',
+                        borderRadius: '6px',
                         fontWeight: 700,
-                        fontSize: '0.88rem',
+                        fontSize: '0.86rem',
                         cursor: 'pointer',
                         display: 'inline-flex',
                         alignItems: 'center',
-                        gap: '0.55rem',
-                        transition: 'all 0.18s ease',
-                        boxShadow: '0 2px 6px rgba(122, 35, 49, 0.12)',
+                        gap: '0.5rem',
+                        transition: 'all 0.15s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = 'var(--maharani-maroon)';
+                        e.currentTarget.style.color = '#FFFFFF';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = '#FFFFFF';
+                        e.currentTarget.style.color = 'var(--maharani-maroon)';
                       }}
                     >
-                      <ShoppingBag size={15} />
-                      <span>{isExpanded ? 'Hide Products' : `View Products (${artisan.products.length})`}</span>
-                      {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                      <Package size={15} />
+                      <span>View All Products</span>
                     </button>
-                  </div>
-                </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
-                {/* ── EXTENDABLE DROPDOWN: ROWS OF EACH AND EVERY PRODUCT POSTED (SINGLE ROW PER ITEM) ── */}
-                {isExpanded && (
-                  <div style={{ backgroundColor: '#FAF7F2', padding: '1.25rem 1.65rem' }}>
-                    <div style={{ marginBottom: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.82rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#6A5A50' }}>
-                        Products Posted Under {artisan.name} ({artisan.products.length})
-                      </span>
-                      <span style={{ fontSize: '0.82rem', color: '#8C7B70' }}>
-                        Displaying product thumbnail, name, craft, price, and units sold
-                      </span>
-                    </div>
-
-                    {artisan.products.length === 0 ? (
-                      <div
-                        style={{
-                          padding: '1.75rem',
-                          background: '#FFFFFF',
-                          border: '1px solid var(--soft-gold-line)',
-                          borderRadius: '8px',
-                          textAlign: 'center',
-                          color: '#6A5A50',
-                          fontSize: '0.94rem',
-                        }}
-                      >
-                        No products posted to the boutique catalog under this artisan yet. Newly verified artisans can upload handcrafted items via the Artisan Atelier Portal.
-                      </div>
-                    ) : (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-                        {artisan.products.map((prod) => (
-                          <div
-                            key={prod.id}
-                            style={{
-                              background: '#FFFFFF',
-                              border: '1px solid var(--soft-gold-line)',
-                              borderRadius: '8px',
-                              padding: '0.85rem 1.25rem',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'space-between',
-                              flexWrap: 'nowrap',
-                              gap: '1.25rem',
-                              transition: 'all 0.15s ease',
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.borderColor = 'var(--gargi-gold)';
-                              e.currentTarget.style.boxShadow = '0 3px 12px rgba(43,31,24,0.04)';
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.borderColor = 'var(--soft-gold-line)';
-                              e.currentTarget.style.boxShadow = 'none';
-                            }}
-                          >
-                            {/* 1. Block of Image & 2. Product Name */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', minWidth: '240px', flex: '1 1 auto' }}>
-                              {/* Block of image thumbnail */}
-                              <div
-                                style={{
-                                  width: '54px',
-                                  height: '54px',
-                                  borderRadius: '6px',
-                                  overflow: 'hidden',
-                                  border: '1px solid var(--soft-gold-line)',
-                                  backgroundColor: '#F7F3EC',
-                                  position: 'relative',
-                                  flexShrink: 0,
-                                }}
-                              >
-                                <img
-                                  src={prod.image}
-                                  alt={prod.name}
-                                  style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    objectFit: 'cover',
-                                    display: 'block',
-                                  }}
-                                />
-                              </div>
-
-                              {/* Product Name & Technique */}
-                              <div>
-                                <h4 style={{ margin: 0, fontSize: '1.02rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
-                                  {prod.name}
-                                </h4>
-                                <div style={{ fontSize: '0.84rem', color: '#6A5A50', marginTop: '2px', fontWeight: 600 }}>
-                                  <span style={{ textTransform: 'capitalize' }}>{prod.category}</span>
-                                  {prod.technique ? ` • ${prod.technique}` : ''}
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* 3. Product Price */}
-                            <div style={{ minWidth: '110px', textAlign: 'right', flexShrink: 0 }}>
-                              <span style={{ fontSize: '1.08rem', fontWeight: 800, color: 'var(--maharani-maroon)' }}>
-                                ₹{prod.price.toLocaleString('en-IN')}
-                              </span>
-                              <div style={{ fontSize: '0.78rem', color: '#2E7D32', fontWeight: 700 }}>
-                                In Stock
-                              </div>
-                            </div>
-
-                            {/* 4. Number of Pieces Sold for That Particular Item */}
-                            <div
-                              style={{
-                                minWidth: '150px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'flex-end',
-                                flexShrink: 0,
-                              }}
-                            >
-                              <span
-                                style={{
-                                  background: 'rgba(184, 142, 24, 0.12)',
-                                  color: '#8A6508',
-                                  border: '1px solid rgba(184, 142, 24, 0.35)',
-                                  fontWeight: 800,
-                                  fontSize: '0.88rem',
-                                  padding: '0.4rem 0.85rem',
-                                  borderRadius: 9999,
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  gap: '0.4rem',
-                                  whiteSpace: 'nowrap',
-                                }}
-                              >
-                                <PackageCheck size={14} />
-                                <span>{prod.piecesSold} Pieces Sold</span>
-                              </span>
-                            </div>
-
-                            {/* 5. View in Boutique CTA Link */}
-                            <div style={{ flexShrink: 0 }}>
-                              <Link
-                                href={`/product/${prod.id}`}
-                                target="_blank"
-                                style={{
-                                  padding: '0.45rem 0.85rem',
-                                  borderRadius: '4px',
-                                  border: '1px solid var(--soft-gold-line)',
-                                  background: '#FAF7F2',
-                                  color: 'var(--ink-brown)',
-                                  fontSize: '0.82rem',
-                                  fontWeight: 700,
-                                  textDecoration: 'none',
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  gap: '0.35rem',
-                                  whiteSpace: 'nowrap',
-                                }}
-                              >
-                                <span>View</span>
-                                <ExternalLink size={12} />
-                              </Link>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
+      {/* ════════════ MODAL: VIEW ALL PRODUCTS UNDER ARTISAN ════════════ */}
+      {selectedArtisanForProducts && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 100,
+            backgroundColor: 'rgba(35, 24, 18, 0.65)',
+            backdropFilter: 'blur(3px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1.5rem',
+          }}
+          onClick={() => setSelectedArtisanForProducts(null)}
+        >
+          <div
+            style={{
+              backgroundColor: '#FFFFFF',
+              border: '1.5px solid var(--soft-gold-line)',
+              borderRadius: '12px',
+              maxWidth: '680px',
+              width: '100%',
+              maxHeight: '85vh',
+              overflowY: 'auto',
+              boxShadow: '0 16px 40px rgba(0,0,0,0.22)',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div
+              style={{
+                padding: '1.25rem 1.65rem',
+                borderBottom: '1px solid var(--soft-gold-line)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                backgroundColor: '#FAF7F2',
+              }}
+            >
+              <div>
+                <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
+                  Registered Products: {selectedArtisanForProducts.name}
+                </h3>
+                <p style={{ margin: '3px 0 0', fontSize: '0.85rem', color: '#6A5A50' }}>
+                  Artisan Code:{' '}
+                  <strong style={{ color: 'var(--maharani-maroon)' }}>
+                    {selectedArtisanForProducts.artisanNo}
+                  </strong>{' '}
+                  &bull; {selectedArtisanForProducts.totalRegisteredProducts} Listed Products
+                </p>
               </div>
-            );
-          })}
+              <button
+                type="button"
+                onClick={() => setSelectedArtisanForProducts(null)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: 'var(--ink-brown)',
+                  padding: '4px',
+                }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div style={{ padding: '1.5rem' }}>
+              {selectedArtisanForProducts.totalRegisteredProducts === 0 ? (
+                <div style={{ textAlign: 'center', padding: '2.5rem 1rem', color: '#5C5043' }}>
+                  <Package size={36} color="var(--gargi-gold)" style={{ margin: '0 auto 0.75rem' }} />
+                  <h4 style={{ margin: '0 0 0.35rem', fontSize: '1.1rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
+                    No Products Registered Yet
+                  </h4>
+                  <p style={{ margin: 0, fontSize: '0.92rem', color: '#6A5A50', maxWidth: '420px', marginLeft: 'auto', marginRight: 'auto' }}>
+                    No products have been listed under {selectedArtisanForProducts.name} ({selectedArtisanForProducts.artisanNo}). Products submitted via the Artisan Atelier Portal will automatically populate here.
+                  </p>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {selectedArtisanForProducts.products.map((p) => (
+                    <div
+                      key={p.id}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '0.85rem 1.15rem',
+                        border: '1px solid var(--soft-gold-line)',
+                        borderRadius: '8px',
+                        background: '#FAF7F2',
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                        <img
+                          src={p.image}
+                          alt={p.name}
+                          style={{
+                            width: '46px',
+                            height: '46px',
+                            objectFit: 'cover',
+                            borderRadius: '4px',
+                            border: '1px solid var(--soft-gold-line)',
+                          }}
+                        />
+                        <div>
+                          <div style={{ fontWeight: 800, color: 'var(--ink-brown)', fontSize: '0.96rem' }}>
+                            {p.name}
+                          </div>
+                          <div style={{ fontSize: '0.8rem', color: '#6A5A50' }}>{p.category}</div>
+                        </div>
+                      </div>
+
+                      <div style={{ textAlign: 'right' }}>
+                        <div style={{ fontWeight: 800, color: 'var(--maharani-maroon)', fontSize: '0.98rem' }}>
+                          ₹{p.price.toLocaleString('en-IN')}
+                        </div>
+                        <div style={{ fontSize: '0.78rem', color: '#2E7D32', fontWeight: 700 }}>
+                          Stock: {p.stock}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ════════════ MODAL: MANUALLY ASSIGN ARTISAN CODE ════════════ */}
+      {editingArtisan && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 100,
+            backgroundColor: 'rgba(35, 24, 18, 0.65)',
+            backdropFilter: 'blur(3px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1.5rem',
+          }}
+          onClick={() => setEditingArtisan(null)}
+        >
+          <div
+            style={{
+              backgroundColor: '#FFFFFF',
+              border: '1.5px solid var(--soft-gold-line)',
+              borderRadius: '12px',
+              maxWidth: '460px',
+              width: '100%',
+              boxShadow: '0 16px 40px rgba(0,0,0,0.22)',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              style={{
+                padding: '1.25rem 1.5rem',
+                borderBottom: '1px solid var(--soft-gold-line)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                backgroundColor: '#FAF7F2',
+              }}
+            >
+              <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
+                Assign Artisan Code
+              </h3>
+              <button
+                type="button"
+                onClick={() => setEditingArtisan(null)}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-brown)' }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveArtisanCode} style={{ padding: '1.5rem' }}>
+              <p style={{ margin: '0 0 1rem', fontSize: '0.88rem', color: '#5C5043' }}>
+                Set or manually assign the unique artisan code for <strong>{editingArtisan.name}</strong>.
+                Must start with <code>HG</code> and contain 5 random digits (e.g. <code>HG-84192</code>).
+              </p>
+
+              <div style={{ marginBottom: '1.25rem' }}>
+                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.4rem' }}>
+                  Artisan Code
+                </label>
+                <input
+                  type="text"
+                  value={newCodeInput}
+                  onChange={(e) => setNewCodeInput(e.target.value.toUpperCase())}
+                  placeholder="HG-12345"
+                  required
+                  style={{
+                    width: '100%',
+                    padding: '0.65rem 0.85rem',
+                    fontFamily: 'monospace',
+                    fontSize: '1.05rem',
+                    fontWeight: 700,
+                    border: '1.5px solid var(--soft-gold-line)',
+                    borderRadius: '6px',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+
+              {assignError && (
+                <div style={{ color: '#C62828', fontSize: '0.85rem', marginBottom: '1rem', fontWeight: 600 }}>
+                  {assignError}
+                </div>
+              )}
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+                <button
+                  type="button"
+                  onClick={() => setEditingArtisan(null)}
+                  style={{
+                    padding: '0.55rem 1rem',
+                    background: '#FAF7F2',
+                    border: '1px solid var(--soft-gold-line)',
+                    borderRadius: '4px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={assigningCode}
+                  style={{
+                    padding: '0.55rem 1.25rem',
+                    backgroundColor: 'var(--maharani-maroon)',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    borderRadius: '4px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                  }}
+                >
+                  {assigningCode ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />}
+                  <span>Save Code</span>
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>

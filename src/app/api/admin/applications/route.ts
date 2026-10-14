@@ -5,6 +5,17 @@ import { supabase } from '@/lib/supabaseClient';
 import { resend, NOREPLY_EMAIL } from '@/lib/resend';
 
 const LOGO_URL = 'https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/logo-email.png';
+function generateArtisanNo(existingCodes: Set<string>): string {
+  let code = '';
+  let attempts = 0;
+  do {
+    const randomFive = Math.floor(10000 + Math.random() * 90000);
+    code = `HG-${randomFive}`;
+    attempts++;
+  } while (existingCodes.has(code) && attempts < 1000);
+  return code;
+}
+
 
 const DATA_FILE = path.join(process.cwd(), 'src', 'data', 'artisan_applications.json');
 
@@ -239,8 +250,21 @@ export async function PATCH(req: Request) {
       recipientEmail = 'team.anga9@gmail.com';
     }
 
-    // 1. If approved, onboard into user_roles as 'artisan' & send approval email
+    // 1. If approved, assign unique Artisan No (HG + 5 random digits) & onboard
     if ((action === 'approve' || action === 'approved') && recipientEmail) {
+      if (targetApp && !targetApp.artisanNo) {
+        const existingCodes = new Set(localApps.map((a: any) => a.artisanNo).filter(Boolean));
+        targetApp.artisanNo = generateArtisanNo(existingCodes);
+        saveLocalApplications(localApps);
+
+        // Update Supabase
+        supabase
+          .from('artisan_applications')
+          .update({ artisan_no: targetApp.artisanNo })
+          .or(`application_number.eq.${applicationId},id.eq.${applicationId}`)
+          .then(() => {})
+          .catch(() => {});
+      }
       try {
         await supabase.from('user_roles').upsert({
           user_email: recipientEmail,
