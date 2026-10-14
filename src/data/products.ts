@@ -331,6 +331,8 @@ function applyProductOverride(p: Product): Product {
     technique: ov.technique || ov.artType || p.technique,
     occasion: ov.occasion || p.occasion,
     region: ov.region || p.region,
+    care: ov.care || p.care,
+    sizes: ov.sizes || p.sizes,
     images: ov.images && ov.images.length > 0 ? ov.images : p.images,
   };
 }

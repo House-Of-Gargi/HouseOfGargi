@@ -6,7 +6,6 @@ import { products as catalogProducts } from '@/data/products';
 
 const PRODUCT_NUMBERS_FILE = path.join(process.cwd(), 'src', 'data', 'product_numbers.json');
 const PRODUCT_OVERRIDES_FILE = path.join(process.cwd(), 'src', 'data', 'product_overrides.json');
-const PRODUCTS_TS_FILE = path.join(process.cwd(), 'src', 'data', 'products.ts');
 
 function getProductNumbers(): Record<string, string> {
   if (fs.existsSync(PRODUCT_NUMBERS_FILE)) {
@@ -91,7 +90,7 @@ export async function GET() {
     const mergedList: any[] = [];
     const processedIds = new Set<string>();
 
-    // Process Supabase products — ALL attributed solely to Gopal Chandra Dey (HG-84192)
+    // Process Supabase products — ALWAYS prioritize authentic catalog details & overrides
     supabaseProducts.forEach((sp) => {
       processedIds.add(sp.id);
 
@@ -103,7 +102,7 @@ export async function GET() {
       }
 
       const catMatch = catalogProducts.find(
-        (cp) => cp.name.toLowerCase() === (sp.name || '').toLowerCase()
+        (cp) => cp.name.toLowerCase() === (sp.name || '').toLowerCase() || cp.id === sp.id
       );
 
       const baseImages = catMatch?.images || [sp.image_url || '/images/category-sarees.png'];
@@ -113,19 +112,21 @@ export async function GET() {
         id: sp.id,
         productNo: pNo,
         name: productOverrides[sp.id]?.name || sp.name,
-        category: productOverrides[sp.id]?.category || sp.category || catMatch?.category || 'sarees',
+        category: productOverrides[sp.id]?.category || catMatch?.category || sp.category || 'sarees',
         price: productOverrides[sp.id]?.price || sp.price_in_rupees || catMatch?.price || 0,
         stock: productOverrides[sp.id]?.stock ?? (sp.stock ?? 10),
         totalSales: realSalesMap[sp.id] || 0,
         images,
-        description: productOverrides[sp.id]?.description || (sp as any).description || catMatch?.description || 'Authentic handcrafted heritage creation.',
+        description: productOverrides[sp.id]?.description || catMatch?.description || (sp as any).description || 'Authentic handcrafted heritage creation.',
         artisanName: 'Gopal Chandra Dey',
         artisanNo: 'HG-84192',
         artisanId: 'HG-ART-260501',
-        artType: productOverrides[sp.id]?.artType || productOverrides[sp.id]?.technique || sp.craft_technique || catMatch?.technique || 'Tangail Jamdani Pit Loom',
-        fabric: productOverrides[sp.id]?.fabric || (sp as any).fabric || catMatch?.fabric || 'Pure Mulberry Silk',
-        occasion: productOverrides[sp.id]?.occasion || (sp as any).occasion || catMatch?.occasion || 'Festive & Celebration',
-        region: productOverrides[sp.id]?.region || (sp as any).region || catMatch?.region || 'Varanasi, Uttar Pradesh',
+        artType: productOverrides[sp.id]?.artType || productOverrides[sp.id]?.technique || catMatch?.technique || sp.craft_technique || 'Heritage Handloom',
+        fabric: productOverrides[sp.id]?.fabric || catMatch?.fabric || (sp as any).fabric || 'Pure Silk',
+        occasion: productOverrides[sp.id]?.occasion || catMatch?.occasion || (sp as any).occasion || 'Festive',
+        region: productOverrides[sp.id]?.region || catMatch?.region || (sp as any).region || 'India',
+        care: productOverrides[sp.id]?.care || catMatch?.care || 'Dry clean recommended.',
+        sizes: productOverrides[sp.id]?.sizes || catMatch?.sizes || ['Free Size'],
         curationStatus: productOverrides[sp.id]?.curationStatus || sp.curation_status || 'approved',
         createdAt: sp.created_at || new Date().toISOString(),
       });
@@ -156,10 +157,12 @@ export async function GET() {
           artisanName: 'Gopal Chandra Dey',
           artisanNo: 'HG-84192',
           artisanId: 'HG-ART-260501',
-          artType: productOverrides[cp.id]?.artType || productOverrides[cp.id]?.technique || cp.technique || 'Tangail Jamdani Pit Loom',
-          fabric: productOverrides[cp.id]?.fabric || cp.fabric || 'Pure Mulberry Silk',
-          occasion: productOverrides[cp.id]?.occasion || cp.occasion || 'Wedding & Festive',
+          artType: productOverrides[cp.id]?.artType || productOverrides[cp.id]?.technique || cp.technique || 'Heritage Handloom',
+          fabric: productOverrides[cp.id]?.fabric || cp.fabric || 'Pure Silk',
+          occasion: productOverrides[cp.id]?.occasion || cp.occasion || 'Festive',
           region: productOverrides[cp.id]?.region || cp.region || 'India',
+          care: productOverrides[cp.id]?.care || cp.care || 'Dry clean recommended.',
+          sizes: productOverrides[cp.id]?.sizes || cp.sizes || ['Free Size'],
           curationStatus: productOverrides[cp.id]?.curationStatus || 'approved',
           createdAt: new Date().toISOString(),
         });
@@ -198,6 +201,8 @@ export async function PATCH(req: Request) {
       fabric, 
       occasion, 
       region, 
+      care,
+      sizes,
       images, 
       curationStatus 
     } = body;
@@ -224,17 +229,20 @@ export async function PATCH(req: Request) {
     
     if (occasion !== undefined) current.occasion = occasion;
     if (region !== undefined) current.region = region;
+    if (care !== undefined) current.care = care;
+    if (sizes !== undefined) current.sizes = sizes;
     if (images !== undefined) current.images = images;
     if (curationStatus !== undefined) current.curationStatus = curationStatus;
 
     current.updatedAt = new Date().toISOString();
     productOverrides[id] = current;
 
-    // Dual-sync: If id is a UUID, also sync to matching catalog slug (e.g. banarasi-gold-weave)
+    // Dual-sync: If id is a UUID, also sync to matching catalog slug (e.g. sanganeri-block-print-kurta)
     const matchedSlug = catalogProducts.find(cp => cp.name.toLowerCase() === (current.name || '').toLowerCase() || cp.id === id);
     if (matchedSlug && matchedSlug.id !== id) {
       productOverrides[matchedSlug.id] = { ...current };
     }
+
     saveProductOverrides(productOverrides);
 
     // Also update Supabase in background

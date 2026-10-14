@@ -28,5 +28,39 @@
     "occasion": "Royal Wedding & Celebration",
     "region": "Varanasi, Uttar Pradesh",
     "updatedAt": "2026-10-14T21:51:05.009Z"
+  },
+  "c88b8436-1613-441b-a3c6-92b1b0f64661": {
+    "name": "Sanganeri Block Print Kurta Set",
+    "description": "Sanganeri Block Print Kurta Set handcrafted with traditional artisanal techniques and pure silk threading.",
+    "price": 4800,
+    "stock": 10,
+    "category": "kurta-sets",
+    "fabric": "Pure Mulberry Silk",
+    "artType": "Heritage Handloom",
+    "technique": "Heritage Handloom",
+    "occasion": "Wedding & Festive",
+    "region": "India",
+    "images": [
+      "/images/category-kurtas.png"
+    ],
+    "curationStatus": "approved",
+    "updatedAt": "2026-10-14T21:54:45.229Z"
+  },
+  "sanganeri-block-print-kurta": {
+    "name": "Sanganeri Block Print Kurta Set",
+    "description": "Sanganeri Block Print Kurta Set handcrafted with traditional artisanal techniques and pure silk threading.",
+    "price": 4800,
+    "stock": 10,
+    "category": "kurta-sets",
+    "fabric": "Pure Mulberry Silk",
+    "artType": "Heritage Handloom",
+    "technique": "Heritage Handloom",
+    "occasion": "Wedding & Festive",
+    "region": "India",
+    "images": [
+      "/images/category-kurtas.png"
+    ],
+    "curationStatus": "approved",
+    "updatedAt": "2026-10-14T21:54:45.229Z"
   }
 }
