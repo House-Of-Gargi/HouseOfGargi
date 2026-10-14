@@ -260,17 +260,12 @@ export default function ArtisanProfileTablePage() {
                 </th>
 
                 {/* 4. Experience */}
-                <th style={{ padding: '1rem 1.3rem', width: '140px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                <th style={{ padding: '1rem 1.3rem', width: '180px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
                   Experience
                 </th>
 
-                {/* 5. Description */}
-                <th style={{ padding: '1rem 1.3rem', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
-                  Description
-                </th>
-
-                {/* 6. Actions */}
-                <th style={{ padding: '1rem 1.3rem', textAlign: 'right', width: '310px', borderTopRightRadius: '11px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                {/* 5. Actions */}
+                <th style={{ padding: '1rem 1.3rem', textAlign: 'right', width: '320px', borderTopRightRadius: '11px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
                   Actions
                 </th>
               </tr>
@@ -318,14 +313,7 @@ export default function ArtisanProfileTablePage() {
                     </span>
                   </td>
 
-                  {/* 5. Description */}
-                  <td style={{ padding: '1.1rem 1.3rem', borderBottom: '1px solid #F0E8DC' }}>
-                    <p style={{ margin: 0, fontSize: '0.88rem', color: '#5C5043', lineHeight: 1.55, maxWidth: '380px' }}>
-                      {artisan.description}
-                    </p>
-                  </td>
-
-                  {/* 6. Actions: View Public Profile & Edit Public Profile */}
+                  {/* 5. Actions: View Public Profile & Edit Public Profile */}
                   <td style={{ padding: '1.1rem 1.3rem', textAlign: 'right', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.55rem' }}>
                       {/* View Public Profile */}
