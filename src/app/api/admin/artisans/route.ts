@@ -119,14 +119,15 @@ export async function GET() {
         }
 
         // Also update Supabase in background
-        supabase
-          .from('artisan_applications')
-          .update({ artisan_no: newCode, updated_at: new Date().toISOString() })
-          .or(`application_number.eq.${artisan.applicationId},id.eq.${artisan.applicationId}`)
-          .then(({ error }: any) => {
-            if (error) console.warn('Supabase update artisan_no attempt:', error);
-          })
-          .catch(() => {});
+        try {
+          supabase
+            .from('artisan_applications')
+            .update({ artisan_no: newCode, updated_at: new Date().toISOString() })
+            .or(`application_number.eq.${artisan.applicationId},id.eq.${artisan.applicationId}`)
+            .then(({ error }: any) => {
+              if (error) console.warn('Supabase update artisan_no attempt:', error);
+            });
+        } catch {}
       }
     });
 

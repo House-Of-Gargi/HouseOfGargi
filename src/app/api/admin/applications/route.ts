@@ -258,12 +258,13 @@ export async function PATCH(req: Request) {
         saveLocalApplications(localApps);
 
         // Update Supabase
-        supabase
-          .from('artisan_applications')
-          .update({ artisan_no: targetApp.artisanNo })
-          .or(`application_number.eq.${applicationId},id.eq.${applicationId}`)
-          .then(() => {})
-          .catch(() => {});
+        try {
+          supabase
+            .from('artisan_applications')
+            .update({ artisan_no: targetApp.artisanNo })
+            .or(`application_number.eq.${applicationId},id.eq.${applicationId}`)
+            .then(() => {});
+        } catch {}
       }
       try {
         await supabase.from('user_roles').upsert({
