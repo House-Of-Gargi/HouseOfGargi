@@ -1,3 +1,4 @@
+import artisanProfilesList from './artisan_profiles_list.json';
 import { Artisan } from '@/types';
 
 export const artisans: Artisan[] = [
@@ -201,10 +202,43 @@ export const artisans: Artisan[] = [
 
 export function getArtisan(id: string): Artisan | undefined {
   const norm = (id || '').toLowerCase();
-  if (norm === 'hg-84192' || norm === 'gopal-chandra-dey') {
-    return artisans.find(a => a.id === 'gopal-chandra-dey');
+  let baseArtisan = artisans.find(a => a.id.toLowerCase() === norm);
+  if (!baseArtisan && (norm === 'hg-84192' || norm === 'gopal-chandra-dey')) {
+    baseArtisan = artisans.find(a => a.id === 'gopal-chandra-dey');
   }
-  return artisans.find(a => a.id.toLowerCase() === norm);
+  if (!baseArtisan) return undefined;
+
+  // Merge saved edits from artisan_profiles_list.json if present
+  try {
+    const list = Array.isArray(artisanProfilesList) ? artisanProfilesList : [];
+    const override = list.find(
+      (p: any) =>
+        p.artisanNo?.toLowerCase() === norm ||
+        p.id?.toLowerCase() === norm ||
+        p.name?.toLowerCase() === baseArtisan?.name?.toLowerCase()
+    );
+
+    if (override) {
+      return {
+        ...baseArtisan,
+        ...override,
+        name: override.name || baseArtisan.name,
+        role: override.artStyle || override.role || baseArtisan.role,
+        artStyle: override.artStyle || baseArtisan.artStyle || baseArtisan.role,
+        region: override.regionalBelonging || override.region || baseArtisan.region,
+        regionalBelonging: override.regionalBelonging || override.region || baseArtisan.regionalBelonging,
+        experience: override.experience || `${baseArtisan.experienceYears}+ Years at the Loom`,
+        bio: override.description || override.bio || baseArtisan.bio,
+        description: override.description || override.bio || baseArtisan.bio,
+        image: override.profileImage || override.image || baseArtisan.image,
+        profileImage: override.profileImage || override.image || baseArtisan.image,
+      };
+    }
+  } catch (err) {
+    console.error('Error applying artisan profile overrides:', err);
+  }
+
+  return baseArtisan;
 }
 
 export function getArtisanByProductId(productId: string): Artisan | undefined {

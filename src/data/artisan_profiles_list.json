@@ -3,11 +3,26 @@
     "id": "HG-ART-260501",
     "artisanNo": "HG-84192",
     "name": "Gopal Chandra Dey",
-    "artStyle": "Tangail Jamdani Pit Loom",
-    "regionalBelonging": "Shantipur, Nadia, West Bengal",
+    "role": "Master Tangail Jamdani Pit Loom Weaver",
+    "artStyle": "Maharaja Embroidary Design ",
+    "region": "Kolkata, West Bengal",
+    "regionalBelonging": "Kolkata, West Bengal",
+    "lineage": "4th Generation Pit Loom Lineage (Trained by Late Narayan Chandra Dey)",
     "experience": "32 Years",
-    "description": "Master weaver preserving 4 generations of royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to handcraft heirloom drapes.",
+    "experienceYears": 32,
+    "loomHoursTotal": "15,000+ Loom Hours Preserved",
     "profileImage": "/images/artisans_split.png",
-    "updatedAt": "2026-10-14T13:43:56.093Z"
+    "philosophy": "In Shantipur, every Jamdani motif is a sacred prayer of rhythm, breath, and patience. When the shuttle moves across mulberry silk on our pit loom, time stands still.",
+    "bio": "Master weaver preserving 4 generations of royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to handcraft heirloom drapes.",
+    "description": "Master weaver preserving 4 generations of royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to handcraft heirloom drapes.",
+    "specialties": [
+      "Tangail Jamdani Pit Loom Weave",
+      "100% Murshidabad Mulberry Silk",
+      "Tested Real Silver & Gold Zari",
+      "Natural AZO-Free Vegetable Dyes",
+      "Terracotta & Geometric Peacock Motifs"
+    ],
+    "communityImpact": "Regular fair-wage employment for 14 rural weaver families and flexible home-spinning shifts for women artisans in Nadia district.",
+    "updatedAt": "2026-10-14T18:05:26.184Z"
   }
 ]

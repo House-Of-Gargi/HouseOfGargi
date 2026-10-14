@@ -18,15 +18,21 @@ export interface Product {
 
 export interface Artisan {
   id: string;
+  artisanNo?: string;
   name: string;
   role: string;
+  artStyle?: string;
   region: string;
+  regionalBelonging?: string;
   lineage: string;
   experienceYears: number;
+  experience?: string;
   loomHoursTotal: string;
   image: string;
+  profileImage?: string;
   coverImage: string;
   bio: string;
+  description?: string;
   philosophy: string;
   specialties: string[];
   awards?: string[];
