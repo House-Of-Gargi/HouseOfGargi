@@ -58,6 +58,7 @@ const adminNavGroups: AdminNavGroup[] = [
     items: [
       { label: 'Application Inbox', href: '/admin/artisans/applications', icon: Inbox },
       { label: 'Verified Artisans', href: '/admin/artisans', icon: Users },
+      { label: 'Artist Profile', href: '/admin/artisans/profile', icon: UserCheck },
     ],
   },
   {
