@@ -86,7 +86,7 @@ export default function Footer() {
               <h4 className="footer__heading">Access &amp; Support</h4>
               <div className="footer__links-list">
                 <Link href="/seller/login" className="footer__portal-link">
-                  Artisan Portal Sign In <span className="footer__portal-arrow">→</span>
+                  Artisan Portal <span className="footer__portal-arrow">→</span>
                 </Link>
                 <a
                   href="https://wa.me/919876543210?text=Hello%20House%20of%20Gargi%2C%20I%20would%20like%20a%20couture%20consultation"
