@@ -57,7 +57,7 @@ const adminNavGroups: AdminNavGroup[] = [
     section: 'Artisan Governance',
     items: [
       { label: 'Application Inbox', href: '/admin/artisans/applications', icon: Inbox },
-      { label: 'Verified Guilds', href: '/admin/artisans', icon: Users },
+      { label: 'Verified Artisans', href: '/admin/artisans', icon: Users },
     ],
   },
   {
@@ -251,52 +251,52 @@ export function AdminSidebar({
             borderBottom: '1px solid var(--soft-gold-line)',
             display: 'flex',
             alignItems: 'center',
-            padding: isExpanded ? '0 1rem' : '0',
+            padding: isExpanded ? '0 1.25rem' : '0',
             justifyContent: isExpanded ? 'flex-start' : 'center',
             backgroundColor: '#FAF7F2',
           }}
         >
-          <div
-            style={{
-              width: 42,
-              height: 42,
-              borderRadius: 6,
-              background: 'var(--maharani-maroon)',
-              border: '1.5px solid var(--gargi-gold)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 8px rgba(122, 35, 49, 0.22)',
-              flexShrink: 0,
-            }}
-            title="House of Gargi — Operations Console"
-          >
-            <img
-              src="/logo-images/small-logo.png"
-              alt="House of Gargi"
-              style={{
-                width: 30,
-                height: 30,
-                objectFit: 'contain',
-              }}
-            />
-          </div>
-
-          {isExpanded && (
-            <div style={{ marginLeft: '0.75rem', minWidth: 0, display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          {isExpanded ? (
+            /* When side nav is opened: ONLY the House of Gargi long word format logo, nothing else */
+            <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
               <img
                 src="/logo-images/new-logo.png"
                 alt="House of Gargi"
                 style={{
-                  height: 28,
+                  height: 34,
                   width: 'auto',
+                  maxWidth: '100%',
                   objectFit: 'contain',
-                  alignSelf: 'flex-start',
+                  display: 'block',
                 }}
               />
-              <div style={{ fontSize: '0.62rem', letterSpacing: '0.08em', color: 'var(--stone-taupe)', textTransform: 'uppercase', fontWeight: 700, fontFamily: 'var(--font-nav)' }}>
-                Operations Console
-              </div>
+            </div>
+          ) : (
+            /* When side nav is collapsed: compact HG crest */
+            <div
+              style={{
+                width: 42,
+                height: 42,
+                borderRadius: 6,
+                background: 'var(--maharani-maroon)',
+                border: '1.5px solid var(--gargi-gold)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 2px 8px rgba(122, 35, 49, 0.22)',
+                flexShrink: 0,
+              }}
+              title="House of Gargi"
+            >
+              <img
+                src="/logo-images/small-logo.png"
+                alt="House of Gargi"
+                style={{
+                  width: 30,
+                  height: 30,
+                  objectFit: 'contain',
+                }}
+              />
             </div>
           )}
         </div>
@@ -400,11 +400,9 @@ export function AdminSidebar({
                 backgroundColor: '#FAF7F2',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                <div style={{ width: 34, height: 34, borderRadius: 5, background: 'var(--maharani-maroon)', border: '1.5px solid var(--gargi-gold)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <img src="/logo-images/small-logo.png" alt="House of Gargi" style={{ width: 24, height: 24, objectFit: 'contain' }} />
-                </div>
-                <img src="/logo-images/new-logo.png" alt="House of Gargi" style={{ height: 26, width: 'auto', objectFit: 'contain' }} />
+              {/* When mobile drawer is opened: ONLY the House of Gargi long word format logo, nothing else */}
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <img src="/logo-images/new-logo.png" alt="House of Gargi" style={{ height: 30, width: 'auto', maxWidth: '100%', objectFit: 'contain' }} />
               </div>
               <button onClick={onMobileClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-brown)' }}>
                 <X style={{ width: 20, height: 20 }} />
