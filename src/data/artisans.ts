@@ -200,8 +200,11 @@ export const artisans: Artisan[] = [
 ];
 
 export function getArtisan(id: string): Artisan | undefined {
-  if (id === 'HG-84192' || id === 'gopal-chandra-dey') return artisans.find(a => a.id === 'gopal-chandra-dey');
-  return artisans.find(a => a.id === id);
+  const norm = (id || '').toLowerCase();
+  if (norm === 'hg-84192' || norm === 'gopal-chandra-dey') {
+    return artisans.find(a => a.id === 'gopal-chandra-dey');
+  }
+  return artisans.find(a => a.id.toLowerCase() === norm);
 }
 
 export function getArtisanByProductId(productId: string): Artisan | undefined {

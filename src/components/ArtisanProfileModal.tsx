@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import {
   Crown,
-  Award,
   X,
   MapPin,
   ShieldCheck,
+  ArrowRight,
 } from 'lucide-react';
 
 interface ArtisanProfileModalProps {
@@ -42,25 +43,11 @@ export default function ArtisanProfileModal({
   const data = profile || {};
 
   const displayName = data.name || artisanName || 'Gopal Chandra Dey';
-  const displayCode = data.artisanNo || artisanCode || 'HG-84192';
   const displayRole = data.role || data.artStyle || 'Master Tangail Jamdani Pit Loom Weaver';
   const displayRegion = data.region || data.regionalBelonging || 'Shantipur, Nadia, West Bengal, India';
   const displayExperience = data.experience || `${data.experienceYears || 32}+ Years Weaving`;
-  const displayLoomHours = data.loomHoursTotal || '15,000+ Loom Hours Preserved';
   const displayImage = data.profileImage || '/images/artisans_split.png';
-  const displayPhilosophy = data.philosophy || 'In Shantipur, every Jamdani motif is a sacred prayer of rhythm, breath, and patience. When the shuttle moves across mulberry silk on our pit loom, time stands still.';
   const displayBio = data.bio || data.description || 'Rooted in the historic weaving cluster of Shantipur, Nadia, Master Gopal Chandra Dey preserves the centuries-old royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to hand-craft timeless heirloom drapes originally celebrated in Royal Bengal courts.';
-  const displayImpact = data.communityImpact || 'Regular fair-wage employment for 14 rural weaver families and flexible home-spinning shifts for women artisans in Nadia district.';
-
-  const specialtiesList: string[] = Array.isArray(data.specialties) && data.specialties.length > 0
-    ? data.specialties
-    : [
-        'Tangail Jamdani Pit Loom Weave',
-        '100% Murshidabad Mulberry Silk',
-        'Tested Real Silver & Gold Zari',
-        'Natural AZO-Free Vegetable Dyes',
-        'Terracotta & Geometric Peacock Motifs',
-      ];
 
   return (
     <div
@@ -82,7 +69,7 @@ export default function ArtisanProfileModal({
           backgroundColor: '#FFFFFF',
           border: '2px solid var(--soft-gold-line)',
           borderRadius: '14px',
-          maxWidth: '680px',
+          maxWidth: '600px',
           width: '100%',
           maxHeight: '90vh',
           overflowY: 'auto',
@@ -126,8 +113,8 @@ export default function ArtisanProfileModal({
 
         {/* Modal Body */}
         <div style={{ padding: '1.75rem' }}>
-          {/* Header Card */}
-          <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', marginBottom: '1.4rem' }}>
+          {/* Header Card (NO ARTISAN NUMBER) */}
+          <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', marginBottom: '1.25rem' }}>
             <div
               style={{
                 width: '82px',
@@ -150,9 +137,6 @@ export default function ArtisanProfileModal({
                 <span title="Verified Master Artisan">
                   <ShieldCheck size={19} color="#2E7D32" />
                 </span>
-                <span style={{ fontFamily: 'monospace', fontWeight: 800, fontSize: '0.82rem', color: 'var(--maharani-maroon)', marginLeft: '4px' }}>
-                  ({displayCode})
-                </span>
               </div>
               <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--maharani-maroon)', marginTop: '2px' }}>
                 {displayRole}
@@ -164,58 +148,26 @@ export default function ArtisanProfileModal({
             </div>
           </div>
 
-          {/* Stats Bar */}
+          {/* Stats Bar (Single Lineage Experience stat, NO craft preservation) */}
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '0.75rem',
               background: '#FAF7F2',
               border: '1px solid var(--soft-gold-line)',
               borderRadius: '8px',
-              padding: '0.85rem 1rem',
-              marginBottom: '1.4rem',
+              padding: '0.75rem 1rem',
+              marginBottom: '1.25rem',
             }}
           >
-            <div>
-              <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#8C7B70', fontWeight: 700 }}>
-                Lineage Experience
-              </div>
-              <div style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--ink-brown)', marginTop: '2px' }}>
-                {displayExperience}
-              </div>
+            <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#8C7B70', fontWeight: 700 }}>
+              Lineage Experience
             </div>
-            <div>
-              <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#8C7B70', fontWeight: 700 }}>
-                Craft Preservation
-              </div>
-              <div style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--maharani-maroon)', marginTop: '2px' }}>
-                {displayLoomHours}
-              </div>
+            <div style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--ink-brown)', marginTop: '2px' }}>
+              {displayExperience}
             </div>
-          </div>
-
-          {/* Philosophy Quote */}
-          <div
-            style={{
-              borderLeft: '3px solid var(--gargi-gold)',
-              paddingLeft: '1rem',
-              fontStyle: 'italic',
-              fontFamily: 'serif',
-              fontSize: '0.98rem',
-              lineHeight: 1.6,
-              color: 'var(--ink-brown)',
-              marginBottom: '1.4rem',
-              background: '#FAF7F2',
-              padding: '0.85rem 1rem 0.85rem 1.15rem',
-              borderRadius: '0 8px 8px 0',
-            }}
-          >
-            &ldquo;{displayPhilosophy}&rdquo;
           </div>
 
           {/* Bio */}
-          <div style={{ marginBottom: '1.4rem' }}>
+          <div style={{ marginBottom: '1.5rem' }}>
             <div style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
               Craft Heritage &amp; Lineage
             </div>
@@ -224,48 +176,29 @@ export default function ArtisanProfileModal({
             </p>
           </div>
 
-          {/* Specialties */}
-          <div style={{ marginBottom: '1.4rem' }}>
-            <div style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.45rem' }}>
-              Signature Techniques &amp; Materials
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
-              {specialtiesList.map((s: string, idx: number) => (
-                <span
-                  key={idx}
-                  style={{
-                    background: '#FAF7F2',
-                    border: '1px solid var(--soft-gold-line)',
-                    padding: '0.25rem 0.6rem',
-                    borderRadius: 4,
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
-                    color: 'var(--ink-brown)',
-                  }}
-                >
-                  ✦ {s}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Community Impact */}
-          <div
+          {/* Direct CTA to the Artisan Dedicated Products Page */}
+          <Link
+            href="/artisan/HG-84192"
+            onClick={onClose}
             style={{
-              background: '#F1F8E9',
-              border: '1px solid #C8E6C9',
-              borderRadius: '8px',
-              padding: '0.85rem 1rem',
               display: 'flex',
               alignItems: 'center',
-              gap: '0.65rem',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              width: '100%',
+              padding: '0.85rem 1.25rem',
+              backgroundColor: 'var(--maharani-maroon)',
+              color: '#FFFFFF',
+              borderRadius: '6px',
+              fontWeight: 800,
+              fontSize: '0.92rem',
+              textDecoration: 'none',
+              boxShadow: '0 4px 14px rgba(122, 35, 49, 0.2)',
             }}
           >
-            <Award size={20} color="#2E7D32" style={{ flexShrink: 0 }} />
-            <div style={{ fontSize: '0.82rem', color: '#1B5E20', lineHeight: 1.45 }}>
-              <strong>Fair-Wage Artisan Guild Certified:</strong> {displayImpact}
-            </div>
-          </div>
+            <span>Explore All Creations by {displayName}</span>
+            <ArrowRight size={15} />
+          </Link>
         </div>
       </div>
     </div>
