@@ -1,9 +1,28 @@
 {
   "f74771ff-9243-492f-a434-ccfe2b26a286": {
-    "description": "Updated test description for handcrafted bridal lehenga",
+    "description": "A showstopping bridal lehenga in deep maroon raw silk, completely hand embroidered with gold and silver zardozi work. The heavy cancan underlayer creates a regal flare, while the dupatta features matching scalloped borders in its layer.",
     "price": 125000,
     "stock": 10,
-    "updatedAt": "2026-10-14T13:26:13.553Z"
+    "updatedAt": "2026-10-14T22:06:36.243Z",
+    "name": "Royal Zardozi Bridal Lehenga",
+    "category": "lehengas",
+    "fabric": "Raw Silk",
+    "artType": "Zardozi Hand Embroidery",
+    "technique": "Zardozi Hand Embroidery",
+    "occasion": "Wedding",
+    "region": "Lucknow, Uttar Pradesh",
+    "care": "Professional dry clean only. Store on padded hanger.",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "images": [
+      "/images/category-lehengas.png"
+    ],
+    "curationStatus": "approved"
   },
   "banarasi-gold-weave": {
     "name": "Banarasi Gold Weave Saree",
@@ -80,5 +99,30 @@
     ],
     "curationStatus": "approved",
     "updatedAt": "2026-10-14T22:05:12.090Z"
+  },
+  "royal-zardozi-lehenga": {
+    "description": "A showstopping bridal lehenga in deep maroon raw silk, completely hand embroidered with gold and silver zardozi work. The heavy cancan underlayer creates a regal flare, while the dupatta features matching scalloped borders in its layer.",
+    "price": 125000,
+    "stock": 10,
+    "updatedAt": "2026-10-14T22:06:36.243Z",
+    "name": "Royal Zardozi Bridal Lehenga",
+    "category": "lehengas",
+    "fabric": "Raw Silk",
+    "artType": "Zardozi Hand Embroidery",
+    "technique": "Zardozi Hand Embroidery",
+    "occasion": "Wedding",
+    "region": "Lucknow, Uttar Pradesh",
+    "care": "Professional dry clean only. Store on padded hanger.",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "images": [
+      "/images/category-lehengas.png"
+    ],
+    "curationStatus": "approved"
   }
 }
