@@ -154,7 +154,7 @@ export default function ArtisanProfileModal({
                 <h2 style={{ margin: 0, fontSize: '1.45rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
                   {data.name}
                 </h2>
-                <ShieldCheck size={19} color="#2E7D32" title="Verified Master Artisan" />
+                <span title="Verified Master Artisan"><ShieldCheck size={19} color="#2E7D32" /></span>
               </div>
               <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--maharani-maroon)', marginTop: '2px' }}>
                 {data.role}

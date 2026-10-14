@@ -8,6 +8,7 @@ import {
   AlertOctagon,
   Inbox,
   Users,
+  UserCheck,
   ClipboardCheck,
   Sparkles,
   Layers,

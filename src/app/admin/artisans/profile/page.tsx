@@ -204,7 +204,7 @@ export default function ArtistProfileAdminPage() {
                     <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
                       {editForm.name}
                     </h2>
-                    <ShieldCheck size={20} color="#2E7D32" title="Verified Master Artisan" />
+                    <span title="Verified Master Artisan"><ShieldCheck size={20} color="#2E7D32" /></span>
                   </div>
                   <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--maharani-maroon)', marginTop: '2px' }}>
                     {editForm.role}
