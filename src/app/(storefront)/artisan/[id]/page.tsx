@@ -94,7 +94,7 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
     <div className="artisan-page">
       
       {/* ── TOP NAV BAR (DESKTOP: LEFT-ALIGNED BREADCRUMB | MOBILE: BACK TO CATALOG) ── */}
-      <div className="container" style={{ maxWidth: '1280px', padding: '0 20px', marginBottom: '1.75rem' }}>
+      <div className="container artisan-top-nav-container" style={{ maxWidth: '1280px', padding: '0 20px', marginBottom: '1.25rem' }}>
         <div className="artisan-top-nav">
           <nav className="artisan-breadcrumb" aria-label="Breadcrumb">
             <Link href="/">Home</Link>
