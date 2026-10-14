@@ -43,9 +43,10 @@ export interface SellerNavGroup {
 
 const sellerNavGroups: SellerNavGroup[] = [
   {
-    section: 'Overview',
+    section: 'Overview & Profile',
     items: [
       { label: 'Dashboard', href: '/artisan/dashboard', icon: LayoutDashboard },
+      { label: 'Artisan Profile', href: '/seller/profile', icon: UserCheck },
       { label: 'Performance Analytics', href: '/seller/analytics', icon: TrendingUp },
     ],
   },
