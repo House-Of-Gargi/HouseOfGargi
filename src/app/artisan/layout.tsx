@@ -1,7 +1,6 @@
 'use client';
 
 import { PortalLoadingScreen } from '@/components/common/PortalLoadingScreen';
-
 import { ReactNode, useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
@@ -12,32 +11,48 @@ export default function ArtisanLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
-  const [sellerPhone, setSellerPhone] = useState<string>('Artisan Atelier');
+  const [artisanName, setArtisanName] = useState<string>('Gopal Chandra Dey');
+  const [artisanNo, setArtisanNo] = useState<string>('HG-84192');
 
   useEffect(() => {
+    let isMounted = true;
+
     const checkAuth = async () => {
       try {
-        const authSessionStr = typeof window !== 'undefined'
+        const sessionStr = typeof window !== 'undefined'
           ? (localStorage.getItem('artisan_session') || localStorage.getItem('auth_session'))
           : null;
 
-        if (authSessionStr) {
+        let emailToQuery = '';
+        if (sessionStr) {
           try {
-            const parsed = JSON.parse(authSessionStr);
-            if (parsed.email) {
-              setSellerPhone(parsed.email);
-              setAuthorized(true);
-              return;
-            }
+            const parsed = JSON.parse(sessionStr);
+            if (parsed.name) setArtisanName(parsed.name);
+            if (parsed.email) emailToQuery = parsed.email;
           } catch {}
+        }
+
+        // Fetch live artisan identity from /api/artisan/me
+        try {
+          const res = await fetch(`/api/artisan/me${emailToQuery ? `?email=${encodeURIComponent(emailToQuery)}` : ''}`);
+          const data = await res.json();
+          if (isMounted && data.success && data.artisan) {
+            setArtisanName(data.artisan.name || 'Gopal Chandra Dey');
+            setArtisanNo(data.artisan.artisanNo || 'HG-84192');
+          }
+        } catch (err) {
+          console.warn('Could not fetch dynamic artisan profile:', err);
+        }
+
+        if (sessionStr) {
+          if (isMounted) setAuthorized(true);
+          return;
         }
 
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
-          if (session.user?.email) setSellerPhone(session.user.email);
-          else if (session.user?.phone) setSellerPhone(session.user.phone);
-          setAuthorized(true);
-        } else if (!authSessionStr) {
+          if (isMounted) setAuthorized(true);
+        } else {
           router.push('/seller/login');
         }
       } catch {
@@ -48,18 +63,19 @@ export default function ArtisanLayout({ children }: { children: ReactNode }) {
     checkAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      const authSessionStr = typeof window !== 'undefined'
+      const sessionStr = typeof window !== 'undefined'
         ? (localStorage.getItem('artisan_session') || localStorage.getItem('auth_session'))
         : null;
 
-      if (!session && !authSessionStr) {
+      if (!session && !sessionStr) {
         router.push('/seller/login');
       } else {
-        setAuthorized(true);
+        if (isMounted) setAuthorized(true);
       }
     });
 
     return () => {
+      isMounted = false;
       subscription.unsubscribe();
     };
   }, [pathname, router]);
@@ -69,7 +85,7 @@ export default function ArtisanLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <SellerShell sellerPhone={sellerPhone} sellerName="Artisan Atelier">
+    <SellerShell sellerPhone={artisanNo} sellerName={artisanName}>
       {children}
     </SellerShell>
   );

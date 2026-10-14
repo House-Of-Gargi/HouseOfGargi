@@ -1,0 +1,67 @@
+[
+  {
+    "id": "prod-01",
+    "title": "Banarasi Katan Silk Kadwa Saree",
+    "category": "Sarees",
+    "craftTechnique": "Kadwa Pit Loom Handloom",
+    "stockCount": 6,
+    "leadTimeDays": 0,
+    "isOutOfStock": false,
+    "price": 28500,
+    "unitsSold": 14,
+    "grossRevenue": 399000,
+    "artisanShare": 339150
+  },
+  {
+    "id": "prod-02",
+    "title": "Royal Zardozi Bridal Lehenga",
+    "category": "Lehengas",
+    "craftTechnique": "Zardozi Metal Wire Embroidery",
+    "stockCount": 2,
+    "leadTimeDays": 21,
+    "isOutOfStock": false,
+    "price": 45000,
+    "unitsSold": 6,
+    "grossRevenue": 270000,
+    "artisanShare": 229500
+  },
+  {
+    "id": "prod-03",
+    "title": "Kanchipuram Pure Mulberry Korvai Saree",
+    "category": "Sarees",
+    "craftTechnique": "Korvai Interlocked Weft",
+    "stockCount": 4,
+    "leadTimeDays": 0,
+    "isOutOfStock": false,
+    "price": 32000,
+    "unitsSold": 9,
+    "grossRevenue": 288000,
+    "artisanShare": 244800
+  },
+  {
+    "id": "prod-04",
+    "title": "Chanderi Gold Zari Handwoven Kurta Set",
+    "category": "Kurta Sets",
+    "craftTechnique": "Chanderi Handloom Weave",
+    "stockCount": 8,
+    "leadTimeDays": 0,
+    "isOutOfStock": false,
+    "price": 16500,
+    "unitsSold": 18,
+    "grossRevenue": 297000,
+    "artisanShare": 252450
+  },
+  {
+    "id": "prod-05",
+    "title": "Paithani Peacock Asawali Silk Saree",
+    "category": "Sarees",
+    "craftTechnique": "Tapestry Technique Handloom",
+    "stockCount": 1,
+    "leadTimeDays": 14,
+    "isOutOfStock": false,
+    "price": 38000,
+    "unitsSold": 5,
+    "grossRevenue": 190000,
+    "artisanShare": 161500
+  }
+]
