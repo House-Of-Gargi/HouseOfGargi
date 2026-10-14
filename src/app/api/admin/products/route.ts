@@ -169,6 +169,41 @@ export async function GET() {
       }
     });
 
+    // Add any custom registered products in productOverrides
+    Object.entries(productOverrides).forEach(([overrideId, ov]: [string, any]) => {
+      if (!processedIds.has(overrideId) && !mergedList.some((m) => m.id === overrideId)) {
+        processedIds.add(overrideId);
+        let pNo = productNumbers[overrideId] || ov.productNo;
+        if (!pNo) {
+          pNo = generateUniqueProductNo(existingCodes);
+          productNumbers[overrideId] = pNo;
+          existingCodes.add(pNo);
+        }
+        mergedList.unshift({
+          id: overrideId,
+          productNo: pNo,
+          name: ov.name || 'Artisan Couture Creation',
+          category: ov.category || 'sarees',
+          price: ov.price || 0,
+          stock: ov.stock ?? 10,
+          totalSales: realSalesMap[overrideId] || 0,
+          images: ov.images || ['/images/category-sarees.png'],
+          description: ov.description || 'Authentic handcrafted heritage creation.',
+          artisanName: 'Gopal Chandra Dey',
+          artisanNo: 'HG-84192',
+          artisanId: 'HG-ART-260501',
+          artType: ov.artType || ov.technique || 'Handloom Kadwa Weave',
+          fabric: ov.fabric || 'Pure Silk',
+          occasion: ov.occasion || 'Festive',
+          region: ov.region || 'India',
+          care: ov.care || 'Dry clean recommended.',
+          sizes: ov.sizes || ['Free Size'],
+          curationStatus: ov.curationStatus || 'approved',
+          createdAt: ov.createdAt || ov.updatedAt || new Date().toISOString(),
+        });
+      }
+    });
+
     saveProductNumbers(productNumbers);
 
     return NextResponse.json({
@@ -213,6 +248,12 @@ export async function PATCH(req: Request) {
 
     const productOverrides = getProductOverrides();
     const current = productOverrides[id] || {};
+
+    if (body.productNo) {
+      const productNumbers = getProductNumbers();
+      productNumbers[id] = body.productNo;
+      saveProductNumbers(productNumbers);
+    }
 
     if (name !== undefined) current.name = name;
     if (description !== undefined) current.description = description;
