@@ -229,6 +229,12 @@ export async function PATCH(req: Request) {
 
     current.updatedAt = new Date().toISOString();
     productOverrides[id] = current;
+
+    // Dual-sync: If id is a UUID, also sync to matching catalog slug (e.g. banarasi-gold-weave)
+    const matchedSlug = catalogProducts.find(cp => cp.name.toLowerCase() === (current.name || '').toLowerCase() || cp.id === id);
+    if (matchedSlug && matchedSlug.id !== id) {
+      productOverrides[matchedSlug.id] = { ...current };
+    }
     saveProductOverrides(productOverrides);
 
     // Also update Supabase in background

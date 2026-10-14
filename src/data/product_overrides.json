@@ -6,12 +6,27 @@
     "updatedAt": "2026-10-14T13:26:13.553Z"
   },
   "banarasi-gold-weave": {
-    "stock": 15,
-    "updatedAt": "2026-10-14T21:47:00.860Z",
-    "description": "A luminous Banarasi silk saree with intricate gold zari jaal work, traditionally woven on a handloom over three weeks.",
-    "price": 28500,
-    "fabric": "Pure Mulberry Silk",
-    "artType": "Varanasi Kadwa Zari Weave",
-    "technique": "Varanasi Kadwa Zari Weave"
+    "name": "Banarasi Gold Weave Saree",
+    "description": "Woven with pure gold zari and fine mulberry silk across the historic pit looms of Varanasi. Features majestic peacock motifs along the regal pallav.",
+    "price": 29500,
+    "stock": 18,
+    "fabric": "100% Pure Mulberry Silk",
+    "artType": "Kadwa Zari Handloom Weave",
+    "technique": "Kadwa Zari Handloom Weave",
+    "occasion": "Royal Wedding & Celebration",
+    "region": "Varanasi, Uttar Pradesh",
+    "updatedAt": "2026-10-14T21:51:05.009Z"
+  },
+  "0bb4b132-4a1e-409b-a9bb-94ab8b88b3b7": {
+    "name": "Banarasi Gold Weave Saree",
+    "description": "Woven with pure gold zari and fine mulberry silk across the historic pit looms of Varanasi. Features majestic peacock motifs along the regal pallav.",
+    "price": 29500,
+    "stock": 18,
+    "fabric": "100% Pure Mulberry Silk",
+    "artType": "Kadwa Zari Handloom Weave",
+    "technique": "Kadwa Zari Handloom Weave",
+    "occasion": "Royal Wedding & Celebration",
+    "region": "Varanasi, Uttar Pradesh",
+    "updatedAt": "2026-10-14T21:51:05.009Z"
   }
 }
