@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { notFound, useRouter } from 'next/navigation';
 import ScrollReveal from '@/components/ScrollReveal';
 import ProductCard from '@/components/ProductCard';
+import ArtisanProfileModal from '@/components/ArtisanProfileModal';
 import { getProduct, getRelatedProducts, categories, getArtisan, getArtisanByProductId } from '@/data/products';
 import { WishlistIcon, HeartFilledIcon, PlusIcon, MinusIcon } from '@/components/Icons';
 import { Crown, ArrowRight, ArrowLeft, Sparkles } from 'lucide-react';
@@ -26,6 +27,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState('');
   const [careOpen, setCareOpen] = useState(false);
+  const [isArtisanModalOpen, setIsArtisanModalOpen] = useState(false);
   const [error, setError] = useState('');
 
   const { addToCart, cart, updateQuantity } = useCart();
@@ -169,18 +171,41 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               </div>
             </div>
 
-            {/* Artisan Attribution */}
-            {artisan && (
-              <div className="pdp-artisan-row">
-                <span className="pdp-artisan-row__label">Artisan:</span>
-                <Link 
-                  href={`/artisan/${artisan.id}`} 
-                  className="pdp-artisan-row__name"
-                >
-                  {artisan.name} <ArrowRight size={13} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '3px' }} />
-                </Link>
-              </div>
-            )}
+            {/* Artisan Attribution (Clickable Master Dossier) */}
+            <div className="pdp-artisan-row" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '14px 0' }}>
+              <span className="pdp-artisan-row__label" style={{ fontSize: '0.86rem', color: '#6A5A50', fontWeight: 600 }}>Master Artisan:</span>
+              <button 
+                type="button"
+                onClick={() => setIsArtisanModalOpen(true)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  cursor: 'pointer',
+                  color: 'var(--maharani-maroon)',
+                  fontWeight: 800,
+                  fontSize: '0.94rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  textDecoration: 'underline',
+                  textUnderlineOffset: '3px',
+                }}
+                title="View Master Artisan Heritage Dossier"
+              >
+                <span>{artisan?.name || 'Gopal Chandra Dey'}</span>
+                <span style={{ fontSize: '0.78rem', color: '#8C7B70', fontWeight: 600 }}>(HG-84192)</span>
+                <ArrowRight size={13} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '2px' }} />
+              </button>
+            </div>
+
+            {/* Public Patron Modal */}
+            <ArtisanProfileModal
+              isOpen={isArtisanModalOpen}
+              onClose={() => setIsArtisanModalOpen(false)}
+              artisanName={artisan?.name || 'Gopal Chandra Dey'}
+              artisanCode="HG-84192"
+            />
 
             {/* Size Selector (if applicable) */}
             {product.sizes.length > 1 && (
