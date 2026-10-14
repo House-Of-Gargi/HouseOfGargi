@@ -51,7 +51,7 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
   return (
     <div className="artisan-page">
       
-      {/* ── TOP NAV BAR (DESKTOP: RIGHT-ALIGNED BREADCRUMB | MOBILE: BACK TO CATALOG) ── */}
+      {/* ── TOP NAV BAR (DESKTOP: LEFT-ALIGNED BREADCRUMB | MOBILE: BACK TO CATALOG) ── */}
       <div className="container" style={{ maxWidth: '1280px', padding: '0 20px', marginBottom: '1.75rem' }}>
         <div className="artisan-top-nav">
           <Link 
@@ -71,7 +71,7 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
         </div>
       </div>
 
-      {/* ── 1. ARTISAN PROFILE LOCKUP (FULL STRETCH TO RIGHT, BEAUTIFUL MINIMAL AESTHETIC) ── */}
+      {/* ── 1. ARTISAN PROFILE LOCKUP (CORMORANT GARAMOND FONT, ENHANCED BIO LEGIBILITY) ── */}
       <section className="artisan-profile-section">
         <div className="container" style={{ maxWidth: '1280px', padding: '0 20px' }}>
           <div className="artisan-profile-card">
@@ -107,7 +107,7 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
                 </span>
               </div>
 
-              {/* Refined Craft Bio Stretching across full container width */}
+              {/* Refined Craft Bio with enhanced readability & full stretch */}
               <p className="artisan-profile-bio">
                 {artisan.bio}
               </p>
@@ -116,10 +116,10 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
         </div>
       </section>
 
-      {/* ── 2. MAIN FOCUS: CREATIONS BY THIS ARTISAN (EXACT SS2 ROYAL HEADER) ── */}
+      {/* ── 2. MAIN FOCUS: CREATIONS BY THIS ARTISAN ── */}
       <main className="container" style={{ maxWidth: '1280px', padding: '0 20px' }}>
         
-        {/* Section Header: Royal Header Lockup with Flanking Diamonds (Screenshot 2 Format) */}
+        {/* Section Header: Royal Header Lockup with Flanking Diamonds */}
         <div className="royal-header-lockup" style={{ marginBottom: '2.25rem' }}>
           <div className="royal-header-line-row">
             <div className="royal-header-line royal-header-line--left">
@@ -135,29 +135,19 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
           </div>
         </div>
 
-        {/* Category Filter Chips */}
-        <div style={{
+        {/* Category Filter Chips with Playfair Display Serif Typography */}
+        <div className="artisan-filter-pills" style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '0.55rem',
+          gap: '0.65rem',
           flexWrap: 'wrap',
-          marginBottom: '2.25rem',
+          marginBottom: '2.5rem',
         }}>
           <button
             type="button"
+            className={'artisan-pill ' + (selectedCategory === 'all' ? 'artisan-pill--active' : '')}
             onClick={() => setSelectedCategory('all')}
-            style={{
-              padding: '0.5rem 1.15rem',
-              borderRadius: '24px',
-              border: selectedCategory === 'all' ? '1.5px solid var(--maharani-maroon)' : '1px solid var(--soft-gold-line)',
-              backgroundColor: selectedCategory === 'all' ? 'var(--maharani-maroon)' : 'transparent',
-              color: selectedCategory === 'all' ? '#FFFFFF' : 'var(--ink-brown)',
-              fontWeight: 700,
-              fontSize: '0.84rem',
-              cursor: 'pointer',
-              transition: 'all 0.15s ease',
-            }}
           >
             All Creations ({categoryCounts.all})
           </button>
@@ -170,18 +160,8 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
               <button
                 key={c.id}
                 type="button"
+                className={'artisan-pill ' + (isSelected ? 'artisan-pill--active' : '')}
                 onClick={() => setSelectedCategory(c.id)}
-                style={{
-                  padding: '0.5rem 1.15rem',
-                  borderRadius: '24px',
-                  border: isSelected ? '1.5px solid var(--maharani-maroon)' : '1px solid var(--soft-gold-line)',
-                  backgroundColor: isSelected ? 'var(--maharani-maroon)' : 'transparent',
-                  color: isSelected ? '#FFFFFF' : 'var(--ink-brown)',
-                  fontWeight: 700,
-                  fontSize: '0.84rem',
-                  cursor: 'pointer',
-                  transition: 'all 0.15s ease',
-                }}
               >
                 {c.name} ({count})
               </button>
@@ -189,13 +169,14 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
           })}
         </div>
 
-        {/* ── 4-COLUMN PRODUCT GRID ── */}
+        {/* ── 4-COLUMN PRODUCT GRID (INCREASED VERTICAL STACKING GAP) ── */}
         {filteredProducts.length > 0 ? (
           <div
+            className="explore-4col-grid artisan-products-grid"
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-              gap: '1.75rem',
+              gap: '52px 24px',
             }}
           >
             {filteredProducts.map((p) => (
@@ -219,7 +200,7 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
 
         {/* ── BESPOKE COMMISSION BANNER ── */}
         <div style={{
-          marginTop: '3.5rem',
+          marginTop: '4rem',
           background: 'linear-gradient(135deg, rgba(251, 246, 238, 0.9) 0%, rgba(255, 255, 255, 0.9) 100%)',
           border: '1.5px solid var(--soft-gold-line)',
           borderRadius: '12px',
