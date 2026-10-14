@@ -1005,27 +1005,36 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   align-items: center !important;
   gap: 6px !important;
   color: #FFFFFF !important;
-  font-weight: 700 !important;
+  font-weight: 400 !important; /* Exact match with Sarees, Lehengas */
   font-size: 14.5px !important;
+  line-height: 1.4 !important;
+  text-decoration: none !important;
+  transition: all 180ms ease;
+}
+
+.footer__portal-text {
+  color: #FFFFFF !important;
   text-decoration: underline !important;
   text-decoration-color: #FFFFFF !important;
   text-underline-offset: 4px !important;
-  text-decoration-thickness: 1.5px !important;
-  transition: opacity 160ms ease;
-}
-
-.footer__portal-link:hover {
-  opacity: 0.85;
-  color: #FFFFFF !important;
+  text-decoration-thickness: 1px !important;
+  transition: color 180ms ease, text-decoration-color 180ms ease;
 }
 
 .footer__portal-arrow {
   color: #FFFFFF !important;
+  text-decoration: none !important;
+  display: inline-block !important;
   transition: transform 180ms ease;
 }
 
 .footer__portal-link:hover .footer__portal-arrow {
   transform: translateX(4px);
+}
+
+.footer__portal-link:hover .footer__portal-text {
+  color: var(--gargi-gold) !important;
+  text-decoration-color: var(--gargi-gold) !important;
 }
 
 .footer__whatsapp-link {
