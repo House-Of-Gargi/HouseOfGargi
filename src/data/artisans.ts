@@ -230,8 +230,8 @@ export function getArtisan(id: string): Artisan | undefined {
         experience: override.experience || `${baseArtisan.experienceYears}+ Years at the Loom`,
         bio: override.description || override.bio || baseArtisan.bio,
         description: override.description || override.bio || baseArtisan.bio,
-        image: override.profileImage || override.image || baseArtisan.image,
-        profileImage: override.profileImage || override.image || baseArtisan.image,
+        image: (override as any).profileImage || (override as any).image || baseArtisan.image,
+        profileImage: (override as any).profileImage || (override as any).image || baseArtisan.image,
       };
     }
   } catch (err) {
