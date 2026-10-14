@@ -83,7 +83,7 @@ export default function SellerLoginPage() {
             router.replace('/admin/dashboard');
             return;
           }
-          if (parsed?.role === 'artisan') {
+          if (parsed?.role === 'artisan' || parsed?.email) {
             router.replace('/artisan/dashboard');
             return;
           }
@@ -255,10 +255,9 @@ export default function SellerLoginPage() {
       router.push('/super-admin/dashboard');
     } else if (role === 'admin') {
       router.push('/admin/dashboard');
-    } else if (role === 'artisan') {
-      router.push('/artisan/dashboard');
     } else {
-      router.push('/');
+      // Any valid authentication through the Artisan portal lands on the Artisan dashboard
+      router.push('/artisan/dashboard');
     }
   };
 
@@ -346,6 +345,7 @@ export default function SellerLoginPage() {
               verificationToken: activeToken,
               expiresAt: activeExpires,
               role: 'artisan',
+              portal: 'artisan',
             }),
           });
 
@@ -355,7 +355,9 @@ export default function SellerLoginPage() {
             throw new Error(data.message || 'The OTP is invalid or has expired.');
           }
 
-          const userRole = data.user?.role || 'artisan';
+          const userRole = (data.user?.role === 'admin' || data.user?.role === 'super_admin')
+            ? data.user.role
+            : 'artisan';
           const sessionPayload = {
             email: cleanEmail,
             name: data.user?.name || cleanEmail.split('@')[0],
@@ -405,7 +407,7 @@ export default function SellerLoginPage() {
           try {
             const roleRes = await fetch(`/api/auth/role?email=${encodeURIComponent(cleanEmail)}`);
             const roleData = await roleRes.json();
-            if (roleData?.role) role = roleData.role;
+            if (roleData?.role === 'admin' || roleData?.role === 'super_admin') role = roleData.role;
           } catch {}
 
           const sessionPayload = {

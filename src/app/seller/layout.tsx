@@ -24,7 +24,7 @@ export default function SellerLayout({ children }: { children: ReactNode }) {
     const checkAuth = async () => {
       try {
         const authSessionStr = typeof window !== 'undefined'
-          ? (localStorage.getItem('auth_session') || localStorage.getItem('artisan_session'))
+          ? (localStorage.getItem('artisan_session') || localStorage.getItem('auth_session'))
           : null;
 
         if (authSessionStr) {
@@ -58,7 +58,7 @@ export default function SellerLayout({ children }: { children: ReactNode }) {
       if (pathname === '/seller/login' || pathname === '/seller/apply') return;
 
       const authSessionStr = typeof window !== 'undefined'
-        ? (localStorage.getItem('auth_session') || localStorage.getItem('artisan_session'))
+        ? (localStorage.getItem('artisan_session') || localStorage.getItem('auth_session'))
         : null;
 
       if (!session && !authSessionStr) {
