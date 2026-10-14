@@ -31,36 +31,54 @@
   },
   "c88b8436-1613-441b-a3c6-92b1b0f64661": {
     "name": "Sanganeri Block Print Kurta Set",
-    "description": "Sanganeri Block Print Kurta Set handcrafted with traditional artisanal techniques and pure silk threading.",
+    "description": "A breezy cotton kurta set featuring delicate Sanganeri floral block prints in natural indigo dye. Includes a matching palazzo and dupatta. The hand-stamped patterns use traditional carved teak blocks — no two prints are ever exactly alike.",
     "price": 4800,
     "stock": 10,
     "category": "kurta-sets",
-    "fabric": "Pure Mulberry Silk",
-    "artType": "Heritage Handloom",
-    "technique": "Heritage Handloom",
-    "occasion": "Wedding & Festive",
-    "region": "India",
+    "fabric": "Pure Cotton",
+    "artType": "Hand Block Print",
+    "technique": "Hand Block Print",
+    "occasion": "Casual",
+    "region": "Sanganer, Rajasthan",
+    "care": "Machine wash cold, gentle cycle. Colours deepen beautifully with each wash.",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
     "images": [
       "/images/category-kurtas.png"
     ],
     "curationStatus": "approved",
-    "updatedAt": "2026-10-14T21:54:45.229Z"
+    "updatedAt": "2026-10-14T22:05:12.090Z"
   },
   "sanganeri-block-print-kurta": {
     "name": "Sanganeri Block Print Kurta Set",
-    "description": "Sanganeri Block Print Kurta Set handcrafted with traditional artisanal techniques and pure silk threading.",
+    "description": "A breezy cotton kurta set featuring delicate Sanganeri floral block prints in natural indigo dye. Includes a matching palazzo and dupatta. The hand-stamped patterns use traditional carved teak blocks — no two prints are ever exactly alike.",
     "price": 4800,
     "stock": 10,
     "category": "kurta-sets",
-    "fabric": "Pure Mulberry Silk",
-    "artType": "Heritage Handloom",
-    "technique": "Heritage Handloom",
-    "occasion": "Wedding & Festive",
-    "region": "India",
+    "fabric": "Pure Cotton",
+    "artType": "Hand Block Print",
+    "technique": "Hand Block Print",
+    "occasion": "Casual",
+    "region": "Sanganer, Rajasthan",
+    "care": "Machine wash cold, gentle cycle. Colours deepen beautifully with each wash.",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
     "images": [
       "/images/category-kurtas.png"
     ],
     "curationStatus": "approved",
-    "updatedAt": "2026-10-14T21:54:45.229Z"
+    "updatedAt": "2026-10-14T22:05:12.090Z"
   }
 }
