@@ -150,7 +150,7 @@ export async function GET() {
           category: cp.category,
           price: productOverrides[cp.id]?.price || cp.price,
           stock: productOverrides[cp.id]?.stock ?? 12,
-          totalSales: SALES_MAP[cp.id] || 36,
+          totalSales: realSalesMap[cp.id] || 0,
           images,
           description: productOverrides[cp.id]?.description || cp.description,
           // All products listed solely under Gopal Chandra Dey (HG-84192)

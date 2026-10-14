@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     description: 'House of Gargi offers luxury, handcrafted traditional Indian fashion. Explore our curated collections of pure silk sarees, bridal lehengas, block-printed kurta sets, and heritage jewellery.',
     url: 'https://www.gargisaha.com',
     siteName: 'House of Gargi',
-    images: [{ url: '/images/hero-desktop-1.webp', width: 1200, height: 630, alt: 'House of Gargi Luxury Fashion' }],
+    images: [{ url: '/banners/desktop-banner-1.webp', width: 1200, height: 630, alt: 'House of Gargi Luxury Fashion' }],
   },
 };
 
@@ -63,6 +63,10 @@ export default async function HomePage() {
 
   return (
     <>
+      {/* ── High Priority Hero Preloads for 0ms Zero-Buffer Instant Render ── */}
+      <link rel="preload" as="image" href="/banners/desktop-banner-1.webp" type="image/webp" media="(min-width: 769px)" />
+      <link rel="preload" as="image" href="/banners/mobile-banner-1.webp" type="image/webp" media="(max-width: 768px)" />
+
       {/* ═══════ 1. HERO ═══════ */}
       <HeroBanner />
 
