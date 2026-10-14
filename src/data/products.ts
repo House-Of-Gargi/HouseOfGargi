@@ -362,9 +362,7 @@ export function getProduct(id: string): Product | undefined {
   if (!p) return undefined;
   return applyProductOverride(p);
 }
-function _unused_old_getProduct(id: string) {
-  return products.find(p => p.id === id);
-}
+
 
 export function getProductsByCategory(categoryId: string): Product[] {
   return products.filter(p => p.category === categoryId);

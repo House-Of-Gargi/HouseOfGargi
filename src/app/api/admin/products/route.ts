@@ -6,6 +6,7 @@ import { products as catalogProducts } from '@/data/products';
 
 const PRODUCT_NUMBERS_FILE = path.join(process.cwd(), 'src', 'data', 'product_numbers.json');
 const PRODUCT_OVERRIDES_FILE = path.join(process.cwd(), 'src', 'data', 'product_overrides.json');
+const PRODUCTS_TS_FILE = path.join(process.cwd(), 'src', 'data', 'products.ts');
 
 function getProductNumbers(): Record<string, string> {
   if (fs.existsSync(PRODUCT_NUMBERS_FILE)) {
@@ -49,7 +50,6 @@ function generateUniqueProductNo(existingCodes: Set<string>): string {
 }
 
 // Consistent Sales Units Map
-// Real orders counting (0 when no orders have happened yet)
 const ORDERS_FILE = path.join(process.cwd(), 'src', 'data', 'backend_orders.json');
 function getRealProductSalesMap(): Record<string, number> {
   const map: Record<string, number> = {};
@@ -113,19 +113,19 @@ export async function GET() {
         id: sp.id,
         productNo: pNo,
         name: productOverrides[sp.id]?.name || sp.name,
-        category: sp.category || catMatch?.category || 'sarees',
+        category: productOverrides[sp.id]?.category || sp.category || catMatch?.category || 'sarees',
         price: productOverrides[sp.id]?.price || sp.price_in_rupees || catMatch?.price || 0,
         stock: productOverrides[sp.id]?.stock ?? (sp.stock ?? 10),
         totalSales: realSalesMap[sp.id] || 0,
         images,
-        description: productOverrides[sp.id]?.description || catMatch?.description || 'Authentic handcrafted heritage creation.',
-        // All products listed solely under Gopal Chandra Dey (HG-84192)
+        description: productOverrides[sp.id]?.description || (sp as any).description || catMatch?.description || 'Authentic handcrafted heritage creation.',
         artisanName: 'Gopal Chandra Dey',
         artisanNo: 'HG-84192',
         artisanId: 'HG-ART-260501',
-        artType: sp.craft_technique || catMatch?.technique || 'Tangail Jamdani Pit Loom',
-        fabric: catMatch?.fabric || 'Pure Mulberry Silk',
-        occasion: catMatch?.occasion || 'Festive & Celebration',
+        artType: productOverrides[sp.id]?.artType || productOverrides[sp.id]?.technique || sp.craft_technique || catMatch?.technique || 'Tangail Jamdani Pit Loom',
+        fabric: productOverrides[sp.id]?.fabric || (sp as any).fabric || catMatch?.fabric || 'Pure Mulberry Silk',
+        occasion: productOverrides[sp.id]?.occasion || (sp as any).occasion || catMatch?.occasion || 'Festive & Celebration',
+        region: productOverrides[sp.id]?.region || (sp as any).region || catMatch?.region || 'Varanasi, Uttar Pradesh',
         curationStatus: productOverrides[sp.id]?.curationStatus || sp.curation_status || 'approved',
         createdAt: sp.created_at || new Date().toISOString(),
       });
@@ -147,19 +147,19 @@ export async function GET() {
           id: cp.id,
           productNo: pNo,
           name: productOverrides[cp.id]?.name || cp.name,
-          category: cp.category,
+          category: productOverrides[cp.id]?.category || cp.category,
           price: productOverrides[cp.id]?.price || cp.price,
           stock: productOverrides[cp.id]?.stock ?? 12,
           totalSales: realSalesMap[cp.id] || 0,
           images,
           description: productOverrides[cp.id]?.description || cp.description,
-          // All products listed solely under Gopal Chandra Dey (HG-84192)
           artisanName: 'Gopal Chandra Dey',
           artisanNo: 'HG-84192',
           artisanId: 'HG-ART-260501',
-          artType: cp.technique || 'Tangail Jamdani Pit Loom',
-          fabric: cp.fabric || 'Pure Mulberry Silk',
-          occasion: cp.occasion || 'Wedding & Festive',
+          artType: productOverrides[cp.id]?.artType || productOverrides[cp.id]?.technique || cp.technique || 'Tangail Jamdani Pit Loom',
+          fabric: productOverrides[cp.id]?.fabric || cp.fabric || 'Pure Mulberry Silk',
+          occasion: productOverrides[cp.id]?.occasion || cp.occasion || 'Wedding & Festive',
+          region: productOverrides[cp.id]?.region || cp.region || 'India',
           curationStatus: productOverrides[cp.id]?.curationStatus || 'approved',
           createdAt: new Date().toISOString(),
         });
@@ -185,7 +185,22 @@ export async function GET() {
 export async function PATCH(req: Request) {
   try {
     const body = await req.json();
-    const { id, description, images, name, price, stock, curationStatus } = body;
+    const { 
+      id, 
+      name, 
+      description, 
+      price, 
+      stock, 
+      category, 
+      artType, 
+      technique, 
+      craft_technique, 
+      fabric, 
+      occasion, 
+      region, 
+      images, 
+      curationStatus 
+    } = body;
 
     if (!id) {
       return NextResponse.json({ success: false, message: 'Product id is required' }, { status: 400 });
@@ -194,11 +209,22 @@ export async function PATCH(req: Request) {
     const productOverrides = getProductOverrides();
     const current = productOverrides[id] || {};
 
-    if (description !== undefined) current.description = description;
-    if (images !== undefined) current.images = images;
     if (name !== undefined) current.name = name;
+    if (description !== undefined) current.description = description;
     if (price !== undefined) current.price = Number(price);
     if (stock !== undefined) current.stock = Number(stock);
+    if (category !== undefined) current.category = category;
+    if (fabric !== undefined) current.fabric = fabric;
+    
+    const finalTech = artType || technique || craft_technique;
+    if (finalTech !== undefined) {
+      current.artType = finalTech;
+      current.technique = finalTech;
+    }
+    
+    if (occasion !== undefined) current.occasion = occasion;
+    if (region !== undefined) current.region = region;
+    if (images !== undefined) current.images = images;
     if (curationStatus !== undefined) current.curationStatus = curationStatus;
 
     current.updatedAt = new Date().toISOString();
@@ -212,6 +238,8 @@ export async function PATCH(req: Request) {
       if (price !== undefined) updatePayload.price_in_rupees = Number(price);
       if (stock !== undefined) updatePayload.stock = Number(stock);
       if (curationStatus !== undefined) updatePayload.curation_status = curationStatus;
+      if (category !== undefined) updatePayload.category = category;
+      if (finalTech !== undefined) updatePayload.craft_technique = finalTech;
       if (images && images.length > 0) updatePayload.image_url = images[0];
 
       await supabase.from('products').update(updatePayload).eq('id', id);
@@ -221,7 +249,7 @@ export async function PATCH(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: 'Product updated successfully',
+      message: 'Product updated and published live to customer storefront',
       updated: current,
     });
   } catch (err: any) {
