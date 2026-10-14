@@ -4,5 +4,9 @@
     "price": 125000,
     "stock": 10,
     "updatedAt": "2026-10-14T13:26:13.553Z"
+  },
+  "banarasi-gold-weave": {
+    "stock": 15,
+    "updatedAt": "2026-10-14T19:56:53.332Z"
   }
 }
