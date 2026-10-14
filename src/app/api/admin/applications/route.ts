@@ -4,6 +4,8 @@ import path from 'path';
 import { supabase } from '@/lib/supabaseClient';
 import { resend, NOREPLY_EMAIL } from '@/lib/resend';
 
+const LOGO_URL = 'https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/logo-email.png';
+
 const DATA_FILE = path.join(process.cwd(), 'src', 'data', 'artisan_applications.json');
 
 function getLocalApplications(): any[] {
@@ -250,33 +252,119 @@ export async function PATCH(req: Request) {
         console.warn('User roles upsert skipped:', roleErr);
       }
 
-      // Send approval & onboarding email to artisan
+            // Send approval & onboarding email to artisan (Matching Login OTP Template Layout & Colors)
       try {
         await resend.emails.send({
           from: NOREPLY_EMAIL,
           to: recipientEmail,
           subject: 'Welcome to House of Gargi Artisan Guild - Application Approved!',
           html: `
-            <div style="font-family: Georgia, serif; max-width: 580px; margin: 0 auto; padding: 24px; border: 1.5px solid #E4D3AE; border-radius: 8px; background: #FBF6EE;">
-              <h1 style="color: #7A2331; text-align: center; margin-bottom: 4px;">HOUSE OF GARGI</h1>
-              <p style="text-align: center; color: #8C7B70; font-size: 12px; margin-top: 0;">— ARTISAN GUILD ONBOARDING —</p>
-              <hr style="border: 0; border-top: 1px solid #E4D3AE; margin: 20px 0;" />
-              <p style="color: #231812; font-size: 15px; line-height: 1.6;">
-                Dear ${targetApp.name || 'Master Artisan'},<br/><br/>
-                We are honored to welcome you to the <strong>House of Gargi Master Artisan Guild</strong>. Your application (${applicationId}) has been officially verified and approved by our Admin Operations desk.
-              </p>
-              <div style="background: #FFFFFF; border: 1px solid #E4D3AE; border-radius: 6px; padding: 16px; margin: 20px 0;">
-                <p style="margin: 0; font-size: 13px; color: #786C5E;">Next Step to Access Your Atelier:</p>
-                <p style="margin: 6px 0 0; font-size: 14px; color: #231812;">
-                  1. Visit the <a href="https://gargisaha.com/seller/login" style="color: #7A2331; font-weight: bold;">Artisan Atelier Portal</a>.<br/>
-                  2. Enter your registered email (<strong>${recipientEmail}</strong>).<br/>
-                  3. Enter the instant OTP sent to your inbox to access your product management, loom inventory, and sales dashboard.
-                </p>
-              </div>
-              <p style="font-size: 13px; color: #786C5E; text-align: center; margin-top: 24px;">
-                House of Gargi &bull; Preserving India's Living Heritage
-              </p>
-            </div>
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Application Approved - House of Gargi</title>
+            </head>
+            <body style="margin: 0; padding: 0; background-color: #FBF6EE; font-family: 'Georgia', -apple-system, BlinkMacSystemFont, 'Segoe UI', serif; color: #241A15; -webkit-font-smoothing: antialiased;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #FBF6EE; padding: 40px 16px;">
+                <tr>
+                  <td align="center">
+                    <table role="presentation" width="100%" style="max-width: 540px; background-color: #FFFFFF; border: 1.5px solid #E4D3AE; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 24px rgba(43, 31, 24, 0.06);">
+                      
+                      <!-- Top Accent Ribbon -->
+                      <tr>
+                        <td style="background-color: #7A2331; height: 5px; padding: 0; line-height: 5px; font-size: 5px;">&nbsp;</td>
+                      </tr>
+
+                      <!-- Header Crest with Official Logo -->
+                      <tr>
+                        <td align="center" style="padding: 34px 32px 22px 32px; text-align: center; border-bottom: 1px solid #F4EDE0;">
+                          <a href="https://gargisaha.com" target="_blank" style="text-decoration: none; display: inline-block;">
+                            <img 
+                              src="${LOGO_URL}" 
+                              alt="House of Gargi" 
+                              width="210"
+                              height="60"
+                              style="display: block; margin: 0 auto 10px; width: 210px; height: 60px; max-width: 100%; border: 0; outline: none; text-decoration: none;"
+                            />
+                          </a>
+                          <p style="margin: 0; font-size: 13px; font-style: italic; color: #8C7B70; letter-spacing: 0.04em;">
+                            Handcrafted Heritage, Worn Today
+                          </p>
+                        </td>
+                      </tr>
+
+                      <!-- Body Content -->
+                      <tr>
+                        <td style="padding: 36px 32px 28px 32px; text-align: left;">
+                          <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.65; color: #241A15;">
+                            Dear <strong>${targetApp.name || 'Master Artisan'}</strong>,
+                          </p>
+                          <p style="margin: 0 0 20px; font-size: 15px; line-height: 1.65; color: #4A3C33;">
+                            We are deeply honored to welcome you to the <strong>House of Gargi Master Artisan Guild</strong>. Your application (<strong>${applicationId}</strong>) has been officially verified and approved by our Admin Operations desk.
+                          </p>
+
+                          <!-- Next Steps Callout Box with Gold Border -->
+                          <div style="background-color: #FAF7F2; border: 1.5px solid #D4AF37; border-radius: 8px; padding: 20px 24px; margin: 22px 0;">
+                            <p style="margin: 0 0 10px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #7A2331;">
+                              Next Steps to Access Your Atelier:
+                            </p>
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px; color: #33261D; line-height: 1.6;">
+                              <tr>
+                                <td width="24" valign="top" style="color: #7A2331; font-weight: 700;">1.</td>
+                                <td style="padding-bottom: 8px;">
+                                  Visit the <a href="https://gargisaha.com/seller/login" style="color: #7A2331; font-weight: 700; text-decoration: underline;">Artisan Atelier Portal</a>.
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="24" valign="top" style="color: #7A2331; font-weight: 700;">2.</td>
+                                <td style="padding-bottom: 8px;">
+                                  Enter your registered email (<strong>${recipientEmail}</strong>).
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="24" valign="top" style="color: #7A2331; font-weight: 700;">3.</td>
+                                <td>
+                                  Enter the instant 6-digit OTP sent to your inbox to access product cataloging, loom inventory, and sales dashboard.
+                                </td>
+                              </tr>
+                            </table>
+                          </div>
+
+                          <!-- Call to Action Button -->
+                          <div style="text-align: center; margin: 28px 0 16px;">
+                            <a href="https://gargisaha.com/seller/login" style="display: inline-block; background-color: #7A2331; color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none; padding: 13px 28px; border-radius: 6px; letter-spacing: 0.06em; box-shadow: 0 2px 8px rgba(122, 35, 49, 0.25);">
+                              Access Artisan Atelier Portal &rarr;
+                            </a>
+                          </div>
+
+                          <p style="margin: 20px 0 0; font-size: 13px; color: #8C7B70; line-height: 1.5; text-align: center;">
+                            We look forward to showcasing your magnificent handcrafted creations to the world.
+                          </p>
+                        </td>
+                      </tr>
+
+                      <!-- Footer -->
+                      <tr>
+                        <td style="border-top: 1px solid #EAE2D5; background-color: #FAF7F2; padding: 22px 32px; text-align: center; font-size: 12px; color: #8C7B70; line-height: 1.6;">
+                          <p style="margin: 0;">
+                            Sent securely from <strong style="color: #241A15;">noreply@gargisaha.com</strong>
+                          </p>
+                          <p style="margin: 4px 0 0; font-size: 11.5px; color: #8C7B70;">
+                            House of Gargi &bull; Artisan Curation Desk &amp; Living Heritage Registry
+                          </p>
+                          <p style="margin: 10px 0 0; font-size: 11px; letter-spacing: 0.08em;">
+                            <a href="https://gargisaha.com/seller" style="color: #B88E18; text-decoration: none; font-weight: 600;">Artisan Portal &bull; www.gargisaha.com</a>
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </body>
+            </html>
           `,
         });
       } catch (mErr) {
@@ -284,40 +372,105 @@ export async function PATCH(req: Request) {
       }
     }
 
-    // 2. If rejected, send respectful rejection email to artisan
+    // 2. If rejected, send respectful rejection email to artisan (Matching Login OTP Template Layout & Colors)
     if ((action === 'reject' || action === 'rejected') && recipientEmail) {
       try {
         await resend.emails.send({
           from: NOREPLY_EMAIL,
           to: recipientEmail,
-          subject: 'House of Gargi Artisan Guild Application Status',
+          subject: `House of Gargi Artisan Guild Application Status - ${applicationId}`,
           html: `
-            <div style="font-family: Georgia, serif; max-width: 580px; margin: 0 auto; padding: 24px; border: 1.5px solid #E4D3AE; border-radius: 8px; background: #FBF6EE;">
-              <h1 style="color: #7A2331; text-align: center; margin-bottom: 4px;">HOUSE OF GARGI</h1>
-              <p style="text-align: center; color: #8C7B70; font-size: 12px; margin-top: 0;">— ARTISAN CURATION DESK —</p>
-              <hr style="border: 0; border-top: 1px solid #E4D3AE; margin: 20px 0;" />
-              <p style="color: #231812; font-size: 15px; line-height: 1.6;">
-                Dear ${targetApp.name || 'Master Artisan'},<br/><br/>
-                Thank you for submitting your application (${applicationId}) to join the <strong>House of Gargi Master Artisan Guild</strong>.<br/><br/>
-                After careful consideration by our curation committee, we regret to inform you that we are unable to accept your application into our partner guild at this time.
-              </p>
-              ${
-                reviewNotes
-                  ? `
-              <div style="background: #FFFFFF; border: 1px solid #E4D3AE; border-radius: 6px; padding: 16px; margin: 20px 0;">
-                <p style="margin: 0; font-size: 13px; color: #786C5E; font-weight: bold;">Curation Committee Feedback:</p>
-                <p style="margin: 6px 0 0; font-size: 14px; color: #231812; line-height: 1.5;">${reviewNotes}</p>
-              </div>
-              `
-                  : ''
-              }
-              <p style="color: #4A3E36; font-size: 14px; line-height: 1.6;">
-                We deeply honor your craft and dedication to preserving traditional textiles. You are welcome to re-apply in the future as our collection categories expand.
-              </p>
-              <p style="font-size: 13px; color: #786C5E; text-align: center; margin-top: 24px;">
-                House of Gargi &bull; Preserving India's Living Heritage
-              </p>
-            </div>
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Application Status - House of Gargi</title>
+            </head>
+            <body style="margin: 0; padding: 0; background-color: #FBF6EE; font-family: 'Georgia', -apple-system, BlinkMacSystemFont, 'Segoe UI', serif; color: #241A15; -webkit-font-smoothing: antialiased;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #FBF6EE; padding: 40px 16px;">
+                <tr>
+                  <td align="center">
+                    <table role="presentation" width="100%" style="max-width: 540px; background-color: #FFFFFF; border: 1.5px solid #E4D3AE; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 24px rgba(43, 31, 24, 0.06);">
+                      
+                      <!-- Top Accent Ribbon -->
+                      <tr>
+                        <td style="background-color: #7A2331; height: 5px; padding: 0; line-height: 5px; font-size: 5px;">&nbsp;</td>
+                      </tr>
+
+                      <!-- Header Crest with Official Logo -->
+                      <tr>
+                        <td align="center" style="padding: 34px 32px 22px 32px; text-align: center; border-bottom: 1px solid #F4EDE0;">
+                          <a href="https://gargisaha.com" target="_blank" style="text-decoration: none; display: inline-block;">
+                            <img 
+                              src="${LOGO_URL}" 
+                              alt="House of Gargi" 
+                              width="210"
+                              height="60"
+                              style="display: block; margin: 0 auto 10px; width: 210px; height: 60px; max-width: 100%; border: 0; outline: none; text-decoration: none;"
+                            />
+                          </a>
+                          <p style="margin: 0; font-size: 13px; font-style: italic; color: #8C7B70; letter-spacing: 0.04em;">
+                            Handcrafted Heritage, Worn Today
+                          </p>
+                        </td>
+                      </tr>
+
+                      <!-- Body Content -->
+                      <tr>
+                        <td style="padding: 36px 32px 28px 32px; text-align: left;">
+                          <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.65; color: #241A15;">
+                            Dear <strong>${targetApp.name || 'Master Artisan'}</strong>,
+                          </p>
+                          <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.65; color: #4A3C33;">
+                            Thank you for submitting your application (<strong>${applicationId}</strong>) to join the <strong>House of Gargi Master Artisan Guild</strong>.
+                          </p>
+                          <p style="margin: 0 0 20px; font-size: 15px; line-height: 1.65; color: #4A3C33;">
+                            After careful consideration by our curation committee, we regret to inform you that we are unable to accept your application into our partner guild at this time.
+                          </p>
+
+                          ${
+                            reviewNotes
+                              ? `
+                          <!-- Curation Feedback Callout Box with Gold Border -->
+                          <div style="background-color: #FAF7F2; border: 1.5px solid #D4AF37; border-radius: 8px; padding: 18px 24px; margin: 22px 0;">
+                            <p style="margin: 0 0 8px; font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #7A2331;">
+                              Curation Committee Feedback:
+                            </p>
+                            <p style="margin: 0; font-size: 14px; color: #33261D; line-height: 1.6;">
+                              ${reviewNotes}
+                            </p>
+                          </div>
+                          `
+                              : ''
+                          }
+
+                          <p style="margin: 20px 0 0; font-size: 14px; color: #66554B; line-height: 1.65;">
+                            We deeply honor your craft, lineage, and dedication to preserving traditional textiles. As our guild categories and collections expand, you are warmly invited to re-apply in the future.
+                          </p>
+                        </td>
+                      </tr>
+
+                      <!-- Footer -->
+                      <tr>
+                        <td style="border-top: 1px solid #EAE2D5; background-color: #FAF7F2; padding: 22px 32px; text-align: center; font-size: 12px; color: #8C7B70; line-height: 1.6;">
+                          <p style="margin: 0;">
+                            Sent securely from <strong style="color: #241A15;">noreply@gargisaha.com</strong>
+                          </p>
+                          <p style="margin: 4px 0 0; font-size: 11.5px; color: #8C7B70;">
+                            House of Gargi &bull; Artisan Curation Desk &amp; Living Heritage Registry
+                          </p>
+                          <p style="margin: 10px 0 0; font-size: 11px; letter-spacing: 0.08em;">
+                            <a href="https://gargisaha.com/seller" style="color: #B88E18; text-decoration: none; font-weight: 600;">Artisan Portal &bull; www.gargisaha.com</a>
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </body>
+            </html>
           `,
         });
       } catch (mErr) {

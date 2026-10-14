@@ -307,31 +307,30 @@ export default function AdminApplicationsPage() {
             background: '#FFFFFF',
             border: '1px solid var(--soft-gold-line)',
             borderRadius: '12px',
-            overflow: 'visible',
             boxShadow: '0 2px 14px rgba(43,31,24,0.03)',
+            position: 'relative',
           }}
         >
-          <div style={{ overflowX: 'auto', overflowY: 'visible' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-              <thead>
-                <tr
-                  style={{
-                    background: '#FAF7F2',
-                    borderBottom: '1.5px solid var(--soft-gold-line)',
-                    color: '#5C5043',
-                    fontWeight: 800,
-                    fontSize: '0.85rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.08em',
-                  }}
-                >
-                  <th style={{ padding: '1rem 1.4rem', width: '180px' }}>Art No.</th>
-                  <th style={{ padding: '1rem 1.4rem' }}>Name</th>
-                  <th style={{ padding: '1rem 1.4rem' }}>Phone Number</th>
-                  <th style={{ padding: '1rem 1.4rem', width: '150px' }}>Status</th>
-                  <th style={{ padding: '1rem 1.4rem', textAlign: 'right', width: '280px' }}>Actions</th>
-                </tr>
-              </thead>
+          <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, textAlign: 'left' }}>
+            <thead>
+              <tr
+                style={{
+                  background: '#FAF7F2',
+                  borderBottom: '1.5px solid var(--soft-gold-line)',
+                  color: '#5C5043',
+                  fontWeight: 800,
+                  fontSize: '0.85rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                }}
+              >
+                <th style={{ padding: '1rem 1.4rem', width: '180px', borderTopLeftRadius: '11px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>Art No.</th>
+                <th style={{ padding: '1rem 1.4rem', borderBottom: '1.5px solid var(--soft-gold-line)' }}>Name</th>
+                <th style={{ padding: '1rem 1.4rem', borderBottom: '1.5px solid var(--soft-gold-line)' }}>Phone Number</th>
+                <th style={{ padding: '1rem 1.4rem', width: '150px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>Status</th>
+                <th style={{ padding: '1rem 1.4rem', textAlign: 'right', width: '280px', borderTopRightRadius: '11px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>Actions</th>
+              </tr>
+            </thead>
               <tbody>
                 {filteredApps.map((app) => {
                   const currentBadge = statusColors[app.status] || { bg: '#EEEEEE', text: '#424242' };
@@ -581,8 +580,7 @@ export default function AdminApplicationsPage() {
                   );
                 })}
               </tbody>
-            </table>
-          </div>
+          </table>
         </div>
       )}
 
