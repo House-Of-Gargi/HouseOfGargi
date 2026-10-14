@@ -149,7 +149,7 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
             className={'artisan-pill ' + (selectedCategory === 'all' ? 'artisan-pill--active' : '')}
             onClick={() => setSelectedCategory('all')}
           >
-            All Creations ({categoryCounts.all})
+            All Creations <span className="artisan-pill-count">({categoryCounts.all})</span>
           </button>
 
           {categories.map((c) => {
@@ -163,7 +163,7 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
                 className={'artisan-pill ' + (isSelected ? 'artisan-pill--active' : '')}
                 onClick={() => setSelectedCategory(c.id)}
               >
-                {c.name} ({count})
+                {c.name} <span className="artisan-pill-count">({count})</span>
               </button>
             );
           })}
