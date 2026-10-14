@@ -106,7 +106,7 @@ export default function ProductCard({ product, style }: ProductCardProps) {
           <div className="product-card__desc">
             <span className="product-card__artisan-icon">✦</span>
             <span className="product-card__desc-text">
-              {currentProduct.artisanNote || (currentProduct as any).artisan_note || currentProduct.description || 'Crafted by master artisans'}
+              {currentProduct.description || (currentProduct as any).desc || 'Handcrafted luxury heritage creation woven with traditional artisanal techniques.'}
             </span>
           </div>
         </div>
