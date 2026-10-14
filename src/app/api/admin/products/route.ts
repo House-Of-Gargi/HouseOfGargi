@@ -99,7 +99,7 @@ export async function GET() {
       const images = (productOverrides[sp.id]?.images) || baseImages;
 
       // Find artisan
-      const artObj = catMatch ? artisanMap.get(catMatch.artisanId) : null;
+      const artObj = catMatch && catMatch.artisanId ? artisanMap.get(catMatch.artisanId) : null;
 
       mergedList.push({
         id: sp.id,
@@ -112,7 +112,7 @@ export async function GET() {
         images,
         description: productOverrides[sp.id]?.description || catMatch?.description || 'Authentic handcrafted heritage creation.',
         artisanName: catMatch?.artisanName || sp.artisan_name || 'Master Artisan Guild',
-        artisanNo: artObj ? `HG-${Math.abs(catMatch?.artisanId.split('').reduce((acc: number, c: string) => acc + c.charCodeAt(0), 10000) % 90000 + 10000)}` : 'HG-84192',
+        artisanNo: artObj && catMatch?.artisanId ? `HG-${Math.abs(catMatch.artisanId.split('').reduce((acc: number, c: string) => acc + c.charCodeAt(0), 10000) % 90000 + 10000)}` : 'HG-84192',
         artType: sp.craft_technique || catMatch?.technique || 'Handloom Heritage Weave',
         fabric: catMatch?.fabric || 'Pure Silk',
         occasion: catMatch?.occasion || 'Festive & Celebration',
@@ -132,7 +132,7 @@ export async function GET() {
         }
 
         const images = productOverrides[cp.id]?.images || cp.images || ['/images/category-sarees.png'];
-        const artObj = artisanMap.get(cp.artisanId);
+        const artObj = cp.artisanId ? artisanMap.get(cp.artisanId) : null;
 
         mergedList.push({
           id: cp.id,
@@ -145,7 +145,7 @@ export async function GET() {
           images,
           description: productOverrides[cp.id]?.description || cp.description,
           artisanName: cp.artisanName || 'Master Artisan',
-          artisanNo: artObj ? `HG-${Math.abs(cp.artisanId.split('').reduce((acc: number, c: string) => acc + c.charCodeAt(0), 10000) % 90000 + 10000)}` : 'HG-84192',
+          artisanNo: artObj && cp.artisanId ? `HG-${Math.abs(cp.artisanId.split('').reduce((acc: number, c: string) => acc + c.charCodeAt(0), 10000) % 90000 + 10000)}` : 'HG-84192',
           artType: cp.technique || 'Handloom Zari',
           fabric: cp.fabric || 'Pure Silk',
           occasion: cp.occasion || 'Wedding & Festive',
