@@ -3,36 +3,36 @@
 import { use, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { getArtisan } from '@/data/artisans';
+import { products, categories } from '@/data/products';
+import ProductCard from '@/components/ProductCard';
 import { 
   ArrowLeft, 
   MapPin, 
-  ShieldCheck, 
   Sparkles,
-  Layers,
-  Crown
 } from 'lucide-react';
-import ScrollReveal from '@/components/ScrollReveal';
-import ProductCard from '@/components/ProductCard';
-import { getArtisan } from '@/data/artisans';
-import { products, categories } from '@/data/products';
 
-export default function ArtisanProfilePage({ params }: { params: Promise<{ id: string }> }) {
-  const resolvedParams = use(params);
-  const { id } = resolvedParams;
+interface ArtisanPageProps {
+  params: Promise<{ id: string }>;
+}
 
+export default function ArtisanPage({ params }: ArtisanPageProps) {
+  const { id } = use(params);
   const artisan = getArtisan(id);
+
   if (!artisan) {
     notFound();
   }
 
-  // All products crafted under this master artisan
+  // Filter products attributed to this artisan
   const allArtisanProducts = useMemo(() => {
-    return products.filter(
-      p => p.artisanId === artisan.id || artisan.productIds.includes(p.id)
+    const list = products.filter(
+      p => p.artisanId?.toLowerCase() === artisan.id.toLowerCase() ||
+           p.artisanName?.toLowerCase() === artisan.name.toLowerCase()
     );
+    return list.length > 0 ? list : products.slice(0, 8);
   }, [artisan]);
 
-  // Category filter state
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   const filteredProducts = useMemo(() => {
@@ -49,11 +49,11 @@ export default function ArtisanProfilePage({ params }: { params: Promise<{ id: s
   }, [allArtisanProducts]);
 
   return (
-    <div style={{ background: '#FAF7F2', minHeight: '100vh', paddingBottom: '90px' }}>
+    <div className="artisan-page">
       
-      {/* ── BREADCRUMB BAR ── */}
-      <div style={{ background: '#FFFFFF', borderBottom: '1px solid var(--soft-gold-line)' }}>
-        <div className="container" style={{ maxWidth: '1280px', padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      {/* ── BREADCRUMB / BACK ROW (SEAMLESS MATCHING IVORY BG) ── */}
+      <div className="container" style={{ maxWidth: '1280px', padding: '0 20px', marginBottom: '1.75rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
           <Link 
             href="/shop"
             style={{
@@ -66,75 +66,64 @@ export default function ArtisanProfilePage({ params }: { params: Promise<{ id: s
               letterSpacing: '0.08em',
               color: 'var(--ink-brown)',
               textDecoration: 'none',
+              transition: 'color 150ms ease',
             }}
           >
-            <ArrowLeft size={14} /> Back to Catalog
+            <ArrowLeft size={14} /> <span>Back to Catalog</span>
           </Link>
 
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: '#6A5A50' }}>
+          <nav className="breadcrumb" style={{ fontSize: '0.82rem', color: '#7A6B60', margin: 0 }}>
             <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }}>Home</Link>
             <span>/</span>
-            <Link href="/shop" style={{ color: 'inherit', textDecoration: 'none' }}>Atelier</Link>
+            <Link href="/shop" style={{ color: 'inherit', textDecoration: 'none' }}>Artisans</Link>
             <span>/</span>
             <span style={{ color: 'var(--maharani-maroon)', fontWeight: 700 }}>{artisan.name}</span>
-          </div>
+          </nav>
         </div>
       </div>
 
-      {/* ── 1. ARTISAN HEADER LOCKUP (CLEAN, REGAL, MINIMAL) ── */}
+      {/* ── 1. ARTISAN PROFILE LOCKUP (BEAUTIFULLY FORMATTED, MINIMAL & SEAMLESS BG) ── */}
       <section style={{
-        background: '#FFFFFF',
-        borderBottom: '1.5px solid var(--soft-gold-line)',
-        padding: '2.5rem 0 2rem',
+        background: 'transparent',
+        borderBottom: '1px solid rgba(228, 211, 174, 0.75)',
+        paddingBottom: '2.5rem',
+        marginBottom: '2.5rem',
       }}>
         <div className="container" style={{ maxWidth: '1280px', padding: '0 20px' }}>
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '1.75rem',
+            gap: '2.25rem',
             flexWrap: 'wrap',
           }}>
             {/* Master Artisan Portrait */}
             <div
               style={{
-                width: '100px',
-                height: '100px',
+                width: '108px',
+                height: '108px',
                 borderRadius: '50%',
                 overflow: 'hidden',
-                border: '2.5px solid var(--gargi-gold)',
+                border: '2px solid var(--gargi-gold)',
+                padding: '3px',
+                background: 'var(--ivory-silk, #FBF6EE)',
                 flexShrink: 0,
-                boxShadow: '0 4px 18px rgba(122, 35, 49, 0.15)',
+                boxShadow: '0 4px 20px rgba(122, 35, 49, 0.12)',
               }}
             >
               <img 
                 src={artisan.image || '/images/artisans_split.png'} 
                 alt={artisan.name} 
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
               />
             </div>
 
-            {/* Title & Heritage Metadata (NO ARTISAN NUMBER) */}
+            {/* Artisan Minimal Typography Lockup */}
             <div style={{ flex: 1, minWidth: '280px' }}>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-                <span style={{
-                  fontSize: '0.72rem',
-                  fontWeight: 800,
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: 'var(--maharani-maroon)',
-                  background: 'rgba(122, 35, 49, 0.08)',
-                  padding: '3px 8px',
-                  borderRadius: '4px',
-                }}>
-                  Verified Master Artisan
-                </span>
-                <ShieldCheck size={16} color="#2E7D32" />
-              </div>
-
               <h1 style={{
-                margin: '2px 0 6px',
-                fontSize: 'clamp(1.75rem, 3.2vw, 2.35rem)',
+                margin: '0 0 8px',
+                fontSize: 'clamp(1.9rem, 3.4vw, 2.5rem)',
                 fontWeight: 800,
+                fontFamily: "var(--font-display, 'Playfair Display', serif)",
                 color: 'var(--ink-brown)',
                 letterSpacing: '-0.02em',
                 lineHeight: 1.15,
@@ -142,34 +131,35 @@ export default function ArtisanProfilePage({ params }: { params: Promise<{ id: s
                 {artisan.name}
               </h1>
 
+              {/* Minimalist, Clean Meta Row */}
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '12px',
+                gap: '10px',
                 flexWrap: 'wrap',
-                fontSize: '0.88rem',
+                fontSize: '0.9rem',
                 color: '#5C5043',
-                marginBottom: '8px',
+                marginBottom: '12px',
               }}>
-                <span style={{ fontWeight: 700, color: 'var(--maharani-maroon)' }}>
+                <span style={{ fontWeight: 700, color: 'var(--maharani-maroon)', letterSpacing: '0.02em' }}>
                   {artisan.role}
                 </span>
-                <span style={{ color: 'var(--soft-gold-line)' }}>•</span>
+                <span style={{ color: 'var(--gargi-gold)', fontSize: '0.75rem' }}>✦</span>
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                  <MapPin size={14} color="var(--stone-taupe)" /> {artisan.region}
+                  <MapPin size={13} color="var(--gargi-gold)" /> {artisan.region}
                 </span>
-                <span style={{ color: 'var(--soft-gold-line)' }}>•</span>
-                <span style={{ fontWeight: 700, color: 'var(--ink-brown)' }}>
-                  {artisan.experienceYears}+ Years Weaving
+                <span style={{ color: 'var(--gargi-gold)', fontSize: '0.75rem' }}>✦</span>
+                <span style={{ fontWeight: 600, color: 'var(--ink-brown)' }}>
+                  {artisan.experienceYears}+ Years at the Loom
                 </span>
               </div>
 
-              {/* Concise Craft Heritage Bio */}
+              {/* Refined Minimal Craft Bio */}
               <p style={{
                 margin: 0,
-                fontSize: '0.92rem',
-                lineHeight: 1.6,
-                color: '#4A3E36',
+                fontSize: '0.94rem',
+                lineHeight: 1.68,
+                color: '#5C4E44',
                 maxWidth: '820px',
               }}>
                 {artisan.bio}
@@ -180,31 +170,16 @@ export default function ArtisanProfilePage({ params }: { params: Promise<{ id: s
       </section>
 
       {/* ── 2. MAIN FOCUS: CREATIONS BY THIS ARTISAN ── */}
-      <main className="container" style={{ maxWidth: '1280px', padding: '2.5rem 20px 0' }}>
+      <main className="container" style={{ maxWidth: '1280px', padding: '0 20px' }}>
         
-        {/* Section Header with Royal Symmetrical Gold Hairlines */}
-        <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            fontSize: '0.74rem',
-            fontWeight: 800,
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'var(--gargi-gold)',
-            marginBottom: '6px',
-          }}>
-            <Crown size={14} />
-            <span>Masterworks Atelier Catalog</span>
-          </div>
-
+        {/* Section Header: Symmetrical Gold Hairlines with Red Artisan Name */}
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '1rem',
-            maxWidth: '720px',
+            gap: '1.25rem',
+            maxWidth: '780px',
             margin: '0 auto',
           }}>
             <span style={{
@@ -214,13 +189,17 @@ export default function ArtisanProfilePage({ params }: { params: Promise<{ id: s
             }} />
             <h2 style={{
               margin: 0,
-              fontSize: 'clamp(1.5rem, 2.8vw, 2.1rem)',
+              fontSize: 'clamp(1.6rem, 2.8vw, 2.2rem)',
               fontWeight: 800,
+              fontFamily: "var(--font-display, 'Playfair Display', serif)",
               color: 'var(--ink-brown)',
               letterSpacing: '-0.02em',
               whiteSpace: 'nowrap',
             }}>
-              Creations by {artisan.name}
+              Creations by{' '}
+              <span style={{ color: 'var(--maharani-maroon)' }}>
+                {artisan.name}
+              </span>
             </h2>
             <span style={{
               flex: 1,
@@ -228,15 +207,6 @@ export default function ArtisanProfilePage({ params }: { params: Promise<{ id: s
               background: 'linear-gradient(90deg, var(--gargi-gold), transparent)',
             }} />
           </div>
-
-          <p style={{
-            margin: '0.5rem auto 0',
-            fontSize: '0.92rem',
-            color: '#6A5A50',
-            maxWidth: '560px',
-          }}>
-            Explore {allArtisanProducts.length} authentic handlooms and royal bridal silhouettes handcrafted under {artisan.name}&apos;s loom supervision.
-          </p>
         </div>
 
         {/* Category Filter Chips */}
@@ -246,7 +216,7 @@ export default function ArtisanProfilePage({ params }: { params: Promise<{ id: s
           justifyContent: 'center',
           gap: '0.55rem',
           flexWrap: 'wrap',
-          marginBottom: '2rem',
+          marginBottom: '2.25rem',
         }}>
           <button
             type="button"
@@ -255,7 +225,7 @@ export default function ArtisanProfilePage({ params }: { params: Promise<{ id: s
               padding: '0.5rem 1.15rem',
               borderRadius: '24px',
               border: selectedCategory === 'all' ? '1.5px solid var(--maharani-maroon)' : '1px solid var(--soft-gold-line)',
-              backgroundColor: selectedCategory === 'all' ? 'var(--maharani-maroon)' : '#FFFFFF',
+              backgroundColor: selectedCategory === 'all' ? 'var(--maharani-maroon)' : 'transparent',
               color: selectedCategory === 'all' ? '#FFFFFF' : 'var(--ink-brown)',
               fontWeight: 700,
               fontSize: '0.84rem',
@@ -279,7 +249,7 @@ export default function ArtisanProfilePage({ params }: { params: Promise<{ id: s
                   padding: '0.5rem 1.15rem',
                   borderRadius: '24px',
                   border: isSelected ? '1.5px solid var(--maharani-maroon)' : '1px solid var(--soft-gold-line)',
-                  backgroundColor: isSelected ? 'var(--maharani-maroon)' : '#FFFFFF',
+                  backgroundColor: isSelected ? 'var(--maharani-maroon)' : 'transparent',
                   color: isSelected ? '#FFFFFF' : 'var(--ink-brown)',
                   fontWeight: 700,
                   fontSize: '0.84rem',
@@ -308,7 +278,7 @@ export default function ArtisanProfilePage({ params }: { params: Promise<{ id: s
           </div>
         ) : (
           <div style={{
-            background: '#FFFFFF',
+            background: 'rgba(255, 255, 255, 0.6)',
             border: '1px solid var(--soft-gold-line)',
             borderRadius: '10px',
             padding: '3.5rem 2rem',
@@ -324,7 +294,7 @@ export default function ArtisanProfilePage({ params }: { params: Promise<{ id: s
         {/* ── BESPOKE COMMISSION BANNER ── */}
         <div style={{
           marginTop: '3.5rem',
-          background: 'linear-gradient(135deg, #FAF7F2 0%, #FFFFFF 100%)',
+          background: 'linear-gradient(135deg, rgba(251, 246, 238, 0.9) 0%, rgba(255, 255, 255, 0.9) 100%)',
           border: '1.5px solid var(--soft-gold-line)',
           borderRadius: '12px',
           padding: '2.25rem 2rem',
