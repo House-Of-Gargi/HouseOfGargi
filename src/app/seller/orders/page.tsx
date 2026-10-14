@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { supabase } from '@/lib/supabaseClient';
 import { 
   ShoppingBag, 
   Search, 
-  Loader2 
+  Loader2,
+  RefreshCw
 } from 'lucide-react';
 import CustomDropdown from '@/components/CustomDropdown';
 
@@ -19,26 +19,24 @@ const STATUS_OPTIONS = [
 export default function SellerOrdersPage() {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   const fetchOrders = async () => {
     try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('orders')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      if (data) {
-        setOrders(data);
+      setRefreshing(true);
+      const res = await fetch('/api/orders');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.orders)) {
+        setOrders(data.orders);
       }
     } catch (err) {
-      console.error('Failed to load orders from Supabase:', err);
+      console.error('Failed to load orders from backend:', err);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -49,17 +47,17 @@ export default function SellerOrdersPage() {
   const handleStatusChange = async (orderId: string, newStatus: string) => {
     try {
       setUpdatingId(orderId);
-      const { error } = await supabase
-        .from('orders')
-        .update({ status: newStatus })
-        .eq('id', orderId);
 
-      if (error) throw error;
-
-      // Update local state immediately
+      // Optimistic state update
       setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o));
+
+      await fetch('/api/orders', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: orderId, status: newStatus }),
+      });
     } catch (err) {
-      console.error('Failed to update status in Supabase:', err);
+      console.error('Failed to update status in backend:', err);
       alert('Failed to update order status. Please try again.');
     } finally {
       setUpdatingId(null);
@@ -70,8 +68,9 @@ export default function SellerOrdersPage() {
     return orders.filter(o => {
       const matchStatus = statusFilter === 'all' || (o.status || '').toLowerCase() === statusFilter.toLowerCase();
       const matchSearch = searchQuery === '' ||
-        o.order_number?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        o.customer_name?.toLowerCase().includes(searchQuery.toLowerCase());
+        (o.order_number || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (o.customer_name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (o.delivery_city || '').toLowerCase().includes(searchQuery.toLowerCase());
       return matchStatus && matchSearch;
     });
   }, [orders, statusFilter, searchQuery]);
@@ -79,7 +78,7 @@ export default function SellerOrdersPage() {
   return (
     <div>
       {/* Header Card */}
-      <div className="atelier-header-card">
+      <div className="atelier-header-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
         <div className="atelier-title-group">
           <div className="atelier-title-icon">
             <ShoppingBag style={{ width: 22, height: 22 }} />
@@ -89,169 +88,157 @@ export default function SellerOrdersPage() {
               Client Order Manifests &amp; <span style={{ color: 'var(--maharani-maroon)' }}>Fulfillment</span>
             </h1>
             <p style={{ fontSize: '1.05rem', color: '#4A3E36', margin: '0.35rem 0 0 0', fontWeight: 500 }}>
-              Direct live sync with Supabase table &apos;orders&apos; &bull; Manage bespoke commissions &amp; courier manifests
+              Live order manifests &bull; Manage bespoke commissions, workshop fulfillment &amp; courier dispatches
             </p>
           </div>
         </div>
+
+        <button
+          type="button"
+          onClick={fetchOrders}
+          style={{
+            background: 'var(--pure-white)',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '2px',
+            padding: '0.65rem 1rem',
+            fontSize: '0.85rem',
+            fontFamily: 'var(--font-nav)',
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            color: 'var(--ink-brown)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.4rem',
+            cursor: 'pointer',
+          }}
+        >
+          <RefreshCw style={{ width: 14, height: 14, animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
+          Sync Orders
+        </button>
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="table-top-bar" style={{ background: 'var(--pure-white)', padding: '1rem 1.5rem', border: '1px solid var(--soft-gold-line)', borderRadius: '4px', marginBottom: '1.5rem' }}>
+      <div className="table-top-bar" style={{ background: 'var(--pure-white)', padding: '1rem 1.5rem', border: '1.5px solid var(--soft-gold-line)', borderRadius: '8px', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
           {[
             { id: 'all', label: 'All Orders' },
-            { id: 'processing', label: 'In-Weave / Processing' },
+            { id: 'processing', label: 'Processing' },
             { id: 'bespoke review', label: 'Bespoke Review' },
             { id: 'shipped', label: 'Shipped' },
             { id: 'delivered', label: 'Delivered' },
-          ].map(tab => (
+          ].map(f => (
             <button
-              key={tab.id}
+              key={f.id}
               type="button"
-              onClick={() => setStatusFilter(tab.id)}
+              onClick={() => setStatusFilter(f.id)}
               style={{
-                background: statusFilter === tab.id ? 'var(--maharani-maroon)' : 'var(--ivory-silk)',
-                color: statusFilter === tab.id ? 'var(--ivory-silk)' : 'var(--stone-taupe)',
+                background: statusFilter === f.id ? 'var(--maharani-maroon)' : '#FAF7F2',
+                color: statusFilter === f.id ? '#FFFFFF' : 'var(--ink-brown)',
                 border: '1px solid var(--soft-gold-line)',
-                borderRadius: '2px',
+                borderRadius: '4px',
                 padding: '0.45rem 0.85rem',
-                fontSize: '0.85rem',
+                fontSize: '0.82rem',
                 fontFamily: 'var(--font-nav)',
                 fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.08em',
+                letterSpacing: '0.06em',
                 cursor: 'pointer',
-                transition: 'all 150ms ease',
+                transition: 'all 0.15s ease',
               }}
             >
-              {tab.label}
+              {f.label}
             </button>
           ))}
         </div>
 
-        {/* Search */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          background: 'var(--pure-white)',
-          border: '1px solid var(--soft-gold-line)',
-          borderRadius: '2px',
-          padding: '0.45rem 0.85rem',
-        }}>
-          <Search style={{ width: 15, height: 15, color: 'var(--stone-taupe)', marginRight: '0.45rem' }} />
+        <div style={{ position: 'relative', width: '280px', maxWidth: '100%' }}>
+          <Search style={{ width: 14, height: 14, position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--stone-taupe)' }} />
           <input
             type="text"
+            placeholder="Search by order #, client, or city..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search order # or client..."
+            onChange={e => setSearchQuery(e.target.value)}
             style={{
-              border: 'none',
-              outline: 'none',
-              fontSize: '0.92rem',
-              fontFamily: 'var(--font-sans)',
+              width: '100%',
+              padding: '0.55rem 0.75rem 0.55rem 2.1rem',
+              fontSize: '0.88rem',
+              borderRadius: '4px',
+              border: '1px solid var(--soft-gold-line)',
+              background: '#FFFFFF',
               color: 'var(--ink-brown)',
-              width: '180px',
-              background: 'transparent',
+              outline: 'none',
+              boxSizing: 'border-box',
             }}
           />
         </div>
       </div>
 
-      {/* Orders Table Card */}
-      <div className="luxury-table-card">
-        <div className="table-top-bar" style={{ paddingBottom: '1rem' }}>
-          <div>
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--ink-brown)', margin: 0 }}>
-              Live Order Pipeline
-            </h3>
-            <p style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)', margin: '0.2rem 0 0 0' }}>
-              Update workflow stage directly to sync with Supabase and client tracking
-            </p>
-          </div>
-          <span style={{ fontSize: '0.88rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)', fontWeight: 600 }}>
-            Showing {filteredOrders.length} orders
-          </span>
-        </div>
+      {/* Orders Table */}
+      <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '8px', overflow: 'hidden' }}>
+        <table className="seller-table">
+          <thead>
+            <tr>
+              <th>Order Ref</th>
+              <th>Client Name</th>
+              <th>Delivery Destination</th>
+              <th>Gross Retail</th>
+              <th>Your 85% Share</th>
+              <th>Status</th>
+              <th>Update Manifest</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredOrders.length > 0 ? (
+              filteredOrders.map(order => {
+                const gross = Number(order.total_rupees) || 0;
+                const share = Math.round(gross * 0.85);
+                const isUpdating = updatingId === order.id;
 
-        <div style={{ overflowX: 'auto', marginTop: '0.75rem' }}>
-          <table className="luxury-table">
-            <thead>
+                return (
+                  <tr key={order.id}>
+                    <td style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
+                      {order.order_number || `#HG-${order.id}`}
+                    </td>
+                    <td style={{ fontWeight: 600 }}>
+                      {order.customer_name || 'Patron'}
+                    </td>
+                    <td style={{ color: 'var(--stone-taupe)', fontSize: '0.88rem' }}>
+                      {order.delivery_city || 'India'}
+                    </td>
+                    <td style={{ fontWeight: 600 }}>
+                      ₹ {gross.toLocaleString('en-IN')}
+                    </td>
+                    <td style={{ fontWeight: 700, color: '#2E7D32' }}>
+                      ₹ {share.toLocaleString('en-IN')}
+                    </td>
+                    <td>
+                      <span className={`badge badge--${(order.status || 'processing').toLowerCase().replace(' ', '-')}`}>
+                        {order.status || 'Processing'}
+                      </span>
+                    </td>
+                    <td style={{ minWidth: 180 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                        <CustomDropdown
+                          value={order.status || 'Processing'}
+                          options={STATUS_OPTIONS}
+                          onChange={(newVal) => handleStatusChange(order.id, newVal)}
+                        />
+                        {isUpdating && <Loader2 style={{ width: 14, height: 14, animation: 'spin 1s linear infinite', color: 'var(--maharani-maroon)' }} />}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
               <tr>
-                <th>Order Number</th>
-                <th>Client Name</th>
-                <th>Placement Date</th>
-                <th>Amount (INR)</th>
-                <th>Update Status</th>
-                <th style={{ textAlign: 'center' }}>Live State</th>
+                <td colSpan={7} style={{ textAlign: 'center', padding: '3.5rem', color: 'var(--stone-taupe)' }}>
+                  No order manifests found matching this criteria.
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--stone-taupe)' }}>
-                    <Loader2 style={{ width: 20, height: 20, animation: 'spin 1s linear infinite', display: 'inline-block', verticalAlign: 'middle', marginRight: '0.5rem' }} />
-                    Loading orders from Supabase...
-                  </td>
-                </tr>
-              ) : filteredOrders.length === 0 ? (
-                <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--stone-taupe)' }}>
-                    No orders found matching your search.
-                  </td>
-                </tr>
-              ) : (
-                filteredOrders.map(o => {
-                  const s = (o.status || '').toLowerCase();
-                  const isUpdating = updatingId === o.id;
-
-                  return (
-                    <tr key={o.id}>
-                      <td style={{ fontWeight: 700, fontFamily: 'var(--font-nav)', color: 'var(--maharani-maroon)' }}>
-                        {o.order_number || `#HG-${o.id.slice(0, 4)}`}
-                      </td>
-                      <td>
-                        <strong style={{ color: 'var(--ink-brown)', display: 'block', fontSize: '1rem' }}>
-                          {o.customer_name}
-                        </strong>
-                        {o.customer_phone && (
-                          <span style={{ fontSize: '0.85rem', color: 'var(--stone-taupe)', fontWeight: 500 }}>
-                            {o.customer_phone}
-                          </span>
-                        )}
-                      </td>
-                      <td style={{ color: 'var(--stone-taupe)', fontSize: '0.92rem' }}>
-                        {o.created_at ? new Date(o.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Recent'}
-                      </td>
-                      <td style={{ fontWeight: 700, color: 'var(--ink-brown)', fontSize: '1rem' }}>
-                        ₹ {Number(o.total_rupees || 0).toLocaleString('en-IN')}
-                      </td>
-                      <td>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: '170px' }}>
-                          <CustomDropdown
-                            options={STATUS_OPTIONS}
-                            value={o.status || 'Processing'}
-                            onChange={(val) => handleStatusChange(o.id, val)}
-                            disabled={isUpdating}
-                            triggerStyle={{ padding: '0.4rem 0.7rem', fontSize: '0.88rem' }}
-                            menuStyle={{ minWidth: '175px' }}
-                          />
-                          {isUpdating && <Loader2 style={{ width: 14, height: 14, animation: 'spin 1s linear infinite', color: 'var(--maharani-maroon)' }} />}
-                        </div>
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <span className={`status-pill ${
-                          s === 'delivered' ? 'delivered' : s === 'shipped' ? 'shipped' : s.includes('bespoke') ? 'bespoke' : 'processing'
-                        }`}>
-                          {o.status || 'Pending'}
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

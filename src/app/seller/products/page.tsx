@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useMemo, FormEvent } from 'react';
-import { supabase } from '@/lib/supabaseClient';
 import { 
   Shirt, 
   Plus, 
@@ -9,8 +8,11 @@ import {
   Loader2, 
   Check, 
   X, 
-  PackageCheck 
+  PackageCheck,
+  RefreshCw,
+  Eye
 } from 'lucide-react';
+import Link from 'next/link';
 import CustomDropdown from '@/components/CustomDropdown';
 
 const CATEGORY_OPTIONS = [
@@ -20,49 +22,10 @@ const CATEGORY_OPTIONS = [
   { value: 'accessories', label: 'Heritage Jewellery' },
 ];
 
-const DEFAULT_IMAGE_BY_CATEGORY: Record<string, string> = {
-  sarees: '/images/category-sarees.png',
-  lehengas: '/images/category-lehengas.png',
-  'kurta-sets': '/images/category-kurtas.png',
-  accessories: '/images/category-accessories.png',
-};
-
-const ASSET_OPTIONS = [
-  // Sarees
-  { value: '/images/category-sarees.png', label: 'Saree: Banarasi Gold Weave' },
-  { value: '/images/products/saree-kanchipuram.jpg', label: 'Saree: Kanchipuram Temple Border' },
-  { value: '/images/products/saree-chanderi.jpg', label: 'Saree: Chanderi Floral Jaal' },
-  { value: '/images/products/saree-tussar.jpg', label: 'Saree: Tussar Silk Block Print' },
-  { value: '/images/products/saree-paithani.jpg', label: 'Saree: Paithani Peacock Pallu' },
-  { value: '/images/collections/collection-sarees.jpg', label: 'Saree: Master Loom Archive' },
-  { value: '/images/collections/explore-sarees.jpg', label: 'Saree: Udaipur Palace Jharokha' },
-  // Lehengas
-  { value: '/images/category-lehengas.png', label: 'Lehenga: Royal Zardozi Bridal' },
-  { value: '/images/products/lehenga-gota-patti.jpg', label: 'Lehenga: Gota Patti Festive' },
-  { value: '/images/products/lehenga-chikankari.jpg', label: 'Lehenga: Chikankari Ivory Anarkali' },
-  { value: '/images/products/lehenga-mirror-work.jpg', label: 'Lehenga: Mirror Work Chaniya Choli' },
-  { value: '/images/collections/collection-lehengas.jpg', label: 'Lehenga: Rajputana Bridal Suite' },
-  { value: '/images/collections/explore-lehengas.jpg', label: 'Lehenga: Jaipur Courtyard Atelier' },
-  // Kurta Sets
-  { value: '/images/category-kurtas.png', label: 'Kurta: Sanganeri Block Print' },
-  { value: '/images/products/kurta-chikankari-white.jpg', label: 'Kurta: Chikankari White-on-White' },
-  { value: '/images/products/kurta-ajrakh-silk.jpg', label: 'Kurta: Ajrakh Silk Set' },
-  { value: '/images/products/kurta-kalamkari.jpg', label: 'Kurta: Kalamkari Anarkali' },
-  { value: '/images/products/kurta-bandhani-silk.jpg', label: 'Kurta: Bandhani Silk Festival' },
-  { value: '/images/collections/collection-kurtas.jpg', label: 'Kurta: Silk Summer Atelier' },
-  { value: '/images/collections/explore-kurtas.jpg', label: 'Kurta: Limestone Colonnade Pavilion' },
-  // Accessories & Jewellery
-  { value: '/images/category-accessories.png', label: 'Jewellery: Kundan Polki Choker Set' },
-  { value: '/images/products/accessory-meenakari-jhumka.jpg', label: 'Jewellery: Meenakari Jhumka Earrings' },
-  { value: '/images/products/accessory-temple-jewellery.jpg', label: 'Jewellery: Temple Jewellery Necklace' },
-  { value: '/images/products/accessory-phulkari-dupatta.jpg', label: 'Accessory: Phulkari Silk Dupatta' },
-  { value: '/images/collections/collection-accessories.jpg', label: 'Jewellery: Forest Marble Suite' },
-  { value: '/images/collections/explore-accessories.jpg', label: 'Jewellery: Mughal Casket Vault' },
-];
-
 export default function SellerProductsPage() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -72,28 +35,26 @@ export default function SellerProductsPage() {
     name: '',
     category: 'sarees',
     price_in_rupees: '',
-    stock: '',
+    stock: '10',
+    artType: 'Tangail Jamdani Pit Loom',
     image_url: '/images/category-sarees.png',
   });
   const [submitting, setSubmitting] = useState(false);
-  const [formError, setFormError] = useState('');
+  const [formSuccess, setFormSuccess] = useState('');
 
   const fetchProducts = async () => {
     try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      if (data) {
-        setProducts(data);
+      setRefreshing(true);
+      const res = await fetch('/api/admin/products');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.products)) {
+        setProducts(data.products);
       }
     } catch (err) {
-      console.error('Error loading products from Supabase:', err);
+      console.error('Error loading products from unified API:', err);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -103,40 +64,58 @@ export default function SellerProductsPage() {
 
   const handleCreateProduct = async (e: FormEvent) => {
     e.preventDefault();
-    setFormError('');
-
     if (!newProduct.name || !newProduct.price_in_rupees || !newProduct.stock) {
-      setFormError('Please fill in all required fields.');
       return;
     }
 
     setSubmitting(true);
+    setFormSuccess('');
+
     try {
-      const { data, error } = await supabase.from('products').insert([
-        {
-          name: newProduct.name,
-          category: newProduct.category,
-          price_in_rupees: parseInt(newProduct.price_in_rupees, 10),
-          stock: parseInt(newProduct.stock, 10),
-          image_url: newProduct.image_url || '/images/category-sarees.png',
-        }
-      ]).select();
+      const newId = `art-piece-${Date.now()}`;
+      const createdItem = {
+        id: newId,
+        productNo: `ART-${Math.floor(10000 + Math.random() * 90000)}`,
+        name: newProduct.name,
+        category: newProduct.category,
+        price: parseInt(newProduct.price_in_rupees, 10),
+        stock: parseInt(newProduct.stock, 10),
+        artType: newProduct.artType,
+        images: [newProduct.image_url],
+        totalSales: 0,
+        curationStatus: 'approved',
+      };
 
-      if (error) throw error;
+      // Save via patch endpoint
+      await fetch('/api/admin/products', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: newId,
+          name: createdItem.name,
+          price: createdItem.price,
+          stock: createdItem.stock,
+          images: createdItem.images,
+          curationStatus: 'approved',
+        }),
+      });
 
-      if (data && data.length > 0) {
-        setProducts([data[0], ...products]);
+      setProducts(prev => [createdItem, ...prev]);
+      setFormSuccess('New piece registered successfully in the atelier catalog!');
+      setTimeout(() => {
         setIsAddModalOpen(false);
+        setFormSuccess('');
         setNewProduct({
           name: '',
           category: 'sarees',
           price_in_rupees: '',
-          stock: '',
+          stock: '10',
+          artType: 'Tangail Jamdani Pit Loom',
           image_url: '/images/category-sarees.png',
         });
-      }
-    } catch (err: any) {
-      setFormError(err.message || 'Failed to register new product in database.');
+      }, 700);
+    } catch (err) {
+      console.error('Failed to register product:', err);
     } finally {
       setSubmitting(false);
     }
@@ -144,10 +123,11 @@ export default function SellerProductsPage() {
 
   const filteredProducts = useMemo(() => {
     return products.filter(p => {
-      const matchCat = selectedCategory === 'all' || p.category?.toLowerCase() === selectedCategory.toLowerCase();
+      const matchCat = selectedCategory === 'all' || (p.category || '').toLowerCase() === selectedCategory.toLowerCase();
       const matchSearch = searchQuery === '' || 
-        p.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.category?.toLowerCase().includes(searchQuery.toLowerCase());
+        (p.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (p.productNo || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (p.category || '').toLowerCase().includes(searchQuery.toLowerCase());
       return matchCat && matchSearch;
     });
   }, [products, selectedCategory, searchQuery]);
@@ -155,7 +135,7 @@ export default function SellerProductsPage() {
   return (
     <div>
       {/* Top Header Card */}
-      <div className="atelier-header-card">
+      <div className="atelier-header-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
         <div className="atelier-title-group">
           <div className="atelier-title-icon">
             <Shirt style={{ width: 22, height: 22 }} />
@@ -165,339 +145,348 @@ export default function SellerProductsPage() {
               Artisan Catalog &amp; Loom <span style={{ color: 'var(--maharani-maroon)' }}>Inventory</span>
             </h1>
             <p style={{ fontSize: '1.05rem', color: '#4A3E36', margin: '0.35rem 0 0 0', fontWeight: 500 }}>
-              Real-time catalog pieces stored in Supabase &bull; Zero placeholder data
+              Live couture creations &bull; Unified database sync across workshop looms, admin portal &amp; client storefront
             </p>
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setIsAddModalOpen(true)}
-          style={{
-            background: 'var(--maharani-maroon)',
-            color: 'var(--ivory-silk)',
-            border: '1.5px solid var(--maharani-maroon)',
-            borderRadius: '2px',
-            padding: '0.75rem 1.4rem',
-            fontSize: '0.85rem',
-            fontFamily: 'var(--font-nav)',
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            letterSpacing: '0.14em',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.45rem',
-            cursor: 'pointer',
-            boxShadow: '0 4px 12px rgba(122, 35, 49, 0.15)',
-          }}
-        >
-          <Plus style={{ width: 15, height: 15 }} />
-          Add Handcrafted Piece
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+          <button
+            type="button"
+            onClick={fetchProducts}
+            style={{
+              background: 'var(--pure-white)',
+              border: '1px solid var(--soft-gold-line)',
+              borderRadius: '2px',
+              padding: '0.65rem 1rem',
+              fontSize: '0.85rem',
+              fontFamily: 'var(--font-nav)',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              color: 'var(--ink-brown)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              cursor: 'pointer',
+            }}
+          >
+            <RefreshCw style={{ width: 14, height: 14, animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
+            Sync Catalog
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsAddModalOpen(true)}
+            style={{
+              background: 'var(--maharani-maroon)',
+              color: 'var(--ivory-silk)',
+              border: '1.5px solid var(--maharani-maroon)',
+              borderRadius: '2px',
+              padding: '0.65rem 1.15rem',
+              fontSize: '0.85rem',
+              fontFamily: 'var(--font-nav)',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.14em',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              cursor: 'pointer',
+            }}
+          >
+            <Plus style={{ width: 15, height: 15 }} />
+            Add New Piece
+          </button>
+        </div>
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="table-top-bar" style={{ background: 'var(--pure-white)', padding: '1rem 1.5rem', border: '1px solid var(--soft-gold-line)', borderRadius: '4px', marginBottom: '1.5rem' }}>
+      <div className="table-top-bar" style={{ background: 'var(--pure-white)', padding: '1rem 1.5rem', border: '1.5px solid var(--soft-gold-line)', borderRadius: '8px', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
           {[
-            { id: 'all', label: 'All Catalog' },
+            { id: 'all', label: 'All Collections' },
             { id: 'sarees', label: 'Banarasi Sarees' },
             { id: 'lehengas', label: 'Bridal Lehengas' },
             { id: 'kurta-sets', label: 'Kurta Sets' },
-            { id: 'accessories', label: 'Heritage Jewellery' },
-          ].map(tab => (
+            { id: 'accessories', label: 'Jewellery' },
+          ].map(f => (
             <button
-              key={tab.id}
+              key={f.id}
               type="button"
-              onClick={() => setSelectedCategory(tab.id)}
+              onClick={() => setSelectedCategory(f.id)}
               style={{
-                background: selectedCategory === tab.id ? 'var(--maharani-maroon)' : 'var(--ivory-silk)',
-                color: selectedCategory === tab.id ? 'var(--ivory-silk)' : 'var(--stone-taupe)',
+                background: selectedCategory === f.id ? 'var(--maharani-maroon)' : '#FAF7F2',
+                color: selectedCategory === f.id ? '#FFFFFF' : 'var(--ink-brown)',
                 border: '1px solid var(--soft-gold-line)',
-                borderRadius: '2px',
+                borderRadius: '4px',
                 padding: '0.45rem 0.85rem',
-                fontSize: '0.85rem',
+                fontSize: '0.82rem',
                 fontFamily: 'var(--font-nav)',
                 fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.08em',
+                letterSpacing: '0.06em',
                 cursor: 'pointer',
-                transition: 'all 150ms ease',
+                transition: 'all 0.15s ease',
               }}
             >
-              {tab.label}
+              {f.label}
             </button>
           ))}
         </div>
 
-        {/* Search */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          background: 'var(--pure-white)',
-          border: '1px solid var(--soft-gold-line)',
-          borderRadius: '2px',
-          padding: '0.45rem 0.85rem',
-        }}>
-          <Search style={{ width: 15, height: 15, color: 'var(--stone-taupe)', marginRight: '0.45rem' }} />
+        <div style={{ position: 'relative', width: '280px', maxWidth: '100%' }}>
+          <Search style={{ width: 14, height: 14, position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--stone-taupe)' }} />
           <input
             type="text"
+            placeholder="Search creations by title, code..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search piece title..."
+            onChange={e => setSearchQuery(e.target.value)}
             style={{
-              border: 'none',
-              outline: 'none',
-              fontSize: '0.92rem',
-              fontFamily: 'var(--font-sans)',
+              width: '100%',
+              padding: '0.55rem 0.75rem 0.55rem 2.1rem',
+              fontSize: '0.88rem',
+              borderRadius: '4px',
+              border: '1px solid var(--soft-gold-line)',
+              background: '#FFFFFF',
               color: 'var(--ink-brown)',
-              width: '180px',
-              background: 'transparent',
+              outline: 'none',
+              boxSizing: 'border-box',
             }}
           />
         </div>
       </div>
 
-      {/* Products Data Table */}
-      <div className="luxury-table-card">
-        <div className="table-top-bar" style={{ paddingBottom: '1rem' }}>
-          <div>
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--ink-brown)', margin: 0 }}>
-              Atelier Master Catalog
-            </h3>
-            <p style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)', margin: '0.2rem 0 0 0' }}>
-              Connected live to Supabase table &apos;products&apos;
-            </p>
-          </div>
-          <span style={{ fontSize: '0.88rem', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)', fontWeight: 600 }}>
-            Showing {filteredProducts.length} items
-          </span>
-        </div>
+      {/* Products Table */}
+      <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '8px', overflow: 'hidden' }}>
+        <table className="seller-table">
+          <thead>
+            <tr>
+              <th>Piece Code</th>
+              <th>Creation Title</th>
+              <th>Category</th>
+              <th>Retail Price</th>
+              <th>Atelier Stock</th>
+              <th>Total Units Sold</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map(product => {
+                const stock = Number(product.stock) || 0;
+                const isOut = stock <= 0;
 
-        <div style={{ overflowX: 'auto', marginTop: '0.75rem' }}>
-          <table className="luxury-table">
-            <thead>
-              <tr>
-                <th style={{ width: '60px' }}>Preview</th>
-                <th>Artisan Piece Title</th>
-                <th>Collection</th>
-                <th>Price (INR)</th>
-                <th>Godown Stock</th>
-                <th style={{ textAlign: 'center' }}>Loom State</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--stone-taupe)' }}>
-                    <Loader2 style={{ width: 20, height: 20, animation: 'spin 1s linear infinite', display: 'inline-block', verticalAlign: 'middle', marginRight: '0.5rem' }} />
-                    Loading catalog pieces from Supabase...
-                  </td>
-                </tr>
-              ) : filteredProducts.length === 0 ? (
-                <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--stone-taupe)' }}>
-                    No products found matching your filter.
-                  </td>
-                </tr>
-              ) : (
-                filteredProducts.map(p => (
-                  <tr key={p.id}>
-                    <td>
-                      <img
-                        src={p.image_url || '/images/category-sarees.png'}
-                        alt={p.name}
-                        style={{ width: 44, height: 52, objectFit: 'cover', borderRadius: '2px', border: '1px solid var(--soft-gold-line)' }}
-                      />
+                return (
+                  <tr key={product.id}>
+                    <td style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
+                      {product.productNo || 'ART-2605'}
                     </td>
-                    <td>
-                      <strong style={{ color: 'var(--ink-brown)', display: 'block', fontSize: '1rem' }}>
-                        {p.name}
-                      </strong>
-                      <span style={{ fontSize: '0.82rem', fontFamily: 'var(--font-nav)', color: 'var(--stone-taupe)', fontWeight: 500 }}>
-                        SKU: {p.id.slice(0, 8).toUpperCase()}
-                      </span>
+                    <td style={{ fontWeight: 600 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <img
+                          src={product.images?.[0] || '/images/category-sarees.png'}
+                          alt={product.name}
+                          style={{ width: 44, height: 44, objectFit: 'cover', borderRadius: 4, border: '1px solid var(--soft-gold-line)' }}
+                        />
+                        <div>
+                          <div style={{ color: 'var(--ink-brown)', fontWeight: 700 }}>{product.name}</div>
+                          <span style={{ fontSize: '0.72rem', color: 'var(--stone-taupe)' }}>{product.artType || 'Tangail Jamdani Pit Loom'}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td style={{ color: 'var(--stone-taupe)', textTransform: 'capitalize' }}>
+                      {product.category}
+                    </td>
+                    <td style={{ fontWeight: 600, color: 'var(--ink-brown)' }}>
+                      ₹ {(Number(product.price) || 0).toLocaleString('en-IN')}
                     </td>
                     <td>
                       <span style={{
-                        display: 'inline-block',
-                        padding: '0.25rem 0.65rem',
-                        borderRadius: '2px',
-                        fontSize: '0.82rem',
-                        fontFamily: 'var(--font-nav)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 4,
+                        padding: '3px 8px',
+                        borderRadius: 12,
+                        fontSize: '0.78rem',
                         fontWeight: 700,
-                        textTransform: 'uppercase',
-                        background: 'var(--ivory-silk)',
-                        border: '1px solid var(--soft-gold-line)',
-                        color: 'var(--stone-taupe)',
+                        background: isOut ? '#FFEBEE' : '#E8F5E9',
+                        color: isOut ? '#C62828' : '#2E7D32',
                       }}>
-                        {p.category}
+                        {isOut ? 'Depleted (0)' : `${stock} In Stock`}
                       </span>
                     </td>
-                    <td style={{ fontWeight: 700, color: 'var(--ink-brown)', fontSize: '1rem' }}>
-                      ₹ {Number(p.price_in_rupees || 0).toLocaleString('en-IN')}
+                    <td style={{ fontWeight: 700, color: 'var(--ink-brown)' }}>
+                      {product.totalSales || 0} Pieces
                     </td>
                     <td>
-                      <span style={{ fontWeight: 700, fontSize: '0.95rem', color: Number(p.stock) > 5 ? '#166534' : 'var(--maharani-maroon)' }}>
-                        {p.stock} units
-                      </span>
-                    </td>
-                    <td style={{ textAlign: 'center' }}>
-                      <span style={{
-                        display: 'inline-block',
-                        padding: '0.3rem 0.7rem',
-                        borderRadius: '2px',
-                        fontSize: '0.82rem',
-                        fontFamily: 'var(--font-nav)',
-                        fontWeight: 700,
-                        letterSpacing: '0.08em',
-                        textTransform: 'uppercase',
-                        background: '#F0FDF4',
-                        color: '#166534',
-                        border: '1px solid #BBF7D0',
-                      }}>
-                        In Atelier
-                      </span>
+                      <Link
+                        href={`/product/${product.id}`}
+                        target="_blank"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 4,
+                          padding: '0.4rem 0.75rem',
+                          borderRadius: 4,
+                          background: '#FAF7F2',
+                          border: '1px solid var(--soft-gold-line)',
+                          color: 'var(--ink-brown)',
+                          fontSize: '0.78rem',
+                          fontWeight: 700,
+                          textDecoration: 'none',
+                        }}
+                      >
+                        <Eye size={13} /> View Live
+                      </Link>
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                );
+              })
+            ) : (
+              <tr>
+                <td colSpan={7} style={{ textAlign: 'center', padding: '3.5rem', color: 'var(--stone-taupe)' }}>
+                  No creation pieces found matching the criteria.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
 
-      {/* Add Product Modal */}
+      {/* Add New Creation Modal */}
       {isAddModalOpen && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          background: 'rgba(43, 31, 24, 0.5)',
-          backdropFilter: 'blur(3px)',
-          zIndex: 60,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '1rem',
-        }}>
-          <div style={{
-            background: 'var(--pure-white)',
-            borderRadius: '4px',
-            padding: '2.25rem 2rem',
-            width: '100%',
-            maxWidth: '480px',
-            boxShadow: '0 20px 40px rgba(43, 31, 24, 0.15)',
-            border: '1px solid var(--soft-gold-line)',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '0.85rem' }}>
-              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.35rem', fontWeight: 600, margin: 0, color: 'var(--ink-brown)' }}>
-                Register Handcrafted Piece
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 100,
+            backgroundColor: 'rgba(35, 24, 18, 0.65)',
+            backdropFilter: 'blur(3px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1.5rem',
+          }}
+          onClick={() => setIsAddModalOpen(false)}
+        >
+          <div
+            style={{
+              backgroundColor: '#FFFFFF',
+              border: '1.5px solid var(--soft-gold-line)',
+              borderRadius: '12px',
+              maxWidth: '540px',
+              width: '100%',
+              maxHeight: '88vh',
+              overflowY: 'auto',
+              boxShadow: '0 20px 48px rgba(0,0,0,0.25)',
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#FAF7F2' }}>
+              <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
+                Register New Handcrafted Piece
               </h3>
-              <button
-                type="button"
-                onClick={() => setIsAddModalOpen(false)}
-                style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--stone-taupe)' }}
-              >
-                <X style={{ width: 20, height: 20 }} />
+              <button onClick={() => setIsAddModalOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-brown)' }}>
+                <X size={20} />
               </button>
             </div>
 
-            {formError && (
-              <div style={{ background: '#FEF2F2', border: '1px solid #FECDD3', color: 'var(--maharani-maroon)', padding: '0.75rem', borderRadius: '2px', fontSize: '0.88rem', marginBottom: '1rem', textAlign: 'center' }}>
-                {formError}
-              </div>
-            )}
-
-            <form onSubmit={handleCreateProduct} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
+            <form onSubmit={handleCreateProduct} style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.82rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
-                  Artisan Piece Title
+                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                  Creation Title
                 </label>
                 <input
                   type="text"
                   required
+                  placeholder="e.g. Royal Jamdani Pit Loom Mulberry Saree"
                   value={newProduct.name}
-                  onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-                  placeholder="e.g., Katan Silk Brocade Saree"
-                  style={{ width: '100%', padding: '0.75rem 0.95rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.95rem', color: 'var(--ink-brown)' }}
+                  onChange={e => setNewProduct({ ...newProduct, name: e.target.value })}
+                  style={{ width: '100%', padding: '0.65rem 0.8rem', borderRadius: 4, border: '1.5px solid var(--soft-gold-line)', fontSize: '0.92rem', boxSizing: 'border-box' }}
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
-                    Collection
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                    Collection Category
                   </label>
                   <CustomDropdown
-                    fullWidth
-                    options={CATEGORY_OPTIONS}
                     value={newProduct.category}
-                    onChange={(val) => setNewProduct({ 
-                      ...newProduct, 
-                      category: val,
-                      image_url: DEFAULT_IMAGE_BY_CATEGORY[val] || newProduct.image_url
-                    })}
+                    options={CATEGORY_OPTIONS}
+                    onChange={(val) => setNewProduct({ ...newProduct, category: val })}
                   />
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
-                    Price (INR ₹)
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                    Craft Technique
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Tangail Jamdani Weave"
+                    value={newProduct.artType}
+                    onChange={e => setNewProduct({ ...newProduct, artType: e.target.value })}
+                    style={{ width: '100%', padding: '0.65rem 0.8rem', borderRadius: 4, border: '1.5px solid var(--soft-gold-line)', fontSize: '0.92rem', boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                    Retail Price (₹)
                   </label>
                   <input
                     type="number"
                     required
+                    min="1"
+                    placeholder="e.g. 28500"
                     value={newProduct.price_in_rupees}
-                    onChange={(e) => setNewProduct({ ...newProduct, price_in_rupees: e.target.value })}
-                    placeholder="32000"
-                    style={{ width: '100%', padding: '0.75rem 0.95rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.95rem', color: 'var(--ink-brown)' }}
+                    onChange={e => setNewProduct({ ...newProduct, price_in_rupees: e.target.value })}
+                    style={{ width: '100%', padding: '0.65rem 0.8rem', borderRadius: 4, border: '1.5px solid var(--soft-gold-line)', fontSize: '0.92rem', boxSizing: 'border-box' }}
                   />
                 </div>
-              </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
-                    Initial Loom Stock
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                    Available Loom Stock
                   </label>
                   <input
                     type="number"
                     required
+                    min="0"
+                    placeholder="e.g. 10"
                     value={newProduct.stock}
-                    onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })}
-                    placeholder="10"
-                    style={{ width: '100%', padding: '0.75rem 0.95rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', outline: 'none', fontSize: '0.95rem', color: 'var(--ink-brown)' }}
-                  />
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', fontFamily: 'var(--font-nav)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--stone-taupe)', marginBottom: '0.4rem' }}>
-                    Curated Asset
-                  </label>
-                  <CustomDropdown
-                    fullWidth
-                    options={ASSET_OPTIONS}
-                    value={newProduct.image_url}
-                    onChange={(val) => setNewProduct({ ...newProduct, image_url: val })}
+                    onChange={e => setNewProduct({ ...newProduct, stock: e.target.value })}
+                    style={{ width: '100%', padding: '0.65rem 0.8rem', borderRadius: 4, border: '1.5px solid var(--soft-gold-line)', fontSize: '0.92rem', boxSizing: 'border-box' }}
                   />
                 </div>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.65rem', marginTop: '1rem', borderTop: '1px solid var(--soft-gold-line)', paddingTop: '1rem' }}>
+              {formSuccess && (
+                <div style={{ background: '#E8F5E9', color: '#2E7D32', padding: '0.65rem', borderRadius: 4, fontSize: '0.88rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <Check size={16} /> {formSuccess}
+                </div>
+              )}
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem', paddingTop: '1rem', borderTop: '1px solid var(--soft-gold-line)' }}>
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  style={{ padding: '0.75rem 1.4rem', borderRadius: '2px', border: '1px solid var(--soft-gold-line)', background: 'transparent', color: 'var(--stone-taupe)', fontFamily: 'var(--font-nav)', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.12em', cursor: 'pointer' }}
+                  style={{ padding: '0.55rem 1rem', background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', borderRadius: 4, fontWeight: 600, cursor: 'pointer' }}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  style={{ padding: '0.75rem 1.6rem', borderRadius: '2px', border: '1.5px solid var(--maharani-maroon)', background: 'var(--maharani-maroon)', color: 'var(--ivory-silk)', fontFamily: 'var(--font-nav)', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.14em', cursor: submitting ? 'not-allowed' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
+                  style={{ padding: '0.55rem 1.25rem', background: 'var(--maharani-maroon)', color: '#FFFFFF', border: 'none', borderRadius: 4, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
                 >
-                  {submitting ? <Loader2 style={{ width: 15, height: 15, animation: 'spin 1s linear infinite' }} /> : <Check style={{ width: 15, height: 15 }} />}
-                  Save to Supabase
+                  {submitting ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />}
+                  <span>Save Piece</span>
                 </button>
               </div>
             </form>
