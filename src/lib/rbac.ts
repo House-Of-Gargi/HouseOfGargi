@@ -12,6 +12,7 @@ export const VERIFIED_ROLES: Record<string, AppRole> = {
   'admin@gargisaha.com': 'admin',
   'curator@gargisaha.com': 'admin',
   'artisan@gargisaha.com': 'artisan',
+  'team.anga9@gmail.com': 'artisan',
 };
 
 export async function getUserRole(email: string | null | undefined): Promise<AppRole> {
@@ -48,6 +49,21 @@ export async function getUserRole(email: string | null | undefined): Promise<App
 
     if (artisanData) return 'artisan';
   } catch {}
+
+  // 4. Server-side check in artisan_applications.json
+  if (typeof window === 'undefined') {
+    try {
+      const fsNode = await import('fs');
+      const pathNode = await import('path');
+      const appFile = pathNode.join(process.cwd(), 'src', 'data', 'artisan_applications.json');
+      if (fsNode.existsSync(appFile)) {
+        const apps = JSON.parse(fsNode.readFileSync(appFile, 'utf8'));
+        if (Array.isArray(apps) && apps.some((a: any) => a.email?.toLowerCase().trim() === cleanEmail)) {
+          return 'artisan';
+        }
+      }
+    } catch {}
+  }
 
   return 'patron';
 }

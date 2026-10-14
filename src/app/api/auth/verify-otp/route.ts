@@ -12,7 +12,7 @@ function generateHmacToken(email: string, otp: string, expiresAt: number): strin
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { email, otp, verificationToken, expiresAt, portal } = body;
+    const { email, otp, verificationToken, expiresAt, portal, role } = body;
 
     if (!email || !otp) {
       return NextResponse.json(
@@ -55,7 +55,16 @@ export async function POST(req: Request) {
     }
 
     // Resolve user's actual role using strict RBAC
-    const actualRole = await getUserRole(cleanEmail);
+    let actualRole = await getUserRole(cleanEmail);
+
+    // If logging into the Artisan Atelier portal, ensure role is 'artisan' (unless super_admin/admin)
+    if (
+      (portal === 'artisan' || portal === 'seller' || role === 'artisan') &&
+      actualRole !== 'admin' &&
+      actualRole !== 'super_admin'
+    ) {
+      actualRole = 'artisan';
+    }
 
     if (portal === 'admin' && actualRole !== 'admin' && actualRole !== 'super_admin') {
       return NextResponse.json(
