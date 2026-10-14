@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, use } from 'react';
+import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import { notFound, useRouter } from 'next/navigation';
 import ScrollReveal from '@/components/ScrollReveal';
 import ProductCard from '@/components/ProductCard';
-import ArtisanProfileModal from '@/components/ArtisanProfileModal';
 import { getProduct, getRelatedProducts, categories, getArtisan, getArtisanByProductId } from '@/data/products';
 import { WishlistIcon, HeartFilledIcon, PlusIcon, MinusIcon } from '@/components/Icons';
 import { Crown, ArrowRight, ArrowLeft, Sparkles } from 'lucide-react';
@@ -27,7 +26,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState('');
   const [careOpen, setCareOpen] = useState(false);
-  const [isArtisanModalOpen, setIsArtisanModalOpen] = useState(false);
   const [error, setError] = useState('');
 
   const { addToCart, cart, updateQuantity } = useCart();
@@ -39,6 +37,36 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const categoryName = categories.find(c => c.id === product.category)?.name || 'Collection';
   const saved = isLoggedIn && isInWishlist(product.id);
   const artisan = product ? (product.artisanId ? getArtisan(product.artisanId) : getArtisanByProductId(product.id)) : undefined;
+  const [artisanName, setArtisanName] = useState(artisan?.name || 'Gopal Chandra Dey');
+  const [artisanCode, setArtisanCode] = useState(product.artisanId || artisan?.id || 'HG-84192');
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch('/api/admin/artisans/profile')
+      .then((res) => res.json())
+      .then((data) => {
+        if (!isMounted) return;
+        if (data.success) {
+          const profiles = Array.isArray(data.profiles) ? data.profiles : (data.profile ? [data.profile] : []);
+          const match = profiles.find(
+            (p: any) =>
+              (product.artisanId && p.artisanNo?.toLowerCase() === product.artisanId.toLowerCase()) ||
+              (product.artisanId && p.id?.toLowerCase() === product.artisanId.toLowerCase()) ||
+              (artisan?.name && p.name?.toLowerCase() === artisan.name.toLowerCase())
+          ) || profiles[0];
+
+          if (match) {
+            if (match.name) setArtisanName(match.name);
+            if (match.artisanNo || match.id) setArtisanCode(match.artisanNo || match.id);
+          }
+        }
+      })
+      .catch((err) => console.warn('Could not fetch dynamic artisan profile:', err));
+
+    return () => {
+      isMounted = false;
+    };
+  }, [product.artisanId, artisan?.name]);
   
   const sizeToCart = product.sizes.length > 1 ? selectedSize : product.sizes[0];
   const cartItem = cart.find(item => item.id === product.id && item.size === sizeToCart);
@@ -171,71 +199,27 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               </div>
             </div>
 
-            {/* Master Artisan Attribution (Links directly to /artisan/HG-84192) */}
-            <div className="pdp-artisan-row" style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', margin: '14px 0', flexWrap: 'wrap' }}>
+            {/* Master Artisan Attribution (Links directly to artisan dedicated page) */}
+            <div className="pdp-artisan-row" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '14px 0' }}>
               <span className="pdp-artisan-row__label" style={{ fontSize: '0.86rem', color: '#6A5A50', fontWeight: 600 }}>Master Artisan:</span>
-              <button 
-                type="button"
-                onClick={() => setIsArtisanModalOpen(true)}
+              <Link 
+                href={`/artisan/${artisanCode || 'HG-84192'}`}
                 style={{
-                  background: 'none',
-                  border: 'none',
-                  padding: 0,
-                  cursor: 'pointer',
                   color: 'var(--maharani-maroon)',
                   fontWeight: 800,
                   fontSize: '0.94rem',
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '5px',
+                  gap: '4px',
                   textDecoration: 'underline',
                   textUnderlineOffset: '3px',
                 }}
-                title="View Master Artisan Public Profile Dossier"
+                title={`View Creations Handcrafted by Master Artisan ${artisanName}`}
               >
-                <span>{artisan?.name || 'Gopal Chandra Dey'}</span>
-                <span 
-                  style={{ 
-                    fontSize: '0.72rem', 
-                    fontWeight: 800, 
-                    color: '#2E7D32', 
-                    background: '#E8F5E9', 
-                    padding: '2px 8px', 
-                    borderRadius: '10px', 
-                    textDecoration: 'none',
-                    display: 'inline-block' 
-                  }}
-                >
-                  Dossier
-                </span>
-              </button>
-
-              <span style={{ color: 'var(--soft-gold-line)' }}>&bull;</span>
-
-              <Link
-                href="/artisan/HG-84192"
-                style={{
-                  fontSize: '0.82rem',
-                  color: 'var(--stone-taupe)',
-                  textDecoration: 'underline',
-                  textUnderlineOffset: '2px',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '3px',
-                }}
-              >
-                <span>View All Pieces</span>
-                <ArrowRight size={12} />
+                <span>{artisanName}</span>
+                <ArrowRight size={13} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '2px' }} />
               </Link>
             </div>
-
-            {/* Public Patron Modal */}
-            <ArtisanProfileModal
-              isOpen={isArtisanModalOpen}
-              onClose={() => setIsArtisanModalOpen(false)}
-              artisanName={artisan?.name || 'Gopal Chandra Dey'}
-              artisanCode="HG-84192"
-            />
 
             {/* Size Selector (if applicable) */}
             {product.sizes.length > 1 && (
