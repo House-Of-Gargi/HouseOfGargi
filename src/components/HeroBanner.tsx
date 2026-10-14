@@ -4,67 +4,52 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-interface BannerSlide {
+interface HeroSlide {
   id: string;
-  sanskritLipi: string;
-  tagline: string;
-  subtitle: string;
-  primaryCtaText: string;
-  primaryCtaLink: string;
-  secondaryCtaText: string;
-  secondaryCtaLink: string;
+  link: string;
   desktopWebp: string;
-  desktopJpg: string;
+  desktopFallback: string;
   mobileWebp: string;
-  mobileJpg: string;
+  mobileFallback: string;
   altText: string;
 }
 
-const slides: BannerSlide[] = [
+const slides: HeroSlide[] = [
   {
-    id: 'utsav-anand',
-    sanskritLipi: 'गार्गी सूत्रम्',
-    tagline: 'Handcrafted Heritage, Worn Today.',
-    subtitle: 'Pure crimson Patola & Kadwa gold weaves — crafted by multi-generational master looms for a lifetime of treasured moments.',
-    primaryCtaText: 'Explore Sarees',
-    primaryCtaLink: '/category/sarees',
-    secondaryCtaText: 'Meet Our Artisans',
-    secondaryCtaLink: '/our-artisans',
-    desktopWebp: '/images/hero-desktop-1.webp',
-    desktopJpg: '/images/hero-desktop-1.jpg',
-    mobileWebp: '/images/hero-mobile-1.webp',
-    mobileJpg: '/images/hero-mobile-1.jpg',
-    altText: 'House of Gargi — Utsav Anand Royal Patola Silk Heritage',
+    id: 'hero-1',
+    link: '/shop',
+    desktopWebp: '/banners/desktop-banner-1.webp',
+    desktopFallback: '/dektop-banners/hero_image_1.jpg',
+    mobileWebp: '/banners/mobile-banner-1.webp',
+    mobileFallback: '/mobile-banners/hero mobile image 1.png',
+    altText: 'House of Gargi Luxury Handloom Couture',
   },
   {
-    id: 'shwet-raktam',
-    sanskritLipi: 'पवित्र परम्परा',
-    tagline: 'Ethereal Silk, Timeless Grace.',
-    subtitle: 'Sacred ivory Garad-Korial silks with vermilion temple borders, handcrafted with unhurried devotion for sacred celebrations.',
-    primaryCtaText: 'Discover Heirlooms',
-    primaryCtaLink: '/category/sarees',
-    secondaryCtaText: 'Bespoke Trousseau',
-    secondaryCtaLink: '/bespoke',
-    desktopWebp: '/images/hero-desktop-2.webp',
-    desktopJpg: '/images/hero-desktop-2.jpg',
-    mobileWebp: '/images/hero-mobile-2.webp',
-    mobileJpg: '/images/hero-mobile-2.jpg',
-    altText: 'House of Gargi — Shwet-Raktam Sacred Ivory Garad Silk',
+    id: 'hero-2',
+    link: '/category/sarees',
+    desktopWebp: '/banners/desktop-banner-2.webp',
+    desktopFallback: '/dektop-banners/Frame 812.png',
+    mobileWebp: '/banners/mobile-banner-2.webp',
+    mobileFallback: '/mobile-banners/Frame 815.jpg',
+    altText: 'House of Gargi Royal Heritage Sarees',
   },
   {
-    id: 'raj-darbar',
-    sanskritLipi: 'राज दरबार',
-    tagline: 'Regal Couture for Modern Royalty.',
-    subtitle: 'Intricate pure gold zari bridal lehengas and Awadhi zardozi masterpieces hand-embroidered in historic courtly ateliers.',
-    primaryCtaText: 'Explore Lehengas',
-    primaryCtaLink: '/category/lehengas',
-    secondaryCtaText: 'Private Commissions',
-    secondaryCtaLink: '/bespoke',
-    desktopWebp: '/images/hero-desktop-3.webp',
-    desktopJpg: '/images/hero-desktop-3.jpg',
-    mobileWebp: '/images/hero-mobile-3.webp',
-    mobileJpg: '/images/hero-mobile-3.jpg',
-    altText: 'House of Gargi — Raj-Darbar Sandstone Jharokha Bridal Silk',
+    id: 'hero-3',
+    link: '/category/lehengas',
+    desktopWebp: '/banners/desktop-banner-3.webp',
+    desktopFallback: '/dektop-banners/Frame 814.png',
+    mobileWebp: '/banners/mobile-banner-3.webp',
+    mobileFallback: '/mobile-banners/Frame 816.png',
+    altText: 'House of Gargi Bridal & Festive Lehengas',
+  },
+  {
+    id: 'hero-4',
+    link: '/category/kurta-sets',
+    desktopWebp: '/banners/desktop-banner-4.webp',
+    desktopFallback: '/dektop-banners/hero image 5.png',
+    mobileWebp: '/banners/mobile-banner-4.webp',
+    mobileFallback: '/mobile-banners/hero mobile image 8.jpg',
+    altText: 'House of Gargi Handcrafted Artisan Kurta Sets',
   },
 ];
 
@@ -82,12 +67,22 @@ export default function HeroBanner() {
     setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
   }, []);
 
-  // Auto-advance every 4 seconds when not hovered
+  // Auto-advance every 4.5 seconds when not hovered
   useEffect(() => {
     if (isPaused) return;
-    const interval = setInterval(nextSlide, 4000);
+    const interval = setInterval(nextSlide, 4500);
     return () => clearInterval(interval);
   }, [isPaused, nextSlide]);
+
+  // Preload all subsequent images in memory for zero-lag instant transitions
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const isMobile = window.innerWidth <= 768;
+    slides.forEach((s) => {
+      const img = new Image();
+      img.src = isMobile ? s.mobileWebp : s.desktopWebp;
+    });
+  }, []);
 
   // Touch handlers for mobile swipe
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -101,9 +96,9 @@ export default function HeroBanner() {
   const handleTouchEnd = () => {
     if (!touchStartX.current || !touchEndX.current) return;
     const distance = touchStartX.current - touchEndX.current;
-    if (distance > 50) {
+    if (distance > 45) {
       nextSlide();
-    } else if (distance < -50) {
+    } else if (distance < -45) {
       prevSlide();
     }
     touchStartX.current = null;
@@ -118,9 +113,15 @@ export default function HeroBanner() {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      aria-label="House of Gargi Luxury Heritage Hero Slider"
+      aria-label="House of Gargi Luxury Couture Showcase"
+      style={{
+        position: 'relative',
+        width: '100%',
+        overflow: 'hidden',
+        backgroundColor: '#1E140F',
+      }}
     >
-      {/* ── BACKGROUND IMAGE STACK WITH CROSSFADE ── */}
+      {/* ── BACKGROUND IMAGE STACK WITH SILKY CROSSFADE ── */}
       {slides.map((slide, index) => {
         const isActive = index === currentIndex;
         return (
@@ -128,31 +129,43 @@ export default function HeroBanner() {
             key={slide.id}
             className="hero__bg"
             style={{
-              position: 'absolute',
-              inset: 0,
+              position: index === 0 ? 'relative' : 'absolute',
+              inset: index === 0 ? undefined : 0,
+              width: '100%',
+              height: '100%',
               opacity: isActive ? 1 : 0,
               visibility: isActive ? 'visible' : 'hidden',
-              transition: 'opacity 900ms cubic-bezier(0.4, 0, 0.2, 1), visibility 900ms ease',
-              zIndex: 1,
+              transition: 'opacity 750ms cubic-bezier(0.4, 0, 0.2, 1), visibility 750ms ease',
+              zIndex: isActive ? 2 : 1,
             }}
           >
             <Link
-              href={slide.primaryCtaLink}
-              className="hero__image-link"
+              href={slide.link}
               tabIndex={isActive ? 0 : -1}
-              aria-label={slide.tagline}
-              style={{ display: 'block', width: '100%', height: '100%' }}
+              aria-label={slide.altText}
+              style={{
+                display: 'block',
+                width: '100%',
+                height: '100%',
+                cursor: 'pointer',
+              }}
             >
-              <picture>
+              <picture style={{ display: 'block', width: '100%', height: '100%' }}>
+                {/* Mobile View: 4:5 portrait banners */}
                 <source media="(max-width: 768px)" srcSet={slide.mobileWebp} type="image/webp" />
-                <source media="(max-width: 768px)" srcSet={slide.mobileJpg} type="image/jpeg" />
+                <source media="(max-width: 768px)" srcSet={slide.mobileFallback} />
+
+                {/* Desktop View: 16:9 widescreen banners */}
                 <source srcSet={slide.desktopWebp} type="image/webp" />
                 <img
-                  src={slide.desktopJpg}
+                  src={slide.desktopFallback}
                   alt={slide.altText}
                   loading={index === 0 ? 'eager' : 'lazy'}
+                  // @ts-ignore
                   fetchPriority={index === 0 ? 'high' : 'auto'}
+                  decoding="async"
                   style={{
+                    display: 'block',
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
@@ -165,74 +178,54 @@ export default function HeroBanner() {
         );
       })}
 
-      {/* ── LUXURY VIGNETTE & TEXT PROTECTION OVERLAY ── */}
-      <div className="hero__overlay" />
-
-      {/* ── CODE-RENDERED EDITORIAL TYPOGRAPHY & BUTTONS ── */}
-      <div className="hero__content">
-        {slides.map((slide, index) => {
-          const isActive = index === currentIndex;
-          return (
-            <div
-              key={slide.id}
-              className="hero__slide-text-wrap"
-              style={{
-                display: isActive ? 'block' : 'none',
-                animation: isActive ? 'heroTextFadeIn 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards' : 'none',
-              }}
-            >
-              {/* Main Headline */}
-              <h1 className="hero__tagline">
-                {slide.tagline}
-              </h1>
-
-              {/* Subtitle (Desktop Only to reduce mobile clutter) */}
-              <p className="hero__subtitle">
-                {slide.subtitle}
-              </p>
-
-              {/* Action Buttons */}
-              <div className="hero__actions">
-                <Link
-                  href={slide.primaryCtaLink}
-                  className="btn btn--gold hero-primary-btn"
-                >
-                  {slide.primaryCtaText} &rarr;
-                </Link>
-
-                <Link
-                  href={slide.secondaryCtaLink}
-                  className="hero-secondary-btn"
-                >
-                  {slide.secondaryCtaText}
-                </Link>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* ── ARROWS & PAGINATION PROGRESS ── */}
-      <div className="hero__controls">
+      {/* ── MINIMALIST CONTROLS: ELEGANT PIPS & GLASS ARROWS ── */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '24px',
+          left: '0',
+          right: '0',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0 28px',
+          zIndex: 10,
+          pointerEvents: 'none',
+        }}
+      >
         {/* Pagination Pips */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            pointerEvents: 'auto',
+            background: 'rgba(24, 16, 12, 0.45)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            padding: '6px 12px',
+            borderRadius: '9999px',
+            border: '1px solid rgba(228, 211, 174, 0.25)',
+          }}
+        >
           {slides.map((s, idx) => {
             const isSelected = idx === currentIndex;
             return (
               <button
                 key={s.id}
+                type="button"
                 onClick={() => setCurrentIndex(idx)}
-                aria-label={`Go to slide ${idx + 1}: ${s.tagline}`}
+                aria-label={`Go to slide ${idx + 1}`}
                 style={{
-                  width: isSelected ? '36px' : '12px',
-                  height: '6px',
+                  width: isSelected ? '28px' : '8px',
+                  height: '5px',
                   borderRadius: '3px',
-                  background: isSelected ? 'var(--gargi-gold)' : 'rgba(255, 255, 255, 0.4)',
+                  background: isSelected ? 'var(--gargi-gold)' : 'rgba(255, 255, 255, 0.45)',
                   border: 'none',
                   padding: 0,
                   cursor: 'pointer',
-                  transition: 'all 350ms cubic-bezier(0.16, 1, 0.3, 1)',
-                  boxShadow: isSelected ? '0 0 10px rgba(201, 162, 39, 0.6)' : 'none',
+                  transition: 'all 320ms cubic-bezier(0.16, 1, 0.3, 1)',
+                  boxShadow: isSelected ? '0 0 8px rgba(184, 142, 24, 0.65)' : 'none',
                 }}
               />
             );
@@ -240,19 +233,49 @@ export default function HeroBanner() {
         </div>
 
         {/* Minimalist Prev/Next Arrow Pair */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', pointerEvents: 'auto' }}>
           <button
+            type="button"
             onClick={prevSlide}
             aria-label="Previous Slide"
-            className="hero-arrow-btn"
+            style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: '50%',
+              backgroundColor: 'rgba(24, 16, 12, 0.55)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              border: '1px solid rgba(228, 211, 174, 0.3)',
+              color: '#FFFFFF',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+            }}
           >
             <ChevronLeft size={18} />
           </button>
 
           <button
+            type="button"
             onClick={nextSlide}
             aria-label="Next Slide"
-            className="hero-arrow-btn"
+            style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: '50%',
+              backgroundColor: 'rgba(24, 16, 12, 0.55)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              border: '1px solid rgba(228, 211, 174, 0.3)',
+              color: '#FFFFFF',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+            }}
           >
             <ChevronRight size={18} />
           </button>
