@@ -1,0 +1,282 @@
+[
+  {
+    "id": "ord_1048",
+    "order_number": "#HG-1048",
+    "customer_name": "Maharani Suniti Devi",
+    "customer_email": "suniti.devi@royalmail.in",
+    "customer_phone": "+91 98301 23456",
+    "delivery_city": "Kolkata, WB",
+    "total_rupees": 45000,
+    "status": "Processing",
+    "created_at": "2026-10-15T04:45:00.000Z",
+    "items": [
+      {
+        "id": "banarasi-gold-weave",
+        "name": "Banarasi Katan Silk Gold Weave",
+        "price": 45000,
+        "quantity": 1,
+        "category": "sarees"
+      }
+    ]
+  },
+  {
+    "id": "ord_1047",
+    "order_number": "#HG-1047",
+    "customer_name": "Priya Sharma",
+    "customer_email": "priya.sharma@gmail.com",
+    "customer_phone": "+91 98200 45678",
+    "delivery_city": "Mumbai, MH",
+    "total_rupees": 38000,
+    "status": "Processing",
+    "created_at": "2026-10-14T10:00:00.000Z",
+    "items": [
+      {
+        "id": "chanderi-floral-jaal",
+        "name": "Chanderi Gold Zari Floral Jaal",
+        "price": 38000,
+        "quantity": 1,
+        "category": "sarees"
+      }
+    ]
+  },
+  {
+    "id": "ord_1046",
+    "order_number": "#HG-1046",
+    "customer_name": "Ananya Mukherjee",
+    "customer_email": "ananya.m@outlook.com",
+    "customer_phone": "+91 98311 98765",
+    "delivery_city": "Kolkata, WB",
+    "total_rupees": 64000,
+    "status": "Shipped",
+    "created_at": "2026-10-13T06:15:00.000Z",
+    "items": [
+      {
+        "id": "kanchipuram-temple-border",
+        "name": "Kanchipuram Pure Mulberry Korvai",
+        "price": 32000,
+        "quantity": 2,
+        "category": "sarees"
+      }
+    ]
+  },
+  {
+    "id": "ord_1045",
+    "order_number": "#HG-1045",
+    "customer_name": "Simran Kaur",
+    "customer_email": "simran.kaur@gmail.com",
+    "customer_phone": "+91 98110 33445",
+    "delivery_city": "New Delhi, DL",
+    "total_rupees": 85000,
+    "status": "Bespoke Review",
+    "created_at": "2026-10-12T10:50:00.000Z",
+    "items": [
+      {
+        "id": "royal-zardozi-lehenga",
+        "name": "Royal Zardozi Heritage Bridal Lehenga",
+        "price": 85000,
+        "quantity": 1,
+        "category": "lehengas"
+      }
+    ]
+  },
+  {
+    "id": "ord_1044",
+    "order_number": "#HG-1044",
+    "customer_name": "Radhika Singhal",
+    "customer_email": "radhika.s@gmail.com",
+    "customer_phone": "+91 94140 55667",
+    "delivery_city": "Jaipur, RJ",
+    "total_rupees": 28500,
+    "status": "Shipped",
+    "created_at": "2026-10-11T07:40:00.000Z",
+    "items": [
+      {
+        "id": "banarasi-gold-weave",
+        "name": "Banarasi Katan Silk Gold Weave",
+        "price": 28500,
+        "quantity": 1,
+        "category": "sarees"
+      }
+    ]
+  },
+  {
+    "id": "ord_1043",
+    "order_number": "#HG-1043",
+    "customer_name": "Ritu Banerjee",
+    "customer_email": "ritu.banerjee@gmail.com",
+    "customer_phone": "+91 98300 77889",
+    "delivery_city": "Kolkata, WB",
+    "total_rupees": 52000,
+    "status": "Delivered",
+    "created_at": "2026-10-10T11:30:00.000Z",
+    "items": [
+      {
+        "id": "chanderi-floral-jaal",
+        "name": "Chanderi Gold Zari Floral Jaal",
+        "price": 26000,
+        "quantity": 2,
+        "category": "sarees"
+      }
+    ]
+  },
+  {
+    "id": "ord_1042",
+    "order_number": "#HG-1042",
+    "customer_name": "Meenakshi Sundaram",
+    "customer_email": "meenakshi.s@gmail.com",
+    "customer_phone": "+91 98400 12345",
+    "delivery_city": "Chennai, TN",
+    "total_rupees": 38000,
+    "status": "Delivered",
+    "created_at": "2026-10-09T07:00:00.000Z",
+    "items": [
+      {
+        "id": "paithani-peacock",
+        "name": "Paithani Peacock Asawali Silk Saree",
+        "price": 38000,
+        "quantity": 1,
+        "category": "sarees"
+      }
+    ]
+  },
+  {
+    "id": "ord_1041",
+    "order_number": "#HG-1041",
+    "customer_name": "Kavita Chawla",
+    "customer_email": "kavita.c@gmail.com",
+    "customer_phone": "+91 98711 22334",
+    "delivery_city": "Gurugram, HR",
+    "total_rupees": 42000,
+    "status": "Delivered",
+    "created_at": "2026-10-07T08:45:00.000Z",
+    "items": [
+      {
+        "id": "gota-patti-lehenga",
+        "name": "Gota Patti Festive Bridal Ensemble",
+        "price": 42000,
+        "quantity": 1,
+        "category": "lehengas"
+      }
+    ]
+  },
+  {
+    "id": "ord_1040",
+    "order_number": "#HG-1040",
+    "customer_name": "Dr. Debolina Sen",
+    "customer_email": "debolina.sen@aiims.edu",
+    "customer_phone": "+91 98319 44556",
+    "delivery_city": "Kolkata, WB",
+    "total_rupees": 33000,
+    "status": "Delivered",
+    "created_at": "2026-10-04T04:30:00.000Z",
+    "items": [
+      {
+        "id": "chikankari-white-kurta",
+        "name": "Chikankari White-on-White Silk Set",
+        "price": 16500,
+        "quantity": 2,
+        "category": "kurta-sets"
+      }
+    ]
+  },
+  {
+    "id": "ord_1039",
+    "order_number": "#HG-1039",
+    "customer_name": "Aishwarya Raman",
+    "customer_email": "aishwarya.raman@gmail.com",
+    "customer_phone": "+91 98800 66778",
+    "delivery_city": "Bengaluru, KA",
+    "total_rupees": 57000,
+    "status": "Delivered",
+    "created_at": "2026-10-01T11:10:00.000Z",
+    "items": [
+      {
+        "id": "banarasi-gold-weave",
+        "name": "Banarasi Katan Silk Gold Weave",
+        "price": 28500,
+        "quantity": 2,
+        "category": "sarees"
+      }
+    ]
+  },
+  {
+    "id": "ord_1038",
+    "order_number": "#HG-1038",
+    "customer_name": "Nandini Patel",
+    "customer_email": "nandini.patel@gmail.com",
+    "customer_phone": "+91 98250 88990",
+    "delivery_city": "Ahmedabad, GJ",
+    "total_rupees": 48000,
+    "status": "Delivered",
+    "created_at": "2026-09-27T05:40:00.000Z",
+    "items": [
+      {
+        "id": "kanchipuram-temple-border",
+        "name": "Kanchipuram Pure Mulberry Korvai",
+        "price": 48000,
+        "quantity": 1,
+        "category": "sarees"
+      }
+    ]
+  },
+  {
+    "id": "ord_1037",
+    "order_number": "#HG-1037",
+    "customer_name": "Shalini Varma",
+    "customer_email": "shalini.varma@gmail.com",
+    "customer_phone": "+91 98470 11223",
+    "delivery_city": "Kochi, KL",
+    "total_rupees": 35000,
+    "status": "Delivered",
+    "created_at": "2026-09-23T09:50:00.000Z",
+    "items": [
+      {
+        "id": "tussar-block-print",
+        "name": "Tussar Silk Hand Block Print",
+        "price": 35000,
+        "quantity": 1,
+        "category": "sarees"
+      }
+    ]
+  },
+  {
+    "id": "ord_1036",
+    "order_number": "#HG-1036",
+    "customer_name": "Tara Deshmukh",
+    "customer_email": "tara.d@gmail.com",
+    "customer_phone": "+91 98220 33445",
+    "delivery_city": "Pune, MH",
+    "total_rupees": 76000,
+    "status": "Delivered",
+    "created_at": "2026-09-19T08:15:00.000Z",
+    "items": [
+      {
+        "id": "paithani-peacock",
+        "name": "Paithani Peacock Asawali Silk Saree",
+        "price": 38000,
+        "quantity": 2,
+        "category": "sarees"
+      }
+    ]
+  },
+  {
+    "id": "ord_1035",
+    "order_number": "#HG-1035",
+    "customer_name": "Suhani Roy",
+    "customer_email": "suhani.roy@gmail.com",
+    "customer_phone": "+91 98305 66778",
+    "delivery_city": "Kolkata, WB",
+    "total_rupees": 38000,
+    "status": "Delivered",
+    "created_at": "2026-09-16T05:00:00.000Z",
+    "items": [
+      {
+        "id": "chanderi-floral-jaal",
+        "name": "Chanderi Gold Zari Floral Jaal",
+        "price": 38000,
+        "quantity": 1,
+        "category": "sarees"
+      }
+    ]
+  }
+]
