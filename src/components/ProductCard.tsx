@@ -57,6 +57,10 @@ export default function ProductCard({ product, style }: ProductCardProps) {
         flexDirection: 'column', 
         isolation: 'isolate',
         zIndex: 1,
+        width: '100%',
+        minWidth: 0,
+        maxWidth: '100%',
+        boxSizing: 'border-box',
         ...style 
       }}
     >
@@ -69,7 +73,16 @@ export default function ProductCard({ product, style }: ProductCardProps) {
       >
         {isSaved ? <HeartFilledIcon size={20} color="var(--maharani-maroon)" /> : <WishlistIcon size={20} />}
       </button>
-      <Link href={`/product/${currentProduct.id}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Link href={`/product/${currentProduct.id}`} style={{ 
+          textDecoration: 'none', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          height: '100%',
+          width: '100%',
+          minWidth: 0,
+          maxWidth: '100%',
+          boxSizing: 'border-box'
+        }}>
         <div className="product-card__image-wrap">
           <img 
             src={(currentProduct.images && currentProduct.images[0]) || (currentProduct as any).image_url || (currentProduct as any).image || '/images/category-sarees.png'} 

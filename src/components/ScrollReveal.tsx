@@ -30,7 +30,17 @@ export default function ScrollReveal({ children, className = '', style = {} }: S
   }, []);
 
   return (
-    <div ref={ref} className={`scroll-reveal ${className}`} style={style}>
+    <div 
+      ref={ref} 
+      className={`scroll-reveal ${className}`} 
+      style={{ 
+        width: '100%', 
+        minWidth: 0, 
+        maxWidth: '100%', 
+        boxSizing: 'border-box', 
+        ...style 
+      }}
+    >
       {children}
     </div>
   );
