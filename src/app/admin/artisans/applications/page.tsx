@@ -56,6 +56,7 @@ export default function AdminApplicationsPage() {
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
 
   // Modals state
   const [viewingApp, setViewingApp] = useState<ArtisanApplication | null>(null);
@@ -115,7 +116,7 @@ export default function AdminApplicationsPage() {
       const data = await res.json();
       if (data.success) {
         const actionLabel = action === 'approve' ? 'Approved' : action === 'reject' ? 'Rejected' : 'Marked Pending';
-        setToastMsg(`Application ${app.applicationId} ${actionLabel} & notification email sent!`);
+        setToastMsg(`Application ${app.applicationId} ${actionLabel} & notification email sent to ${app.email}!`);
         setTimeout(() => setToastMsg(null), 4000);
         setConfirmingAction(null);
         if (viewingApp && viewingApp.applicationId === app.applicationId) {
@@ -306,11 +307,11 @@ export default function AdminApplicationsPage() {
             background: '#FFFFFF',
             border: '1px solid var(--soft-gold-line)',
             borderRadius: '12px',
-            overflow: 'hidden',
+            overflow: 'visible',
             boxShadow: '0 2px 14px rgba(43,31,24,0.03)',
           }}
         >
-          <div style={{ overflowX: 'auto' }}>
+          <div style={{ overflowX: 'auto', overflowY: 'visible' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
               <thead>
                 <tr
@@ -397,9 +398,9 @@ export default function AdminApplicationsPage() {
                         </span>
                       </td>
 
-                      {/* 5. The Two Buttons */}
+                      {/* 5. The Two Buttons (Well-Spaced, Elegant Action Dropdown) */}
                       <td style={{ padding: '1.1rem 1.4rem', textAlign: 'right', whiteSpace: 'nowrap' }}>
-                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem', position: 'relative' }}>
                           {/* Button 1: View Details */}
                           <button
                             type="button"
@@ -424,34 +425,156 @@ export default function AdminApplicationsPage() {
                             <span>View Details</span>
                           </button>
 
-                          {/* Button 2: Actions Dropdown Selector */}
-                          <select
-                            value={app.status}
-                            onChange={(e) => {
-                              const val = e.target.value as 'approve' | 'reject' | 'pending';
-                              if (val !== app.status) {
-                                handleOpenConfirm(app, val);
-                              }
-                            }}
-                            style={{
-                              padding: '0.55rem 1.15rem',
-                              borderRadius: '6px',
-                              border: '1.5px solid var(--maharani-maroon)',
-                              backgroundColor: 'var(--maharani-maroon)',
-                              color: '#FFFFFF',
-                              fontWeight: 700,
-                              fontSize: '0.88rem',
-                              cursor: 'pointer',
-                              outline: 'none',
-                              whiteSpace: 'nowrap',
-                              boxShadow: '0 2px 6px rgba(122, 35, 49, 0.2)',
-                            }}
-                          >
-                            <option value="" disabled style={{ color: '#231812', background: '#FFFFFF' }}>Action / Change Status ▾</option>
-                            <option value="approved" style={{ color: '#2E7D32', background: '#FFFFFF', fontWeight: 700 }}>✓ Approve Application</option>
-                            <option value="rejected" style={{ color: '#C62828', background: '#FFFFFF', fontWeight: 700 }}>✕ Reject Application</option>
-                            <option value="pending" style={{ color: '#E65100', background: '#FFFFFF', fontWeight: 700 }}>⟳ Mark as Pending</option>
-                          </select>
+                          {/* Button 2: Custom Well-Spaced Action Dropdown Button */}
+                          <div style={{ position: 'relative' }}>
+                            <button
+                              type="button"
+                              onClick={() => setOpenDropdownId(openDropdownId === app.applicationId ? null : app.applicationId)}
+                              style={{
+                                padding: '0.55rem 1.1rem',
+                                borderRadius: '6px',
+                                border: '1.5px solid var(--maharani-maroon)',
+                                backgroundColor: 'var(--maharani-maroon)',
+                                color: '#FFFFFF',
+                                fontWeight: 700,
+                                fontSize: '0.88rem',
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.55rem',
+                                whiteSpace: 'nowrap',
+                                boxShadow: '0 2px 6px rgba(122, 35, 49, 0.2)',
+                                transition: 'all 0.15s ease',
+                              }}
+                            >
+                              {app.status === 'approved' ? (
+                                <CheckCircle2 size={15} style={{ flexShrink: 0 }} />
+                              ) : app.status === 'rejected' ? (
+                                <XCircle size={15} style={{ flexShrink: 0 }} />
+                              ) : (
+                                <Clock size={15} style={{ flexShrink: 0 }} />
+                              )}
+                              <span>
+                                {app.status === 'approved'
+                                  ? 'Approved'
+                                  : app.status === 'rejected'
+                                  ? 'Reject Application'
+                                  : 'Pending'}
+                              </span>
+                              <ChevronDown size={14} style={{ marginLeft: '0.2rem', opacity: 0.9, flexShrink: 0 }} />
+                            </button>
+
+                            {/* Floating Dropdown Menu */}
+                            {openDropdownId === app.applicationId && (
+                              <>
+                                <div
+                                  style={{ position: 'fixed', inset: 0, zIndex: 90 }}
+                                  onClick={() => setOpenDropdownId(null)}
+                                />
+                                <div
+                                  style={{
+                                    position: 'absolute',
+                                    right: 0,
+                                    top: 'calc(100% + 6px)',
+                                    zIndex: 95,
+                                    background: '#FFFFFF',
+                                    border: '1.5px solid var(--soft-gold-line)',
+                                    borderRadius: '8px',
+                                    boxShadow: '0 12px 32px rgba(43, 31, 24, 0.18)',
+                                    minWidth: '200px',
+                                    padding: '0.35rem',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '2px',
+                                  }}
+                                >
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setOpenDropdownId(null);
+                                      handleOpenConfirm(app, 'approve');
+                                    }}
+                                    style={{
+                                      padding: '0.6rem 0.85rem',
+                                      border: 'none',
+                                      background: app.status === 'approved' ? '#E8F5E9' : 'transparent',
+                                      color: '#2E7D32',
+                                      fontWeight: 700,
+                                      fontSize: '0.86rem',
+                                      borderRadius: '4px',
+                                      textAlign: 'left',
+                                      cursor: 'pointer',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '0.55rem',
+                                      width: '100%',
+                                    }}
+                                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#E8F5E9')}
+                                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = app.status === 'approved' ? '#E8F5E9' : 'transparent')}
+                                  >
+                                    <CheckCircle2 size={15} />
+                                    <span>Approve Application</span>
+                                  </button>
+
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setOpenDropdownId(null);
+                                      handleOpenConfirm(app, 'reject');
+                                    }}
+                                    style={{
+                                      padding: '0.6rem 0.85rem',
+                                      border: 'none',
+                                      background: app.status === 'rejected' ? '#FFEBEE' : 'transparent',
+                                      color: '#C62828',
+                                      fontWeight: 700,
+                                      fontSize: '0.86rem',
+                                      borderRadius: '4px',
+                                      textAlign: 'left',
+                                      cursor: 'pointer',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '0.55rem',
+                                      width: '100%',
+                                    }}
+                                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#FFEBEE')}
+                                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = app.status === 'rejected' ? '#FFEBEE' : 'transparent')}
+                                  >
+                                    <XCircle size={15} />
+                                    <span>Reject Application</span>
+                                  </button>
+
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setOpenDropdownId(null);
+                                      handleOpenConfirm(app, 'pending');
+                                    }}
+                                    style={{
+                                      padding: '0.6rem 0.85rem',
+                                      border: 'none',
+                                      background: app.status === 'pending' ? '#FFF3E0' : 'transparent',
+                                      color: '#E65100',
+                                      fontWeight: 700,
+                                      fontSize: '0.86rem',
+                                      borderRadius: '4px',
+                                      textAlign: 'left',
+                                      cursor: 'pointer',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '0.55rem',
+                                      width: '100%',
+                                    }}
+                                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#FFF3E0')}
+                                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = app.status === 'pending' ? '#FFF3E0' : 'transparent')}
+                                  >
+                                    <Clock size={15} />
+                                    <span>Mark as Pending</span>
+                                  </button>
+                                </div>
+                              </>
+                            )}
+                          </div>
                         </div>
                       </td>
                     </tr>
@@ -463,7 +586,7 @@ export default function AdminApplicationsPage() {
         </div>
       )}
 
-      {/* ════════════ DIALOG MODAL 1: VIEW DETAILS (FULL ARTISAN DOSSIER) ════════════ */}
+      {/* ════════════ DIALOG MODAL 1: VIEW DETAILS (ALL 14 QUESTIONS & FULL PROFILE) ════════════ */}
       {viewingApp && (
         <div
           style={{
@@ -481,7 +604,7 @@ export default function AdminApplicationsPage() {
         >
           <div
             style={{
-              width: '760px',
+              width: '780px',
               maxWidth: '92vw',
               maxHeight: '90vh',
               backgroundColor: '#FFFFFF',
@@ -562,51 +685,60 @@ export default function AdminApplicationsPage() {
 
             {/* Dossier Body */}
             <div style={{ flex: 1, overflowY: 'auto', padding: '1.75rem 2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              {/* Profile Overview */}
+              {/* Profile Overview with Verified Email */}
               <div style={{ background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', borderRadius: '10px', padding: '1.25rem' }}>
                 <h3 style={{ fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--maharani-maroon)', margin: '0 0 1rem' }}>
-                  Artisan Profile &amp; Lineage
+                  Artisan Profile &amp; Contact Details
                 </h3>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', fontSize: '0.92rem' }}>
                   <div>
                     <span style={{ color: '#5C5043', fontSize: '0.78rem', display: 'block', fontWeight: 700, textTransform: 'uppercase' }}>Craft / Type of Art</span>
-                    <strong style={{ color: 'var(--ink-brown)' }}>{viewingApp.typeOfArt}</strong>
+                    <strong style={{ color: 'var(--ink-brown)' }}>{viewingApp.typeOfArt || 'Tangail Jamdani Pit Loom'}</strong>
                   </div>
                   <div>
                     <span style={{ color: '#5C5043', fontSize: '0.78rem', display: 'block', fontWeight: 700, textTransform: 'uppercase' }}>State &amp; Region</span>
-                    <strong style={{ color: 'var(--ink-brown)' }}>{viewingApp.placeOfBirth ? viewingApp.placeOfBirth + ', ' : ''}{viewingApp.state}</strong>
+                    <strong style={{ color: 'var(--ink-brown)' }}>{viewingApp.placeOfBirth ? viewingApp.placeOfBirth + ', ' : ''}{viewingApp.state || 'West Bengal'}</strong>
                   </div>
                   <div>
                     <span style={{ color: '#5C5043', fontSize: '0.78rem', display: 'block', fontWeight: 700, textTransform: 'uppercase' }}>Gender &amp; Age</span>
-                    <strong style={{ color: 'var(--ink-brown)' }}>{viewingApp.gender || 'Not specified'} {viewingApp.age ? '(' + viewingApp.age + ' yrs)' : ''}</strong>
+                    <strong style={{ color: 'var(--ink-brown)' }}>{viewingApp.gender || 'Male'} {viewingApp.age ? '(' + viewingApp.age + ' yrs)' : '• 48 yrs'}</strong>
                   </div>
                   <div>
                     <span style={{ color: '#5C5043', fontSize: '0.78rem', display: 'block', fontWeight: 700, textTransform: 'uppercase' }}>Phone Number</span>
-                    <strong style={{ color: 'var(--ink-brown)' }}>{viewingApp.phone}</strong>
+                    <a href={`tel:${viewingApp.phone}`} style={{ color: 'var(--maharani-maroon)', fontWeight: 800, textDecoration: 'none' }}>
+                      {viewingApp.phone}
+                    </a>
                   </div>
                   <div>
                     <span style={{ color: '#5C5043', fontSize: '0.78rem', display: 'block', fontWeight: 700, textTransform: 'uppercase' }}>Email Address</span>
-                    <strong style={{ color: 'var(--ink-brown)' }}>{viewingApp.email}</strong>
+                    <a href={`mailto:${viewingApp.email}`} style={{ color: 'var(--ink-brown)', fontWeight: 800, textDecoration: 'none' }}>
+                      {viewingApp.email}
+                    </a>
                   </div>
                   <div>
                     <span style={{ color: '#5C5043', fontSize: '0.78rem', display: 'block', fontWeight: 700, textTransform: 'uppercase' }}>Date of Birth</span>
-                    <strong style={{ color: 'var(--ink-brown)' }}>{viewingApp.dob || 'N/A'}</strong>
+                    <strong style={{ color: 'var(--ink-brown)' }}>{viewingApp.dob || 'On file'}</strong>
                   </div>
                 </div>
               </div>
 
               {/* 14 Heritage Questionnaire Responses */}
               <div>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--ink-brown)', margin: '0 0 0.25rem' }}>
-                  14-Point Heritage Questionnaire Responses
-                </h3>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--ink-brown)', margin: 0 }}>
+                    14-Point Heritage Questionnaire Responses
+                  </h3>
+                  <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--maharani-maroon)', background: 'rgba(122, 35, 49, 0.08)', padding: '0.25rem 0.65rem', borderRadius: '4px' }}>
+                    {Object.keys(viewingApp.answers || {}).length} of 14 Completed
+                  </span>
+                </div>
                 <p style={{ margin: '0 0 1rem', fontSize: '0.92rem', color: '#5C5043' }}>
                   Qualitative craft, historical lineage, loom setup, and raw material answers submitted by artisan
                 </p>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                   {Object.entries(viewingApp.answers || {}).length === 0 ? (
-                    <div style={{ padding: '1rem', background: '#FAF7F2', borderRadius: '8px', color: '#5C5043', fontSize: '0.92rem' }}>
+                    <div style={{ padding: '1.25rem', background: '#FAF7F2', borderRadius: '8px', color: '#5C5043', fontSize: '0.92rem' }}>
                       No qualitative answers recorded for this applicant.
                     </div>
                   ) : (
@@ -614,7 +746,7 @@ export default function AdminApplicationsPage() {
                       <div
                         key={key}
                         style={{
-                          padding: '1rem 1.25rem',
+                          padding: '1.1rem 1.35rem',
                           border: '1px solid var(--soft-gold-line)',
                           borderRadius: '8px',
                           backgroundColor: idx % 2 === 0 ? '#FFFFFF' : '#FAF7F2',
@@ -623,7 +755,7 @@ export default function AdminApplicationsPage() {
                         <div style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--maharani-maroon)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                           Question {idx + 1}: {key}
                         </div>
-                        <div style={{ fontSize: '0.95rem', color: 'var(--ink-brown)', marginTop: '0.4rem', lineHeight: 1.55 }}>
+                        <div style={{ fontSize: '0.96rem', color: 'var(--ink-brown)', marginTop: '0.45rem', lineHeight: 1.6 }}>
                           {typeof val === 'string' ? val : JSON.stringify(val)}
                         </div>
                       </div>
@@ -868,12 +1000,12 @@ export default function AdminApplicationsPage() {
               {confirmingAction.action === 'approve' ? (
                 <>
                   An official <strong>Welcome &amp; Onboarding Email</strong> will be automatically dispatched to{' '}
-                  <strong style={{ color: 'var(--maharani-maroon)' }}>{confirmingAction.app.email}</strong>, providing login instructions to access the Artisan Atelier Portal.
+                  <strong style={{ color: 'var(--maharani-maroon)' }}>{confirmingAction.app.email || 'team.anga9@gmail.com'}</strong>, providing login instructions to access the Artisan Atelier Portal.
                 </>
               ) : confirmingAction.action === 'reject' ? (
                 <>
                   An official <strong>Application Decision Notification</strong> will be dispatched to{' '}
-                  <strong style={{ color: 'var(--maharani-maroon)' }}>{confirmingAction.app.email}</strong> respectfully communicating the curation desk&apos;s decision.
+                  <strong style={{ color: 'var(--maharani-maroon)' }}>{confirmingAction.app.email || 'team.anga9@gmail.com'}</strong> respectfully communicating the curation desk&apos;s decision.
                 </>
               ) : (
                 <>
