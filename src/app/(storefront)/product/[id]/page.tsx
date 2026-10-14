@@ -172,24 +172,60 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </div>
 
             {/* Master Artisan Attribution (Links directly to /artisan/HG-84192) */}
-            <div className="pdp-artisan-row" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '14px 0' }}>
+            <div className="pdp-artisan-row" style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', margin: '14px 0', flexWrap: 'wrap' }}>
               <span className="pdp-artisan-row__label" style={{ fontSize: '0.86rem', color: '#6A5A50', fontWeight: 600 }}>Master Artisan:</span>
-              <Link 
-                href="/artisan/HG-84192"
+              <button 
+                type="button"
+                onClick={() => setIsArtisanModalOpen(true)}
                 style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  cursor: 'pointer',
                   color: 'var(--maharani-maroon)',
                   fontWeight: 800,
                   fontSize: '0.94rem',
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '4px',
+                  gap: '5px',
                   textDecoration: 'underline',
                   textUnderlineOffset: '3px',
                 }}
-                title="View Creations Handcrafted by Master Artisan Gopal Chandra Dey"
+                title="View Master Artisan Public Profile Dossier"
               >
-                <span>Gopal Chandra Dey</span>
-                <ArrowRight size={13} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '2px' }} />
+                <span>{artisan?.name || 'Gopal Chandra Dey'}</span>
+                <span 
+                  style={{ 
+                    fontSize: '0.72rem', 
+                    fontWeight: 800, 
+                    color: '#2E7D32', 
+                    background: '#E8F5E9', 
+                    padding: '2px 8px', 
+                    borderRadius: '10px', 
+                    textDecoration: 'none',
+                    display: 'inline-block' 
+                  }}
+                >
+                  Dossier
+                </span>
+              </button>
+
+              <span style={{ color: 'var(--soft-gold-line)' }}>&bull;</span>
+
+              <Link
+                href="/artisan/HG-84192"
+                style={{
+                  fontSize: '0.82rem',
+                  color: 'var(--stone-taupe)',
+                  textDecoration: 'underline',
+                  textUnderlineOffset: '2px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '3px',
+                }}
+              >
+                <span>View All Pieces</span>
+                <ArrowRight size={12} />
               </Link>
             </div>
 

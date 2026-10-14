@@ -246,5 +246,34 @@ export function getArtisanByProductId(productId: string): Artisan | undefined {
 }
 
 export function getAllArtisans(): Artisan[] {
-  return artisans;
+  try {
+    const list = Array.isArray(artisanProfilesList) ? artisanProfilesList : [];
+    return artisans.map((art) => {
+      const override = list.find(
+        (p: any) =>
+          p.artisanNo?.toLowerCase() === art.id.toLowerCase() ||
+          p.id?.toLowerCase() === art.id.toLowerCase() ||
+          p.name?.toLowerCase() === art.name.toLowerCase()
+      );
+      if (override) {
+        return {
+          ...art,
+          ...override,
+          name: override.name || art.name,
+          role: override.artStyle || override.role || art.role,
+          artStyle: override.artStyle || art.artStyle || art.role,
+          region: override.regionalBelonging || override.region || art.region,
+          regionalBelonging: override.regionalBelonging || override.region || art.regionalBelonging,
+          experience: override.experience || `${art.experienceYears}+ Years at the Loom`,
+          bio: override.description || override.bio || art.bio,
+          description: override.description || override.bio || art.bio,
+          image: (override as any).profileImage || (override as any).image || art.image,
+          profileImage: (override as any).profileImage || (override as any).image || art.image,
+        };
+      }
+      return art;
+    });
+  } catch {
+    return artisans;
+  }
 }

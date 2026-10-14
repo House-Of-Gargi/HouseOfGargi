@@ -1,31 +1,28 @@
 {
+  "id": "HG-ART-260501",
   "artisanNo": "HG-84192",
-  "applicationId": "HG-ART-260501",
-  "name": "Gopal Chandra Dey",
-  "role": "Master Tangail Jamdani Pit Loom Weaver",
-  "region": "Shantipur, Nadia, West Bengal, India",
+  "name": "Gopal Haridas Dey",
+  "role": "Maharaja Embroidary Design",
+  "artStyle": "Maharaja Embroidary Design",
+  "region": "Kolkata, West Bengal",
+  "regionalBelonging": "Kolkata, West Bengal",
   "lineage": "4th Generation Pit Loom Lineage (Trained by Late Narayan Chandra Dey)",
+  "experience": "32 Years",
   "experienceYears": 32,
   "loomHoursTotal": "15,000+ Loom Hours Preserved",
   "profileImage": "/images/artisans_split.png",
-  "workshopImage": "/images/collections/collection-sarees.jpg",
   "philosophy": "In Shantipur, every Jamdani motif is a sacred prayer of rhythm, breath, and patience. When the shuttle moves across mulberry silk on our pit loom, time stands still.",
-  "bio": "Rooted in the historic weaving cluster of Shantipur, Nadia, Master Gopal Chandra Dey preserves the centuries-old royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to hand-craft timeless heirloom drapes originally celebrated in Royal Bengal courts.",
+  "bio": "Master weaver preserving 4 generations of royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to handcraft heirloom drapes.",
+  "description": "Master weaver preserving 4 generations of royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to handcraft heirloom drapes.",
   "specialties": [
     "Tangail Jamdani Pit Loom Weave",
     "100% Murshidabad Mulberry Silk",
     "Tested Real Silver & Gold Zari",
     "Natural AZO-Free Vegetable Dyes",
-    "Terracotta & Geometric Peacock Jaals"
-  ],
-  "awards": [
-    "Heritage Guild Certified Master Artisan (2026)",
-    "Silk Mark Certified Handloom Weaver",
-    "Preserver of Shantipur Pit Loom Weaving Heritage"
+    "Terracotta & Geometric Peacock Motifs"
   ],
   "communityImpact": "Regular fair-wage employment for 14 rural weaver families and flexible home-spinning shifts for women artisans in Nadia district.",
-  "contactEmail": "team.anga9@gmail.com",
-  "contactPhone": "+91 98321 55678",
-  "status": "active",
-  "updatedAt": "2026-10-14T13:34:03.898Z"
+  "updatedAt": "2026-10-14T22:46:22.798Z",
+  "image": "/images/artisans_split.png",
+  "status": "active"
 }

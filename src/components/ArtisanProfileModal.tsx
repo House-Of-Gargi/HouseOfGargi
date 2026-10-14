@@ -2,13 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import {
-  Crown,
-  X,
-  MapPin,
-  ShieldCheck,
-  ArrowRight,
-} from 'lucide-react';
+import { X, Check, ArrowRight } from 'lucide-react';
 
 interface ArtisanProfileModalProps {
   isOpen: boolean;
@@ -43,11 +37,15 @@ export default function ArtisanProfileModal({
   const data = profile || {};
 
   const displayName = data.name || artisanName || 'Gopal Chandra Dey';
-  const displayRole = data.role || data.artStyle || 'Master Tangail Jamdani Pit Loom Weaver';
-  const displayRegion = data.region || data.regionalBelonging || 'Shantipur, Nadia, West Bengal, India';
-  const displayExperience = data.experience || `${data.experienceYears || 32}+ Years Weaving`;
-  const displayImage = data.profileImage || '/images/artisans_split.png';
-  const displayBio = data.bio || data.description || 'Rooted in the historic weaving cluster of Shantipur, Nadia, Master Gopal Chandra Dey preserves the centuries-old royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to hand-craft timeless heirloom drapes originally celebrated in Royal Bengal courts.';
+  const displayCode = data.artisanNo || artisanCode || 'HG-84192';
+  const displayArtStyle = data.artStyle || data.role || 'Maharaja Embroidary Design';
+  const displayRegion = data.regionalBelonging || data.region || 'Kolkata, West Bengal';
+  const displayExperience = data.experience || (data.experienceYears ? `${data.experienceYears} Years` : '32 Years');
+  const displayImage = data.profileImage || data.image || '/images/artisans_split.png';
+  const displayDescription =
+    data.description ||
+    data.bio ||
+    'Master weaver preserving 4 generations of royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to handcraft heirloom drapes.';
 
   return (
     <div
@@ -55,8 +53,8 @@ export default function ArtisanProfileModal({
         position: 'fixed',
         inset: 0,
         zIndex: 9999,
-        backgroundColor: 'rgba(35, 24, 18, 0.72)',
-        backdropFilter: 'blur(4px)',
+        backgroundColor: 'rgba(35, 24, 18, 0.65)',
+        backdropFilter: 'blur(3px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -66,119 +64,257 @@ export default function ArtisanProfileModal({
     >
       <div
         style={{
-          backgroundColor: '#FFFFFF',
-          border: '2px solid var(--soft-gold-line)',
-          borderRadius: '14px',
-          maxWidth: '600px',
+          backgroundColor: '#FCFAF6',
+          border: '1.5px solid var(--soft-gold-line)',
+          borderRadius: '12px',
+          maxWidth: '540px',
           width: '100%',
           maxHeight: '90vh',
           overflowY: 'auto',
-          boxShadow: '0 24px 64px rgba(0,0,0,0.3)',
+          boxShadow: '0 20px 48px rgba(0, 0, 0, 0.25)',
           position: 'relative',
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Top Accent Ribbon */}
+        {/* ── Top Header matching screenshot ── */}
         <div
           style={{
-            background: 'linear-gradient(90deg, #7A2331 0%, #9B2D3E 50%, #7A2331 100%)',
-            padding: '0.85rem 1.4rem',
-            color: '#FAF7F2',
+            padding: '1.25rem 1.5rem',
+            borderBottom: '1px solid var(--soft-gold-line)',
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             justifyContent: 'space-between',
+            backgroundColor: '#FAF7F2',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Crown size={17} color="#E4D3AE" />
-            <span style={{ fontSize: '0.78rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-              House of Gargi Master Artisan Dossier
-            </span>
+          <div>
+            <div
+              style={{
+                fontFamily: 'monospace',
+                fontWeight: 800,
+                fontSize: '0.85rem',
+                color: 'var(--maharani-maroon)',
+                letterSpacing: '0.04em',
+                marginBottom: '2px',
+              }}
+            >
+              {displayCode}
+            </div>
+            <h2
+              style={{
+                margin: 0,
+                fontSize: '1.25rem',
+                fontWeight: 800,
+                color: 'var(--ink-brown)',
+                lineHeight: 1.25,
+              }}
+            >
+              Public Profile: {displayName}
+            </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
+            aria-label="Close modal"
             style={{
               background: 'none',
               border: 'none',
               cursor: 'pointer',
-              color: '#FAF7F2',
+              color: 'var(--ink-brown)',
+              padding: '4px',
               display: 'flex',
-              padding: '2px',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
-            <X size={18} />
+            <X size={20} />
           </button>
         </div>
 
-        {/* Modal Body */}
-        <div style={{ padding: '1.75rem' }}>
-          {/* Header Card (NO ARTISAN NUMBER) */}
-          <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', marginBottom: '1.25rem' }}>
+        {/* ── Body Cards matching screenshot ── */}
+        <div style={{ padding: '1.35rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
+          
+          {/* Card 1: Avatar & Live Badge */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1.15rem',
+              padding: '1rem 1.15rem',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid var(--soft-gold-line)',
+              borderRadius: '8px',
+              boxShadow: '0 2px 6px rgba(43, 31, 24, 0.03)',
+            }}
+          >
             <div
               style={{
-                width: '82px',
-                height: '82px',
+                width: '78px',
+                height: '78px',
                 borderRadius: '50%',
                 overflow: 'hidden',
                 border: '2.5px solid var(--gargi-gold)',
+                padding: '2px',
+                backgroundColor: '#FFFFFF',
+                boxShadow: '0 4px 12px rgba(122, 35, 49, 0.12)',
                 flexShrink: 0,
-                boxShadow: '0 4px 14px rgba(122, 35, 49, 0.2)',
               }}
             >
-              <img src={displayImage} alt={displayName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img
+                src={displayImage}
+                alt={displayName}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/artisans_split.png';
+                }}
+              />
             </div>
 
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-                <h2 style={{ margin: 0, fontSize: '1.45rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
-                  {displayName}
-                </h2>
-                <span title="Verified Master Artisan">
-                  <ShieldCheck size={19} color="#2E7D32" />
-                </span>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  backgroundColor: '#E8F5E9',
+                  color: '#2E7D32',
+                  padding: '2px 9px',
+                  borderRadius: '12px',
+                  fontSize: '0.72rem',
+                  fontWeight: 800,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.06em',
+                  marginBottom: '4px',
+                }}
+              >
+                <Check size={12} strokeWidth={3} />
+                <span>LIVE ON CUSTOMER PORTAL</span>
               </div>
-              <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--maharani-maroon)', marginTop: '2px' }}>
-                {displayRole}
-              </div>
-              <div style={{ fontSize: '0.82rem', color: '#6A5A50', display: 'flex', alignItems: 'center', gap: '0.35rem', marginTop: '3px' }}>
-                <MapPin size={13} color="var(--stone-taupe)" />
-                <span>{displayRegion}</span>
+              <h3
+                style={{
+                  margin: '1px 0 2px',
+                  fontSize: '1.22rem',
+                  fontWeight: 800,
+                  color: 'var(--ink-brown)',
+                }}
+              >
+                {displayName}
+              </h3>
+              <div style={{ fontSize: '0.84rem', color: '#6E5D52' }}>
+                Artisan ID:{' '}
+                <strong style={{ color: 'var(--maharani-maroon)', fontWeight: 800 }}>
+                  {displayCode}
+                </strong>
               </div>
             </div>
           </div>
 
-          {/* Stats Bar (Single Lineage Experience stat, NO craft preservation) */}
+          {/* Card 2: Art Style, Regional Belonging & Experience */}
           <div
             style={{
-              background: '#FAF7F2',
+              backgroundColor: '#FFFFFF',
               border: '1px solid var(--soft-gold-line)',
               borderRadius: '8px',
-              padding: '0.75rem 1rem',
-              marginBottom: '1.25rem',
+              padding: '1.15rem',
+              boxShadow: '0 2px 6px rgba(43, 31, 24, 0.03)',
             }}
           >
-            <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#8C7B70', fontWeight: 700 }}>
-              Lineage Experience
+            <div style={{ marginBottom: '0.85rem' }}>
+              <div
+                style={{
+                  fontSize: '0.72rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  color: '#8C7B70',
+                  fontWeight: 800,
+                  marginBottom: '3px',
+                }}
+              >
+                ART STYLE
+              </div>
+              <div
+                style={{
+                  fontSize: '1.08rem',
+                  fontWeight: 800,
+                  color: 'var(--ink-brown)',
+                }}
+              >
+                {displayArtStyle}
+              </div>
             </div>
-            <div style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--ink-brown)', marginTop: '2px' }}>
-              {displayExperience}
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
+              <div>
+                <div
+                  style={{
+                    fontSize: '0.72rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                    color: '#8C7B70',
+                    fontWeight: 800,
+                    marginBottom: '3px',
+                  }}
+                >
+                  REGIONAL BELONGING
+                </div>
+                <div style={{ fontSize: '0.94rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
+                  {displayRegion}
+                </div>
+              </div>
+
+              <div>
+                <div
+                  style={{
+                    fontSize: '0.72rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                    color: '#8C7B70',
+                    fontWeight: 800,
+                    marginBottom: '3px',
+                  }}
+                >
+                  EXPERIENCE
+                </div>
+                <div style={{ fontSize: '0.94rem', fontWeight: 800, color: 'var(--maharani-maroon)' }}>
+                  {displayExperience}
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Bio */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
-              Craft Heritage &amp; Lineage
+          {/* Card 3: Description About the Artist */}
+          <div>
+            <div
+              style={{
+                fontSize: '0.75rem',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+                color: '#5C5043',
+                marginBottom: '6px',
+              }}
+            >
+              DESCRIPTION ABOUT THE ARTIST
             </div>
-            <p style={{ margin: 0, fontSize: '0.92rem', lineHeight: 1.65, color: '#4A3E36' }}>
-              {displayBio}
-            </p>
+            <div
+              style={{
+                border: '1px solid var(--soft-gold-line)',
+                borderRadius: '8px',
+                backgroundColor: '#FFFFFF',
+                padding: '0.95rem 1.15rem',
+                fontSize: '0.88rem',
+                lineHeight: 1.6,
+                color: '#4A3E36',
+                boxShadow: '0 2px 6px rgba(43, 31, 24, 0.03)',
+              }}
+            >
+              {displayDescription}
+            </div>
           </div>
 
-          {/* Direct CTA to the Artisan Dedicated Products Page */}
+          {/* Direct Link to View All Handcrafted Creations */}
           <Link
-            href="/artisan/HG-84192"
+            href={`/artisan/${displayCode}`}
             onClick={onClose}
             style={{
               display: 'flex',
@@ -186,14 +322,15 @@ export default function ArtisanProfileModal({
               justifyContent: 'center',
               gap: '0.5rem',
               width: '100%',
-              padding: '0.85rem 1.25rem',
+              padding: '0.8rem 1.25rem',
               backgroundColor: 'var(--maharani-maroon)',
               color: '#FFFFFF',
               borderRadius: '6px',
               fontWeight: 800,
-              fontSize: '0.92rem',
+              fontSize: '0.9rem',
               textDecoration: 'none',
               boxShadow: '0 4px 14px rgba(122, 35, 49, 0.2)',
+              marginTop: '0.25rem',
             }}
           >
             <span>Explore All Creations by {displayName}</span>
