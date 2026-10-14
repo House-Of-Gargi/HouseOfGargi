@@ -142,12 +142,13 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
                 {artisan.name}
               </h1>
 
-              {/* Minimalist, Clean Meta Row */}
+              {/* Artisan Craft Style / Art Form */}
+              <div className="artisan-profile-role">
+                {artisan.artStyle || artisan.role}
+              </div>
+
+              {/* Artisan Origin & Loom Experience */}
               <div className="artisan-profile-meta">
-                <span className="artisan-profile-role">
-                  {artisan.artStyle || artisan.role}
-                </span>
-                <span className="artisan-profile-dot">✦</span>
                 <span className="artisan-profile-region">
                   <MapPin size={13} /> {artisan.regionalBelonging || artisan.region}
                 </span>
@@ -157,7 +158,7 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
                     ? (artisan.experience.includes('Loom') || artisan.experience.includes('Year')
                         ? artisan.experience
                         : `${artisan.experience} at the Loom`)
-                    : `${artisan.experienceYears}+ Years at the Loom`}
+                    : `${artisan.experienceYears || 25}+ Years at the Loom`}
                 </span>
               </div>
 
@@ -190,14 +191,7 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
         </div>
 
         {/* Category Filter Chips with Playfair Display Serif Typography & Sans Numeral Counts */}
-        <div className="artisan-filter-pills" style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '0.65rem',
-          flexWrap: 'wrap',
-          marginBottom: '2.5rem',
-        }}>
+        <div className="artisan-filter-pills">
           <button
             type="button"
             className={'artisan-pill ' + (selectedCategory === 'all' ? 'artisan-pill--active' : '')}
