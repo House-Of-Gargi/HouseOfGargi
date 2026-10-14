@@ -2,7 +2,7 @@
 
 import { use, useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { getArtisan } from '@/data/artisans';
 import { products, categories } from '@/data/products';
 import ProductCard from '@/components/ProductCard';
@@ -17,6 +17,7 @@ interface ArtisanPageProps {
 
 export default function ArtisanPage({ params }: ArtisanPageProps) {
   const { id } = use(params);
+  const router = useRouter();
   const initialArtisan = getArtisan(id);
 
   if (!initialArtisan) {
@@ -95,13 +96,6 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
       {/* ── TOP NAV BAR (DESKTOP: LEFT-ALIGNED BREADCRUMB | MOBILE: BACK TO CATALOG) ── */}
       <div className="container" style={{ maxWidth: '1280px', padding: '0 20px', marginBottom: '1.75rem' }}>
         <div className="artisan-top-nav">
-          <Link 
-            href="/shop"
-            className="artisan-back-link"
-          >
-            <ArrowLeft size={15} /> <span>Back to Catalog</span>
-          </Link>
-
           <nav className="artisan-breadcrumb" aria-label="Breadcrumb">
             <Link href="/">Home</Link>
             <span className="artisan-breadcrumb-sep">/</span>
@@ -109,6 +103,21 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
             <span className="artisan-breadcrumb-sep">/</span>
             <span className="artisan-breadcrumb-current">{artisan.name}</span>
           </nav>
+
+          <button 
+            type="button"
+            onClick={() => {
+              if (typeof window !== 'undefined' && window.history.length > 1) {
+                window.history.back();
+              } else {
+                router.push('/shop');
+              }
+            }}
+            className="artisan-back-link"
+            aria-label="Back to previous page"
+          >
+            <ArrowLeft size={15} strokeWidth={2} className="artisan-back-icon" /> <span>Back</span>
+          </button>
         </div>
       </div>
 

@@ -8330,19 +8330,25 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 
 /* ── PDP Top Nav: Underlined Black Back Link & Image Clearance ── */
 .section--pdp {
-  padding-top: 104px !important;
+  padding-top: 116px !important;
 }
 
 .pdp-top-nav {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between !important;
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 26px !important;
+}
+
+.pdp-breadcrumb {
+  margin-left: 0 !important;
+  margin-right: auto;
+  margin-bottom: 0 !important;
 }
 
 .pdp-back-link {
-  display: none !important; /* Hidden on desktop view */
+  display: inline-flex !important; /* Visible on desktop, mirrored to the right */
   align-items: center;
   gap: 8px;
   background: transparent !important;
@@ -8351,17 +8357,12 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   margin: 0 !important;
   cursor: pointer;
   font-family: var(--font-nav, 'Outfit', sans-serif);
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 600;
-  color: #111111 !important; /* Visible crisp black */
+  color: #111111 !important;
   line-height: 1;
   text-decoration: none;
   transition: opacity 150ms ease;
-}
-
-.pdp-breadcrumb {
-  margin-left: 0 !important;
-  margin-right: auto;
 }
 
 .pdp-back-link:hover {
@@ -8397,14 +8398,16 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     padding-bottom: 50px !important;
   }
   .pdp-top-nav {
+    justify-content: flex-start !important;
     margin-bottom: 20px !important;
   }
   .pdp-back-link {
-    display: inline-flex !important; /* Visible on mobile view */
+    display: inline-flex !important; /* Visible on mobile view towards left */
     font-size: 15px !important;
+    margin-right: auto !important;
   }
   .pdp-breadcrumb {
-    display: none !important;
+    display: none !important; /* Hidden on mobile */
   }
 }
 
@@ -8688,30 +8691,51 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   padding-bottom: 90px !important;
 }
 
-/* Artisan Top Navigation: Desktop vs Mobile (Left Aligned on Desktop) */
+/* Artisan Top Navigation: Desktop (Breadcrumb Left, Back Right) vs Mobile (Back Left, Breadcrumb Hidden) */
 .artisan-top-nav {
   display: flex !important;
   align-items: center !important;
-  justify-content: flex-start !important; /* Strictly left-aligned */
+  justify-content: space-between !important;
   width: 100% !important;
 }
 
 .artisan-back-link {
-  display: none !important; /* Hidden on desktop */
+  display: inline-flex !important; /* Visible on desktop, mirrored to the right */
   align-items: center !important;
   gap: 7px !important;
-  font-family: var(--font-nav, 'Plus Jakarta Sans', sans-serif) !important;
-  font-size: 13.5px !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
-  color: var(--ink-brown) !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 4px 0 !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+  font-family: var(--font-nav, 'Outfit', sans-serif) !important;
+  font-size: 14.5px !important;
+  font-weight: 600 !important;
+  color: #111111 !important;
   text-decoration: none !important;
-  transition: color 150ms ease;
+  transition: opacity 150ms ease, color 150ms ease;
+  line-height: 1 !important;
 }
 
 .artisan-back-link:hover {
+  opacity: 0.75;
   color: var(--maharani-maroon) !important;
+}
+
+.artisan-back-link span {
+  text-decoration: underline !important;
+  text-underline-offset: 4px !important;
+  text-decoration-thickness: 1.5px !important;
+}
+
+.artisan-back-icon {
+  color: #111111 !important;
+  flex-shrink: 0;
+  transition: transform 180ms ease;
+}
+
+.artisan-back-link:hover .artisan-back-icon {
+  transform: translateX(-3px);
 }
 
 .artisan-breadcrumb {
@@ -8925,8 +8949,13 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     padding-top: 108px !important;
   }
 
+  .artisan-top-nav {
+    justify-content: flex-start !important;
+  }
+
   .artisan-back-link {
-    display: inline-flex !important; /* Visible on mobile */
+    display: inline-flex !important; /* Visible on mobile view towards left */
+    margin-right: auto !important;
   }
 
   .artisan-breadcrumb {

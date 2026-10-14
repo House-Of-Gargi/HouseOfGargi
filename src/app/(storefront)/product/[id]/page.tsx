@@ -67,8 +67,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   return (
     <div className="section section--ivory section--pdp" style={{ minHeight: '80vh', paddingBottom: '70px' }}>
       <div className="container">
-        {/* Top Nav: Back Link with Underline & Breadcrumb */}
+        {/* Top Nav: Breadcrumb Left, Back Link Mirrored on Right | Mobile: Back Link Left */}
         <div className="pdp-top-nav">
+          <nav className="breadcrumb pdp-breadcrumb" aria-label="Breadcrumb">
+            <Link href="/">Home</Link>
+            <span>/</span>
+            <Link href={`/category/${product.category}`}>{categoryName}</Link>
+            <span>/</span>
+            <span style={{ color: 'var(--ink-brown)' }}>{product.name}</span>
+          </nav>
+
           <button
             type="button"
             onClick={() => {
@@ -84,14 +92,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             <ArrowLeft size={17} strokeWidth={2.2} className="pdp-back-icon" />
             <span className="pdp-back-text">Back</span>
           </button>
-
-          <nav className="breadcrumb pdp-breadcrumb" aria-label="Breadcrumb">
-            <Link href="/">Home</Link>
-            <span>/</span>
-            <Link href={`/category/${product.category}`}>{categoryName}</Link>
-            <span>/</span>
-            <span style={{ color: 'var(--ink-brown)' }}>{product.name}</span>
-          </nav>
         </div>
 
         {/* Product Layout */}
