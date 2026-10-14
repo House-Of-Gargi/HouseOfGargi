@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState, useMemo } from 'react';
+import { use, useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getArtisan } from '@/data/artisans';
@@ -17,11 +17,53 @@ interface ArtisanPageProps {
 
 export default function ArtisanPage({ params }: ArtisanPageProps) {
   const { id } = use(params);
-  const artisan = getArtisan(id);
+  const initialArtisan = getArtisan(id);
 
-  if (!artisan) {
+  if (!initialArtisan) {
     notFound();
   }
+
+  // Artisan state initialized with SSR data, dynamically synced with live admin edits
+  const [artisan, setArtisan] = useState(initialArtisan);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch('/api/admin/artisans/profile')
+      .then((res) => res.json())
+      .then((data) => {
+        if (!isMounted) return;
+        if (data.success && Array.isArray(data.profiles)) {
+          const match = data.profiles.find(
+            (p: any) =>
+              p.artisanNo?.toLowerCase() === id.toLowerCase() ||
+              p.id?.toLowerCase() === id.toLowerCase() ||
+              p.name?.toLowerCase() === initialArtisan.name.toLowerCase()
+          );
+
+          if (match) {
+            setArtisan((prev) => ({
+              ...prev,
+              ...match,
+              name: match.name || prev.name,
+              role: match.artStyle || match.role || prev.role,
+              artStyle: match.artStyle || prev.artStyle || prev.role,
+              region: match.regionalBelonging || match.region || prev.region,
+              regionalBelonging: match.regionalBelonging || match.region || prev.regionalBelonging,
+              experience: match.experience || prev.experience,
+              bio: match.description || match.bio || prev.bio,
+              description: match.description || match.bio || prev.description,
+              image: match.profileImage || match.image || prev.image,
+              profileImage: match.profileImage || match.image || prev.profileImage || prev.image,
+            }));
+          }
+        }
+      })
+      .catch((err) => console.error('Error fetching live artisan profile:', err));
+
+    return () => {
+      isMounted = false;
+    };
+  }, [id, initialArtisan.name]);
 
   // Filter products attributed to this artisan
   const allArtisanProducts = useMemo(() => {
@@ -79,7 +121,7 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
             <div className="artisan-profile-avatar-wrap">
               <div className="artisan-profile-avatar">
                 <img 
-                  src={artisan.image || '/images/artisans_split.png'} 
+                  src={artisan.profileImage || artisan.image || '/images/artisans_split.png'} 
                   alt={artisan.name} 
                 />
               </div>
@@ -94,21 +136,25 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
               {/* Minimalist, Clean Meta Row */}
               <div className="artisan-profile-meta">
                 <span className="artisan-profile-role">
-                  {artisan.role}
+                  {artisan.artStyle || artisan.role}
                 </span>
                 <span className="artisan-profile-dot">✦</span>
                 <span className="artisan-profile-region">
-                  <MapPin size={13} /> {artisan.region}
+                  <MapPin size={13} /> {artisan.regionalBelonging || artisan.region}
                 </span>
                 <span className="artisan-profile-dot">✦</span>
                 <span className="artisan-profile-exp">
-                  {artisan.experienceYears}+ Years at the Loom
+                  {artisan.experience
+                    ? (artisan.experience.includes('Loom') || artisan.experience.includes('Year')
+                        ? artisan.experience
+                        : `${artisan.experience} at the Loom`)
+                    : `${artisan.experienceYears}+ Years at the Loom`}
                 </span>
               </div>
 
               {/* Refined Craft Bio with enhanced readability & full stretch */}
               <p className="artisan-profile-bio">
-                {artisan.bio}
+                {artisan.description || artisan.bio}
               </p>
             </div>
           </div>
@@ -134,7 +180,7 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
           </div>
         </div>
 
-        {/* Category Filter Chips with Playfair Display Serif Typography */}
+        {/* Category Filter Chips with Playfair Display Serif Typography & Sans Numeral Counts */}
         <div className="artisan-filter-pills" style={{
           display: 'flex',
           alignItems: 'center',

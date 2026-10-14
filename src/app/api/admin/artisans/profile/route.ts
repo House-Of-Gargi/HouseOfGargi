@@ -70,11 +70,14 @@ export async function PATCH(req: Request) {
       ...profiles[index],
       name: body.name ?? profiles[index].name,
       artStyle: body.artStyle ?? profiles[index].artStyle,
+      role: body.artStyle ?? profiles[index].role,
       regionalBelonging: body.regionalBelonging ?? profiles[index].regionalBelonging,
       region: body.regionalBelonging ?? profiles[index].region,
       experience: body.experience ?? profiles[index].experience,
       description: body.description ?? profiles[index].description,
       bio: body.description ?? profiles[index].bio,
+      profileImage: body.profileImage ?? profiles[index].profileImage ?? profiles[index].image,
+      image: body.profileImage ?? profiles[index].image ?? profiles[index].profileImage,
       updatedAt: new Date().toISOString(),
     };
 
