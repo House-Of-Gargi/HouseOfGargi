@@ -13,7 +13,7 @@ import {
   ChevronLeft, 
   ChevronRight, 
   Star,
-  Sparkles
+  ImagePlus
 } from 'lucide-react';
 import CustomDropdown from '@/components/CustomDropdown';
 
@@ -38,8 +38,8 @@ export default function NewProductCreationPage() {
   const [sizes, setSizes] = useState('');
   const [description, setDescription] = useState('');
 
-  // Gallery Imagery
-  const [images, setImages] = useState<string[]>(['/images/category-sarees.png']);
+  // Gallery Imagery - starts empty with placeholder icon
+  const [images, setImages] = useState<string[]>([]);
   const [imageUrlInput, setImageUrlInput] = useState('');
   const [uploadingFiles, setUploadingFiles] = useState(false);
 
@@ -67,13 +67,7 @@ export default function NewProductCreationPage() {
     });
 
     Promise.all(readers).then((newImgs) => {
-      setImages((prev) => {
-        // If only placeholder exists, replace it
-        if (prev.length === 1 && prev[0] === '/images/category-sarees.png') {
-          return newImgs;
-        }
-        return [...prev, ...newImgs];
-      });
+      setImages((prev) => [...prev, ...newImgs]);
       setUploadingFiles(false);
     }).catch(() => setUploadingFiles(false));
 
@@ -84,12 +78,7 @@ export default function NewProductCreationPage() {
   const handleAddImageUrl = () => {
     const trimmed = imageUrlInput.trim();
     if (!trimmed) return;
-    setImages((prev) => {
-      if (prev.length === 1 && prev[0] === '/images/category-sarees.png') {
-        return [trimmed];
-      }
-      return [...prev, trimmed];
-    });
+    setImages((prev) => [...prev, trimmed]);
     setImageUrlInput('');
   };
 
@@ -115,10 +104,6 @@ export default function NewProductCreationPage() {
 
   // Remove Image
   const handleRemoveImage = (index: number) => {
-    if (images.length <= 1) {
-      alert('Every authentic creation requires at least one primary showcase image.');
-      return;
-    }
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -320,7 +305,7 @@ export default function NewProductCreationPage() {
                 setCare('');
                 setSizes('');
                 setDescription('');
-                setImages(['/images/category-sarees.png']);
+                setImages([]);
               }}
               style={{ 
                 padding: '0.75rem 1.4rem', 
@@ -690,145 +675,185 @@ export default function NewProductCreationPage() {
               </span>
             </div>
 
-            {/* Current Images Preview Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '0.85rem', marginBottom: '1.25rem' }}>
-              {images.map((imgUrl, idx) => {
-                const isCover = idx === 0;
-                return (
-                  <div
-                    key={idx}
-                    style={{
-                      border: isCover ? '2px solid var(--maharani-maroon)' : '1px solid var(--soft-gold-line)',
-                      borderRadius: 6,
-                      overflow: 'hidden',
-                      background: '#FFFFFF',
-                      boxShadow: '0 2px 6px rgba(0,0,0,0.06)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      position: 'relative',
-                    }}
-                  >
-                    <div style={{ position: 'relative', width: '100%', height: '120px', background: '#F0EBE1' }}>
-                      <img
-                        src={imgUrl}
-                        alt={`Preview ${idx + 1}`}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = '/images/category-sarees.png';
-                        }}
-                      />
-                      <span
-                        style={{
-                          position: 'absolute',
-                          top: 4,
-                          left: 4,
-                          background: 'rgba(35, 24, 18, 0.85)',
-                          color: '#FFFFFF',
-                          fontSize: '0.68rem',
-                          fontWeight: 700,
-                          padding: '2px 5px',
-                          borderRadius: 3,
-                        }}
-                      >
-                        #{idx + 1}
-                      </span>
-                      {isCover && (
+            {/* Current Images Preview Grid or Empty State Placeholder Icon Box */}
+            {images.length === 0 ? (
+              <div
+                style={{
+                  border: '1.5px dashed var(--soft-gold-line)',
+                  borderRadius: 8,
+                  padding: '2.5rem 1.5rem',
+                  textAlign: 'center',
+                  background: '#FAF7F2',
+                  marginBottom: '1.25rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.65rem',
+                }}
+              >
+                <div
+                  style={{
+                    width: 54,
+                    height: 54,
+                    borderRadius: '50%',
+                    background: '#FFFFFF',
+                    border: '1px solid var(--soft-gold-line)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'var(--maharani-maroon)',
+                  }}
+                >
+                  <ImagePlus style={{ width: 26, height: 26 }} />
+                </div>
+                <p style={{ margin: 0, fontWeight: 700, fontSize: '0.95rem', color: 'var(--ink-brown)' }}>
+                  No Creation Images Added Yet
+                </p>
+                <p style={{ margin: 0, fontSize: '0.82rem', color: 'var(--stone-taupe)', maxWidth: '380px', lineHeight: 1.5 }}>
+                  Add your handcrafted creation photos by uploading files from your device or entering direct image URLs below.
+                </p>
+              </div>
+            ) : (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '0.85rem', marginBottom: '1.25rem' }}>
+                {images.map((imgUrl, idx) => {
+                  const isCover = idx === 0;
+                  return (
+                    <div
+                      key={idx}
+                      style={{
+                        border: isCover ? '2px solid var(--maharani-maroon)' : '1px solid var(--soft-gold-line)',
+                        borderRadius: 6,
+                        overflow: 'hidden',
+                        background: '#FFFFFF',
+                        boxShadow: '0 2px 6px rgba(0,0,0,0.06)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        position: 'relative',
+                      }}
+                    >
+                      <div style={{ position: 'relative', width: '100%', height: '120px', background: '#F0EBE1' }}>
+                        <img
+                          src={imgUrl}
+                          alt={`Preview ${idx + 1}`}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = '/images/category-sarees.png';
+                          }}
+                        />
                         <span
                           style={{
                             position: 'absolute',
                             top: 4,
-                            right: 4,
-                            background: 'var(--maharani-maroon)',
+                            left: 4,
+                            background: 'rgba(35, 24, 18, 0.85)',
                             color: '#FFFFFF',
-                            fontSize: '0.65rem',
-                            fontWeight: 800,
-                            padding: '2px 5px',
-                            borderRadius: 3,
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: 2,
-                          }}
-                        >
-                          <Star size={9} fill="#FFF" /> Cover
-                        </span>
-                      )}
-                    </div>
-
-                    <div style={{ padding: '0.4rem', background: '#FAF7F2', borderTop: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.2rem' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
-                        <button
-                          type="button"
-                          disabled={idx === 0}
-                          onClick={() => handleMoveImage(idx, 'left')}
-                          title="Move Earlier"
-                          style={{
-                            padding: '3px',
-                            border: '1px solid var(--soft-gold-line)',
-                            borderRadius: 3,
-                            background: idx === 0 ? '#EBE6DC' : '#FFFFFF',
-                            color: idx === 0 ? '#AFA79B' : 'var(--ink-brown)',
-                            cursor: idx === 0 ? 'not-allowed' : 'pointer',
-                          }}
-                        >
-                          <ChevronLeft size={12} />
-                        </button>
-                        <button
-                          type="button"
-                          disabled={idx === images.length - 1}
-                          onClick={() => handleMoveImage(idx, 'right')}
-                          title="Move Later"
-                          style={{
-                            padding: '3px',
-                            border: '1px solid var(--soft-gold-line)',
-                            borderRadius: 3,
-                            background: idx === images.length - 1 ? '#EBE6DC' : '#FFFFFF',
-                            color: idx === images.length - 1 ? '#AFA79B' : 'var(--ink-brown)',
-                            cursor: idx === images.length - 1 ? 'not-allowed' : 'pointer',
-                          }}
-                        >
-                          <ChevronRight size={12} />
-                        </button>
-                      </div>
-
-                      {!isCover && (
-                        <button
-                          type="button"
-                          onClick={() => handleSetCover(idx)}
-                          style={{
                             fontSize: '0.68rem',
                             fontWeight: 700,
-                            color: 'var(--maharani-maroon)',
-                            background: 'none',
-                            border: 'none',
-                            cursor: 'pointer',
-                            textDecoration: 'underline',
-                            padding: '0 2px',
+                            padding: '2px 5px',
+                            borderRadius: 3,
                           }}
                         >
-                          Make Cover
-                        </button>
-                      )}
+                          #{idx + 1}
+                        </span>
+                        {isCover && (
+                          <span
+                            style={{
+                              position: 'absolute',
+                              top: 4,
+                              right: 4,
+                              background: 'var(--maharani-maroon)',
+                              color: '#FFFFFF',
+                              fontSize: '0.65rem',
+                              fontWeight: 800,
+                              padding: '2px 5px',
+                              borderRadius: 3,
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: 2,
+                            }}
+                          >
+                            <Star size={9} fill="#FFF" /> Cover
+                          </span>
+                        )}
+                      </div>
 
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveImage(idx)}
-                        title="Remove image"
-                        style={{
-                          padding: '3px',
-                          border: '1px solid #FFCDD2',
-                          borderRadius: 3,
-                          background: '#FFEBEE',
-                          color: '#C62828',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        <Trash2 size={12} />
-                      </button>
+                      <div style={{ padding: '0.4rem', background: '#FAF7F2', borderTop: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.2rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+                          <button
+                            type="button"
+                            disabled={idx === 0}
+                            onClick={() => handleMoveImage(idx, 'left')}
+                            title="Move Earlier"
+                            style={{
+                              padding: '3px',
+                              border: '1px solid var(--soft-gold-line)',
+                              borderRadius: 3,
+                              background: idx === 0 ? '#EBE6DC' : '#FFFFFF',
+                              color: idx === 0 ? '#AFA79B' : 'var(--ink-brown)',
+                              cursor: idx === 0 ? 'not-allowed' : 'pointer',
+                            }}
+                          >
+                            <ChevronLeft size={12} />
+                          </button>
+                          <button
+                            type="button"
+                            disabled={idx === images.length - 1}
+                            onClick={() => handleMoveImage(idx, 'right')}
+                            title="Move Later"
+                            style={{
+                              padding: '3px',
+                              border: '1px solid var(--soft-gold-line)',
+                              borderRadius: 3,
+                              background: idx === images.length - 1 ? '#EBE6DC' : '#FFFFFF',
+                              color: idx === images.length - 1 ? '#AFA79B' : 'var(--ink-brown)',
+                              cursor: idx === images.length - 1 ? 'not-allowed' : 'pointer',
+                            }}
+                          >
+                            <ChevronRight size={12} />
+                          </button>
+                        </div>
+
+                        {!isCover && (
+                          <button
+                            type="button"
+                            onClick={() => handleSetCover(idx)}
+                            style={{
+                              fontSize: '0.68rem',
+                              fontWeight: 700,
+                              color: 'var(--maharani-maroon)',
+                              background: 'none',
+                              border: 'none',
+                              cursor: 'pointer',
+                              textDecoration: 'underline',
+                              padding: '0 2px',
+                            }}
+                          >
+                            Make Cover
+                          </button>
+                        )}
+
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveImage(idx)}
+                          title="Remove image"
+                          style={{
+                            padding: '3px',
+                            border: '1px solid #FFCDD2',
+                            borderRadius: 3,
+                            background: '#FFEBEE',
+                            color: '#C62828',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            )}
 
             {/* Image Upload / Input controls */}
             <div style={{ background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', borderRadius: 8, padding: '1.25rem' }}>
