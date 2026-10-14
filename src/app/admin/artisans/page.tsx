@@ -43,6 +43,8 @@ export default function VerifiedArtisansPage() {
   const [artisans, setArtisans] = useState<VerifiedArtisan[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 5;
 
   // Modal for "View All Products"
   const [selectedArtisanForProducts, setSelectedArtisanForProducts] = useState<VerifiedArtisan | null>(null);
@@ -74,6 +76,10 @@ export default function VerifiedArtisansPage() {
   useEffect(() => {
     fetchVerifiedArtisans();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
   const handleOpenAssignModal = (artisan: VerifiedArtisan) => {
     setEditingArtisan(artisan);
@@ -281,7 +287,7 @@ export default function VerifiedArtisansPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredArtisans.map((artisan) => (
+              {paginatedArtisans.map((artisan) => (
                 <tr
                   key={artisan.id || artisan.applicationId}
                   style={{
@@ -395,6 +401,93 @@ export default function VerifiedArtisansPage() {
               ))}
             </tbody>
           </table>
+
+          {/* ════════════ PAGINATION BAR (5 ITEMS PER PAGE) ════════════ */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '0.85rem 1.4rem',
+              background: '#FAF7F2',
+              borderTop: '1px solid var(--soft-gold-line)',
+              borderBottomLeftRadius: '11px',
+              borderBottomRightRadius: '11px',
+              flexWrap: 'wrap',
+              gap: '0.75rem',
+            }}
+          >
+            <div style={{ fontSize: '0.84rem', color: '#6A5A50', fontWeight: 600 }}>
+              Showing <strong>{filteredArtisans.length > 0 ? (currentPage - 1) * ITEMS_PER_PAGE + 1 : 0}</strong>–
+              <strong>{Math.min(currentPage * ITEMS_PER_PAGE, filteredArtisans.length)}</strong> of{' '}
+              <strong>{filteredArtisans.length}</strong> artisans
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <button
+                type="button"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                style={{
+                  padding: '0.38rem 0.75rem',
+                  borderRadius: '5px',
+                  border: '1px solid var(--soft-gold-line)',
+                  backgroundColor: '#FFFFFF',
+                  color: currentPage === 1 ? '#A89E96' : 'var(--ink-brown)',
+                  cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  opacity: currentPage === 1 ? 0.6 : 1,
+                }}
+              >
+                &larr; Prev
+              </button>
+
+              {Array.from({ length: totalPages }).map((_, i) => {
+                const pageNum = i + 1;
+                const isActive = pageNum === currentPage;
+                return (
+                  <button
+                    key={pageNum}
+                    type="button"
+                    onClick={() => setCurrentPage(pageNum)}
+                    style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '5px',
+                      border: isActive ? '1px solid var(--maharani-maroon)' : '1px solid var(--soft-gold-line)',
+                      backgroundColor: isActive ? 'var(--maharani-maroon)' : '#FFFFFF',
+                      color: isActive ? '#FFFFFF' : 'var(--ink-brown)',
+                      cursor: 'pointer',
+                      fontSize: '0.82rem',
+                      fontWeight: 800,
+                    }}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+
+              <button
+                type="button"
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                style={{
+                  padding: '0.38rem 0.75rem',
+                  borderRadius: '5px',
+                  border: '1px solid var(--soft-gold-line)',
+                  backgroundColor: '#FFFFFF',
+                  color: currentPage === totalPages ? '#A89E96' : 'var(--ink-brown)',
+                  cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  opacity: currentPage === totalPages ? 0.6 : 1,
+                }}
+              >
+                Next &rarr;
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

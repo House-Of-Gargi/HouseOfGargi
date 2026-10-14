@@ -37,6 +37,8 @@ export default function ProductQCApprovalsPage() {
   const [submissions, setSubmissions] = useState<SubmissionItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'pending' | 'reviewed'>('pending');
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 5;
   const [inspectingItem, setInspectingItem] = useState<SubmissionItem | null>(null);
   const [actionSuccess, setActionSuccess] = useState('');
 
@@ -58,6 +60,10 @@ export default function ProductQCApprovalsPage() {
   useEffect(() => {
     fetchSubmissions();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeTab]);
 
   const handleDecision = async (id: string, decision: 'approved' | 'rejected') => {
     try {
@@ -84,6 +90,12 @@ export default function ProductQCApprovalsPage() {
   const pendingList = submissions.filter((s) => s.curationStatus === 'pending');
   const reviewedList = submissions.filter((s) => s.curationStatus !== 'pending');
   const displayedList = activeTab === 'pending' ? pendingList : reviewedList;
+
+  const totalPages = Math.ceil(displayedList.length / ITEMS_PER_PAGE) || 1;
+  const paginatedSubmissions = displayedList.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
   return (
     <div>
@@ -196,7 +208,7 @@ export default function ProductQCApprovalsPage() {
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {displayedList.map((item) => (
+          {paginatedSubmissions.map((item) => (
             <div
               key={item.id}
               style={{
@@ -300,6 +312,95 @@ export default function ProductQCApprovalsPage() {
             </div>
           ))}
         </div>
+
+        {/* ════════════ PAGINATION BAR (5 ITEMS PER PAGE) ════════════ */}
+        {displayedList.length > 0 && (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '0.85rem 1.4rem',
+              background: '#FFFFFF',
+              border: '1px solid var(--soft-gold-line)',
+              borderRadius: '10px',
+              marginTop: '1.25rem',
+              flexWrap: 'wrap',
+              gap: '0.75rem',
+            }}
+          >
+            <div style={{ fontSize: '0.84rem', color: '#6A5A50', fontWeight: 600 }}>
+              Showing <strong>{(currentPage - 1) * ITEMS_PER_PAGE + 1}</strong>–
+              <strong>{Math.min(currentPage * ITEMS_PER_PAGE, displayedList.length)}</strong> of{' '}
+              <strong>{displayedList.length}</strong> submissions
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <button
+                type="button"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                style={{
+                  padding: '0.38rem 0.75rem',
+                  borderRadius: '5px',
+                  border: '1px solid var(--soft-gold-line)',
+                  backgroundColor: '#FFFFFF',
+                  color: currentPage === 1 ? '#A89E96' : 'var(--ink-brown)',
+                  cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  opacity: currentPage === 1 ? 0.6 : 1,
+                }}
+              >
+                &larr; Prev
+              </button>
+
+              {Array.from({ length: totalPages }).map((_, i) => {
+                const pageNum = i + 1;
+                const isActive = pageNum === currentPage;
+                return (
+                  <button
+                    key={pageNum}
+                    type="button"
+                    onClick={() => setCurrentPage(pageNum)}
+                    style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '5px',
+                      border: isActive ? '1px solid var(--maharani-maroon)' : '1px solid var(--soft-gold-line)',
+                      backgroundColor: isActive ? 'var(--maharani-maroon)' : '#FFFFFF',
+                      color: isActive ? '#FFFFFF' : 'var(--ink-brown)',
+                      cursor: 'pointer',
+                      fontSize: '0.82rem',
+                      fontWeight: 800,
+                    }}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+
+              <button
+                type="button"
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                style={{
+                  padding: '0.38rem 0.75rem',
+                  borderRadius: '5px',
+                  border: '1px solid var(--soft-gold-line)',
+                  backgroundColor: '#FFFFFF',
+                  color: currentPage === totalPages ? '#A89E96' : 'var(--ink-brown)',
+                  cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  opacity: currentPage === totalPages ? 0.6 : 1,
+                }}
+              >
+                Next &rarr;
+              </button>
+            </div>
+          </div>
+        )}
       )}
 
       {/* Inspect Item Modal */}
