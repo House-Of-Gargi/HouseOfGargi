@@ -117,7 +117,7 @@ export function SellerShell({
               border: '1px solid var(--soft-gold-line)',
             }}
           >
-            Seller Hub
+            Artisan Partner
           </span>
         </header>
 

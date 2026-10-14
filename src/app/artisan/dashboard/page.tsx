@@ -19,7 +19,8 @@ import {
   Clock,
   Shirt,
   Layers,
-  Loader2
+  Loader2,
+  DollarSign
 } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
 import CustomDropdown from '@/components/CustomDropdown';
@@ -31,28 +32,68 @@ const STATUS_OPTIONS = [
   { value: 'Delivered', label: 'Delivered' },
 ];
 
-export default function SellerDashboardPage() {
+export default function ArtisanDashboardPage() {
   const router = useRouter();
   const [orders, setOrders] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
+  const [artisan, setArtisan] = useState<{
+    name: string;
+    artisanNo: string;
+    artStyle?: string;
+    regionalBelonging?: string;
+  }>({
+    name: 'Gopal Chandra Dey',
+    artisanNo: 'HG-84192',
+    artStyle: 'Tangail Jamdani Pit Loom',
+    regionalBelonging: 'Shantipur, Nadia, West Bengal',
+  });
+
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [updatingOrderId, setUpdatingOrderId] = useState<string | null>(null);
 
-  const fetchLiveSupabaseData = async () => {
+  const fetchLiveBackendData = async () => {
     try {
       setRefreshing(true);
-      const [ordersRes, productsRes] = await Promise.all([
-        supabase.from('orders').select('*').order('created_at', { ascending: false }),
-        supabase.from('products').select('*').order('created_at', { ascending: false }),
+
+      const sessionStr = typeof window !== 'undefined'
+        ? (localStorage.getItem('artisan_session') || localStorage.getItem('auth_session'))
+        : null;
+
+      let email = '';
+      if (sessionStr) {
+        try {
+          const parsed = JSON.parse(sessionStr);
+          if (parsed.email) email = parsed.email;
+          if (parsed.name) setArtisan(prev => ({ ...prev, name: parsed.name }));
+        } catch {}
+      }
+
+      // Parallel fetch from unified backend APIs
+      const [ordersRes, prodsRes, artisanRes] = await Promise.all([
+        fetch('/api/orders').then(r => r.json()).catch(() => ({ orders: [] })),
+        fetch('/api/admin/products').then(r => r.json()).catch(() => ({ products: [] })),
+        fetch(`/api/artisan/me${email ? `?email=${encodeURIComponent(email)}` : ''}`).then(r => r.json()).catch(() => ({})),
       ]);
 
-      if (ordersRes.data) setOrders(ordersRes.data);
-      if (productsRes.data) setProducts(productsRes.data);
+      if (ordersRes.success && Array.isArray(ordersRes.orders)) {
+        setOrders(ordersRes.orders);
+      }
+      if (prodsRes.success && Array.isArray(prodsRes.products)) {
+        setProducts(prodsRes.products);
+      }
+      if (artisanRes.success && artisanRes.artisan) {
+        setArtisan({
+          name: artisanRes.artisan.name || 'Gopal Chandra Dey',
+          artisanNo: artisanRes.artisan.artisanNo || 'HG-84192',
+          artStyle: artisanRes.artisan.artStyle || 'Tangail Jamdani Pit Loom',
+          regionalBelonging: artisanRes.artisan.regionalBelonging || 'Shantipur, Nadia, West Bengal',
+        });
+      }
     } catch (err) {
-      console.error('Failed to load Supabase dashboard data:', err);
+      console.error('Failed to load artisan dashboard backend data:', err);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -60,7 +101,7 @@ export default function SellerDashboardPage() {
   };
 
   useEffect(() => {
-    fetchLiveSupabaseData();
+    fetchLiveBackendData();
   }, []);
 
   const handleSignOut = async () => {
@@ -70,23 +111,26 @@ export default function SellerDashboardPage() {
       localStorage.removeItem('super_admin_session');
       localStorage.removeItem('auth_session');
     }
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+    } catch {}
     router.push('/seller/login?logout=true');
   };
 
   const handleUpdateOrderStatus = async (orderId: string, newStatus: string) => {
     try {
       setUpdatingOrderId(orderId);
-      const { error } = await supabase
-        .from('orders')
-        .update({ status: newStatus })
-        .eq('id', orderId);
 
-      if (error) throw error;
-
+      // Optimistic update
       setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o));
+
+      await fetch('/api/orders', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: orderId, status: newStatus }),
+      });
     } catch (err) {
-      console.error('Failed to update status in Supabase:', err);
+      console.error('Failed to update status in backend:', err);
       alert('Could not update order status. Please try again.');
     } finally {
       setUpdatingOrderId(null);
@@ -96,6 +140,7 @@ export default function SellerDashboardPage() {
   // Compute live business metrics
   const metrics = useMemo(() => {
     const totalRevenue = orders.reduce((sum, o) => sum + (Number(o.total_rupees) || 0), 0);
+    const artisanShare = Math.round(totalRevenue * 0.85);
     const totalOrders = orders.length;
     const aov = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
     const totalStock = products.reduce((sum, p) => sum + (Number(p.stock) || 0), 0);
@@ -104,7 +149,7 @@ export default function SellerDashboardPage() {
       return s === 'processing' || s === 'shipped' || s.includes('bespoke');
     }).length;
 
-    // Category breakdown directly from products
+    // Category breakdown directly from real products
     const categoriesMap: Record<string, { count: number; stock: number; label: string }> = {
       sarees: { count: 0, stock: 0, label: 'Banarasi Sarees' },
       lehengas: { count: 0, stock: 0, label: 'Bridal Lehengas' },
@@ -125,6 +170,7 @@ export default function SellerDashboardPage() {
 
     return {
       totalRevenue,
+      artisanShare,
       totalOrders,
       aov,
       totalStock,
@@ -148,7 +194,7 @@ export default function SellerDashboardPage() {
   return (
     <div>
       {/* ========================================================= */}
-      {/* 1. ATELIER HEADER CARD                                    */}
+      {/* 1. PERSONALIZED ARTISAN WELCOME HEADER                    */}
       {/* ========================================================= */}
       <div className="atelier-header-card">
         <div className="atelier-title-group">
@@ -157,10 +203,10 @@ export default function SellerDashboardPage() {
           </div>
           <div>
             <h1 className="atelier-page-title">
-              Atelier Seller <span style={{ color: 'var(--maharani-maroon)' }}>Dashboard</span>
+              Welcome, <span style={{ color: 'var(--maharani-maroon)' }}>{artisan.name}</span>
             </h1>
             <p style={{ fontSize: '1.05rem', color: '#4A3E36', margin: '0.35rem 0 0 0', fontWeight: 500 }}>
-              Handcrafted Indian Couture &bull; Live Order Fulfillment &amp; Catalog Management
+              Artisan ID: <strong style={{ color: 'var(--maharani-maroon)' }}>{artisan.artisanNo}</strong> &bull; {artisan.artStyle} &bull; Live Workshop Orders &amp; Loom Inventory
             </p>
           </div>
         </div>
@@ -169,8 +215,8 @@ export default function SellerDashboardPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
           <button
             type="button"
-            onClick={fetchLiveSupabaseData}
-            title="Refresh Live Data"
+            onClick={fetchLiveBackendData}
+            title="Sync Live Data"
             style={{
               background: 'var(--pure-white)',
               border: '1px solid var(--soft-gold-line)',
@@ -189,7 +235,7 @@ export default function SellerDashboardPage() {
             }}
           >
             <RefreshCw style={{ width: 14, height: 14, animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
-            Sync
+            Sync Data
           </button>
 
           <Link
@@ -212,7 +258,7 @@ export default function SellerDashboardPage() {
             }}
           >
             <Plus style={{ width: 15, height: 15 }} />
-            Add New Piece
+            My Creations
           </Link>
 
           <Link
@@ -237,7 +283,7 @@ export default function SellerDashboardPage() {
             }}
           >
             <ExternalLink style={{ width: 14, height: 14 }} />
-            Preview Boutique
+            Storefront
           </Link>
 
           <button
@@ -274,7 +320,7 @@ export default function SellerDashboardPage() {
         {/* Card 1: Gross Sales */}
         <div className="luxury-metric-card">
           <div className="metric-header">
-            <span className="metric-label">Gross Sales</span>
+            <span className="metric-label">Workshop Gross Sales</span>
             <div className="metric-icon-wrap">
               <TrendingUp style={{ width: 18, height: 18 }} />
             </div>
@@ -284,54 +330,54 @@ export default function SellerDashboardPage() {
               ₹ {metrics.totalRevenue.toLocaleString('en-IN')}
             </div>
             <p className="metric-subtext">
-              Real-time revenue from {metrics.totalOrders} client orders
+              Total sales volume across {metrics.totalOrders} client orders
             </p>
           </div>
         </div>
 
-        {/* Card 2: Orders Received */}
+        {/* Card 2: 85% Artisan Payout */}
         <div className="luxury-metric-card">
           <div className="metric-header">
-            <span className="metric-label">Client Orders</span>
+            <span className="metric-label">Your Atelier Share (85%)</span>
+            <div className="metric-icon-wrap">
+              <DollarSign style={{ width: 18, height: 18, color: '#2E7D32' }} />
+            </div>
+          </div>
+          <div>
+            <div className="metric-value" style={{ color: '#2E7D32' }}>
+              ₹ {metrics.artisanShare.toLocaleString('en-IN')}
+            </div>
+            <p className="metric-subtext">
+              Direct workshop payout ledger
+            </p>
+          </div>
+        </div>
+
+        {/* Card 3: Active Orders */}
+        <div className="luxury-metric-card">
+          <div className="metric-header">
+            <span className="metric-label">Active Loom Orders</span>
             <div className="metric-icon-wrap">
               <ShoppingBag style={{ width: 18, height: 18 }} />
             </div>
           </div>
           <div>
             <div className="metric-value">
-              {metrics.totalOrders}
+              {metrics.activeFulfillment}
             </div>
             <p className="metric-subtext">
               <span style={{ color: 'var(--maharani-maroon)', fontWeight: 700 }}>
                 {metrics.activeFulfillment} active
               </span>
-              &nbsp;in fulfillment pipeline
+              &nbsp;in weaving &amp; dispatch pipeline
             </p>
           </div>
         </div>
 
-        {/* Card 3: Average Order Value */}
+        {/* Card 4: Total Inventory Stock */}
         <div className="luxury-metric-card">
           <div className="metric-header">
-            <span className="metric-label">Average Order Value</span>
-            <div className="metric-icon-wrap">
-              <Sparkles style={{ width: 18, height: 18 }} />
-            </div>
-          </div>
-          <div>
-            <div className="metric-value">
-              ₹ {metrics.aov.toLocaleString('en-IN')}
-            </div>
-            <p className="metric-subtext">
-              High-ticket heirloom couture benchmark
-            </p>
-          </div>
-        </div>
-
-        {/* Card 4: Total Inventory */}
-        <div className="luxury-metric-card">
-          <div className="metric-header">
-            <span className="metric-label">Catalog &amp; Stock</span>
+            <span className="metric-label">Live Loom Stock</span>
             <div className="metric-icon-wrap">
               <PackageCheck style={{ width: 18, height: 18 }} />
             </div>
@@ -341,7 +387,7 @@ export default function SellerDashboardPage() {
               {metrics.totalStock} <span style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--stone-taupe)' }}>units</span>
             </div>
             <p className="metric-subtext">
-              Across {products.length} handcrafted master designs
+              Across {products.length} catalog couture creations
             </p>
           </div>
         </div>
@@ -362,7 +408,7 @@ export default function SellerDashboardPage() {
           </div>
 
           <Link
-            href="/seller/products"
+            href="/seller/inventory"
             style={{
               fontFamily: 'var(--font-nav)',
               fontSize: '0.85rem',
@@ -376,7 +422,7 @@ export default function SellerDashboardPage() {
               gap: '0.25rem',
             }}
           >
-            Manage Catalog <ChevronRight style={{ width: 14, height: 14 }} />
+            Manage Stock <ChevronRight style={{ width: 14, height: 14 }} />
           </Link>
         </div>
 
@@ -385,10 +431,10 @@ export default function SellerDashboardPage() {
             <div key={key} className="category-cell">
               <div>
                 <span className="category-cell-title">{data.label}</span>
-                <div className="category-cell-count">{data.count} <span style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)', fontWeight: 500 }}>styles</span></div>
+                <div className="category-cell-count">{data.count} <span style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)', fontWeight: 500 }}>designs</span></div>
               </div>
               <div className="category-cell-stock">
-                <strong>{data.stock}</strong> units in atelier stock
+                <strong>{data.stock}</strong> units in workshop stock
               </div>
             </div>
           ))}
@@ -410,8 +456,8 @@ export default function SellerDashboardPage() {
           }}>
             <AlertTriangle style={{ width: 16, height: 16, color: '#D97706', flexShrink: 0 }} />
             <span>
-              <strong>Inventory Notice:</strong> {metrics.lowStockItems.length} piece{metrics.lowStockItems.length > 1 ? 's have' : ' has'} low atelier stock (&le; 5 units):{' '}
-              {metrics.lowStockItems.map(p => p.name).join(', ')}.
+              <strong>Loom Notice:</strong> {metrics.lowStockItems.length} design{metrics.lowStockItems.length > 1 ? 's have' : ' has'} low workshop inventory (&le; 5 units):{' '}
+              {metrics.lowStockItems.map(p => p.name).slice(0, 3).join(', ')}{metrics.lowStockItems.length > 3 ? ` + ${metrics.lowStockItems.length - 3} more` : ''}.
             </span>
           </div>
         )}
@@ -427,13 +473,12 @@ export default function SellerDashboardPage() {
               Live Client Orders &amp; Fulfillment
             </h3>
             <p style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)', margin: '0.2rem 0 0 0' }}>
-              Connected live to Supabase table &apos;orders&apos; &bull; Update status to sync tracking
+              Connected live to order fulfillment registry &bull; Changes update courier tracking in real time
             </p>
           </div>
 
           {/* Controls: Search and Status filter */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
-            {/* Filter pills */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: 'var(--ivory-silk)', padding: '0.3rem', borderRadius: '4px', border: '1px solid var(--soft-gold-line)' }}>
               {[
                 { id: 'all', label: 'All' },
@@ -448,17 +493,17 @@ export default function SellerDashboardPage() {
                   onClick={() => setStatusFilter(f.id)}
                   style={{
                     background: statusFilter === f.id ? 'var(--maharani-maroon)' : 'transparent',
-                    color: statusFilter === f.id ? 'var(--ivory-silk)' : 'var(--stone-taupe)',
+                    color: statusFilter === f.id ? 'var(--ivory-silk)' : 'var(--ink-brown)',
                     border: 'none',
                     borderRadius: '2px',
-                    padding: '0.45rem 0.85rem',
-                    fontSize: '0.85rem',
+                    padding: '0.35rem 0.75rem',
+                    fontSize: '0.76rem',
                     fontFamily: 'var(--font-nav)',
                     fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
                     cursor: 'pointer',
-                    transition: 'all 150ms ease',
+                    transition: 'all 0.15s ease',
                   }}
                 >
                   {f.label}
@@ -466,111 +511,90 @@ export default function SellerDashboardPage() {
               ))}
             </div>
 
-            {/* Search */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              background: 'var(--pure-white)',
-              border: '1px solid var(--soft-gold-line)',
-              borderRadius: '2px',
-              padding: '0.45rem 0.85rem',
-            }}>
-              <Search style={{ width: 15, height: 15, color: 'var(--stone-taupe)', marginRight: '0.4rem' }} />
+            <div style={{ position: 'relative' }}>
+              <Search style={{ width: 14, height: 14, position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--stone-taupe)' }} />
               <input
                 type="text"
+                placeholder="Search orders..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search order or client..."
+                onChange={e => setSearchQuery(e.target.value)}
                 style={{
-                  border: 'none',
-                  outline: 'none',
-                  fontSize: '0.92rem',
-                  fontFamily: 'var(--font-sans)',
+                  padding: '0.45rem 0.75rem 0.45rem 2rem',
+                  fontSize: '0.85rem',
+                  borderRadius: '2px',
+                  border: '1px solid var(--soft-gold-line)',
+                  background: 'var(--pure-white)',
                   color: 'var(--ink-brown)',
-                  width: '180px',
-                  background: 'transparent',
+                  outline: 'none',
+                  minWidth: 180,
                 }}
               />
             </div>
           </div>
         </div>
 
-        {/* Table Content */}
-        <div style={{ overflowX: 'auto', marginTop: '1rem' }}>
-          <table className="luxury-table">
+        {/* Orders Table */}
+        <div style={{ overflowX: 'auto' }}>
+          <table className="seller-table">
             <thead>
               <tr>
-                <th>Order Reference</th>
+                <th>Order #</th>
                 <th>Client Name</th>
-                <th>Date Placed</th>
-                <th style={{ textAlign: 'right' }}>Total (INR)</th>
-                <th>Workflow Stage</th>
-                <th style={{ textAlign: 'center' }}>Live State</th>
+                <th>Destination</th>
+                <th>Gross Total</th>
+                <th>Atelier Share (85%)</th>
+                <th>Fulfillment Status</th>
+                <th>Update Status</th>
               </tr>
             </thead>
             <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--stone-taupe)' }}>
-                    <Loader2 style={{ width: 20, height: 20, animation: 'spin 1s linear infinite', display: 'inline-block', verticalAlign: 'middle', marginRight: '0.5rem' }} />
-                    Loading client orders from Supabase...
-                  </td>
-                </tr>
-              ) : filteredOrders.length === 0 ? (
-                <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--stone-taupe)' }}>
-                    No orders found matching your filter criteria.
-                  </td>
-                </tr>
-              ) : (
+              {filteredOrders.length > 0 ? (
                 filteredOrders.map(order => {
-                  const s = (order.status || '').toLowerCase();
+                  const gross = Number(order.total_rupees) || 0;
+                  const share = Math.round(gross * 0.85);
                   const isUpdating = updatingOrderId === order.id;
 
                   return (
                     <tr key={order.id}>
-                      <td style={{ fontWeight: 700, fontFamily: 'var(--font-nav)', color: 'var(--maharani-maroon)' }}>
-                        {order.order_number || `#HG-${order.id.slice(0, 4)}`}
+                      <td style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
+                        {order.order_number || `#HG-${order.id}`}
+                      </td>
+                      <td style={{ fontWeight: 600 }}>
+                        {order.customer_name || 'Patron'}
+                      </td>
+                      <td style={{ color: 'var(--stone-taupe)', fontSize: '0.88rem' }}>
+                        {order.delivery_city || 'India'}
+                      </td>
+                      <td style={{ fontWeight: 600 }}>
+                        ₹ {gross.toLocaleString('en-IN')}
+                      </td>
+                      <td style={{ fontWeight: 700, color: '#2E7D32' }}>
+                        ₹ {share.toLocaleString('en-IN')}
                       </td>
                       <td>
-                        <strong style={{ display: 'block', color: 'var(--ink-brown)', fontSize: '1rem' }}>
-                          {order.customer_name}
-                        </strong>
-                        {order.customer_phone && (
-                          <span style={{ fontSize: '0.85rem', color: 'var(--stone-taupe)', fontWeight: 500 }}>
-                            {order.customer_phone}
-                          </span>
-                        )}
+                        <span className={`badge badge--${(order.status || 'processing').toLowerCase().replace(' ', '-')}`}>
+                          {order.status || 'Processing'}
+                        </span>
                       </td>
-                      <td style={{ color: 'var(--stone-taupe)', fontSize: '0.92rem' }}>
-                        {order.created_at ? new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Recent'}
-                      </td>
-                      <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--ink-brown)', fontSize: '1rem' }}>
-                        ₹ {Number(order.total_rupees || 0).toLocaleString('en-IN')}
-                      </td>
-                      <td>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', minWidth: '170px' }}>
+                      <td style={{ minWidth: 170 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                           <CustomDropdown
-                            options={STATUS_OPTIONS}
                             value={order.status || 'Processing'}
-                            onChange={(val) => handleUpdateOrderStatus(order.id, val)}
-                            disabled={isUpdating}
-                            triggerStyle={{ padding: '0.4rem 0.7rem', fontSize: '0.88rem' }}
-                            menuStyle={{ minWidth: '175px' }}
+                            options={STATUS_OPTIONS}
+                            onChange={(newVal) => handleUpdateOrderStatus(order.id, newVal)}
                           />
                           {isUpdating && <Loader2 style={{ width: 14, height: 14, animation: 'spin 1s linear infinite', color: 'var(--maharani-maroon)' }} />}
                         </div>
                       </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <span className={`status-pill ${
-                          s === 'delivered' ? 'delivered' : s === 'shipped' ? 'shipped' : s.includes('bespoke') ? 'bespoke' : 'processing'
-                        }`}>
-                          {order.status || 'Pending'}
-                        </span>
-                      </td>
                     </tr>
                   );
                 })
+              ) : (
+                <tr>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--stone-taupe)' }}>
+                    No order records found matching the selected filter.
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>
