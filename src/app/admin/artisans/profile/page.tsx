@@ -13,6 +13,9 @@ import {
   Clock,
   Palette,
   ShieldCheck,
+  Upload,
+  Camera,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { AdminPageLoadingBlock } from '@/components/admin/AdminLoadingSpinner';
 
@@ -25,6 +28,7 @@ interface ArtisanProfileItem {
   experience: string;
   description: string;
   profileImage?: string;
+  image?: string;
 }
 
 export default function ArtisanProfileTablePage() {
@@ -45,12 +49,14 @@ export default function ArtisanProfileTablePage() {
     regionalBelonging: string;
     experience: string;
     description: string;
+    profileImage: string;
   }>({
     name: '',
     artStyle: '',
     regionalBelonging: '',
     experience: '',
     description: '',
+    profileImage: '/images/artisans_split.png',
   });
 
   const [saving, setSaving] = useState(false);
@@ -89,6 +95,7 @@ export default function ArtisanProfileTablePage() {
       regionalBelonging: artisan.regionalBelonging,
       experience: artisan.experience,
       description: artisan.description,
+      profileImage: artisan.profileImage || artisan.image || '/images/artisans_split.png',
     });
     setSaveSuccess('');
   };
@@ -113,16 +120,18 @@ export default function ArtisanProfileTablePage() {
 
       const data = await res.json();
       if (data.success) {
-        setSaveSuccess('Public profile updated successfully!');
+        setSaveSuccess('Public profile updated successfully! Changes published live.');
         setProfiles((prev) =>
           prev.map((p) =>
-            p.id === editingProfile.id ? { ...p, ...editForm } : p
+            p.id === editingProfile.id || p.artisanNo === editingProfile.artisanNo
+              ? { ...p, ...editForm, profileImage: editForm.profileImage, image: editForm.profileImage }
+              : p
           )
         );
         setTimeout(() => {
           setEditingProfile(null);
           setSaveSuccess('');
-        }, 700);
+        }, 900);
       }
     } catch (err) {
       console.error('Error saving profile:', err);
@@ -150,122 +159,172 @@ export default function ArtisanProfileTablePage() {
   );
 
   return (
-    <div>
+    <div style={{ maxWidth: '1400px', margin: '0 auto', paddingBottom: '3rem' }}>
       {/* ════════════ PAGE HEADER ════════════ */}
-      <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
-        <div style={{ marginBottom: '0.35rem' }}>
-          <span style={{ fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
-            Artisan Governance
+      <div style={{ marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.4rem' }}>
+          <span style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--maharani-maroon)' }}>
+            Artisan Administration
+          </span>
+          <span style={{ color: 'var(--gargi-gold)' }}>✦</span>
+          <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--stone-taupe)' }}>
+            Master Atelier Directory
           </span>
         </div>
-        <h1 style={{ fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0, lineHeight: 1.2 }}>
-          Artist Profiles <span style={{ color: 'var(--maharani-maroon)' }}>({profiles.length})</span>
+        <h1 style={{ margin: '0 0 0.5rem', fontSize: '2rem', fontWeight: 800, color: 'var(--ink-brown)', letterSpacing: '-0.02em' }}>
+          Artisan Public Profiles
         </h1>
-        <p style={{ margin: '0.35rem 0 0', color: '#4A3E36', fontSize: '1.05rem' }}>
-          Directory of public artisan profiles displayed to customers when viewing handcrafted pieces across the storefront.
+        <p style={{ margin: 0, fontSize: '0.95rem', color: '#6A5A50', maxWidth: '750px', lineHeight: 1.55 }}>
+          Manage artisan biographies, regional belonging, loom heritage, and official profile pictures. All changes publish immediately to the live customer portal and dedicated artisan profile pages.
         </p>
       </div>
 
-      {/* ════════════ SEARCH BAR ════════════ */}
+      {/* ════════════ METRICS BAR ════════════ */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: '1rem',
+          marginBottom: '1.75rem',
+        }}
+      >
+        <div
+          style={{
+            background: '#FAF7F2',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '10px',
+            padding: '1.25rem 1.4rem',
+            boxShadow: '0 2px 8px rgba(35, 24, 18, 0.04)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+            <span style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#7A6B60' }}>
+              Total Artisans
+            </span>
+            <Users size={18} color="var(--maharani-maroon)" />
+          </div>
+          <div style={{ fontSize: '1.9rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
+            {profiles.length}
+          </div>
+        </div>
+
+        <div
+          style={{
+            background: '#FAF7F2',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '10px',
+            padding: '1.25rem 1.4rem',
+            boxShadow: '0 2px 8px rgba(35, 24, 18, 0.04)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+            <span style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#7A6B60' }}>
+              Live on Storefront
+            </span>
+            <ShieldCheck size={18} color="var(--gargi-gold)" />
+          </div>
+          <div style={{ fontSize: '1.9rem', fontWeight: 800, color: 'var(--maharani-maroon)' }}>
+            {profiles.length}
+          </div>
+        </div>
+
+        <div
+          style={{
+            background: '#FAF7F2',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '10px',
+            padding: '1.25rem 1.4rem',
+            boxShadow: '0 2px 8px rgba(35, 24, 18, 0.04)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+            <span style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#7A6B60' }}>
+              Primary Art Styles
+            </span>
+            <Palette size={18} color="#2A6F4E" />
+          </div>
+          <div style={{ fontSize: '1.9rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
+            Jamdani & Kadwa
+          </div>
+        </div>
+      </div>
+
+      {/* ════════════ SEARCH & CONTROLS ════════════ */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '0.85rem',
-          padding: '12px 16px',
-          background: '#FFFFFF',
-          border: '1px solid var(--soft-gold-line)',
-          borderRadius: '10px',
-          marginBottom: '1.5rem',
+          justifyContent: 'space-between',
+          gap: '1rem',
+          flexWrap: 'wrap',
+          marginBottom: '1.25rem',
         }}
       >
-        <Search size={18} color="var(--stone-taupe)" />
-        <input
-          type="text"
-          placeholder="Search by artisan name, art style, region, or craft description..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          style={{
-            flex: 1,
-            border: 'none',
-            outline: 'none',
-            fontSize: '0.96rem',
-            background: 'transparent',
-            color: 'var(--ink-brown)',
-          }}
-        />
+        <div style={{ position: 'relative', width: '360px', maxWidth: '100%' }}>
+          <Search
+            size={16}
+            style={{
+              position: 'absolute',
+              left: '12px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              color: '#8A7B70',
+            }}
+          />
+          <input
+            type="text"
+            placeholder="Search by name, artisan ID, art style, region..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '0.65rem 0.85rem 0.65rem 2.3rem',
+              borderRadius: '6px',
+              border: '1.5px solid var(--soft-gold-line)',
+              backgroundColor: '#FFFFFF',
+              fontSize: '0.88rem',
+              color: 'var(--ink-brown)',
+              outline: 'none',
+              boxSizing: 'border-box',
+            }}
+          />
+        </div>
       </div>
 
-      {/* ════════════ STANDARD TABULAR FORMAT ════════════ */}
+      {/* ════════════ TABLE ════════════ */}
       {loading ? (
-        <AdminPageLoadingBlock minHeight="240px" message="Loading artist profiles..." />
-      ) : filtered.length === 0 ? (
-        <div
-          style={{
-            padding: '3.5rem 2rem',
-            textAlign: 'center',
-            background: '#FFFFFF',
-            border: '1px solid var(--soft-gold-line)',
-            borderRadius: '12px',
-            color: 'var(--stone-taupe)',
-            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
-          }}
-        >
-          <div style={{ width: 48, height: 48, borderRadius: '50%', background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem', color: 'var(--gargi-gold)' }}>
-            <Users size={24} />
-          </div>
-          <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--ink-brown)', margin: '0 0 0.5rem' }}>
-            No Artist Profiles Found
-          </h3>
-          <p style={{ margin: 0, fontSize: '0.95rem', color: '#5C5043' }}>
-            {searchQuery ? `No profiles match "${searchQuery}".` : 'No verified artisan profiles registered.'}
-          </p>
-        </div>
+        <AdminPageLoadingBlock message="Loading master artisan directory..." />
       ) : (
         <div
           style={{
-            background: '#FFFFFF',
-            border: '1px solid var(--soft-gold-line)',
+            backgroundColor: '#FFFFFF',
+            border: '1.5px solid var(--soft-gold-line)',
             borderRadius: '12px',
-            boxShadow: '0 2px 14px rgba(43,31,24,0.03)',
-            overflowX: 'auto',
+            boxShadow: '0 4px 16px rgba(35, 24, 18, 0.05)',
+            overflow: 'hidden',
           }}
         >
-          <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, textAlign: 'left' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
               <tr
                 style={{
-                  background: '#FAF7F2',
+                  backgroundColor: '#FAF7F2',
                   borderBottom: '1.5px solid var(--soft-gold-line)',
-                  color: '#5C5043',
-                  fontWeight: 800,
-                  fontSize: '0.84rem',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.08em',
                 }}
               >
-                {/* 1. Name */}
-                <th style={{ padding: '1rem 1.3rem', width: '220px', borderTopLeftRadius: '11px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
-                  Name
+                <th style={{ padding: '0.95rem 1.3rem', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043' }}>
+                  Master Artisan
                 </th>
-
-                {/* 2. Art Style */}
-                <th style={{ padding: '1rem 1.3rem', width: '210px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                <th style={{ padding: '0.95rem 1.3rem', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043' }}>
                   Art Style
                 </th>
-
-                {/* 3. Regional Belonging */}
-                <th style={{ padding: '1rem 1.3rem', width: '220px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                <th style={{ padding: '0.95rem 1.3rem', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043' }}>
                   Regional Belonging
                 </th>
-
-                {/* 4. Experience */}
-                <th style={{ padding: '1rem 1.3rem', width: '180px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                <th style={{ padding: '0.95rem 1.3rem', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043' }}>
                   Experience
                 </th>
-
-                {/* 5. Actions */}
-                <th style={{ padding: '1rem 1.3rem', textAlign: 'right', width: '320px', borderTopRightRadius: '11px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                <th style={{ padding: '0.95rem 1.3rem', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', textAlign: 'right' }}>
                   Actions
                 </th>
               </tr>
@@ -281,13 +340,36 @@ export default function ArtisanProfileTablePage() {
                   onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#FAF7F2')}
                   onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFFFFF')}
                 >
-                  {/* 1. Name & Artisan No */}
-                  <td style={{ padding: '1.1rem 1.3rem', borderBottom: '1px solid #F0E8DC' }}>
-                    <div style={{ fontWeight: 800, color: 'var(--ink-brown)', fontSize: '1.05rem' }}>
-                      {artisan.name}
-                    </div>
-                    <div style={{ fontFamily: 'monospace', fontSize: '0.82rem', fontWeight: 800, color: 'var(--maharani-maroon)', marginTop: '2px' }}>
-                      {artisan.artisanNo}
+                  {/* 1. Name, Photo & Artisan No */}
+                  <td style={{ padding: '1rem 1.3rem', borderBottom: '1px solid #F0E8DC' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                      <div style={{
+                        width: '44px',
+                        height: '44px',
+                        borderRadius: '50%',
+                        overflow: 'hidden',
+                        border: '1.5px solid var(--gargi-gold)',
+                        padding: '1.5px',
+                        background: '#FFFFFF',
+                        flexShrink: 0,
+                      }}>
+                        <img
+                          src={artisan.profileImage || artisan.image || '/images/artisans_split.png'}
+                          alt={artisan.name}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = '/images/artisans_split.png';
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 800, color: 'var(--ink-brown)', fontSize: '1rem' }}>
+                          {artisan.name}
+                        </div>
+                        <div style={{ fontFamily: 'monospace', fontSize: '0.8rem', fontWeight: 800, color: 'var(--maharani-maroon)', marginTop: '1px' }}>
+                          {artisan.artisanNo}
+                        </div>
+                      </div>
                     </div>
                   </td>
 
@@ -428,8 +510,8 @@ export default function ArtisanProfileTablePage() {
                       backgroundColor: isActive ? 'var(--maharani-maroon)' : '#FFFFFF',
                       color: isActive ? '#FFFFFF' : 'var(--ink-brown)',
                       cursor: 'pointer',
-                      fontSize: '0.82rem',
                       fontWeight: 800,
+                      fontSize: '0.85rem',
                     }}
                   >
                     {pageNum}
@@ -483,7 +565,7 @@ export default function ArtisanProfileTablePage() {
               borderRadius: '12px',
               maxWidth: '560px',
               width: '100%',
-              maxHeight: '85vh',
+              maxHeight: '88vh',
               overflowY: 'auto',
               boxShadow: '0 20px 48px rgba(0,0,0,0.25)',
             }}
@@ -519,6 +601,71 @@ export default function ArtisanProfileTablePage() {
 
             {/* Content */}
             <div style={{ padding: '1.65rem' }}>
+
+              {/* 1. Profile Picture & Live Status Preview */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1.25rem',
+                  padding: '1.15rem',
+                  background: '#FAF7F2',
+                  border: '1px solid var(--soft-gold-line)',
+                  borderRadius: '8px',
+                  marginBottom: '1.25rem',
+                }}
+              >
+                <div
+                  style={{
+                    width: '84px',
+                    height: '84px',
+                    borderRadius: '50%',
+                    overflow: 'hidden',
+                    border: '2.5px solid var(--gargi-gold)',
+                    padding: '2px',
+                    background: '#FFFFFF',
+                    boxShadow: '0 4px 14px rgba(122,35,49,0.12)',
+                    flexShrink: 0,
+                  }}
+                >
+                  <img
+                    src={viewingProfile.profileImage || viewingProfile.image || '/images/artisans_split.png'}
+                    alt={viewingProfile.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/images/artisans_split.png';
+                    }}
+                  />
+                </div>
+                <div>
+                  <div
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      background: '#E8F5E9',
+                      color: '#2E7D32',
+                      padding: '2px 9px',
+                      borderRadius: '12px',
+                      fontSize: '0.72rem',
+                      fontWeight: 800,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    <Check size={12} /> Live on Customer Portal
+                  </div>
+                  <div style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
+                    {viewingProfile.name}
+                  </div>
+                  <div style={{ fontSize: '0.84rem', color: '#6E5D52', marginTop: '2px' }}>
+                    Artisan ID: <strong style={{ color: 'var(--maharani-maroon)' }}>{viewingProfile.artisanNo}</strong>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2. Metadata Box */}
               <div style={{ background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', borderRadius: '8px', padding: '1.15rem', marginBottom: '1.25rem' }}>
                 <div style={{ marginBottom: '0.75rem' }}>
                   <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#8C7B70', fontWeight: 700 }}>
@@ -549,6 +696,7 @@ export default function ArtisanProfileTablePage() {
                 </div>
               </div>
 
+              {/* 3. Description Box */}
               <div>
                 <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.4rem' }}>
                   Description about the Artist
@@ -583,7 +731,7 @@ export default function ArtisanProfileTablePage() {
               backgroundColor: '#FFFFFF',
               border: '1.5px solid var(--soft-gold-line)',
               borderRadius: '12px',
-              maxWidth: '580px',
+              maxWidth: '620px',
               width: '100%',
               maxHeight: '90vh',
               overflowY: 'auto',
@@ -620,6 +768,177 @@ export default function ArtisanProfileTablePage() {
             </div>
 
             <form onSubmit={handleSaveProfile} style={{ padding: '1.65rem', display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
+              
+              {/* ── 0. PROFILE PICTURE & LIVE PREVIEW ── */}
+              <div
+                style={{
+                  background: '#FAF7F2',
+                  border: '1.5px solid var(--soft-gold-line)',
+                  borderRadius: '8px',
+                  padding: '1.15rem',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', margin: 0 }}>
+                    <Camera size={15} color="var(--maharani-maroon)" />
+                    <span>Artisan Profile Picture</span>
+                  </label>
+                  <span style={{ fontSize: '0.74rem', color: '#7A6B60', fontWeight: 600 }}>
+                    Live Preview below
+                  </span>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
+                  {/* Left: What currently is there (Real-time Preview) */}
+                  <div style={{ textAlign: 'center', flexShrink: 0 }}>
+                    <div
+                      style={{
+                        width: '88px',
+                        height: '88px',
+                        borderRadius: '50%',
+                        overflow: 'hidden',
+                        border: '2.5px solid var(--gargi-gold)',
+                        padding: '2px',
+                        background: '#FFFFFF',
+                        boxShadow: '0 4px 14px rgba(122,35,49,0.12)',
+                        margin: '0 auto 6px',
+                      }}
+                    >
+                      <img
+                        src={editForm.profileImage || '/images/artisans_split.png'}
+                        alt="Current profile preview"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/images/artisans_split.png';
+                        }}
+                      />
+                    </div>
+                    <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      Current Photo
+                    </span>
+                  </div>
+
+                  {/* Right: Upload File or Enter URL */}
+                  <div style={{ flex: 1, minWidth: '220px', display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                    <div>
+                      <label
+                        htmlFor="artisan-pic-upload"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '7px',
+                          padding: '0.55rem 1rem',
+                          backgroundColor: '#FFFFFF',
+                          border: '1.5px solid var(--gargi-gold)',
+                          borderRadius: '6px',
+                          cursor: 'pointer',
+                          fontWeight: 700,
+                          fontSize: '0.84rem',
+                          color: 'var(--ink-brown)',
+                          boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
+                          transition: 'all 0.15s ease',
+                        }}
+                      >
+                        <Upload size={15} color="var(--maharani-maroon)" />
+                        <span>Upload New Picture</span>
+                      </label>
+                      <input
+                        id="artisan-pic-upload"
+                        type="file"
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onload = (uploadEvt) => {
+                              if (uploadEvt.target?.result) {
+                                setEditForm((prev) => ({
+                                  ...prev,
+                                  profileImage: uploadEvt.target!.result as string,
+                                }));
+                              }
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                      />
+                      <span style={{ marginLeft: '10px', fontSize: '0.75rem', color: '#7A6B60' }}>
+                        Supports JPG, PNG, WebP
+                      </span>
+                    </div>
+
+                    <div>
+                      <input
+                        type="text"
+                        value={editForm.profileImage}
+                        onChange={(e) => setEditForm({ ...editForm, profileImage: e.target.value })}
+                        placeholder="Or enter image URL (/images/... or https://...)"
+                        style={{
+                          width: '100%',
+                          padding: '0.5rem 0.75rem',
+                          borderRadius: '6px',
+                          border: '1px solid var(--soft-gold-line)',
+                          fontSize: '0.82rem',
+                          background: '#FFFFFF',
+                          boxSizing: 'border-box',
+                        }}
+                      />
+                    </div>
+
+                    {/* Quick Preset Avatars */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.72rem', color: '#8C7B70', fontWeight: 600 }}>Presets:</span>
+                      <button
+                        type="button"
+                        onClick={() => setEditForm((prev) => ({ ...prev, profileImage: '/images/artisans_split.png' }))}
+                        style={{
+                          padding: '2px 8px',
+                          fontSize: '0.72rem',
+                          background: '#FFFFFF',
+                          border: '1px solid var(--soft-gold-line)',
+                          borderRadius: '12px',
+                          cursor: 'pointer',
+                          color: '#5C5043',
+                        }}
+                      >
+                        Master Weaver
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setEditForm((prev) => ({ ...prev, profileImage: '/assets/artisan-hands.png' }))}
+                        style={{
+                          padding: '2px 8px',
+                          fontSize: '0.72rem',
+                          background: '#FFFFFF',
+                          border: '1px solid var(--soft-gold-line)',
+                          borderRadius: '12px',
+                          cursor: 'pointer',
+                          color: '#5C5043',
+                        }}
+                      >
+                        Hands at Loom
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setEditForm((prev) => ({ ...prev, profileImage: '/images/collections/collection-sarees.jpg' }))}
+                        style={{
+                          padding: '2px 8px',
+                          fontSize: '0.72rem',
+                          background: '#FFFFFF',
+                          border: '1px solid var(--soft-gold-line)',
+                          borderRadius: '12px',
+                          cursor: 'pointer',
+                          color: '#5C5043',
+                        }}
+                      >
+                        Silk Atelier
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* 1. Name */}
               <div>
                 <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
