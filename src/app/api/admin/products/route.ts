@@ -49,23 +49,31 @@ function generateUniqueProductNo(existingCodes: Set<string>): string {
 }
 
 // Consistent Sales Units Map
-const SALES_MAP: Record<string, number> = {
-  'banarasi-gold-weave': 86,
-  'kanchipuram-temple-border': 64,
-  'chanderi-floral-jaal': 112,
-  'tussar-block-print': 95,
-  'paithani-peacock': 38,
-  'royal-zardozi-lehenga': 24,
-  'gota-patti-lehenga': 45,
-  'chikankari-white-kurta': 142,
-  'sanganeri-block-print-kurta': 168,
-  'shantipur-tangail-saree': 52,
-  'nadia-mulberry-jamdani': 31,
-};
+// Real orders counting (0 when no orders have happened yet)
+const ORDERS_FILE = path.join(process.cwd(), 'src', 'data', 'backend_orders.json');
+function getRealProductSalesMap(): Record<string, number> {
+  const map: Record<string, number> = {};
+  if (fs.existsSync(ORDERS_FILE)) {
+    try {
+      const orders = JSON.parse(fs.readFileSync(ORDERS_FILE, 'utf8'));
+      if (Array.isArray(orders)) {
+        orders.forEach((o: any) => {
+          if (Array.isArray(o.items)) {
+            o.items.forEach((it: any) => {
+              map[it.id] = (map[it.id] || 0) + (Number(it.quantity) || 1);
+            });
+          }
+        });
+      }
+    } catch {}
+  }
+  return map;
+}
 
 export async function GET() {
   try {
     const productNumbers = getProductNumbers();
+    const realSalesMap = getRealProductSalesMap();
     const productOverrides = getProductOverrides();
     const existingCodes = new Set(Object.values(productNumbers));
 
@@ -108,7 +116,7 @@ export async function GET() {
         category: sp.category || catMatch?.category || 'sarees',
         price: productOverrides[sp.id]?.price || sp.price_in_rupees || catMatch?.price || 0,
         stock: productOverrides[sp.id]?.stock ?? (sp.stock ?? 10),
-        totalSales: sp.total_units_sold ?? (SALES_MAP[catMatch?.id || ''] || 28),
+        totalSales: realSalesMap[sp.id] || 0,
         images,
         description: productOverrides[sp.id]?.description || catMatch?.description || 'Authentic handcrafted heritage creation.',
         // All products listed solely under Gopal Chandra Dey (HG-84192)
