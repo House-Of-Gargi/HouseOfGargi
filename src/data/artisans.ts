@@ -2,6 +2,42 @@ import { Artisan } from '@/types';
 
 export const artisans: Artisan[] = [
   {
+    id: 'gopal-chandra-dey',
+    name: 'Gopal Chandra Dey',
+    role: 'Master Tangail Jamdani Pit Loom Weaver',
+    region: 'Shantipur, Nadia, West Bengal, India',
+    lineage: '4th Generation Pit Loom Lineage (Trained by Late Narayan Chandra Dey)',
+    experienceYears: 32,
+    loomHoursTotal: '15,000+ Loom Hours Preserved',
+    image: '/images/artisans_split.png',
+    coverImage: '/images/banner-sarees-wide.png',
+    bio: 'Rooted in the historic weaving cluster of Shantipur, Nadia, Master Gopal Chandra Dey preserves the centuries-old royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to hand-craft timeless heirloom drapes originally celebrated in Royal Bengal courts.',
+    philosophy: '"In Shantipur, every Jamdani motif is a sacred prayer of rhythm, breath, and patience. When the shuttle moves across mulberry silk on our pit loom, time stands still."',
+    specialties: ['Tangail Jamdani Pit Loom Weave', '100% Murshidabad Mulberry Silk', 'Tested Real Silver & Gold Zari', 'Natural AZO-Free Vegetable Dyes', 'Terracotta & Geometric Peacock Motifs'],
+    awards: ['Heritage Guild Certified Master Artisan (2026)', 'Silk Mark Certified Handloom Weaver', 'Preserver of Shantipur Pit Loom Weaving Heritage'],
+    productIds: [
+      'banarasi-gold-weave',
+      'kanchipuram-temple-border',
+      'chanderi-floral-jaal',
+      'tussar-block-print',
+      'paithani-peacock',
+      'royal-zardozi-lehenga',
+      'gota-patti-lehenga',
+      'chikankari-anarkali-lehenga',
+      'bandhani-mirror-work-lehenga',
+      'banarasi-brocade-lehenga',
+      'sanganeri-block-print-kurta',
+      'chikankari-white-kurta',
+      'chanderi-silk-angrakha',
+      'kalamkari-anarkali-kurta',
+      'bandhani-silk-kurta',
+      'kundan-choker-set',
+      'polki-jhumkas',
+      'phulkari-dupatta'
+    ],
+  },
+
+  {
     id: 'ramdas-mishra',
     name: 'Master Ramdas Mishra & Family',
     role: 'Master Banarasi Kadwa Weaver',
@@ -164,6 +200,7 @@ export const artisans: Artisan[] = [
 ];
 
 export function getArtisan(id: string): Artisan | undefined {
+  if (id === 'HG-84192' || id === 'gopal-chandra-dey') return artisans.find(a => a.id === 'gopal-chandra-dey');
   return artisans.find(a => a.id === id);
 }
 

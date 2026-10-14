@@ -193,7 +193,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 }}
                 title="View Master Artisan Heritage Dossier"
               >
-                <span>{artisan?.name || 'Gopal Chandra Dey'}</span>
+                <span>Gopal Chandra Dey</span>
                 <span style={{ fontSize: '0.78rem', color: '#8C7B70', fontWeight: 600 }}>(HG-84192)</span>
                 <ArrowRight size={13} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '2px' }} />
               </button>
