@@ -3,7 +3,6 @@ import fs from 'fs';
 import path from 'path';
 import { supabase } from '@/lib/supabaseClient';
 import { products as catalogProducts } from '@/data/products';
-import { artisans as masterArtisans } from '@/data/artisans';
 
 const PRODUCT_NUMBERS_FILE = path.join(process.cwd(), 'src', 'data', 'product_numbers.json');
 const PRODUCT_OVERRIDES_FILE = path.join(process.cwd(), 'src', 'data', 'product_overrides.json');
@@ -49,6 +48,21 @@ function generateUniqueProductNo(existingCodes: Set<string>): string {
   return code;
 }
 
+// Consistent Sales Units Map
+const SALES_MAP: Record<string, number> = {
+  'banarasi-gold-weave': 86,
+  'kanchipuram-temple-border': 64,
+  'chanderi-floral-jaal': 112,
+  'tussar-block-print': 95,
+  'paithani-peacock': 38,
+  'royal-zardozi-lehenga': 24,
+  'gota-patti-lehenga': 45,
+  'chikankari-white-kurta': 142,
+  'sanganeri-block-print-kurta': 168,
+  'shantipur-tangail-saree': 52,
+  'nadia-mulberry-jamdani': 31,
+};
+
 export async function GET() {
   try {
     const productNumbers = getProductNumbers();
@@ -66,22 +80,13 @@ export async function GET() {
       console.warn('Supabase fetch products warning:', sbErr);
     }
 
-    // Map artisans for quick lookup
-    const artisanMap = new Map<string, any>();
-    masterArtisans.forEach((a) => {
-      artisanMap.set(a.id, a);
-      artisanMap.set(a.name.toLowerCase(), a);
-    });
-
-    // Merge catalog and Supabase products
     const mergedList: any[] = [];
     const processedIds = new Set<string>();
 
-    // Add Supabase products
+    // Process Supabase products — ALL attributed solely to Gopal Chandra Dey (HG-84192)
     supabaseProducts.forEach((sp) => {
       processedIds.add(sp.id);
 
-      // Assign ART-XXXXX product number if not yet assigned
       let pNo = productNumbers[sp.id];
       if (!pNo) {
         pNo = generateUniqueProductNo(existingCodes);
@@ -89,17 +94,12 @@ export async function GET() {
         existingCodes.add(pNo);
       }
 
-      // Check if catalog has richer metadata for this item
       const catMatch = catalogProducts.find(
         (cp) => cp.name.toLowerCase() === (sp.name || '').toLowerCase()
       );
 
-      // Build images list (support multiple images)
       const baseImages = catMatch?.images || [sp.image_url || '/images/category-sarees.png'];
       const images = (productOverrides[sp.id]?.images) || baseImages;
-
-      // Find artisan
-      const artObj = catMatch && catMatch.artisanId ? artisanMap.get(catMatch.artisanId) : null;
 
       mergedList.push({
         id: sp.id,
@@ -108,13 +108,15 @@ export async function GET() {
         category: sp.category || catMatch?.category || 'sarees',
         price: productOverrides[sp.id]?.price || sp.price_in_rupees || catMatch?.price || 0,
         stock: productOverrides[sp.id]?.stock ?? (sp.stock ?? 10),
-        totalSales: sp.total_units_sold ?? (catMatch ? 34 : 0),
+        totalSales: sp.total_units_sold ?? (SALES_MAP[catMatch?.id || ''] || 28),
         images,
         description: productOverrides[sp.id]?.description || catMatch?.description || 'Authentic handcrafted heritage creation.',
-        artisanName: catMatch?.artisanName || sp.artisan_name || 'Master Artisan Guild',
-        artisanNo: artObj && catMatch?.artisanId ? `HG-${Math.abs(catMatch.artisanId.split('').reduce((acc: number, c: string) => acc + c.charCodeAt(0), 10000) % 90000 + 10000)}` : 'HG-84192',
-        artType: sp.craft_technique || catMatch?.technique || 'Handloom Heritage Weave',
-        fabric: catMatch?.fabric || 'Pure Silk',
+        // All products listed solely under Gopal Chandra Dey (HG-84192)
+        artisanName: 'Gopal Chandra Dey',
+        artisanNo: 'HG-84192',
+        artisanId: 'HG-ART-260501',
+        artType: sp.craft_technique || catMatch?.technique || 'Tangail Jamdani Pit Loom',
+        fabric: catMatch?.fabric || 'Pure Mulberry Silk',
         occasion: catMatch?.occasion || 'Festive & Celebration',
         curationStatus: productOverrides[sp.id]?.curationStatus || sp.curation_status || 'approved',
         createdAt: sp.created_at || new Date().toISOString(),
@@ -132,7 +134,6 @@ export async function GET() {
         }
 
         const images = productOverrides[cp.id]?.images || cp.images || ['/images/category-sarees.png'];
-        const artObj = cp.artisanId ? artisanMap.get(cp.artisanId) : null;
 
         mergedList.push({
           id: cp.id,
@@ -141,13 +142,15 @@ export async function GET() {
           category: cp.category,
           price: productOverrides[cp.id]?.price || cp.price,
           stock: productOverrides[cp.id]?.stock ?? 12,
-          totalSales: cp.id.length * 6,
+          totalSales: SALES_MAP[cp.id] || 36,
           images,
           description: productOverrides[cp.id]?.description || cp.description,
-          artisanName: cp.artisanName || 'Master Artisan',
-          artisanNo: artObj && cp.artisanId ? `HG-${Math.abs(cp.artisanId.split('').reduce((acc: number, c: string) => acc + c.charCodeAt(0), 10000) % 90000 + 10000)}` : 'HG-84192',
-          artType: cp.technique || 'Handloom Zari',
-          fabric: cp.fabric || 'Pure Silk',
+          // All products listed solely under Gopal Chandra Dey (HG-84192)
+          artisanName: 'Gopal Chandra Dey',
+          artisanNo: 'HG-84192',
+          artisanId: 'HG-ART-260501',
+          artType: cp.technique || 'Tangail Jamdani Pit Loom',
+          fabric: cp.fabric || 'Pure Mulberry Silk',
           occasion: cp.occasion || 'Wedding & Festive',
           curationStatus: productOverrides[cp.id]?.curationStatus || 'approved',
           createdAt: new Date().toISOString(),
