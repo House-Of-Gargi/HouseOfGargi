@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, FormEvent } from 'react';
+import Link from 'next/link';
 import { 
   Shirt, 
   Plus, 
@@ -10,7 +11,14 @@ import {
   X, 
   RefreshCw,
   Eye,
-  Pencil
+  Pencil,
+  Images,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+  Upload,
+  Star,
+  CheckCircle2
 } from 'lucide-react';
 import CustomDropdown from '@/components/CustomDropdown';
 
@@ -41,6 +49,133 @@ export default function SellerProductsPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+
+  // Image Editor Modal State
+  const [imageEditorProduct, setImageEditorProduct] = useState<any | null>(null);
+  const [editingImages, setEditingImages] = useState<string[]>([]);
+  const [newImageUrl, setNewImageUrl] = useState('');
+  const [savingImages, setSavingImages] = useState(false);
+  const [imageSaveSuccess, setImageSaveSuccess] = useState('');
+  const [uploadingFiles, setUploadingFiles] = useState(false);
+
+  // Open Image Editor Modal
+  const handleOpenImageEditor = (product: any) => {
+    setImageEditorProduct(product);
+    const imgs = Array.isArray(product.images) && product.images.length > 0
+      ? [...product.images]
+      : [product.image_url || '/images/category-sarees.png'];
+    setEditingImages(imgs);
+    setNewImageUrl('');
+    setImageSaveSuccess('');
+  };
+
+  // Reorder Images (Move Left / Right)
+  const handleMoveImage = (index: number, direction: 'left' | 'right') => {
+    const targetIndex = direction === 'left' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= editingImages.length) return;
+    const updated = [...editingImages];
+    const temp = updated[index];
+    updated[index] = updated[targetIndex];
+    updated[targetIndex] = temp;
+    setEditingImages(updated);
+  };
+
+  // Set selected image as Cover (Position 0)
+  const handleSetCover = (index: number) => {
+    if (index === 0) return;
+    const updated = [...editingImages];
+    const [selected] = updated.splice(index, 1);
+    updated.unshift(selected);
+    setEditingImages(updated);
+  };
+
+  // Remove image
+  const handleRemoveImage = (index: number) => {
+    if (editingImages.length <= 1) {
+      alert('Every authentic creation requires at least one showcase image.');
+      return;
+    }
+    const updated = editingImages.filter((_, i) => i !== index);
+    setEditingImages(updated);
+  };
+
+  // Upload local image files
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    setUploadingFiles(true);
+
+    const readers: Promise<string>[] = Array.from(files).map((file) => {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (uploadEvt) => {
+          if (uploadEvt.target?.result) {
+            resolve(uploadEvt.target.result as string);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+
+    Promise.all(readers).then((newImgs) => {
+      setEditingImages((prev) => [...prev, ...newImgs]);
+      setUploadingFiles(false);
+    }).catch(() => setUploadingFiles(false));
+
+    e.target.value = '';
+  };
+
+  // Add Image by URL
+  const handleAddImageUrl = () => {
+    const trimmed = newImageUrl.trim();
+    if (!trimmed) return;
+    setEditingImages((prev) => [...prev, trimmed]);
+    setNewImageUrl('');
+  };
+
+  // Save Image changes to Backend & Customer Storefront
+  const handleSaveImages = async () => {
+    if (!imageEditorProduct?.id) return;
+    if (editingImages.length === 0) {
+      alert('Please keep at least one image.');
+      return;
+    }
+    setSavingImages(true);
+    setImageSaveSuccess('');
+    try {
+      const res = await fetch('/api/admin/products', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: imageEditorProduct.id,
+          name: imageEditorProduct.name,
+          images: editingImages,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setProducts((prev) =>
+          prev.map((p) =>
+            p.id === imageEditorProduct.id
+              ? { ...p, images: editingImages, image_url: editingImages[0] }
+              : p
+          )
+        );
+        setImageSaveSuccess('Images updated & published live!');
+        setTimeout(() => {
+          setImageEditorProduct(null);
+          setImageSaveSuccess('');
+        }, 1100);
+      } else {
+        alert(data.message || 'Failed to update images');
+      }
+    } catch (err) {
+      console.error('Error updating images:', err);
+      alert('Failed to update images. Please check network connection.');
+    } finally {
+      setSavingImages(false);
+    }
+  };
 
   // Form State for View More / Edit Modal
   const [editForm, setEditForm] = useState({
@@ -319,9 +454,8 @@ export default function SellerProductsPage() {
             Sync Catalog
           </button>
 
-          <button
-            type="button"
-            onClick={() => setIsAddModalOpen(true)}
+          <Link
+            href="/seller/products/new"
             style={{
               background: 'var(--maharani-maroon)',
               color: '#FFFFFF',
@@ -337,11 +471,13 @@ export default function SellerProductsPage() {
               alignItems: 'center',
               gap: '0.4rem',
               cursor: 'pointer',
+              textDecoration: 'none',
+              transition: 'opacity 0.15s ease',
             }}
           >
             <Plus style={{ width: 15, height: 15 }} />
             Add New Piece
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -408,7 +544,6 @@ export default function SellerProductsPage() {
             <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)' }}>
               <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>Piece Code</th>
               <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>Creation Title</th>
-              <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>Category</th>
               <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>Retail Price</th>
               <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>Atelier Stock</th>
               <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>Total Units Sold</th>
@@ -418,7 +553,7 @@ export default function SellerProductsPage() {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--stone-taupe)' }}>
+                <td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--stone-taupe)' }}>
                   <Loader2 className="animate-spin" size={20} style={{ margin: '0 auto 8px auto', color: 'var(--maharani-maroon)' }} />
                   <div>Loading atelier catalog...</div>
                 </td>
@@ -452,17 +587,12 @@ export default function SellerProductsPage() {
                       </div>
                     </td>
 
-                    {/* 3. Category: Single Line */}
-                    <td style={{ padding: '0.65rem 1rem', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>
-                      {formatCategoryName(product.category)}
-                    </td>
-
-                    {/* 4. Retail Price: Single Line */}
+                    {/* Retail Price: Single Line */}
                     <td style={{ padding: '0.65rem 1rem', fontWeight: 600, color: 'var(--ink-brown)', whiteSpace: 'nowrap' }}>
                       ₹ {(Number(product.price) || 0).toLocaleString('en-IN')}
                     </td>
 
-                    {/* 5. Atelier Stock: Single Line */}
+                    {/* Atelier Stock: Single Line */}
                     <td style={{ padding: '0.65rem 1rem', whiteSpace: 'nowrap' }}>
                       <span style={{
                         display: 'inline-flex',
@@ -479,39 +609,63 @@ export default function SellerProductsPage() {
                       </span>
                     </td>
 
-                    {/* 6. Total Units Sold: Single Line */}
+                    {/* Total Units Sold: Single Line */}
                     <td style={{ padding: '0.65rem 1rem', fontWeight: 700, color: 'var(--ink-brown)', whiteSpace: 'nowrap' }}>
                       {product.totalSales || 0} Pieces
                     </td>
 
-                    {/* 7. Actions: Clean View More Button (NO View Live) */}
+                    {/* Actions: Edit Images & View More */}
                     <td style={{ padding: '0.65rem 1rem', textAlign: 'right', whiteSpace: 'nowrap' }}>
-                      <button
-                        type="button"
-                        onClick={() => handleOpenDetails(product)}
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: 4,
-                          padding: '0.38rem 0.75rem',
-                          borderRadius: 4,
-                          background: '#FAF7F2',
-                          border: '1px solid var(--soft-gold-line)',
-                          color: 'var(--ink-brown)',
-                          fontSize: '0.8rem',
-                          fontWeight: 700,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        View More
-                      </button>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', justifyContent: 'flex-end' }}>
+                        <button
+                          type="button"
+                          onClick={() => handleOpenImageEditor(product)}
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.35rem',
+                            padding: '0.38rem 0.75rem',
+                            borderRadius: 4,
+                            background: '#FAF7F2',
+                            border: '1px solid var(--soft-gold-line)',
+                            color: 'var(--maharani-maroon)',
+                            fontSize: '0.8rem',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            transition: 'all 0.15s ease',
+                          }}
+                        >
+                          <Images style={{ width: 14, height: 14 }} />
+                          Edit Images
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleOpenDetails(product)}
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 4,
+                            padding: '0.38rem 0.75rem',
+                            borderRadius: 4,
+                            background: '#FAF7F2',
+                            border: '1px solid var(--soft-gold-line)',
+                            color: 'var(--ink-brown)',
+                            fontSize: '0.8rem',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                          }}
+                        >
+                          View More
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
               })
             ) : (
               <tr>
-                <td colSpan={7} style={{ textAlign: 'center', padding: '3.5rem', color: 'var(--stone-taupe)' }}>
+                <td colSpan={6} style={{ textAlign: 'center', padding: '3.5rem', color: 'var(--stone-taupe)' }}>
                   No creation pieces found matching the criteria.
                 </td>
               </tr>
@@ -1019,6 +1173,405 @@ export default function SellerProductsPage() {
           </div>
         </div>
       )}
-    </div>
+    
+      {/* ── Edit Creation Images Modal (Add, Reorder & Remove Images) ── */}
+      {imageEditorProduct && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 120,
+            backgroundColor: 'rgba(35, 24, 18, 0.65)',
+            backdropFilter: 'blur(4px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1.25rem',
+          }}
+          onClick={() => {
+            if (!savingImages) setImageEditorProduct(null);
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: '#FFFFFF',
+              border: '1.5px solid var(--soft-gold-line)',
+              borderRadius: '10px',
+              maxWidth: '780px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              boxShadow: '0 24px 56px rgba(0,0,0,0.28)',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#FAF7F2' }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                  <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 800, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)' }}>
+                    Edit Creation Images
+                  </h3>
+                  <span style={{ fontSize: '0.75rem', fontFamily: 'monospace', fontWeight: 700, background: '#F5EBE1', color: 'var(--maharani-maroon)', padding: '2px 8px', borderRadius: 4 }}>
+                    {imageEditorProduct.productNo || 'ART-2605'}
+                  </span>
+                </div>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--stone-taupe)' }}>
+                  {imageEditorProduct.name} • {editingImages.length} {editingImages.length === 1 ? 'image' : 'images'}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  if (!savingImages) setImageEditorProduct(null);
+                }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--stone-taupe)', padding: '4px' }}
+                aria-label="Close image editor"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              {/* Gold Info Note */}
+              <div style={{ padding: '0.75rem 1rem', background: '#FFFDF9', border: '1px solid var(--soft-gold-line)', borderRadius: 6, display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                <Star size={16} color="var(--gargi-gold)" style={{ flexShrink: 0 }} />
+                <p style={{ margin: 0, fontSize: '0.82rem', color: 'var(--ink-brown)', lineHeight: 1.4 }}>
+                  <strong>Showcase Order:</strong> Image #1 is the primary cover photo showcased on boutique catalog cards. Use <strong>Move Left / Right</strong> or click <strong>Make Cover</strong> to adjust the display order.
+                </p>
+              </div>
+
+              {/* Gallery Grid of Current Images */}
+              <div>
+                <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.75rem' }}>
+                  Current Gallery Images ({editingImages.length})
+                </label>
+
+                {editingImages.length === 0 ? (
+                  <div style={{ padding: '2rem', textAlign: 'center', background: '#FAF7F2', borderRadius: 6, border: '1px dashed var(--soft-gold-line)', color: 'var(--stone-taupe)' }}>
+                    No images in gallery. Please add at least one image below.
+                  </div>
+                ) : (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '1rem' }}>
+                    {editingImages.map((imgUrl, index) => {
+                      const isCover = index === 0;
+                      return (
+                        <div
+                          key={index}
+                          style={{
+                            border: isCover ? '2px solid var(--maharani-maroon)' : '1px solid var(--soft-gold-line)',
+                            borderRadius: 6,
+                            overflow: 'hidden',
+                            background: '#FFFFFF',
+                            boxShadow: '0 2px 6px rgba(0,0,0,0.06)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            position: 'relative',
+                          }}
+                        >
+                          {/* Image Thumbnail Container */}
+                          <div style={{ position: 'relative', width: '100%', height: '140px', background: '#F0EBE1' }}>
+                            <img
+                              src={imgUrl}
+                              alt={`Gallery image ${index + 1}`}
+                              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = '/images/category-sarees.png';
+                              }}
+                            />
+                            {/* Position Badge */}
+                            <span
+                              style={{
+                                position: 'absolute',
+                                top: 6,
+                                left: 6,
+                                background: 'rgba(35, 24, 18, 0.82)',
+                                color: '#FFFFFF',
+                                fontSize: '0.72rem',
+                                fontWeight: 700,
+                                padding: '2px 6px',
+                                borderRadius: 3,
+                              }}
+                            >
+                              #{index + 1}
+                            </span>
+
+                            {/* Cover Badge */}
+                            {isCover && (
+                              <span
+                                style={{
+                                  position: 'absolute',
+                                  top: 6,
+                                  right: 6,
+                                  background: 'var(--maharani-maroon)',
+                                  color: '#FFFFFF',
+                                  fontSize: '0.7rem',
+                                  fontWeight: 800,
+                                  padding: '2px 6px',
+                                  borderRadius: 3,
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: 3,
+                                }}
+                              >
+                                <Star size={10} fill="#FFF" /> Cover
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Controls Bar for this Image */}
+                          <div style={{ padding: '0.5rem', background: '#FAF7F2', borderTop: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.25rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                              {/* Move Left / Up Button */}
+                              <button
+                                type="button"
+                                disabled={index === 0}
+                                onClick={() => handleMoveImage(index, 'left')}
+                                title="Move Earlier in Order"
+                                style={{
+                                  padding: '4px',
+                                  border: '1px solid var(--soft-gold-line)',
+                                  borderRadius: 3,
+                                  background: index === 0 ? '#EBE6DC' : '#FFFFFF',
+                                  color: index === 0 ? '#AFA79B' : 'var(--ink-brown)',
+                                  cursor: index === 0 ? 'not-allowed' : 'pointer',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                }}
+                              >
+                                <ChevronLeft size={14} />
+                              </button>
+
+                              {/* Move Right / Down Button */}
+                              <button
+                                type="button"
+                                disabled={index === editingImages.length - 1}
+                                onClick={() => handleMoveImage(index, 'right')}
+                                title="Move Later in Order"
+                                style={{
+                                  padding: '4px',
+                                  border: '1px solid var(--soft-gold-line)',
+                                  borderRadius: 3,
+                                  background: index === editingImages.length - 1 ? '#EBE6DC' : '#FFFFFF',
+                                  color: index === editingImages.length - 1 ? '#AFA79B' : 'var(--ink-brown)',
+                                  cursor: index === editingImages.length - 1 ? 'not-allowed' : 'pointer',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                }}
+                              >
+                                <ChevronRight size={14} />
+                              </button>
+                            </div>
+
+                            {/* Set Cover button if not already cover */}
+                            {!isCover && (
+                              <button
+                                type="button"
+                                onClick={() => handleSetCover(index)}
+                                title="Set as primary cover image"
+                                style={{
+                                  fontSize: '0.72rem',
+                                  fontWeight: 700,
+                                  color: 'var(--maharani-maroon)',
+                                  background: 'none',
+                                  border: 'none',
+                                  cursor: 'pointer',
+                                  padding: '2px 4px',
+                                  textDecoration: 'underline',
+                                }}
+                              >
+                                Make Cover
+                              </button>
+                            )}
+
+                            {/* Delete / Remove Image */}
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveImage(index)}
+                              title="Remove this image"
+                              style={{
+                                padding: '4px',
+                                border: '1px solid #FFCDD2',
+                                borderRadius: 3,
+                                background: '#FFEBEE',
+                                color: '#C62828',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Add New Images Section */}
+              <div style={{ background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', borderRadius: 8, padding: '1.25rem' }}>
+                <h4 style={{ margin: '0 0 0.75rem', fontSize: '0.92rem', fontWeight: 700, color: 'var(--ink-brown)' }}>
+                  Add More Images to this Piece
+                </h4>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
+                  {/* File Upload Option */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: 'var(--stone-taupe)', marginBottom: '0.35rem' }}>
+                      Upload Image Files from Device:
+                    </label>
+                    <label
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        padding: '0.65rem 1.15rem',
+                        borderRadius: 4,
+                        border: '1.5px dashed var(--soft-gold-line)',
+                        background: '#FFFFFF',
+                        color: 'var(--ink-brown)',
+                        fontWeight: 700,
+                        fontSize: '0.85rem',
+                        cursor: 'pointer',
+                        width: '100%',
+                        boxSizing: 'border-box',
+                        transition: 'all 0.15s ease',
+                      }}
+                    >
+                      <Upload size={16} color="var(--maharani-maroon)" />
+                      <span>{uploadingFiles ? 'Reading Files...' : 'Browse & Upload Images'}</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={handleFileUpload}
+                        style={{ display: 'none' }}
+                        disabled={uploadingFiles}
+                      />
+                    </label>
+                  </div>
+
+                  {/* Image URL Option */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: 'var(--stone-taupe)', marginBottom: '0.35rem' }}>
+                      Or Paste Image URL:
+                    </label>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <input
+                        type="text"
+                        placeholder="https://... or /images/..."
+                        value={newImageUrl}
+                        onChange={(e) => setNewImageUrl(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            handleAddImageUrl();
+                          }
+                        }}
+                        style={{
+                          flex: 1,
+                          padding: '0.6rem 0.75rem',
+                          borderRadius: 4,
+                          border: '1px solid var(--soft-gold-line)',
+                          fontSize: '0.85rem',
+                          outline: 'none',
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={handleAddImageUrl}
+                        disabled={!newImageUrl.trim()}
+                        style={{
+                          padding: '0.6rem 1rem',
+                          borderRadius: 4,
+                          border: 'none',
+                          background: newImageUrl.trim() ? 'var(--maharani-maroon)' : '#D8CBB6',
+                          color: '#FFFFFF',
+                          fontWeight: 700,
+                          fontSize: '0.85rem',
+                          cursor: newImageUrl.trim() ? 'pointer' : 'not-allowed',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        Add URL
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Status Feedback */}
+              {imageSaveSuccess && (
+                <div style={{ padding: '0.75rem 1rem', background: '#E8F5E9', border: '1px solid #C8E6C9', borderRadius: 4, color: '#2E7D32', fontSize: '0.88rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <CheckCircle2 size={16} />
+                  <span>{imageSaveSuccess}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.75rem', backgroundColor: '#FAF7F2' }}>
+              <button
+                type="button"
+                disabled={savingImages}
+                onClick={() => setImageEditorProduct(null)}
+                style={{
+                  padding: '0.6rem 1.25rem',
+                  borderRadius: 4,
+                  border: '1px solid var(--soft-gold-line)',
+                  background: '#FFFFFF',
+                  color: 'var(--ink-brown)',
+                  fontWeight: 600,
+                  fontSize: '0.86rem',
+                  cursor: 'pointer',
+                }}
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                disabled={savingImages}
+                onClick={handleSaveImages}
+                style={{
+                  padding: '0.6rem 1.4rem',
+                  borderRadius: 4,
+                  border: 'none',
+                  background: 'var(--maharani-maroon)',
+                  color: '#FFFFFF',
+                  fontWeight: 700,
+                  fontSize: '0.86rem',
+                  cursor: savingImages ? 'not-allowed' : 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                {savingImages ? (
+                  <>
+                    <Loader2 size={15} style={{ animation: 'spin 1s linear infinite' }} />
+                    <span>Saving Gallery...</span>
+                  </>
+                ) : (
+                  <>
+                    <Check size={15} />
+                    <span>Save Image Changes</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+</div>
   );
 }
