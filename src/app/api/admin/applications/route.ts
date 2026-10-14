@@ -127,7 +127,12 @@ export async function PATCH(req: Request) {
       );
     }
 
-    const newStatus = action === 'approve' ? 'approved' : action === 'reject' ? 'rejected' : 'under_review';
+    const newStatus =
+      action === 'approve' || action === 'approved'
+        ? 'approved'
+        : action === 'reject' || action === 'rejected'
+        ? 'rejected'
+        : 'pending';
 
     const localApps = getLocalApplications();
     let targetApp: any = null;
@@ -216,8 +221,8 @@ export async function PATCH(req: Request) {
       console.warn('Supabase update attempt:', sbErr);
     }
 
-    // If approved, onboard into user_roles as 'artisan' & notify
-    if (action === 'approve' && targetApp?.email) {
+    // 1. If approved, onboard into user_roles as 'artisan' & send approval email
+    if ((action === 'approve' || action === 'approved') && targetApp?.email) {
       try {
         await supabase.from('user_roles').upsert({
           user_email: targetApp.email,
@@ -260,6 +265,47 @@ export async function PATCH(req: Request) {
         });
       } catch (mErr) {
         console.warn('Approval email send error:', mErr);
+      }
+    }
+
+    // 2. If rejected, send respectful rejection email to artisan
+    if ((action === 'reject' || action === 'rejected') && targetApp?.email) {
+      try {
+        await resend.emails.send({
+          from: NOREPLY_EMAIL,
+          to: targetApp.email,
+          subject: 'House of Gargi Artisan Guild Application Status',
+          html: `
+            <div style="font-family: Georgia, serif; max-width: 580px; margin: 0 auto; padding: 24px; border: 1.5px solid #E4D3AE; border-radius: 8px; background: #FBF6EE;">
+              <h1 style="color: #7A2331; text-align: center; margin-bottom: 4px;">HOUSE OF GARGI</h1>
+              <p style="text-align: center; color: #8C7B70; font-size: 12px; margin-top: 0;">— ARTISAN CURATION DESK —</p>
+              <hr style="border: 0; border-top: 1px solid #E4D3AE; margin: 20px 0;" />
+              <p style="color: #231812; font-size: 15px; line-height: 1.6;">
+                Dear ${targetApp.name},<br/><br/>
+                Thank you for submitting your application (${applicationId}) to join the <strong>House of Gargi Master Artisan Guild</strong>.<br/><br/>
+                After careful consideration by our curation committee, we regret to inform you that we are unable to accept your application into our partner guild at this time.
+              </p>
+              ${
+                reviewNotes
+                  ? `
+              <div style="background: #FFFFFF; border: 1px solid #E4D3AE; border-radius: 6px; padding: 16px; margin: 20px 0;">
+                <p style="margin: 0; font-size: 13px; color: #786C5E; font-weight: bold;">Curation Committee Feedback:</p>
+                <p style="margin: 6px 0 0; font-size: 14px; color: #231812; line-height: 1.5;">${reviewNotes}</p>
+              </div>
+              `
+                  : ''
+              }
+              <p style="color: #4A3E36; font-size: 14px; line-height: 1.6;">
+                We deeply honor your craft and dedication to preserving traditional textiles. You are welcome to re-apply in the future as our collection categories expand.
+              </p>
+              <p style="font-size: 13px; color: #786C5E; text-align: center; margin-top: 24px;">
+                House of Gargi &bull; Preserving India's Living Heritage
+              </p>
+            </div>
+          `,
+        });
+      } catch (mErr) {
+        console.warn('Rejection email send error:', mErr);
       }
     }
 
