@@ -9,7 +9,6 @@ import ProductCard from '@/components/ProductCard';
 import { 
   ArrowLeft, 
   MapPin, 
-  Sparkles,
 } from 'lucide-react';
 
 interface ArtisanPageProps {
@@ -197,64 +196,6 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
             </p>
           </div>
         )}
-
-        {/* ── BESPOKE COMMISSION BANNER ── */}
-        <div style={{
-          marginTop: '4rem',
-          background: 'linear-gradient(135deg, rgba(251, 246, 238, 0.9) 0%, rgba(255, 255, 255, 0.9) 100%)',
-          border: '1.5px solid var(--soft-gold-line)',
-          borderRadius: '12px',
-          padding: '2.25rem 2rem',
-          textAlign: 'center',
-          boxShadow: '0 4px 18px rgba(43, 31, 24, 0.03)',
-        }}>
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            fontSize: '0.74rem',
-            fontWeight: 800,
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'var(--maharani-maroon)',
-            marginBottom: '6px',
-          }}>
-            <Sparkles size={14} color="var(--gargi-gold)" />
-            <span>Exclusive Heritage Commissions</span>
-          </div>
-          <h3 style={{
-            margin: '0 0 0.5rem',
-            fontSize: '1.45rem',
-            fontWeight: 800,
-            color: 'var(--ink-brown)',
-          }}>
-            Commission a Custom Heirloom with {artisan.name}
-          </h3>
-          <p style={{
-            margin: '0 auto 1.25rem',
-            fontSize: '0.92rem',
-            color: '#5C5043',
-            maxWidth: '580px',
-          }}>
-            Collaborate directly with our master atelier to weave bespoke bridal wear, personalized zari borders, or custom color palettes.
-          </p>
-          <Link
-            href="/bespoke"
-            style={{
-              display: 'inline-block',
-              padding: '0.75rem 1.75rem',
-              backgroundColor: 'var(--maharani-maroon)',
-              color: '#FFFFFF',
-              borderRadius: '6px',
-              fontWeight: 700,
-              fontSize: '0.9rem',
-              textDecoration: 'none',
-              boxShadow: '0 4px 12px rgba(122, 35, 49, 0.2)',
-            }}
-          >
-            Request Bespoke Commission &rarr;
-          </Link>
-        </div>
 
       </main>
     </div>
