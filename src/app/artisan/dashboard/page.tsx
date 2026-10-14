@@ -4,33 +4,17 @@ import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { 
-  ShoppingBag, 
   TrendingUp, 
-  Sparkles, 
-  PackageCheck, 
-  Search, 
+  IndianRupee,
+  ShoppingBag, 
+  Package, 
   RefreshCw, 
-  ExternalLink, 
   LogOut, 
-  Plus, 
   ChevronRight, 
   AlertTriangle,
-  CheckCircle2,
-  Clock,
-  Shirt,
-  Layers,
-  Loader2,
-  DollarSign
+  Loader2
 } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
-import CustomDropdown from '@/components/CustomDropdown';
-
-const STATUS_OPTIONS = [
-  { value: 'Processing', label: 'Processing' },
-  { value: 'Bespoke Review', label: 'Bespoke Review' },
-  { value: 'Shipped', label: 'Shipped' },
-  { value: 'Delivered', label: 'Delivered' },
-];
 
 export default function ArtisanDashboardPage() {
   const router = useRouter();
@@ -50,9 +34,6 @@ export default function ArtisanDashboardPage() {
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [updatingOrderId, setUpdatingOrderId] = useState<string | null>(null);
 
   const fetchLiveBackendData = async () => {
     try {
@@ -117,44 +98,23 @@ export default function ArtisanDashboardPage() {
     router.push('/seller/login?logout=true');
   };
 
-  const handleUpdateOrderStatus = async (orderId: string, newStatus: string) => {
-    try {
-      setUpdatingOrderId(orderId);
-
-      // Optimistic update
-      setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o));
-
-      await fetch('/api/orders', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: orderId, status: newStatus }),
-      });
-    } catch (err) {
-      console.error('Failed to update status in backend:', err);
-      alert('Could not update order status. Please try again.');
-    } finally {
-      setUpdatingOrderId(null);
-    }
-  };
-
   // Compute live business metrics
   const metrics = useMemo(() => {
     const totalRevenue = orders.reduce((sum, o) => sum + (Number(o.total_rupees) || 0), 0);
     const artisanShare = Math.round(totalRevenue * 0.85);
     const totalOrders = orders.length;
-    const aov = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
     const totalStock = products.reduce((sum, p) => sum + (Number(p.stock) || 0), 0);
     const activeFulfillment = orders.filter(o => {
       const s = (o.status || '').toLowerCase();
       return s === 'processing' || s === 'shipped' || s.includes('bespoke');
     }).length;
 
-    // Category breakdown directly from real products
+    // Categories matching customer portal exactly: Sarees, Lehengas, Kurta Sets, Accessories
     const categoriesMap: Record<string, { count: number; stock: number; label: string }> = {
-      sarees: { count: 0, stock: 0, label: 'Banarasi Sarees' },
-      lehengas: { count: 0, stock: 0, label: 'Bridal Lehengas' },
-      'kurta-sets': { count: 0, stock: 0, label: 'Artisan Kurta Sets' },
-      accessories: { count: 0, stock: 0, label: 'Heritage Jewellery' },
+      sarees: { count: 0, stock: 0, label: 'Sarees' },
+      lehengas: { count: 0, stock: 0, label: 'Lehengas' },
+      'kurta-sets': { count: 0, stock: 0, label: 'Kurta Sets' },
+      accessories: { count: 0, stock: 0, label: 'Accessories' },
     };
 
     products.forEach(p => {
@@ -172,7 +132,6 @@ export default function ArtisanDashboardPage() {
       totalRevenue,
       artisanShare,
       totalOrders,
-      aov,
       totalStock,
       activeFulfillment,
       categories: Object.entries(categoriesMap),
@@ -180,229 +139,391 @@ export default function ArtisanDashboardPage() {
     };
   }, [orders, products]);
 
-  // Filtered orders
-  const filteredOrders = useMemo(() => {
-    return orders.filter(o => {
-      const matchStatus = statusFilter === 'all' || (o.status || '').toLowerCase() === statusFilter.toLowerCase();
-      const matchSearch = searchQuery === '' || 
-        o.order_number?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        o.customer_name?.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchStatus && matchSearch;
-    });
-  }, [orders, statusFilter, searchQuery]);
-
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       {/* ========================================================= */}
-      {/* 1. PERSONALIZED ARTISAN WELCOME HEADER                    */}
+      {/* 1. ELEGANT ADMIN-PORTAL-STYLED HEADER                     */}
       {/* ========================================================= */}
-      <div className="atelier-header-card">
-        <div className="atelier-title-group">
-          <div className="atelier-title-icon">
-            <Sparkles style={{ width: 24, height: 24 }} />
-          </div>
-          <div>
-            <h1 className="atelier-page-title">
-              Welcome, <span style={{ color: 'var(--maharani-maroon)' }}>{artisan.name}</span>
-            </h1>
-            <p style={{ fontSize: '1.05rem', color: '#4A3E36', margin: '0.35rem 0 0 0', fontWeight: 500 }}>
-              Artisan ID: <strong style={{ color: 'var(--maharani-maroon)' }}>{artisan.artisanNo}</strong> &bull; {artisan.artStyle} &bull; Live Workshop Orders &amp; Loom Inventory
-            </p>
-          </div>
+      <div
+        style={{
+          borderBottom: '1px solid var(--soft-gold-line)',
+          paddingBottom: '1.5rem',
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '1rem',
+        }}
+      >
+        <div>
+          <h1
+            style={{
+              fontSize: '2.35rem',
+              fontWeight: 800,
+              color: 'var(--ink-brown)',
+              margin: 0,
+              letterSpacing: '-0.025em',
+              lineHeight: 1.2,
+              fontFamily: 'var(--font-serif)',
+            }}
+          >
+            Welcome, <span style={{ color: 'var(--maharani-maroon)' }}>{artisan.name}</span>
+          </h1>
+          <p
+            style={{
+              margin: '0.45rem 0 0',
+              color: '#4A3E36',
+              fontSize: '1.02rem',
+              lineHeight: 1.5,
+              fontWeight: 500,
+            }}
+          >
+            Artisan ID: <strong style={{ color: 'var(--maharani-maroon)' }}>{artisan.artisanNo}</strong> &bull; {artisan.artStyle} &bull; {artisan.regionalBelonging}
+          </p>
         </div>
 
-        {/* Action Controls */}
+        {/* Action Controls: ONLY Sync Data & Sign Out */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
           <button
             type="button"
             onClick={fetchLiveBackendData}
             title="Sync Live Data"
             style={{
-              background: 'var(--pure-white)',
-              border: '1px solid var(--soft-gold-line)',
-              borderRadius: '2px',
-              padding: '0.65rem 1rem',
-              fontSize: '0.85rem',
+              background: '#FFFFFF',
+              border: '1.5px solid var(--soft-gold-line)',
+              borderRadius: '4px',
+              padding: '0.6rem 1rem',
+              fontSize: '0.82rem',
               fontFamily: 'var(--font-nav)',
               fontWeight: 700,
               textTransform: 'uppercase',
-              letterSpacing: '0.1em',
+              letterSpacing: '0.08em',
               color: 'var(--ink-brown)',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.4rem',
+              gap: '0.45rem',
               cursor: 'pointer',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+              transition: 'all 0.15s ease',
             }}
           >
             <RefreshCw style={{ width: 14, height: 14, animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
             Sync Data
           </button>
 
-          <Link
-            href="/seller/products"
-            style={{
-              background: 'var(--maharani-maroon)',
-              border: '1.5px solid var(--maharani-maroon)',
-              borderRadius: '2px',
-              padding: '0.65rem 1.15rem',
-              fontSize: '0.85rem',
-              fontFamily: 'var(--font-nav)',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '0.14em',
-              color: 'var(--ivory-silk)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              textDecoration: 'none',
-            }}
-          >
-            <Plus style={{ width: 15, height: 15 }} />
-            My Creations
-          </Link>
-
-          <Link
-            href="/"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              background: 'transparent',
-              border: '1.5px solid var(--gargi-gold)',
-              borderRadius: '2px',
-              padding: '0.65rem 1.1rem',
-              fontSize: '0.85rem',
-              fontFamily: 'var(--font-nav)',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '0.14em',
-              color: 'var(--maharani-maroon)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              textDecoration: 'none',
-            }}
-          >
-            <ExternalLink style={{ width: 14, height: 14 }} />
-            Storefront
-          </Link>
-
           <button
             type="button"
             onClick={handleSignOut}
             title="Sign Out"
             style={{
-              background: '#FFF1F2',
-              border: '1px solid #FECDD3',
-              borderRadius: '2px',
-              padding: '0.65rem 1rem',
-              fontSize: '0.85rem',
+              background: '#FFF5F5',
+              border: '1.5px solid #F8D7DA',
+              borderRadius: '4px',
+              padding: '0.6rem 1rem',
+              fontSize: '0.82rem',
               fontFamily: 'var(--font-nav)',
               fontWeight: 700,
               textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              color: 'var(--maharani-maroon)',
+              letterSpacing: '0.08em',
+              color: '#C62828',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.35rem',
+              gap: '0.4rem',
               cursor: 'pointer',
+              transition: 'all 0.15s ease',
             }}
           >
-            <LogOut style={{ width: 13, height: 13 }} />
+            <LogOut style={{ width: 14, height: 14 }} />
             Sign Out
           </button>
         </div>
       </div>
 
       {/* ========================================================= */}
-      {/* 2. 4 EXECUTIVE E-COMMERCE METRIC SUMMARY CARDS             */}
+      {/* 2. THE 4 METRIC BOXES: HEADER, ICON & NUMBER ONLY         */}
       {/* ========================================================= */}
-      <div className="luxury-metrics-grid">
-        {/* Card 1: Gross Sales */}
-        <div className="luxury-metric-card">
-          <div className="metric-header">
-            <span className="metric-label">Workshop Gross Sales</span>
-            <div className="metric-icon-wrap">
-              <TrendingUp style={{ width: 18, height: 18 }} />
-            </div>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+          gap: '1.25rem',
+        }}
+      >
+        {/* Box 1: Gross Sales */}
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '12px',
+            padding: '1.65rem 1.65rem',
+            position: 'relative',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            minHeight: '145px',
+            boxSizing: 'border-box',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: '1.35rem',
+              right: '1.35rem',
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              backgroundColor: '#FAF7F2',
+              border: '1.5px solid #231812',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+            }}
+          >
+            <TrendingUp style={{ width: 20, height: 20, color: '#231812' }} strokeWidth={1.8} />
           </div>
           <div>
-            <div className="metric-value">
+            <div
+              style={{
+                fontSize: '0.88rem',
+                color: '#5C5043',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+                marginBottom: '0.5rem',
+                paddingRight: '48px',
+              }}
+            >
+              Workshop Gross Sales
+            </div>
+            <div
+              style={{
+                fontSize: '2.6rem',
+                fontWeight: 800,
+                color: 'var(--ink-brown)',
+                lineHeight: 1.05,
+                letterSpacing: '-0.03em',
+                fontFamily: 'var(--font-serif)',
+              }}
+            >
               ₹ {metrics.totalRevenue.toLocaleString('en-IN')}
             </div>
-            <p className="metric-subtext">
-              Total sales volume across {metrics.totalOrders} client orders
-            </p>
           </div>
         </div>
 
-        {/* Card 2: 85% Artisan Payout */}
-        <div className="luxury-metric-card">
-          <div className="metric-header">
-            <span className="metric-label">Your Atelier Share (85%)</span>
-            <div className="metric-icon-wrap">
-              <DollarSign style={{ width: 18, height: 18, color: '#2E7D32' }} />
-            </div>
+        {/* Box 2: Atelier Share (85%) */}
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '12px',
+            padding: '1.65rem 1.65rem',
+            position: 'relative',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            minHeight: '145px',
+            boxSizing: 'border-box',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: '1.35rem',
+              right: '1.35rem',
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              backgroundColor: '#FAF7F2',
+              border: '1.5px solid #231812',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+            }}
+          >
+            <IndianRupee style={{ width: 20, height: 20, color: '#231812' }} strokeWidth={1.8} />
           </div>
           <div>
-            <div className="metric-value" style={{ color: '#2E7D32' }}>
+            <div
+              style={{
+                fontSize: '0.88rem',
+                color: '#5C5043',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+                marginBottom: '0.5rem',
+                paddingRight: '48px',
+              }}
+            >
+              Your Atelier Share (85%)
+            </div>
+            <div
+              style={{
+                fontSize: '2.6rem',
+                fontWeight: 800,
+                color: 'var(--maharani-maroon)',
+                lineHeight: 1.05,
+                letterSpacing: '-0.03em',
+                fontFamily: 'var(--font-serif)',
+              }}
+            >
               ₹ {metrics.artisanShare.toLocaleString('en-IN')}
             </div>
-            <p className="metric-subtext">
-              Direct workshop payout ledger
-            </p>
           </div>
         </div>
 
-        {/* Card 3: Active Orders */}
-        <div className="luxury-metric-card">
-          <div className="metric-header">
-            <span className="metric-label">Active Loom Orders</span>
-            <div className="metric-icon-wrap">
-              <ShoppingBag style={{ width: 18, height: 18 }} />
-            </div>
+        {/* Box 3: Active Loom Orders */}
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '12px',
+            padding: '1.65rem 1.65rem',
+            position: 'relative',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            minHeight: '145px',
+            boxSizing: 'border-box',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: '1.35rem',
+              right: '1.35rem',
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              backgroundColor: '#FAF7F2',
+              border: '1.5px solid #231812',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+            }}
+          >
+            <ShoppingBag style={{ width: 20, height: 20, color: '#231812' }} strokeWidth={1.8} />
           </div>
           <div>
-            <div className="metric-value">
+            <div
+              style={{
+                fontSize: '0.88rem',
+                color: '#5C5043',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+                marginBottom: '0.5rem',
+                paddingRight: '48px',
+              }}
+            >
+              Active Loom Orders
+            </div>
+            <div
+              style={{
+                fontSize: '2.6rem',
+                fontWeight: 800,
+                color: 'var(--ink-brown)',
+                lineHeight: 1.05,
+                letterSpacing: '-0.03em',
+                fontFamily: 'var(--font-serif)',
+              }}
+            >
               {metrics.activeFulfillment}
             </div>
-            <p className="metric-subtext">
-              <span style={{ color: 'var(--maharani-maroon)', fontWeight: 700 }}>
-                {metrics.activeFulfillment} active
-              </span>
-              &nbsp;in weaving &amp; dispatch pipeline
-            </p>
           </div>
         </div>
 
-        {/* Card 4: Total Inventory Stock */}
-        <div className="luxury-metric-card">
-          <div className="metric-header">
-            <span className="metric-label">Live Loom Stock</span>
-            <div className="metric-icon-wrap">
-              <PackageCheck style={{ width: 18, height: 18 }} />
-            </div>
+        {/* Box 4: Live Loom Stock */}
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '12px',
+            padding: '1.65rem 1.65rem',
+            position: 'relative',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            minHeight: '145px',
+            boxSizing: 'border-box',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: '1.35rem',
+              right: '1.35rem',
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              backgroundColor: '#FAF7F2',
+              border: '1.5px solid #231812',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+            }}
+          >
+            <Package style={{ width: 20, height: 20, color: '#231812' }} strokeWidth={1.8} />
           </div>
           <div>
-            <div className="metric-value">
-              {metrics.totalStock} <span style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--stone-taupe)' }}>units</span>
+            <div
+              style={{
+                fontSize: '0.88rem',
+                color: '#5C5043',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+                marginBottom: '0.5rem',
+                paddingRight: '48px',
+              }}
+            >
+              Live Loom Stock
             </div>
-            <p className="metric-subtext">
-              Across {products.length} catalog couture creations
-            </p>
+            <div
+              style={{
+                fontSize: '2.6rem',
+                fontWeight: 800,
+                color: 'var(--ink-brown)',
+                lineHeight: 1.05,
+                letterSpacing: '-0.03em',
+                fontFamily: 'var(--font-serif)',
+              }}
+            >
+              {metrics.totalStock}
+            </div>
           </div>
         </div>
       </div>
 
       {/* ========================================================= */}
-      {/* 3. COLLECTION CATALOG BREAKDOWN & STOCK HEALTH            */}
+      {/* 3. COLLECTION PORTFOLIO (CUSTOMER CATEGORY NAMES)         */}
       {/* ========================================================= */}
-      <div className="category-overview-card">
+      <div
+        style={{
+          background: '#FFFFFF',
+          border: '1px solid var(--soft-gold-line)',
+          borderRadius: '12px',
+          padding: '1.75rem',
+          boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+        }}
+      >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
           <div>
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--ink-brown)', margin: 0 }}>
-              Collection Portfolio &amp; Loom Inventory
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.35rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
+              Collection Portfolio
             </h3>
-            <p style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)', margin: '0.2rem 0 0 0' }}>
+            <p style={{ fontSize: '0.92rem', color: '#6A5A50', margin: '0.25rem 0 0 0' }}>
               Live inventory distribution across House of Gargi couture lines
             </p>
           </div>
@@ -411,9 +532,9 @@ export default function ArtisanDashboardPage() {
             href="/seller/inventory"
             style={{
               fontFamily: 'var(--font-nav)',
-              fontSize: '0.85rem',
+              fontSize: '0.82rem',
               fontWeight: 700,
-              letterSpacing: '0.12em',
+              letterSpacing: '0.08em',
               textTransform: 'uppercase',
               color: 'var(--maharani-maroon)',
               textDecoration: 'none',
@@ -426,15 +547,55 @@ export default function ArtisanDashboardPage() {
           </Link>
         </div>
 
-        <div className="category-grid">
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gap: '1rem',
+            marginTop: '1.25rem',
+          }}
+        >
           {metrics.categories.map(([key, data]) => (
-            <div key={key} className="category-cell">
-              <div>
-                <span className="category-cell-title">{data.label}</span>
-                <div className="category-cell-count">{data.count} <span style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)', fontWeight: 500 }}>designs</span></div>
+            <div
+              key={key}
+              style={{
+                background: '#FAF7F2',
+                border: '1px solid var(--soft-gold-line)',
+                borderRadius: '8px',
+                padding: '1.25rem 1.35rem',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.45rem',
+                boxSizing: 'border-box',
+              }}
+            >
+              <div
+                style={{
+                  fontSize: '0.88rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.06em',
+                  color: '#5C5043',
+                }}
+              >
+                {data.label}
               </div>
-              <div className="category-cell-stock">
-                <strong>{data.stock}</strong> units in workshop stock
+              <div
+                style={{
+                  fontSize: '1.75rem',
+                  fontWeight: 800,
+                  color: 'var(--ink-brown)',
+                  fontFamily: 'var(--font-serif)',
+                  lineHeight: 1.1,
+                }}
+              >
+                {data.count}{' '}
+                <span style={{ fontSize: '0.88rem', fontWeight: 500, color: 'var(--stone-taupe)' }}>
+                  designs
+                </span>
+              </div>
+              <div style={{ fontSize: '0.84rem', color: 'var(--stone-taupe)' }}>
+                <strong style={{ color: 'var(--ink-brown)' }}>{data.stock}</strong> units in workshop stock
               </div>
             </div>
           ))}
@@ -442,18 +603,20 @@ export default function ArtisanDashboardPage() {
 
         {/* Low Stock Warning Banner if any */}
         {metrics.lowStockItems.length > 0 && (
-          <div style={{
-            marginTop: '1.25rem',
-            padding: '0.85rem 1.15rem',
-            background: '#FFFBEB',
-            border: '1px solid #FDE68A',
-            borderRadius: '4px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.65rem',
-            fontSize: '0.92rem',
-            color: '#92400E',
-          }}>
+          <div
+            style={{
+              marginTop: '1.25rem',
+              padding: '0.85rem 1.15rem',
+              background: '#FFFBEB',
+              border: '1px solid #FDE68A',
+              borderRadius: '6px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.65rem',
+              fontSize: '0.88rem',
+              color: '#92400E',
+            }}
+          >
             <AlertTriangle style={{ width: 16, height: 16, color: '#D97706', flexShrink: 0 }} />
             <span>
               <strong>Loom Notice:</strong> {metrics.lowStockItems.length} design{metrics.lowStockItems.length > 1 ? 's have' : ' has'} low workshop inventory (&le; 5 units):{' '}
@@ -461,144 +624,6 @@ export default function ArtisanDashboardPage() {
             </span>
           </div>
         )}
-      </div>
-
-      {/* ========================================================= */}
-      {/* 4. REAL-TIME ORDERS MANAGEMENT TABLE                      */}
-      {/* ========================================================= */}
-      <div className="luxury-table-card">
-        <div className="table-top-bar">
-          <div>
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--ink-brown)', margin: 0 }}>
-              Live Client Orders &amp; Fulfillment
-            </h3>
-            <p style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)', margin: '0.2rem 0 0 0' }}>
-              Connected live to order fulfillment registry &bull; Changes update courier tracking in real time
-            </p>
-          </div>
-
-          {/* Controls: Search and Status filter */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: 'var(--ivory-silk)', padding: '0.3rem', borderRadius: '4px', border: '1px solid var(--soft-gold-line)' }}>
-              {[
-                { id: 'all', label: 'All' },
-                { id: 'processing', label: 'Processing' },
-                { id: 'bespoke review', label: 'Bespoke' },
-                { id: 'shipped', label: 'Shipped' },
-                { id: 'delivered', label: 'Delivered' },
-              ].map(f => (
-                <button
-                  key={f.id}
-                  type="button"
-                  onClick={() => setStatusFilter(f.id)}
-                  style={{
-                    background: statusFilter === f.id ? 'var(--maharani-maroon)' : 'transparent',
-                    color: statusFilter === f.id ? 'var(--ivory-silk)' : 'var(--ink-brown)',
-                    border: 'none',
-                    borderRadius: '2px',
-                    padding: '0.35rem 0.75rem',
-                    fontSize: '0.76rem',
-                    fontFamily: 'var(--font-nav)',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.08em',
-                    cursor: 'pointer',
-                    transition: 'all 0.15s ease',
-                  }}
-                >
-                  {f.label}
-                </button>
-              ))}
-            </div>
-
-            <div style={{ position: 'relative' }}>
-              <Search style={{ width: 14, height: 14, position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--stone-taupe)' }} />
-              <input
-                type="text"
-                placeholder="Search orders..."
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                style={{
-                  padding: '0.45rem 0.75rem 0.45rem 2rem',
-                  fontSize: '0.85rem',
-                  borderRadius: '2px',
-                  border: '1px solid var(--soft-gold-line)',
-                  background: 'var(--pure-white)',
-                  color: 'var(--ink-brown)',
-                  outline: 'none',
-                  minWidth: 180,
-                }}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Orders Table */}
-        <div style={{ overflowX: 'auto' }}>
-          <table className="seller-table">
-            <thead>
-              <tr>
-                <th>Order #</th>
-                <th>Client Name</th>
-                <th>Destination</th>
-                <th>Gross Total</th>
-                <th>Atelier Share (85%)</th>
-                <th>Fulfillment Status</th>
-                <th>Update Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredOrders.length > 0 ? (
-                filteredOrders.map(order => {
-                  const gross = Number(order.total_rupees) || 0;
-                  const share = Math.round(gross * 0.85);
-                  const isUpdating = updatingOrderId === order.id;
-
-                  return (
-                    <tr key={order.id}>
-                      <td style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
-                        {order.order_number || `#HG-${order.id}`}
-                      </td>
-                      <td style={{ fontWeight: 600 }}>
-                        {order.customer_name || 'Patron'}
-                      </td>
-                      <td style={{ color: 'var(--stone-taupe)', fontSize: '0.88rem' }}>
-                        {order.delivery_city || 'India'}
-                      </td>
-                      <td style={{ fontWeight: 600 }}>
-                        ₹ {gross.toLocaleString('en-IN')}
-                      </td>
-                      <td style={{ fontWeight: 700, color: '#2E7D32' }}>
-                        ₹ {share.toLocaleString('en-IN')}
-                      </td>
-                      <td>
-                        <span className={`badge badge--${(order.status || 'processing').toLowerCase().replace(' ', '-')}`}>
-                          {order.status || 'Processing'}
-                        </span>
-                      </td>
-                      <td style={{ minWidth: 170 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                          <CustomDropdown
-                            value={order.status || 'Processing'}
-                            options={STATUS_OPTIONS}
-                            onChange={(newVal) => handleUpdateOrderStatus(order.id, newVal)}
-                          />
-                          {isUpdating && <Loader2 style={{ width: 14, height: 14, animation: 'spin 1s linear infinite', color: 'var(--maharani-maroon)' }} />}
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })
-              ) : (
-                <tr>
-                  <td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--stone-taupe)' }}>
-                    No order records found matching the selected filter.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
       </div>
     </div>
   );

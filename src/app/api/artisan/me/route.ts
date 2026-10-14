@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-const PROFILES_FILE = path.join(process.cwd(), 'src', 'data', 'artisan_profiles_list.json');
+const PROFILES_LIST_FILE = path.join(process.cwd(), 'src', 'data', 'artisan_profiles_list.json');
+const PROFILE_SINGLE_FILE = path.join(process.cwd(), 'src', 'data', 'artisan_profile.json');
 const APPS_FILE = path.join(process.cwd(), 'src', 'data', 'artisan_applications.json');
 
 export async function GET(req: Request) {
@@ -10,10 +11,17 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const email = searchParams.get('email')?.toLowerCase().trim();
 
-    let profiles: any[] = [];
-    if (fs.existsSync(PROFILES_FILE)) {
+    let singleProfile: any = null;
+    if (fs.existsSync(PROFILE_SINGLE_FILE)) {
       try {
-        profiles = JSON.parse(fs.readFileSync(PROFILES_FILE, 'utf8'));
+        singleProfile = JSON.parse(fs.readFileSync(PROFILE_SINGLE_FILE, 'utf8'));
+      } catch {}
+    }
+
+    let profilesList: any[] = [];
+    if (fs.existsSync(PROFILES_LIST_FILE)) {
+      try {
+        profilesList = JSON.parse(fs.readFileSync(PROFILES_LIST_FILE, 'utf8'));
       } catch {}
     }
 
@@ -24,36 +32,57 @@ export async function GET(req: Request) {
       } catch {}
     }
 
-    // Master default profile
-    let matchedProfile = profiles[0] || {
-      id: 'HG-ART-260501',
-      artisanNo: 'HG-84192',
-      name: 'Gopal Chandra Dey',
-      role: 'Master Tangail Jamdani Pit Loom Weaver',
-      artStyle: 'Tangail Jamdani Pit Loom',
-      region: 'Shantipur, Nadia, West Bengal, India',
+    // Default master profile (Gopal Chandra Dey)
+    let matchedProfile = {
+      id: singleProfile?.applicationId || 'HG-ART-260501',
+      artisanNo: singleProfile?.artisanNo || 'HG-84192',
+      name: singleProfile?.name || 'Gopal Chandra Dey',
+      role: singleProfile?.role || 'Master Tangail Jamdani Pit Loom Weaver',
+      artStyle: singleProfile?.specialties?.[0] || 'Tangail Jamdani Pit Loom',
+      region: singleProfile?.region || 'Shantipur, Nadia, West Bengal, India',
       regionalBelonging: 'Shantipur, Nadia, West Bengal',
-      experience: '32 Years',
-      profileImage: '/images/artisans_split.png',
-      email: 'team.anga9@gmail.com',
+      experience: `${singleProfile?.experienceYears || 32} Years`,
+      profileImage: singleProfile?.profileImage || '/images/artisans_split.png',
+      email: singleProfile?.contactEmail || 'team.anga9@gmail.com',
     };
 
     if (email) {
-      // Find in applications first
-      const app = applications.find((a: any) => a.email?.toLowerCase().trim() === email);
-      if (app) {
-        matchedProfile = {
-          ...matchedProfile,
-          name: app.name || matchedProfile.name,
-          artisanNo: app.artisanNo || matchedProfile.artisanNo,
-          email: app.email || email,
-          artStyle: app.typeOfArt || matchedProfile.artStyle,
-          regionalBelonging: `${app.placeOfBirth || ''}, ${app.state || ''}`.trim() || matchedProfile.regionalBelonging,
-        };
-      } else {
-        const prof = profiles.find((p: any) => p.email?.toLowerCase().trim() === email);
-        if (prof) {
-          matchedProfile = { ...matchedProfile, ...prof };
+      // 1. Check if email matches single master profile
+      if (
+        singleProfile?.contactEmail?.toLowerCase().trim() === email ||
+        email === 'team.anga9@gmail.com'
+      ) {
+        // Matched master profile
+        matchedProfile.email = email;
+      }
+      // 2. Check applications for dynamic registered artisan
+      else {
+        const app = applications.find((a: any) => a.email?.toLowerCase().trim() === email);
+        if (app) {
+          matchedProfile = {
+            id: app.applicationId || app.id || `HG-ART-${Date.now()}`,
+            artisanNo: app.artisanNo || 'HG-84192',
+            name: app.name || 'Artisan Partner',
+            role: `Master ${app.typeOfArt || 'Handloom'} Artisan`,
+            artStyle: app.typeOfArt || 'Heritage Handloom Weave',
+            region: `${app.placeOfBirth || ''}, ${app.state || ''}, India`.trim(),
+            regionalBelonging: `${app.placeOfBirth || ''}, ${app.state || ''}`.trim() || 'India',
+            experience: `${app.age ? Math.max(5, app.age - 18) : 20} Years`,
+            profileImage: '/images/artisans_split.png',
+            email: app.email || email,
+          };
+        } else {
+          // 3. Check profiles list
+          const prof = profilesList.find(
+            (p: any) => p.email?.toLowerCase().trim() === email || p.contactEmail?.toLowerCase().trim() === email
+          );
+          if (prof) {
+            matchedProfile = {
+              ...matchedProfile,
+              ...prof,
+              email,
+            };
+          }
         }
       }
     }

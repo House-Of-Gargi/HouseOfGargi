@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { TrendingUp, ShoppingBag, DollarSign, Eye, Award, RefreshCw } from 'lucide-react';
+import { TrendingUp, DollarSign, Package, RefreshCw } from 'lucide-react';
 
 export default function ArtisanAnalyticsPage() {
   const [items, setItems] = useState<any[]>([]);
@@ -38,19 +38,41 @@ export default function ArtisanAnalyticsPage() {
   const totalUnits = items.reduce((acc, i) => acc + (Number(i.totalSales) || 0), 0);
 
   return (
-    <div>
-      <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      <div
+        style={{
+          borderBottom: '1px solid var(--soft-gold-line)',
+          paddingBottom: '1.5rem',
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '1rem',
+        }}
+      >
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
-            <TrendingUp style={{ width: 18, height: 18, color: 'var(--maharani-maroon)' }} />
-            <span style={{ fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
-              Sales Performance &amp; Product Velocity
-            </span>
-          </div>
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
+          <h1
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontSize: '2.35rem',
+              fontWeight: 800,
+              letterSpacing: '-0.025em',
+              color: 'var(--ink-brown)',
+              margin: 0,
+              lineHeight: 1.2,
+            }}
+          >
             Which Product Did How <span style={{ color: 'var(--maharani-maroon)' }}>Much</span>
           </h1>
-          <p style={{ margin: '0.35rem 0 0', fontSize: '1.05rem', color: '#4A3E36' }}>
+          <p
+            style={{
+              margin: '0.45rem 0 0',
+              color: '#4A3E36',
+              fontSize: '1.02rem',
+              lineHeight: 1.5,
+              fontWeight: 500,
+            }}
+          >
             Transparent artisan financial telemetry &bull; Exact units sold, gross value, and your direct 85% workshop payout per handcrafted design
           </p>
         </div>
@@ -59,20 +81,22 @@ export default function ArtisanAnalyticsPage() {
           type="button"
           onClick={loadData}
           style={{
-            background: 'var(--pure-white)',
-            border: '1px solid var(--soft-gold-line)',
-            borderRadius: '2px',
-            padding: '0.65rem 1rem',
-            fontSize: '0.85rem',
+            background: '#FFFFFF',
+            border: '1.5px solid var(--soft-gold-line)',
+            borderRadius: '4px',
+            padding: '0.6rem 1rem',
+            fontSize: '0.82rem',
             fontFamily: 'var(--font-nav)',
             fontWeight: 700,
             textTransform: 'uppercase',
-            letterSpacing: '0.1em',
+            letterSpacing: '0.08em',
             color: 'var(--ink-brown)',
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '0.4rem',
+            gap: '0.45rem',
             cursor: 'pointer',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+            transition: 'all 0.15s ease',
           }}
         >
           <RefreshCw style={{ width: 14, height: 14, animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
@@ -80,44 +104,227 @@ export default function ArtisanAnalyticsPage() {
         </button>
       </div>
 
-      {/* 3 Summary Tiles */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
-        <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', padding: '1.75rem 1.65rem', boxShadow: '0 2px 12px rgba(43,31,24,0.03)' }}>
-          <span style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-            Total Workshop Sales
-          </span>
-          <div style={{ fontSize: '2.75rem', fontWeight: 800, lineHeight: 1.05, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)', margin: '0.5rem 0' }}>
-            ₹ {totalGross.toLocaleString('en-IN')}
+      {/* 3 Clean Summary Tiles: Header, Icon & Number */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+          gap: '1.25rem',
+        }}
+      >
+        {/* Tile 1 */}
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '12px',
+            padding: '1.65rem 1.65rem',
+            position: 'relative',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            minHeight: '145px',
+            boxSizing: 'border-box',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: '1.35rem',
+              right: '1.35rem',
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              backgroundColor: '#FAF7F2',
+              border: '1.5px solid #231812',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >
+            <TrendingUp style={{ width: 20, height: 20, color: '#231812' }} strokeWidth={1.8} />
           </div>
-          <span style={{ fontSize: '0.88rem', color: 'var(--stone-taupe)' }}>Gross value across all designs</span>
+          <div>
+            <div
+              style={{
+                fontSize: '0.88rem',
+                color: '#5C5043',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+                marginBottom: '0.5rem',
+                paddingRight: '48px',
+              }}
+            >
+              Total Workshop Sales
+            </div>
+            <div
+              style={{
+                fontSize: '2.6rem',
+                fontWeight: 800,
+                lineHeight: 1.05,
+                color: 'var(--ink-brown)',
+                fontFamily: 'var(--font-serif)',
+                letterSpacing: '-0.03em',
+              }}
+            >
+              ₹ {totalGross.toLocaleString('en-IN')}
+            </div>
+          </div>
         </div>
 
-        <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', padding: '1.75rem 1.65rem', boxShadow: '0 2px 12px rgba(43,31,24,0.03)' }}>
-          <span style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-            Your Net Atelier Earnings (85%)
-          </span>
-          <div style={{ fontSize: '2.75rem', fontWeight: 800, lineHeight: 1.05, color: 'var(--maharani-maroon)', fontFamily: 'var(--font-serif)', margin: '0.5rem 0' }}>
-            ₹ {totalArtisanShare.toLocaleString('en-IN')}
+        {/* Tile 2 */}
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '12px',
+            padding: '1.65rem 1.65rem',
+            position: 'relative',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            minHeight: '145px',
+            boxSizing: 'border-box',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: '1.35rem',
+              right: '1.35rem',
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              backgroundColor: '#FAF7F2',
+              border: '1.5px solid #231812',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >
+            <DollarSign style={{ width: 20, height: 20, color: '#231812' }} strokeWidth={1.8} />
           </div>
-          <span style={{ fontSize: '0.88rem', color: '#2E7D32', fontWeight: 600 }}>Direct settlement to your workshop account</span>
+          <div>
+            <div
+              style={{
+                fontSize: '0.88rem',
+                color: '#5C5043',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+                marginBottom: '0.5rem',
+                paddingRight: '48px',
+              }}
+            >
+              Your Atelier Share (85%)
+            </div>
+            <div
+              style={{
+                fontSize: '2.6rem',
+                fontWeight: 800,
+                lineHeight: 1.05,
+                color: 'var(--maharani-maroon)',
+                fontFamily: 'var(--font-serif)',
+                letterSpacing: '-0.03em',
+              }}
+            >
+              ₹ {totalArtisanShare.toLocaleString('en-IN')}
+            </div>
+          </div>
         </div>
 
-        <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', padding: '1.75rem 1.65rem', boxShadow: '0 2px 12px rgba(43,31,24,0.03)' }}>
-          <span style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-            Total Pieces Dispatched
-          </span>
-          <div style={{ fontSize: '2.75rem', fontWeight: 800, lineHeight: 1.05, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)', margin: '0.5rem 0' }}>
-            {totalUnits} Pieces
+        {/* Tile 3 */}
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '12px',
+            padding: '1.65rem 1.65rem',
+            position: 'relative',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            minHeight: '145px',
+            boxSizing: 'border-box',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: '1.35rem',
+              right: '1.35rem',
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              backgroundColor: '#FAF7F2',
+              border: '1.5px solid #231812',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >
+            <Package style={{ width: 20, height: 20, color: '#231812' }} strokeWidth={1.8} />
           </div>
-          <span style={{ fontSize: '0.88rem', color: 'var(--stone-taupe)' }}>Across {items.length} master creations</span>
+          <div>
+            <div
+              style={{
+                fontSize: '0.88rem',
+                color: '#5C5043',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+                marginBottom: '0.5rem',
+                paddingRight: '48px',
+              }}
+            >
+              Total Pieces Dispatched
+            </div>
+            <div
+              style={{
+                fontSize: '2.6rem',
+                fontWeight: 800,
+                lineHeight: 1.05,
+                color: 'var(--ink-brown)',
+                fontFamily: 'var(--font-serif)',
+                letterSpacing: '-0.03em',
+              }}
+            >
+              {totalUnits}
+            </div>
+          </div>
         </div>
       </div>
 
       {/* "Which Product Did How Much" Sales Velocity Table */}
-      <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '8px', overflow: 'hidden' }}>
+      <div
+        style={{
+          background: '#FFFFFF',
+          border: '1px solid var(--soft-gold-line)',
+          borderRadius: '12px',
+          overflow: 'hidden',
+          boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+        }}
+      >
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
           <thead>
-            <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            <tr
+              style={{
+                background: '#FAF7F2',
+                borderBottom: '1px solid var(--soft-gold-line)',
+                color: 'var(--stone-taupe)',
+                fontWeight: 700,
+                fontSize: '0.74rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+              }}
+            >
               <th style={{ padding: '0.85rem 1rem' }}>Creation Title</th>
               <th style={{ padding: '0.85rem 1rem' }}>Category</th>
               <th style={{ padding: '0.85rem 1rem' }}>Price</th>
@@ -138,15 +345,14 @@ export default function ArtisanAnalyticsPage() {
               return (
                 <tr key={item.id} style={{ borderBottom: '1px solid #F0E8DC' }}>
                   <td style={{ padding: '0.85rem 1rem', fontWeight: 600, color: 'var(--ink-brown)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                       <img
                         src={item.images?.[0] || '/images/category-sarees.png'}
                         alt={item.name}
-                        style={{ width: 38, height: 38, objectFit: 'cover', borderRadius: 4, border: '1px solid var(--soft-gold-line)' }}
+                        style={{ width: 42, height: 42, objectFit: 'cover', borderRadius: 4, border: '1px solid var(--soft-gold-line)' }}
                       />
-                      <div>
-                        <div>{item.name}</div>
-                        <span style={{ fontSize: '0.72rem', color: 'var(--stone-taupe)' }}>{item.artType || 'Handloom Pit Loom'}</span>
+                      <div style={{ fontWeight: 600, color: 'var(--ink-brown)', fontSize: '0.92rem' }}>
+                        {item.name}
                       </div>
                     </div>
                   </td>
@@ -167,11 +373,11 @@ export default function ArtisanAnalyticsPage() {
                   </td>
                   <td style={{ padding: '0.85rem 1rem' }}>
                     {stock > 0 ? (
-                      <span style={{ color: '#2E7D32', fontWeight: 600, fontSize: '0.8rem' }}>
+                      <span style={{ color: '#2E7D32', fontWeight: 600, fontSize: '0.82rem' }}>
                         {stock} in stock
                       </span>
                     ) : (
-                      <span style={{ color: '#C62828', fontWeight: 600, fontSize: '0.8rem' }}>
+                      <span style={{ color: '#C62828', fontWeight: 600, fontSize: '0.82rem' }}>
                         Depleted
                       </span>
                     )}
