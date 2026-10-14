@@ -21,6 +21,8 @@ import {
   X,
   ExternalLink,
   ChevronRight,
+  Award,
+  AlertTriangle,
 } from 'lucide-react';
 
 interface BespokeCommission {
@@ -40,9 +42,22 @@ interface BespokeCommission {
   reviewed_by?: string;
 }
 
+interface ApprovedArtisan {
+  id?: string;
+  applicationId?: string;
+  name: string;
+  typeOfArt?: string;
+  state?: string;
+  phone?: string;
+  email?: string;
+  status: string;
+}
+
 export default function AdminBespokePage() {
   const [commissions, setCommissions] = useState<BespokeCommission[]>([]);
+  const [approvedArtisans, setApprovedArtisans] = useState<ApprovedArtisan[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingArtisans, setLoadingArtisans] = useState(false);
   const [statusFilter, setStatusFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -51,6 +66,7 @@ export default function AdminBespokePage() {
   const [assigningCommission, setAssigningCommission] = useState<BespokeCommission | null>(null);
   const [artisanInput, setArtisanInput] = useState('');
   const [notesInput, setNotesInput] = useState('');
+  const [manualOverrideMode, setManualOverrideMode] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -69,8 +85,24 @@ export default function AdminBespokePage() {
     }
   }
 
+  async function loadApprovedArtisans() {
+    setLoadingArtisans(true);
+    try {
+      const res = await fetch('/api/admin/applications?status=approved');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.applications)) {
+        setApprovedArtisans(data.applications);
+      }
+    } catch (err) {
+      console.error('Failed loading approved artisans:', err);
+    } finally {
+      setLoadingArtisans(false);
+    }
+  }
+
   useEffect(() => {
     loadCommissions();
+    loadApprovedArtisans();
   }, [statusFilter]);
 
   async function handleUpdateStatus(id: string, newStatus: string) {
@@ -138,6 +170,40 @@ export default function AdminBespokePage() {
     setAssigningCommission(comm);
     setArtisanInput(comm.assigned_artisan || '');
     setNotesInput(comm.admin_notes || '');
+    setManualOverrideMode(false);
+    loadApprovedArtisans();
+  };
+
+  /**
+   * Evaluates if a given artisan is already assigned to any other active bespoke order.
+   * Active orders = status not in ('completed', 'cancelled')
+   */
+  const getArtisanAssignmentStatus = (artisanName: string, currentReqNumber?: string) => {
+    if (!artisanName) return null;
+    const trimmed = artisanName.toLowerCase().trim();
+
+    const busyCommission = commissions.find(
+      (c) =>
+        c.status !== 'completed' &&
+        c.status !== 'cancelled' &&
+        c.assigned_artisan &&
+        (c.assigned_artisan.toLowerCase().trim() === trimmed ||
+          c.assigned_artisan.toLowerCase().includes(trimmed) ||
+          trimmed.includes(c.assigned_artisan.toLowerCase().trim()))
+    );
+
+    if (!busyCommission) {
+      return { isBusy: false, isCurrent: false, requestNumber: null, patronName: null };
+    }
+
+    const isCurrent = Boolean(currentReqNumber && busyCommission.request_number === currentReqNumber);
+    return {
+      isBusy: !isCurrent,
+      isCurrent,
+      requestNumber: busyCommission.request_number,
+      patronName: busyCommission.name,
+      status: busyCommission.status,
+    };
   };
 
   const filtered = commissions.filter((c) => {
@@ -1086,7 +1152,7 @@ export default function AdminBespokePage() {
         </div>
       )}
 
-      {/* ════════════ DIALOG MODAL 2: ASSIGN ARTISAN ════════════ */}
+      {/* ════════════ DIALOG MODAL 2: ASSIGN ARTISAN (DROPDOWN WITH BUSY-LOGIC) ════════════ */}
       {assigningCommission && (
         <div
           style={{
@@ -1107,7 +1173,7 @@ export default function AdminBespokePage() {
               background: '#FFFFFF',
               borderRadius: '14px',
               padding: '2rem 2.25rem',
-              maxWidth: '520px',
+              maxWidth: '560px',
               width: '100%',
               boxShadow: '0 24px 60px rgba(0,0,0,0.3)',
               border: '1.5px solid var(--soft-gold-line)',
@@ -1115,12 +1181,13 @@ export default function AdminBespokePage() {
             }}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Modal Title */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
               <div>
                 <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--ink-brown)', margin: 0 }}>
                   Assign Master Artisan
                 </h3>
-                <div style={{ fontSize: '0.88rem', color: '#5C5043', marginTop: '2px' }}>
+                <div style={{ fontSize: '0.88rem', color: '#5C5043', marginTop: '3px' }}>
                   Commission: <strong>{assigningCommission.request_number}</strong> ({assigningCommission.name})
                 </div>
               </div>
@@ -1144,36 +1211,231 @@ export default function AdminBespokePage() {
               </button>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.35rem' }}>
+              {/* Dropdown Selector for Approved Artisans */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#5C5043', marginBottom: '0.4rem', textTransform: 'uppercase' }}>
-                  Master Artisan / Guild Name:
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Ramdas Mishra Pit Loom Guild"
-                  value={artisanInput}
-                  onChange={(e) => setArtisanInput(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '0.75rem 1rem',
-                    border: '1.5px solid var(--soft-gold-line)',
-                    borderRadius: '8px',
-                    fontSize: '1rem',
-                    outline: 'none',
-                    color: 'var(--ink-brown)',
-                    background: '#FAF7F2',
-                  }}
-                />
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
+                  <label style={{ fontSize: '0.85rem', fontWeight: 700, color: '#5C5043', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    Select Approved Artisan:
+                  </label>
+                  {approvedArtisans.length > 0 && (
+                    <span style={{ fontSize: '0.8rem', color: '#2E7D32', fontWeight: 700 }}>
+                      {approvedArtisans.length} Approved in Registry
+                    </span>
+                  )}
+                </div>
+
+                {loadingArtisans ? (
+                  <div style={{ padding: '0.85rem', fontSize: '0.9rem', color: '#5C5043', background: '#FAF7F2', borderRadius: '8px', border: '1px solid var(--soft-gold-line)' }}>
+                    Verifying approved artisan registry...
+                  </div>
+                ) : !manualOverrideMode && approvedArtisans.length === 0 ? (
+                  /* Zero Mock Data: Informative Empty State with Logic Preserved */
+                  <div
+                    style={{
+                      background: '#FAF7F2',
+                      border: '1.5px dashed var(--soft-gold-line)',
+                      borderRadius: '8px',
+                      padding: '1.25rem',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#FFFFFF', border: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 0.65rem', color: 'var(--gargi-gold)' }}>
+                      <Award size={20} />
+                    </div>
+                    <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--ink-brown)' }}>
+                      No Approved Artisans in Registry
+                    </div>
+                    <p style={{ margin: '0.35rem 0 0.85rem', fontSize: '0.86rem', color: '#5C5043', lineHeight: 1.5 }}>
+                      Only artisans with status <strong>Approved</strong> by admin can be selected. When artisans submit applications and are verified, they will appear here automatically.
+                    </p>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                      <Link
+                        href="/admin/artisans/applications"
+                        target="_blank"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.4rem',
+                          fontSize: '0.85rem',
+                          fontWeight: 700,
+                          color: 'var(--maharani-maroon)',
+                          textDecoration: 'none',
+                          padding: '0.4rem 0.85rem',
+                          borderRadius: '4px',
+                          background: 'rgba(122, 35, 49, 0.08)',
+                        }}
+                      >
+                        <span>Review Artisan Applications</span>
+                        <ExternalLink size={13} />
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => setManualOverrideMode(true)}
+                        style={{
+                          fontSize: '0.82rem',
+                          color: '#5C5043',
+                          background: 'transparent',
+                          border: 'none',
+                          textDecoration: 'underline',
+                          cursor: 'pointer',
+                          fontWeight: 600,
+                        }}
+                      >
+                        Enter manual artisan name
+                      </button>
+                    </div>
+                  </div>
+                ) : manualOverrideMode ? (
+                  /* Manual input fallback */
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Type custom artisan or guild name..."
+                      value={artisanInput}
+                      onChange={(e) => setArtisanInput(e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '0.75rem 1rem',
+                        border: '1.5px solid var(--soft-gold-line)',
+                        borderRadius: '8px',
+                        fontSize: '0.98rem',
+                        outline: 'none',
+                        color: 'var(--ink-brown)',
+                        background: '#FAF7F2',
+                      }}
+                    />
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.35rem' }}>
+                      <button
+                        type="button"
+                        onClick={() => setManualOverrideMode(false)}
+                        style={{
+                          fontSize: '0.8rem',
+                          color: 'var(--maharani-maroon)',
+                          background: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                          fontWeight: 700,
+                        }}
+                      >
+                        Back to approved registry dropdown
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  /* Active Dropdown populated with approved artisans and busy logic */
+                  <div>
+                    <select
+                      value={artisanInput}
+                      onChange={(e) => setArtisanInput(e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '0.75rem 1rem',
+                        border: '1.5px solid var(--soft-gold-line)',
+                        borderRadius: '8px',
+                        fontSize: '0.95rem',
+                        outline: 'none',
+                        color: 'var(--ink-brown)',
+                        background: '#FAF7F2',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <option value="">-- Choose an approved master artisan from registry --</option>
+                      {assigningCommission.assigned_artisan && (
+                        <option value="">✕ Unassign / Clear Artisan</option>
+                      )}
+                      {approvedArtisans.map((artisan) => {
+                        const assignmentInfo = getArtisanAssignmentStatus(artisan.name, assigningCommission.request_number);
+                        const isBusy = assignmentInfo?.isBusy;
+                        const isCurrent = assignmentInfo?.isCurrent;
+
+                        return (
+                          <option
+                            key={artisan.applicationId || artisan.id || artisan.name}
+                            value={artisan.name}
+                            disabled={isBusy}
+                            style={{
+                              color: isBusy ? '#9E9E9E' : 'var(--ink-brown)',
+                              background: isBusy ? '#F5F5F5' : '#FFFFFF',
+                            }}
+                          >
+                            {isBusy
+                              ? `⛔ ${artisan.name} (${artisan.typeOfArt || 'Artisan'}) — [BUSY: Assigned to ${assignmentInfo?.requestNumber}]`
+                              : isCurrent
+                              ? `✓ ${artisan.name} (${artisan.typeOfArt || 'Artisan'}) — [Currently Assigned]`
+                              : `✦ ${artisan.name} (${artisan.typeOfArt || 'Artisan'} • ${artisan.state || 'India'}) — [Available]`}
+                          </option>
+                        );
+                      })}
+                    </select>
+
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.45rem' }}>
+                      <span style={{ fontSize: '0.8rem', color: '#5C5043' }}>
+                        Artisans already assigned to active bespoke commissions cannot be double-booked.
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setManualOverrideMode(true)}
+                        style={{
+                          fontSize: '0.8rem',
+                          color: 'var(--maharani-maroon)',
+                          background: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                          fontWeight: 600,
+                        }}
+                      >
+                        Manual entry
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Selected Status Indicator */}
+                {artisanInput && (
+                  <div
+                    style={{
+                      marginTop: '0.65rem',
+                      padding: '0.55rem 0.85rem',
+                      borderRadius: '6px',
+                      background: '#FAF7F2',
+                      border: '1px solid var(--soft-gold-line)',
+                      fontSize: '0.86rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <span style={{ color: '#5C5043' }}>
+                      Selected Artisan: <strong style={{ color: 'var(--maharani-maroon)' }}>{artisanInput}</strong>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setArtisanInput('')}
+                      style={{
+                        border: 'none',
+                        background: 'transparent',
+                        color: '#C62828',
+                        fontSize: '0.8rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Clear
+                    </button>
+                  </div>
+                )}
               </div>
 
+              {/* Concierge Curation Notes */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#5C5043', marginBottom: '0.4rem', textTransform: 'uppercase' }}>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#5C5043', marginBottom: '0.45rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   Concierge Curation Notes:
                 </label>
                 <textarea
                   rows={3}
-                  placeholder="Internal instructions on zari density, delivery deadlines, dyeing tests..."
+                  placeholder="Internal instructions regarding zari density, delivery deadlines, dyeing tests..."
                   value={notesInput}
                   onChange={(e) => setNotesInput(e.target.value)}
                   style={{
@@ -1186,11 +1448,13 @@ export default function AdminBespokePage() {
                     color: 'var(--ink-brown)',
                     background: '#FAF7F2',
                     resize: 'vertical',
+                    lineHeight: 1.5,
                   }}
                 />
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
+              {/* Modal Actions */}
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem', paddingTop: '1rem', borderTop: '1px solid var(--soft-gold-line)' }}>
                 <button
                   type="button"
                   onClick={() => setAssigningCommission(null)}
