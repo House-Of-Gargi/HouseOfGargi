@@ -207,7 +207,8 @@ export default function ProductQCApprovalsPage() {
           </Link>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {paginatedSubmissions.map((item) => (
             <div
               key={item.id}
@@ -401,6 +402,7 @@ export default function ProductQCApprovalsPage() {
             </div>
           </div>
         )}
+        </>
       )}
 
       {/* Inspect Item Modal */}

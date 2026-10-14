@@ -135,6 +135,12 @@ export default function VerifiedArtisansPage() {
     );
   });
 
+  const totalPages = Math.ceil(filteredArtisans.length / ITEMS_PER_PAGE) || 1;
+  const paginatedArtisans = filteredArtisans.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
   return (
     <div>
       {/* ════════════ PAGE HEADER ════════════ */}
