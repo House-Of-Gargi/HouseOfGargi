@@ -176,13 +176,15 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
         
         {/* Section Header: Royal Header Lockup with Flanking Diamonds */}
         <div className="royal-header-lockup" style={{ marginBottom: '2.25rem' }}>
+          <span className="artisan-creations-eyebrow">
+            Creations by
+          </span>
           <div className="royal-header-line-row">
             <div className="royal-header-line royal-header-line--left">
               <span className="royal-header-diamond" />
             </div>
-            <h2 className="royal-header-title">
-              <span style={{ color: 'var(--ink-brown)' }}>Creations by </span>
-              <span style={{ color: 'var(--maharani-maroon)' }}>{artisan.name}</span>
+            <h2 className="royal-header-title" style={{ color: 'var(--maharani-maroon)' }}>
+              {artisan.name}
             </h2>
             <div className="royal-header-line royal-header-line--right">
               <span className="royal-header-diamond" />
