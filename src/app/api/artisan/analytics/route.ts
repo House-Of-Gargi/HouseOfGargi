@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { products as catalogProducts } from '@/data/products';
 
 const ORDERS_FILE = path.join(process.cwd(), 'src', 'data', 'backend_orders.json');
 const OVERRIDES_FILE = path.join(process.cwd(), 'src', 'data', 'orders_overrides.json');
 const PRODUCT_OVERRIDES_FILE = path.join(process.cwd(), 'src', 'data', 'product_overrides.json');
-import { products as catalogProducts } from '@/data/products';
 
 export async function GET() {
   try {
@@ -36,7 +36,7 @@ export async function GET() {
       status: overrides[o.id] || o.status,
     }));
 
-    // Map units sold per product
+    // Map units sold per product strictly from real orders
     const productSalesMap: Record<string, { unitsSold: number; revenue: number }> = {};
     orders.forEach((o) => {
       if (Array.isArray(o.items)) {
@@ -54,24 +54,12 @@ export async function GET() {
       }
     });
 
-    // Baseline catalog sales units if orders are few
-    const BASELINE_SALES: Record<string, number> = {
-      'banarasi-gold-weave': 24,
-      'kanchipuram-temple-border': 19,
-      'chanderi-floral-jaal': 28,
-      'royal-zardozi-lehenga': 12,
-      'paithani-peacock': 15,
-      'tussar-block-print': 14,
-      'gota-patti-lehenga': 9,
-      'chikankari-white-kurta': 21,
-    };
-
-    // Calculate Top 5 Selling Products for this artisan
+    // Calculate Top 5 Selling Products (strictly from real orders, 0 if no orders yet)
     const allProducts = catalogProducts.map((cp) => {
       const fromOrders = productSalesMap[cp.id];
-      const unitsSold = (fromOrders ? fromOrders.unitsSold : 0) + (BASELINE_SALES[cp.id] || 6);
+      const unitsSold = fromOrders ? fromOrders.unitsSold : 0;
       const price = productOverrides[cp.id]?.price || cp.price;
-      const revenue = unitsSold * price;
+      const revenue = fromOrders ? fromOrders.revenue : 0;
       const artisanShare = Math.round(revenue * 0.85);
       const images = productOverrides[cp.id]?.images || cp.images || ['/images/category-sarees.png'];
 
@@ -94,11 +82,11 @@ export async function GET() {
     });
 
     const top5Products = [...allProducts]
-      .sort((a, b) => b.unitsSold - a.unitsSold)
+      .sort((a, b) => b.unitsSold - a.unitsSold || b.price - a.price)
       .slice(0, 5);
 
-    // Compute Daily Sales for 7 Days and 30 Days
-    const now = new Date('2026-10-15T12:00:00.000Z');
+    // Compute Daily Sales for 7 Days and 30 Days (strictly from real orders)
+    const now = new Date();
 
     const getDailySales = (daysCount: number) => {
       const days: any[] = [];
@@ -109,10 +97,9 @@ export async function GET() {
 
         const weekdayStr = d.toLocaleDateString('en-US', { weekday: 'short' });
         const dayNum = d.getDate();
-        const shortLabel = i === 0 ? 'Today' : `${weekdayStr} ${dayNum}`;
+        const shortLabel = i === 0 ? 'Today' : (weekdayStr + ' ' + dayNum);
         const fullLabel = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 
-        // Sum orders matching this date
         const matchingOrders = orders.filter((o) => o.created_at && o.created_at.startsWith(dateStr));
         const dayTotal = matchingOrders.reduce((sum, o) => sum + (Number(o.total_rupees) || 0), 0);
         const dayUnits = matchingOrders.reduce((sum, o) => {
