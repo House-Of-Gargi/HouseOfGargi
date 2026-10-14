@@ -45,7 +45,7 @@ export const categories: Category[] = [
   },
 ];
 
-export const products: Product[] = [
+const baseProducts: Product[] = [
   /* ── Sarees ──────────────────────────── */
   {
     id: 'banarasi-gold-weave',
@@ -316,7 +316,53 @@ export const featuredProductIds = [
   'gota-patti-lehenga',
 ];
 
+import productOverrides from './product_overrides.json';
+
+function applyProductOverride(p: Product): Product {
+  const ov = (productOverrides as Record<string, any>)[p.id];
+  if (!ov) return p;
+  return {
+    ...p,
+    name: ov.name || p.name,
+    category: ov.category || p.category,
+    price: ov.price !== undefined ? Number(ov.price) : p.price,
+    description: ov.description || p.description,
+    fabric: ov.fabric || p.fabric,
+    technique: ov.technique || ov.artType || p.technique,
+    occasion: ov.occasion || p.occasion,
+    region: ov.region || p.region,
+    images: ov.images && ov.images.length > 0 ? ov.images : p.images,
+  };
+}
+
+export const products: Product[] = baseProducts.map(applyProductOverride);
+
 export function getProduct(id: string): Product | undefined {
+  const p = products.find(prod => prod.id === id);
+  const ov = (productOverrides as Record<string, any>)[id];
+  if (!p && ov) {
+    return {
+      id,
+      category: ov.category || 'sarees',
+      name: ov.name || 'Artisan Creation',
+      price: ov.price !== undefined ? Number(ov.price) : 0,
+      artisanNote: 'Handcrafted by Master Artisan Gopal Chandra Dey (HG-84192)',
+      artisanId: 'gopal-chandra-dey',
+      artisanName: 'Gopal Chandra Dey',
+      description: ov.description || 'Authentic handcrafted heritage creation.',
+      fabric: ov.fabric || 'Pure Silk',
+      technique: ov.technique || ov.artType || 'Handloom Weave',
+      region: ov.region || 'India',
+      occasion: ov.occasion || 'Wedding & Festive',
+      sizes: ov.sizes || ['Free Size'],
+      care: ov.care || 'Dry clean only',
+      images: ov.images && ov.images.length > 0 ? ov.images : ['/images/category-sarees.png'],
+    };
+  }
+  if (!p) return undefined;
+  return applyProductOverride(p);
+}
+function _unused_old_getProduct(id: string) {
   return products.find(p => p.id === id);
 }
 
