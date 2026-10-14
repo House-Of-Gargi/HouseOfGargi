@@ -51,117 +51,64 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
   return (
     <div className="artisan-page">
       
-      {/* ── BREADCRUMB / BACK ROW (SEAMLESS MATCHING IVORY BG) ── */}
+      {/* ── TOP NAV BAR (DESKTOP: RIGHT-ALIGNED BREADCRUMB | MOBILE: BACK TO CATALOG) ── */}
       <div className="container" style={{ maxWidth: '1280px', padding: '0 20px', marginBottom: '1.75rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+        <div className="artisan-top-nav">
           <Link 
             href="/shop"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontSize: '0.82rem',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-              color: 'var(--ink-brown)',
-              textDecoration: 'none',
-              transition: 'color 150ms ease',
-            }}
+            className="artisan-back-link"
           >
-            <ArrowLeft size={14} /> <span>Back to Catalog</span>
+            <ArrowLeft size={15} /> <span>Back to Catalog</span>
           </Link>
 
-          <nav className="breadcrumb" style={{ fontSize: '0.82rem', color: '#7A6B60', margin: 0 }}>
-            <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }}>Home</Link>
-            <span>/</span>
-            <Link href="/shop" style={{ color: 'inherit', textDecoration: 'none' }}>Artisans</Link>
-            <span>/</span>
-            <span style={{ color: 'var(--maharani-maroon)', fontWeight: 700 }}>{artisan.name}</span>
+          <nav className="artisan-breadcrumb" aria-label="Breadcrumb">
+            <Link href="/">Home</Link>
+            <span className="artisan-breadcrumb-sep">/</span>
+            <Link href="/shop">Artisans</Link>
+            <span className="artisan-breadcrumb-sep">/</span>
+            <span className="artisan-breadcrumb-current">{artisan.name}</span>
           </nav>
         </div>
       </div>
 
-      {/* ── 1. ARTISAN PROFILE LOCKUP (BEAUTIFULLY FORMATTED, MINIMAL & SEAMLESS BG) ── */}
-      <section style={{
-        background: 'transparent',
-        borderBottom: '1px solid rgba(228, 211, 174, 0.75)',
-        paddingBottom: '2.5rem',
-        marginBottom: '2.5rem',
-      }}>
+      {/* ── 1. ARTISAN PROFILE LOCKUP (FULL STRETCH TO RIGHT, BEAUTIFUL MINIMAL AESTHETIC) ── */}
+      <section className="artisan-profile-section">
         <div className="container" style={{ maxWidth: '1280px', padding: '0 20px' }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '2.25rem',
-            flexWrap: 'wrap',
-          }}>
+          <div className="artisan-profile-card">
+            
             {/* Master Artisan Portrait */}
-            <div
-              style={{
-                width: '108px',
-                height: '108px',
-                borderRadius: '50%',
-                overflow: 'hidden',
-                border: '2px solid var(--gargi-gold)',
-                padding: '3px',
-                background: 'var(--ivory-silk, #FBF6EE)',
-                flexShrink: 0,
-                boxShadow: '0 4px 20px rgba(122, 35, 49, 0.12)',
-              }}
-            >
-              <img 
-                src={artisan.image || '/images/artisans_split.png'} 
-                alt={artisan.name} 
-                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
-              />
+            <div className="artisan-profile-avatar-wrap">
+              <div className="artisan-profile-avatar">
+                <img 
+                  src={artisan.image || '/images/artisans_split.png'} 
+                  alt={artisan.name} 
+                />
+              </div>
             </div>
 
             {/* Artisan Minimal Typography Lockup */}
-            <div style={{ flex: 1, minWidth: '280px' }}>
-              <h1 style={{
-                margin: '0 0 8px',
-                fontSize: 'clamp(1.9rem, 3.4vw, 2.5rem)',
-                fontWeight: 800,
-                fontFamily: "var(--font-display, 'Playfair Display', serif)",
-                color: 'var(--ink-brown)',
-                letterSpacing: '-0.02em',
-                lineHeight: 1.15,
-              }}>
+            <div className="artisan-profile-content">
+              <h1 className="artisan-profile-name">
                 {artisan.name}
               </h1>
 
               {/* Minimalist, Clean Meta Row */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                flexWrap: 'wrap',
-                fontSize: '0.9rem',
-                color: '#5C5043',
-                marginBottom: '12px',
-              }}>
-                <span style={{ fontWeight: 700, color: 'var(--maharani-maroon)', letterSpacing: '0.02em' }}>
+              <div className="artisan-profile-meta">
+                <span className="artisan-profile-role">
                   {artisan.role}
                 </span>
-                <span style={{ color: 'var(--gargi-gold)', fontSize: '0.75rem' }}>✦</span>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                  <MapPin size={13} color="var(--gargi-gold)" /> {artisan.region}
+                <span className="artisan-profile-dot">✦</span>
+                <span className="artisan-profile-region">
+                  <MapPin size={13} /> {artisan.region}
                 </span>
-                <span style={{ color: 'var(--gargi-gold)', fontSize: '0.75rem' }}>✦</span>
-                <span style={{ fontWeight: 600, color: 'var(--ink-brown)' }}>
+                <span className="artisan-profile-dot">✦</span>
+                <span className="artisan-profile-exp">
                   {artisan.experienceYears}+ Years at the Loom
                 </span>
               </div>
 
-              {/* Refined Minimal Craft Bio */}
-              <p style={{
-                margin: 0,
-                fontSize: '0.94rem',
-                lineHeight: 1.68,
-                color: '#5C4E44',
-                maxWidth: '820px',
-              }}>
+              {/* Refined Craft Bio Stretching across full container width */}
+              <p className="artisan-profile-bio">
                 {artisan.bio}
               </p>
             </div>
@@ -169,43 +116,22 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
         </div>
       </section>
 
-      {/* ── 2. MAIN FOCUS: CREATIONS BY THIS ARTISAN ── */}
+      {/* ── 2. MAIN FOCUS: CREATIONS BY THIS ARTISAN (EXACT SS2 ROYAL HEADER) ── */}
       <main className="container" style={{ maxWidth: '1280px', padding: '0 20px' }}>
         
-        {/* Section Header: Symmetrical Gold Hairlines with Red Artisan Name */}
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '1.25rem',
-            maxWidth: '780px',
-            margin: '0 auto',
-          }}>
-            <span style={{
-              flex: 1,
-              height: '1px',
-              background: 'linear-gradient(90deg, transparent, var(--gargi-gold))',
-            }} />
-            <h2 style={{
-              margin: 0,
-              fontSize: 'clamp(1.6rem, 2.8vw, 2.2rem)',
-              fontWeight: 800,
-              fontFamily: "var(--font-display, 'Playfair Display', serif)",
-              color: 'var(--ink-brown)',
-              letterSpacing: '-0.02em',
-              whiteSpace: 'nowrap',
-            }}>
-              Creations by{' '}
-              <span style={{ color: 'var(--maharani-maroon)' }}>
-                {artisan.name}
-              </span>
+        {/* Section Header: Royal Header Lockup with Flanking Diamonds (Screenshot 2 Format) */}
+        <div className="royal-header-lockup" style={{ marginBottom: '2.25rem' }}>
+          <div className="royal-header-line-row">
+            <div className="royal-header-line royal-header-line--left">
+              <span className="royal-header-diamond" />
+            </div>
+            <h2 className="royal-header-title">
+              <span style={{ color: 'var(--ink-brown)' }}>Creations by </span>
+              <span style={{ color: 'var(--maharani-maroon)' }}>{artisan.name}</span>
             </h2>
-            <span style={{
-              flex: 1,
-              height: '1px',
-              background: 'linear-gradient(90deg, var(--gargi-gold), transparent)',
-            }} />
+            <div className="royal-header-line royal-header-line--right">
+              <span className="royal-header-diamond" />
+            </div>
           </div>
         </div>
 
