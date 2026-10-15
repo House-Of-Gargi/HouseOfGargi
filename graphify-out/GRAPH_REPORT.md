@@ -1,9 +1,9 @@
 # House of Gargi — Knowledge Graph Architecture Report
 
-**Generated on:** Thu, 08 Oct 2026 05:49:43 GMT  
+**Generated on:** Thu, 15 Oct 2026 14:15:14 GMT  
 **Repository:** `House-Of-Gargi/HouseOfGargi`  
-**Total Entities (Nodes):** 80  
-**Total Relationships (Edges):** 108  
+**Total Entities (Nodes):** 156  
+**Total Relationships (Edges):** 175  
 **Detected Communities:** 13
 
 ---
@@ -14,10 +14,10 @@ House of Gargi is a Next.js 16 (React 19) digital atelier for luxury handcrafted
 
 | Metric | Count | Description |
 | :--- | :--- | :--- |
-| **Total Nodes** | **80** | Source files, components, contexts, routes, and configs |
-| **Total Directed Edges** | **108** | Import, composition, and event dependencies |
+| **Total Nodes** | **156** | Source files, components, contexts, routes, and configs |
+| **Total Directed Edges** | **175** | Import, composition, and event dependencies |
 | **Architectural Communities** | **13** | Functional subsystems |
-| **Average Degree** | **2.70** | Inter-module connectivity density |
+| **Average Degree** | **2.24** | Inter-module connectivity density |
 
 ---
 
@@ -27,32 +27,58 @@ God nodes represent the foundational modules of the application that the majorit
 
 | Rank | Module / File | In-Degree (Depended Upon By) | Out-Degree | Total Connections | Primary Function |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| **#1** | `src/data/products.ts` | **15** | 2 | **17** | 18 catalog luxury products with price, images, and artisan mappings |
-| **#2** | `src/components/ScrollReveal.tsx` | **14** | 0 | **14** | Module ScrollReveal.tsx in Storefront UI Components |
-| **#3** | `src/components/ProductCard.tsx` | **6** | 6 | **12** | Module ProductCard.tsx in Storefront UI Components |
-| **#4** | `src/context/CustomerAuthContext.tsx` | **10** | 2 | **12** | Strict Email OTP customer authentication and multi-tab session state |
-| **#5** | `src/lib/supabaseClient.ts` | **12** | 0 | **12** | Supabase client instance for database and auth |
-| **#6** | `src/context/CartContext.tsx` | **6** | 4 | **10** | Email-keyed shopping bag with real-time cross-tab sync |
-| **#7** | `src/context/WishlistContext.tsx` | **6** | 4 | **10** | Email-keyed wishlist state with real-time cross-tab sync |
-| **#8** | `src/app/(storefront)/product/[id]/page.tsx` | **0** | 8 | **8** | Storefront page route for [id] |
-| **#9** | `src/components/Icons.tsx` | **8** | 0 | **8** | Module Icons.tsx in Storefront UI Components |
-| **#10** | `src/components/Navbar.tsx` | **1** | 6 | **7** | Module Navbar.tsx in Storefront UI Components |
+| **#1** | `src/lib/supabaseClient.ts` | **29** | 0 | **29** | Supabase client instance for database and auth |
+| **#2** | `src/data/products.ts` | **23** | 3 | **26** | 18 catalog luxury products with price, images, and artisan mappings |
+| **#3** | `src/components/admin/AdminLoadingSpinner.tsx` | **13** | 0 | **13** | Module AdminLoadingSpinner.tsx in Storefront UI Components |
+| **#4** | `src/components/ProductCard.tsx` | **7** | 6 | **13** | Module ProductCard.tsx in Storefront UI Components |
+| **#5** | `src/context/CustomerAuthContext.tsx` | **11** | 2 | **13** | Strict Email OTP customer authentication and multi-tab session state |
+| **#6** | `src/components/ScrollReveal.tsx` | **11** | 0 | **11** | Module ScrollReveal.tsx in Storefront UI Components |
+| **#7** | `src/context/CartContext.tsx` | **6** | 4 | **10** | Email-keyed shopping bag with real-time cross-tab sync |
+| **#8** | `src/context/WishlistContext.tsx` | **6** | 4 | **10** | Email-keyed wishlist state with real-time cross-tab sync |
+| **#9** | `src/components/common/PortalLoadingScreen.tsx` | **9** | 0 | **9** | Module PortalLoadingScreen.tsx in Storefront UI Components |
+| **#10** | `src/app/(storefront)/product/[id]/page.tsx` | **0** | 8 | **8** | Storefront page route for [id] |
 
 ---
 
 ## 3. Community Subsystem Breakdown
 
 
-### Configuration & Manifests (16 files)
+### Configuration & Manifests (42 files)
 - **`eslint.config.js`** (22 lines) — *Module eslint.config.js in Configuration & Manifests* [In: 0, Out: 0]
 - **`next-env.d.ts`** (8 lines) — *Module next-env.d.ts in Configuration & Manifests* [In: 0, Out: 0]
 - **`next.config.js`** (46 lines) — *Module next.config.js in Configuration & Manifests* [In: 0, Out: 0]
 - **`package-lock.json`** (3470 lines) — *Module package-lock.json in Configuration & Manifests* [In: 0, Out: 0]
 - **`package.json`** (38 lines) — *Module package.json in Configuration & Manifests* [In: 0, Out: 0]
-- **`src/app/layout.tsx`** (167 lines) — *Module layout.tsx in Configuration & Manifests* [In: 0, Out: 4]
-- **`src/app/not-found.tsx`** (22 lines) — *Module not-found.tsx in Configuration & Manifests* [In: 0, Out: 0]
+- **`src/app/admin/artisans/applications/page.tsx`** (1114 lines) — *Storefront page route for applications* [In: 0, Out: 1]
+- **`src/app/admin/artisans/page.tsx`** (758 lines) — *Storefront page route for artisans* [In: 0, Out: 1]
+- **`src/app/admin/artisans/profile/page.tsx`** (1068 lines) — *Storefront page route for profile* [In: 0, Out: 1]
+- **`src/app/admin/bespoke/page.tsx`** (1500 lines) — *Storefront page route for bespoke* [In: 0, Out: 1]
+- **`src/app/admin/dashboard/page.tsx`** (1203 lines) — *Storefront page route for dashboard* [In: 0, Out: 1]
+- **`src/app/admin/layout.tsx`** (155 lines) — *Module layout.tsx in Configuration & Manifests* [In: 0, Out: 4]
+- **`src/app/admin/loading.tsx`** (14 lines) — *Module loading.tsx in Configuration & Manifests* [In: 0, Out: 1]
+- **`src/app/admin/login/page.tsx`** (852 lines) — *Storefront page route for login* [In: 0, Out: 1]
+- **`src/app/admin/page.tsx`** (18 lines) — *Storefront page route for admin* [In: 0, Out: 0]
+- **`src/app/admin/products/approvals/page.tsx`** (490 lines) — *Storefront page route for approvals* [In: 0, Out: 1]
+- **`src/app/admin/products/page.tsx`** (1364 lines) — *Storefront page route for products* [In: 0, Out: 1]
+- **`src/app/artisan/dashboard/page.tsx`** (1055 lines) — *Storefront page route for dashboard* [In: 0, Out: 1]
+- **`src/app/artisan/layout.tsx`** (93 lines) — *Module layout.tsx in Configuration & Manifests* [In: 0, Out: 3]
+- **`src/app/artisan/loading.tsx`** (14 lines) — *Module loading.tsx in Configuration & Manifests* [In: 0, Out: 1]
+- **`src/app/artisan/page.tsx`** (19 lines) — *Storefront page route for artisan* [In: 0, Out: 0]
+- **`src/app/layout.tsx`** (169 lines) — *Module layout.tsx in Configuration & Manifests* [In: 0, Out: 5]
+- **`src/app/loading.tsx`** (6 lines) — *Module loading.tsx in Configuration & Manifests* [In: 0, Out: 1]
+- **`src/app/not-found.tsx`** (225 lines) — *Module not-found.tsx in Configuration & Manifests* [In: 0, Out: 0]
 - **`src/app/robots.ts`** (16 lines) — *Module robots.ts in Configuration & Manifests* [In: 0, Out: 0]
 - **`src/app/sitemap.ts`** (104 lines) — *Module sitemap.ts in Configuration & Manifests* [In: 0, Out: 2]
+- **`src/app/super-admin/admins/page.tsx`** (402 lines) — *Storefront page route for admins* [In: 0, Out: 1]
+- **`src/app/super-admin/bestsellers/page.tsx`** (298 lines) — *Storefront page route for bestsellers* [In: 0, Out: 1]
+- **`src/app/super-admin/catalog/page.tsx`** (363 lines) — *Storefront page route for catalog* [In: 0, Out: 1]
+- **`src/app/super-admin/categories/page.tsx`** (374 lines) — *Storefront page route for categories* [In: 0, Out: 1]
+- **`src/app/super-admin/dashboard/page.tsx`** (521 lines) — *Storefront page route for dashboard* [In: 0, Out: 1]
+- **`src/app/super-admin/layout.tsx`** (146 lines) — *Module layout.tsx in Configuration & Manifests* [In: 0, Out: 4]
+- **`src/app/super-admin/loading.tsx`** (14 lines) — *Module loading.tsx in Configuration & Manifests* [In: 0, Out: 1]
+- **`src/app/super-admin/login/page.tsx`** (18 lines) — *Storefront page route for login* [In: 0, Out: 0]
+- **`src/app/super-admin/page.tsx`** (18 lines) — *Storefront page route for super-admin* [In: 0, Out: 0]
+- **`src/app/super-admin/revenue/page.tsx`** (401 lines) — *Storefront page route for revenue* [In: 0, Out: 1]
 - **`src/hooks/useSEO.ts`** (43 lines) — *Module useSEO.ts in Configuration & Manifests* [In: 0, Out: 0]
 - **`tsconfig.json`** (43 lines) — *Module tsconfig.json in Configuration & Manifests* [In: 0, Out: 0]
 - **`upload.js`** (52 lines) — *Module upload.js in Configuration & Manifests* [In: 0, Out: 0]
@@ -68,98 +94,148 @@ God nodes represent the foundational modules of the application that the majorit
 - **`supabase_schema.sql`** (59 lines) — *Module supabase_schema.sql in Database Migrations* [In: 0, Out: 0]
 
 
-### Automation Scripts (3 files)
+### Automation Scripts (4 files)
 - **`scripts/generate-graphify.cjs`** (663 lines) — *Module generate-graphify.cjs in Automation Scripts* [In: 0, Out: 0]
 - **`scripts/process-banners.cjs`** (51 lines) — *Module process-banners.cjs in Automation Scripts* [In: 0, Out: 0]
+- **`scripts/slice-sections.cjs`** (62 lines) — *Module slice-sections.cjs in Automation Scripts* [In: 0, Out: 0]
 - **`scripts/sync-images.cjs`** (184 lines) — *Module sync-images.cjs in Automation Scripts* [In: 0, Out: 0]
 
 
 ### Design System & Styles (3 files)
 - **`src/account.css`** (497 lines) — *Module account.css in Design System & Styles* [In: 0, Out: 0]
-- **`src/index.css`** (3413 lines) — *Module index.css in Design System & Styles* [In: 0, Out: 0]
-- **`src/seller.css`** (686 lines) — *Module seller.css in Design System & Styles* [In: 0, Out: 0]
+- **`src/index.css`** (9317 lines) — *Module index.css in Design System & Styles* [In: 0, Out: 0]
+- **`src/seller.css`** (911 lines) — *Module seller.css in Design System & Styles* [In: 0, Out: 0]
 
 
-### Storefront Pages (24 files)
+### Storefront Pages (26 files)
 - **`src/app/(storefront)/account/page.tsx`** (268 lines) — *Storefront page route for account* [In: 0, Out: 3]
 - **`src/app/(storefront)/artisan/[id]/layout.tsx`** (43 lines) — *Module layout.tsx in Storefront Pages* [In: 0, Out: 1]
-- **`src/app/(storefront)/artisan/[id]/page.tsx`** (478 lines) — *Storefront page route for [id]* [In: 0, Out: 4]
+- **`src/app/(storefront)/artisan/[id]/page.tsx`** (255 lines) — *Storefront page route for [id]* [In: 0, Out: 3]
 - **`src/app/(storefront)/bespoke/layout.tsx`** (20 lines) — *Module layout.tsx in Storefront Pages* [In: 0, Out: 0]
-- **`src/app/(storefront)/bespoke/page.tsx`** (171 lines) — *Storefront page route for bespoke* [In: 0, Out: 2]
+- **`src/app/(storefront)/bespoke/page.tsx`** (390 lines) — *Storefront page route for bespoke* [In: 0, Out: 3]
 - **`src/app/(storefront)/cart/page.tsx`** (578 lines) — *Storefront page route for cart* [In: 0, Out: 5]
 - **`src/app/(storefront)/category/[id]/layout.tsx`** (67 lines) — *Module layout.tsx in Storefront Pages* [In: 0, Out: 1]
-- **`src/app/(storefront)/category/[id]/page.tsx`** (256 lines) — *Storefront page route for [id]* [In: 0, Out: 5]
+- **`src/app/(storefront)/category/[id]/page.tsx`** (360 lines) — *Storefront page route for [id]* [In: 0, Out: 3]
+- **`src/app/(storefront)/explore/ExploreContent.tsx`** (389 lines) — *Module ExploreContent.tsx in Storefront Pages* [In: 1, Out: 4]
+- **`src/app/(storefront)/explore/page.tsx`** (35 lines) — *Storefront page route for explore* [In: 0, Out: 1]
 - **`src/app/(storefront)/faq/page.tsx`** (107 lines) — *Storefront page route for faq* [In: 0, Out: 1]
 - **`src/app/(storefront)/layout.tsx`** (14 lines) — *Module layout.tsx in Storefront Pages* [In: 0, Out: 2]
 - **`src/app/(storefront)/our-artisans/page.tsx`** (337 lines) — *Storefront page route for our-artisans* [In: 0, Out: 2]
 - **`src/app/(storefront)/our-story/page.tsx`** (98 lines) — *Storefront page route for our-story* [In: 0, Out: 2]
-- **`src/app/(storefront)/page.tsx`** (90 lines) — *Storefront page route for (storefront)* [In: 0, Out: 5]
+- **`src/app/(storefront)/page.tsx`** (183 lines) — *Storefront page route for (storefront)* [In: 0, Out: 6]
 - **`src/app/(storefront)/press/page.tsx`** (70 lines) — *Storefront page route for press* [In: 0, Out: 1]
 - **`src/app/(storefront)/privacy/page.tsx`** (77 lines) — *Storefront page route for privacy* [In: 0, Out: 1]
-- **`src/app/(storefront)/product/[id]/page.tsx`** (453 lines) — *Storefront page route for [id]* [In: 0, Out: 8]
+- **`src/app/(storefront)/product/[id]/page.tsx`** (356 lines) — *Storefront page route for [id]* [In: 0, Out: 8]
 - **`src/app/(storefront)/returns/page.tsx`** (68 lines) — *Storefront page route for returns* [In: 0, Out: 1]
 - **`src/app/(storefront)/shipping/page.tsx`** (66 lines) — *Storefront page route for shipping* [In: 0, Out: 1]
 - **`src/app/(storefront)/shop/layout.tsx`** (20 lines) — *Module layout.tsx in Storefront Pages* [In: 0, Out: 0]
-- **`src/app/(storefront)/shop/page.tsx`** (183 lines) — *Storefront page route for shop* [In: 0, Out: 5]
+- **`src/app/(storefront)/shop/page.tsx`** (321 lines) — *Storefront page route for shop* [In: 0, Out: 3]
 - **`src/app/(storefront)/size-guide/page.tsx`** (102 lines) — *Storefront page route for size-guide* [In: 0, Out: 1]
 - **`src/app/(storefront)/sustainability/page.tsx`** (64 lines) — *Storefront page route for sustainability* [In: 0, Out: 1]
 - **`src/app/(storefront)/terms/page.tsx`** (30 lines) — *Storefront page route for terms* [In: 0, Out: 0]
 - **`src/app/(storefront)/wishlist/page.tsx`** (322 lines) — *Storefront page route for wishlist* [In: 0, Out: 6]
 
 
-### API Handlers (5 files)
-- **`src/app/api/auth/send-otp/route.ts`** (144 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
-- **`src/app/api/auth/verify-otp/route.ts`** (82 lines) — *Module route.ts in API Handlers* [In: 0, Out: 0]
+### API Handlers (24 files)
+- **`src/app/api/admin/applications/route.ts`** (518 lines) — *Module route.ts in API Handlers* [In: 0, Out: 2]
+- **`src/app/api/admin/artisans/profile/route.ts`** (117 lines) — *Module route.ts in API Handlers* [In: 0, Out: 0]
+- **`src/app/api/admin/artisans/route.ts`** (325 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
+- **`src/app/api/admin/bespoke/route.ts`** (106 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
+- **`src/app/api/admin/dashboard/route.ts`** (136 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
+- **`src/app/api/admin/products/route.ts`** (317 lines) — *Module route.ts in API Handlers* [In: 0, Out: 2]
+- **`src/app/api/artisan/analytics/route.ts`** (140 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
+- **`src/app/api/artisan/apply/route.ts`** (282 lines) — *Module route.ts in API Handlers* [In: 0, Out: 2]
+- **`src/app/api/artisan/inventory/route.ts`** (123 lines) — *Module route.ts in API Handlers* [In: 0, Out: 0]
+- **`src/app/api/artisan/me/route.ts`** (101 lines) — *Module route.ts in API Handlers* [In: 0, Out: 0]
+- **`src/app/api/artisan/profile/route.ts`** (117 lines) — *Module route.ts in API Handlers* [In: 0, Out: 0]
+- **`src/app/api/auth/role/route.ts`** (26 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
+- **`src/app/api/auth/send-otp/route.ts`** (316 lines) — *Module route.ts in API Handlers* [In: 0, Out: 2]
+- **`src/app/api/auth/verify-otp/route.ts`** (93 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
+- **`src/app/api/bespoke/route.ts`** (116 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
 - **`src/app/api/checkout/route.ts`** (42 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
-- **`src/app/api/orders/route.ts`** (108 lines) — *Module route.ts in API Handlers* [In: 0, Out: 2]
+- **`src/app/api/orders/route.ts`** (183 lines) — *Module route.ts in API Handlers* [In: 0, Out: 2]
 - **`src/app/api/products/route.ts`** (22 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
+- **`src/app/api/super-admin/admins/route.ts`** (151 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
+- **`src/app/api/super-admin/bestsellers/route.ts`** (165 lines) — *Module route.ts in API Handlers* [In: 0, Out: 2]
+- **`src/app/api/super-admin/catalog/route.ts`** (137 lines) — *Module route.ts in API Handlers* [In: 0, Out: 2]
+- **`src/app/api/super-admin/categories/route.ts`** (151 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
+- **`src/app/api/super-admin/dashboard/route.ts`** (183 lines) — *Module route.ts in API Handlers* [In: 0, Out: 2]
+- **`src/app/api/super-admin/revenue/route.ts`** (120 lines) — *Module route.ts in API Handlers* [In: 0, Out: 2]
 
 
-### Seller Portal (5 files)
-- **`src/app/seller/layout.tsx`** (105 lines) — *Module layout.tsx in Seller Portal* [In: 0, Out: 2]
-- **`src/app/seller/login/page.tsx`** (685 lines) — *Storefront page route for login* [In: 0, Out: 1]
-- **`src/app/seller/orders/page.tsx`** (265 lines) — *Storefront page route for orders* [In: 0, Out: 2]
-- **`src/app/seller/page.tsx`** (582 lines) — *Storefront page route for seller* [In: 0, Out: 2]
-- **`src/app/seller/products/page.tsx`** (516 lines) — *Storefront page route for products* [In: 0, Out: 2]
+### Seller Portal (12 files)
+- **`src/app/seller/analytics/page.tsx`** (394 lines) — *Storefront page route for analytics* [In: 0, Out: 0]
+- **`src/app/seller/apply/page.tsx`** (1429 lines) — *Storefront page route for apply* [In: 0, Out: 0]
+- **`src/app/seller/earnings/page.tsx`** (265 lines) — *Storefront page route for earnings* [In: 0, Out: 0]
+- **`src/app/seller/inventory/page.tsx`** (296 lines) — *Storefront page route for inventory* [In: 0, Out: 0]
+- **`src/app/seller/layout.tsx`** (105 lines) — *Module layout.tsx in Seller Portal* [In: 0, Out: 3]
+- **`src/app/seller/loading.tsx`** (14 lines) — *Module loading.tsx in Seller Portal* [In: 0, Out: 1]
+- **`src/app/seller/login/page.tsx`** (1054 lines) — *Storefront page route for login* [In: 0, Out: 1]
+- **`src/app/seller/orders/page.tsx`** (246 lines) — *Storefront page route for orders* [In: 0, Out: 1]
+- **`src/app/seller/page.tsx`** (41 lines) — *Storefront page route for seller* [In: 0, Out: 0]
+- **`src/app/seller/products/new/page.tsx`** (1002 lines) — *Storefront page route for new* [In: 0, Out: 1]
+- **`src/app/seller/products/page.tsx`** (1578 lines) — *Storefront page route for products* [In: 0, Out: 1]
+- **`src/app/seller/profile/page.tsx`** (924 lines) — *Storefront page route for profile* [In: 0, Out: 1]
 
 
-### Storefront UI Components (9 files)
+### Storefront UI Components (18 files)
+- **`src/components/admin/AdminLoadingSpinner.tsx`** (101 lines) — *Module AdminLoadingSpinner.tsx in Storefront UI Components* [In: 13, Out: 0]
+- **`src/components/admin/AdminShell.tsx`** (85 lines) — *Module AdminShell.tsx in Storefront UI Components* [In: 1, Out: 1]
+- **`src/components/admin/AdminSidebar.tsx`** (448 lines) — *Module AdminSidebar.tsx in Storefront UI Components* [In: 1, Out: 1]
+- **`src/components/ArtisanProfileModal.tsx`** (344 lines) — *Module ArtisanProfileModal.tsx in Storefront UI Components* [In: 1, Out: 0]
 - **`src/components/AtelierNewsletter.tsx`** (93 lines) — *Module AtelierNewsletter.tsx in Storefront UI Components* [In: 0, Out: 0]
-- **`src/components/CustomDropdown.tsx`** (212 lines) — *Module CustomDropdown.tsx in Storefront UI Components* [In: 6, Out: 0]
-- **`src/components/CustomerLoginModal.tsx`** (428 lines) — *Module CustomerLoginModal.tsx in Storefront UI Components* [In: 1, Out: 2]
-- **`src/components/Footer.tsx`** (47 lines) — *Module Footer.tsx in Storefront UI Components* [In: 1, Out: 0]
-- **`src/components/HeroBanner.tsx`** (261 lines) — *Interactive 3-concept hero carousel with responsive WebP picture sources* [In: 1, Out: 0]
-- **`src/components/Icons.tsx`** (188 lines) — *Module Icons.tsx in Storefront UI Components* [In: 8, Out: 0]
-- **`src/components/Navbar.tsx`** (190 lines) — *Module Navbar.tsx in Storefront UI Components* [In: 1, Out: 6]
-- **`src/components/ProductCard.tsx`** (91 lines) — *Module ProductCard.tsx in Storefront UI Components* [In: 6, Out: 6]
-- **`src/components/ScrollReveal.tsx`** (38 lines) — *Module ScrollReveal.tsx in Storefront UI Components* [In: 14, Out: 0]
+- **`src/components/common/NetworkStatusBanner.tsx`** (104 lines) — *Module NetworkStatusBanner.tsx in Storefront UI Components* [In: 1, Out: 0]
+- **`src/components/common/PortalLoadingScreen.tsx`** (70 lines) — *Module PortalLoadingScreen.tsx in Storefront UI Components* [In: 9, Out: 0]
+- **`src/components/CustomDropdown.tsx`** (212 lines) — *Module CustomDropdown.tsx in Storefront UI Components* [In: 7, Out: 0]
+- **`src/components/CustomerLoginModal.tsx`** (334 lines) — *Module CustomerLoginModal.tsx in Storefront UI Components* [In: 1, Out: 1]
+- **`src/components/Footer.tsx`** (151 lines) — *Module Footer.tsx in Storefront UI Components* [In: 1, Out: 0]
+- **`src/components/HeroBanner.tsx`** (283 lines) — *Interactive 3-concept hero carousel with responsive WebP picture sources* [In: 1, Out: 0]
+- **`src/components/Icons.tsx`** (196 lines) — *Module Icons.tsx in Storefront UI Components* [In: 6, Out: 0]
+- **`src/components/Navbar.tsx`** (472 lines) — *Module Navbar.tsx in Storefront UI Components* [In: 1, Out: 7]
+- **`src/components/ProductCard.tsx`** (117 lines) — *Module ProductCard.tsx in Storefront UI Components* [In: 7, Out: 6]
+- **`src/components/ScrollReveal.tsx`** (48 lines) — *Module ScrollReveal.tsx in Storefront UI Components* [In: 11, Out: 0]
+- **`src/components/SearchDropdown.tsx`** (331 lines) — *Module SearchDropdown.tsx in Storefront UI Components* [In: 2, Out: 3]
+- **`src/components/super-admin/SuperAdminShell.tsx`** (100 lines) — *Module SuperAdminShell.tsx in Storefront UI Components* [In: 1, Out: 1]
+- **`src/components/super-admin/SuperAdminSidebar.tsx`** (473 lines) — *Module SuperAdminSidebar.tsx in Storefront UI Components* [In: 1, Out: 1]
 
 
 ### Seller Components (2 files)
-- **`src/components/seller/SellerShell.tsx`** (132 lines) — *Module SellerShell.tsx in Seller Components* [In: 1, Out: 1]
-- **`src/components/seller/SellerSidebar.tsx`** (309 lines) — *Module SellerSidebar.tsx in Seller Components* [In: 1, Out: 1]
+- **`src/components/seller/SellerShell.tsx`** (132 lines) — *Module SellerShell.tsx in Seller Components* [In: 2, Out: 1]
+- **`src/components/seller/SellerSidebar.tsx`** (438 lines) — *Module SellerSidebar.tsx in Seller Components* [In: 1, Out: 1]
 
 
 ### State & Context Providers (4 files)
 - **`src/context/CartContext.tsx`** (231 lines) — *Email-keyed shopping bag with real-time cross-tab sync* [In: 6, Out: 4]
-- **`src/context/CurrencyContext.tsx`** (154 lines) — *Module CurrencyContext.tsx in State & Context Providers* [In: 4, Out: 0]
-- **`src/context/CustomerAuthContext.tsx`** (179 lines) — *Strict Email OTP customer authentication and multi-tab session state* [In: 10, Out: 2]
+- **`src/context/CurrencyContext.tsx`** (154 lines) — *Module CurrencyContext.tsx in State & Context Providers* [In: 5, Out: 0]
+- **`src/context/CustomerAuthContext.tsx`** (179 lines) — *Strict Email OTP customer authentication and multi-tab session state* [In: 11, Out: 2]
 - **`src/context/WishlistContext.tsx`** (170 lines) — *Email-keyed wishlist state with real-time cross-tab sync* [In: 6, Out: 4]
 
 
-### Data Models & Catalog (2 files)
-- **`src/data/artisans.ts`** (177 lines) — *10 generational master artisan guild records and provenance helpers* [In: 5, Out: 1]
-- **`src/data/products.ts`** (399 lines) — *18 catalog luxury products with price, images, and artisan mappings* [In: 15, Out: 2]
+### Data Models & Catalog (12 files)
+- **`src/data/artisans.ts`** (280 lines) — *10 generational master artisan guild records and provenance helpers* [In: 5, Out: 2]
+- **`src/data/artisan_applications.json`** (41 lines) — *Module artisan_applications.json in Data Models & Catalog* [In: 0, Out: 0]
+- **`src/data/artisan_inventory.json`** (67 lines) — *Module artisan_inventory.json in Data Models & Catalog* [In: 0, Out: 0]
+- **`src/data/artisan_profile.json`** (28 lines) — *Module artisan_profile.json in Data Models & Catalog* [In: 0, Out: 0]
+- **`src/data/artisan_profiles_list.json`** (29 lines) — *Module artisan_profiles_list.json in Data Models & Catalog* [In: 1, Out: 0]
+- **`src/data/backend_orders.json`** (1 lines) — *Module backend_orders.json in Data Models & Catalog* [In: 0, Out: 0]
+- **`src/data/bespoke_requests.json`** (20 lines) — *Module bespoke_requests.json in Data Models & Catalog* [In: 0, Out: 0]
+- **`src/data/categories.json`** (57 lines) — *Module categories.json in Data Models & Catalog* [In: 0, Out: 0]
+- **`src/data/orders_overrides.json`** (1 lines) — *Module orders_overrides.json in Data Models & Catalog* [In: 0, Out: 0]
+- **`src/data/products.ts`** (391 lines) — *18 catalog luxury products with price, images, and artisan mappings* [In: 23, Out: 3]
+- **`src/data/product_numbers.json`** (23 lines) — *Module product_numbers.json in Data Models & Catalog* [In: 0, Out: 0]
+- **`src/data/product_overrides.json`** (132 lines) — *Module product_overrides.json in Data Models & Catalog* [In: 1, Out: 0]
 
 
-### Infrastructure & Realtime Mesh (3 files)
+### Infrastructure & Realtime Mesh (5 files)
+- **`src/lib/apiClient.ts`** (113 lines) — *Module apiClient.ts in Infrastructure & Realtime Mesh* [In: 1, Out: 0]
+- **`src/lib/rbac.ts`** (87 lines) — *Module rbac.ts in Infrastructure & Realtime Mesh* [In: 5, Out: 1]
 - **`src/lib/realtimeSync.ts`** (148 lines) — *Cross-tab WebSocket and BroadcastChannel synchronization mesh* [In: 3, Out: 1]
-- **`src/lib/resend.ts`** (8 lines) — *Resend email client integration for noreply@gargisaha.com* [In: 1, Out: 0]
-- **`src/lib/supabaseClient.ts`** (14 lines) — *Supabase client instance for database and auth* [In: 12, Out: 0]
+- **`src/lib/resend.ts`** (8 lines) — *Resend email client integration for noreply@gargisaha.com* [In: 3, Out: 0]
+- **`src/lib/supabaseClient.ts`** (14 lines) — *Supabase client instance for database and auth* [In: 29, Out: 0]
 
 
 ### Type Definitions (1 files)
-- **`src/types/index.ts`** (81 lines) — *Module index.ts in Type Definitions* [In: 6, Out: 0]
+- **`src/types/index.ts`** (87 lines) — *Module index.ts in Type Definitions* [In: 7, Out: 0]
 
 
 ---

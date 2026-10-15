@@ -1,52 +1,60 @@
 {
   "meta": {
     "project": "House of Gargi",
-    "generatedAt": "2026-10-08T05:49:43.427Z",
-    "totalNodes": 80,
-    "totalEdges": 108,
+    "generatedAt": "2026-10-15T14:15:14.290Z",
+    "totalNodes": 156,
+    "totalEdges": 175,
     "communityCount": 13
   },
   "metrics": {
     "godNodes": [
       {
+        "id": "src/lib/supabaseClient.ts",
+        "label": "supabaseClient.ts",
+        "community": "Infrastructure & Realtime Mesh",
+        "inDegree": 29,
+        "outDegree": 0,
+        "totalDegree": 29
+      },
+      {
         "id": "src/data/products.ts",
         "label": "products.ts",
         "community": "Data Models & Catalog",
-        "inDegree": 15,
-        "outDegree": 2,
-        "totalDegree": 17
+        "inDegree": 23,
+        "outDegree": 3,
+        "totalDegree": 26
       },
       {
-        "id": "src/components/ScrollReveal.tsx",
-        "label": "ScrollReveal.tsx",
+        "id": "src/components/admin/AdminLoadingSpinner.tsx",
+        "label": "AdminLoadingSpinner.tsx",
         "community": "Storefront UI Components",
-        "inDegree": 14,
+        "inDegree": 13,
         "outDegree": 0,
-        "totalDegree": 14
+        "totalDegree": 13
       },
       {
         "id": "src/components/ProductCard.tsx",
         "label": "ProductCard.tsx",
         "community": "Storefront UI Components",
-        "inDegree": 6,
+        "inDegree": 7,
         "outDegree": 6,
-        "totalDegree": 12
+        "totalDegree": 13
       },
       {
         "id": "src/context/CustomerAuthContext.tsx",
         "label": "CustomerAuthContext.tsx",
         "community": "State & Context Providers",
-        "inDegree": 10,
+        "inDegree": 11,
         "outDegree": 2,
-        "totalDegree": 12
+        "totalDegree": 13
       },
       {
-        "id": "src/lib/supabaseClient.ts",
-        "label": "supabaseClient.ts",
-        "community": "Infrastructure & Realtime Mesh",
-        "inDegree": 12,
+        "id": "src/components/ScrollReveal.tsx",
+        "label": "ScrollReveal.tsx",
+        "community": "Storefront UI Components",
+        "inDegree": 11,
         "outDegree": 0,
-        "totalDegree": 12
+        "totalDegree": 11
       },
       {
         "id": "src/context/CartContext.tsx",
@@ -65,34 +73,26 @@
         "totalDegree": 10
       },
       {
+        "id": "src/components/common/PortalLoadingScreen.tsx",
+        "label": "PortalLoadingScreen.tsx",
+        "community": "Storefront UI Components",
+        "inDegree": 9,
+        "outDegree": 0,
+        "totalDegree": 9
+      },
+      {
         "id": "src/app/(storefront)/product/[id]/page.tsx",
         "label": "page.tsx",
         "community": "Storefront Pages",
         "inDegree": 0,
         "outDegree": 8,
         "totalDegree": 8
-      },
-      {
-        "id": "src/components/Icons.tsx",
-        "label": "Icons.tsx",
-        "community": "Storefront UI Components",
-        "inDegree": 8,
-        "outDegree": 0,
-        "totalDegree": 8
-      },
-      {
-        "id": "src/components/Navbar.tsx",
-        "label": "Navbar.tsx",
-        "community": "Storefront UI Components",
-        "inDegree": 1,
-        "outDegree": 6,
-        "totalDegree": 7
       }
     ],
     "communitiesSummary": [
       {
         "name": "Configuration & Manifests",
-        "count": 16
+        "count": 42
       },
       {
         "name": "Database Migrations",
@@ -100,7 +100,7 @@
       },
       {
         "name": "Automation Scripts",
-        "count": 3
+        "count": 4
       },
       {
         "name": "Design System & Styles",
@@ -108,19 +108,19 @@
       },
       {
         "name": "Storefront Pages",
-        "count": 24
+        "count": 26
       },
       {
         "name": "API Handlers",
-        "count": 5
+        "count": 24
       },
       {
         "name": "Seller Portal",
-        "count": 5
+        "count": 12
       },
       {
         "name": "Storefront UI Components",
-        "count": 9
+        "count": 18
       },
       {
         "name": "Seller Components",
@@ -132,11 +132,11 @@
       },
       {
         "name": "Data Models & Catalog",
-        "count": 2
+        "count": 12
       },
       {
         "name": "Infrastructure & Realtime Mesh",
-        "count": 3
+        "count": 5
       },
       {
         "name": "Type Definitions",
@@ -281,6 +281,21 @@
       "degree": 0
     },
     {
+      "id": "scripts/slice-sections.cjs",
+      "label": "slice-sections.cjs",
+      "path": "scripts/slice-sections.cjs",
+      "type": "module",
+      "community": "Automation Scripts",
+      "lines": 62,
+      "size": 14,
+      "exports": [],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Module slice-sections.cjs in Automation Scripts",
+      "degree": 0
+    },
+    {
       "id": "scripts/sync-images.cjs",
       "label": "sync-images.cjs",
       "path": "scripts/sync-images.cjs",
@@ -356,21 +371,20 @@
       "path": "src/app/(storefront)/artisan/[id]/page.tsx",
       "type": "page",
       "community": "Storefront Pages",
-      "lines": 478,
+      "lines": 255,
       "size": 14,
       "exports": [
-        "ArtisanProfilePage"
+        "ArtisanPage"
       ],
       "imports": [
-        "src/components/ScrollReveal.tsx",
-        "src/components/ProductCard.tsx",
         "src/data/artisans.ts",
-        "src/data/products.ts"
+        "src/data/products.ts",
+        "src/components/ProductCard.tsx"
       ],
       "inDegree": 0,
-      "outDegree": 4,
+      "outDegree": 3,
       "description": "Storefront page route for [id]",
-      "degree": 4
+      "degree": 3
     },
     {
       "id": "src/app/(storefront)/bespoke/layout.tsx",
@@ -396,19 +410,20 @@
       "path": "src/app/(storefront)/bespoke/page.tsx",
       "type": "page",
       "community": "Storefront Pages",
-      "lines": 171,
+      "lines": 390,
       "size": 14,
       "exports": [
         "BespokePage"
       ],
       "imports": [
         "src/components/ScrollReveal.tsx",
-        "src/components/CustomDropdown.tsx"
+        "src/components/CustomDropdown.tsx",
+        "src/context/CustomerAuthContext.tsx"
       ],
       "inDegree": 0,
-      "outDegree": 2,
+      "outDegree": 3,
       "description": "Storefront page route for bespoke",
-      "degree": 2
+      "degree": 3
     },
     {
       "id": "src/app/(storefront)/cart/page.tsx",
@@ -458,22 +473,62 @@
       "path": "src/app/(storefront)/category/[id]/page.tsx",
       "type": "page",
       "community": "Storefront Pages",
-      "lines": 256,
+      "lines": 360,
       "size": 14,
       "exports": [
         "CategoryPage"
       ],
       "imports": [
         "src/components/ProductCard.tsx",
-        "src/components/ScrollReveal.tsx",
         "src/components/CustomDropdown.tsx",
-        "src/data/products.ts",
-        "src/components/Icons.tsx"
+        "src/data/products.ts"
       ],
       "inDegree": 0,
-      "outDegree": 5,
+      "outDegree": 3,
       "description": "Storefront page route for [id]",
+      "degree": 3
+    },
+    {
+      "id": "src/app/(storefront)/explore/ExploreContent.tsx",
+      "label": "ExploreContent.tsx",
+      "path": "src/app/(storefront)/explore/ExploreContent.tsx",
+      "type": "module",
+      "community": "Storefront Pages",
+      "lines": 389,
+      "size": 17.5,
+      "exports": [
+        "ExploreContent"
+      ],
+      "imports": [
+        "src/data/products.ts",
+        "src/components/ProductCard.tsx",
+        "src/components/CustomDropdown.tsx",
+        "src/components/SearchDropdown.tsx"
+      ],
+      "inDegree": 1,
+      "outDegree": 4,
+      "description": "Module ExploreContent.tsx in Storefront Pages",
       "degree": 5
+    },
+    {
+      "id": "src/app/(storefront)/explore/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/(storefront)/explore/page.tsx",
+      "type": "page",
+      "community": "Storefront Pages",
+      "lines": 35,
+      "size": 14,
+      "exports": [
+        "metadata",
+        "ExplorePage"
+      ],
+      "imports": [
+        "src/app/(storefront)/explore/ExploreContent.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Storefront page route for explore",
+      "degree": 1
     },
     {
       "id": "src/app/(storefront)/faq/page.tsx",
@@ -562,13 +617,13 @@
       "path": "src/app/(storefront)/page.tsx",
       "type": "page",
       "community": "Storefront Pages",
-      "lines": 90,
+      "lines": 183,
       "size": 14,
       "exports": [
-        "metadata",
-        "HomePage"
+        "metadata"
       ],
       "imports": [
+        "src/lib/apiClient.ts",
         "src/components/ScrollReveal.tsx",
         "src/components/ProductCard.tsx",
         "src/components/HeroBanner.tsx",
@@ -576,9 +631,9 @@
         "src/components/Icons.tsx"
       ],
       "inDegree": 0,
-      "outDegree": 5,
+      "outDegree": 6,
       "description": "Storefront page route for (storefront)",
-      "degree": 5
+      "degree": 6
     },
     {
       "id": "src/app/(storefront)/press/page.tsx",
@@ -624,7 +679,7 @@
       "path": "src/app/(storefront)/product/[id]/page.tsx",
       "type": "page",
       "community": "Storefront Pages",
-      "lines": 453,
+      "lines": 356,
       "size": 14,
       "exports": [
         "ProductDetailPage"
@@ -706,22 +761,20 @@
       "path": "src/app/(storefront)/shop/page.tsx",
       "type": "page",
       "community": "Storefront Pages",
-      "lines": 183,
+      "lines": 321,
       "size": 14,
       "exports": [
         "ShopPage"
       ],
       "imports": [
         "src/components/ProductCard.tsx",
-        "src/components/ScrollReveal.tsx",
         "src/components/CustomDropdown.tsx",
-        "src/data/products.ts",
-        "src/components/Icons.tsx"
+        "src/data/products.ts"
       ],
       "inDegree": 0,
-      "outDegree": 5,
+      "outDegree": 3,
       "description": "Storefront page route for shop",
-      "degree": 5
+      "degree": 3
     },
     {
       "id": "src/app/(storefront)/size-guide/page.tsx",
@@ -803,29 +856,240 @@
       "degree": 6
     },
     {
-      "id": "src/app/api/auth/send-otp/route.ts",
-      "label": "route.ts",
-      "path": "src/app/api/auth/send-otp/route.ts",
-      "type": "api",
-      "community": "API Handlers",
-      "lines": 144,
+      "id": "src/app/admin/artisans/applications/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/admin/artisans/applications/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 1114,
       "size": 14,
-      "exports": [],
+      "exports": [
+        "AdminApplicationsPage"
+      ],
       "imports": [
-        "src/lib/resend.ts"
+        "src/components/admin/AdminLoadingSpinner.tsx"
       ],
       "inDegree": 0,
       "outDegree": 1,
-      "description": "Module route.ts in API Handlers",
+      "description": "Storefront page route for applications",
       "degree": 1
     },
     {
-      "id": "src/app/api/auth/verify-otp/route.ts",
+      "id": "src/app/admin/artisans/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/admin/artisans/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 758,
+      "size": 14,
+      "exports": [
+        "VerifiedArtisansPage"
+      ],
+      "imports": [
+        "src/components/admin/AdminLoadingSpinner.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Storefront page route for artisans",
+      "degree": 1
+    },
+    {
+      "id": "src/app/admin/artisans/profile/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/admin/artisans/profile/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 1068,
+      "size": 14,
+      "exports": [
+        "ArtisanProfileTablePage"
+      ],
+      "imports": [
+        "src/components/admin/AdminLoadingSpinner.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Storefront page route for profile",
+      "degree": 1
+    },
+    {
+      "id": "src/app/admin/bespoke/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/admin/bespoke/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 1500,
+      "size": 14,
+      "exports": [
+        "AdminBespokePage"
+      ],
+      "imports": [
+        "src/components/admin/AdminLoadingSpinner.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Storefront page route for bespoke",
+      "degree": 1
+    },
+    {
+      "id": "src/app/admin/dashboard/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/admin/dashboard/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 1203,
+      "size": 14,
+      "exports": [
+        "AdminDashboardPage"
+      ],
+      "imports": [
+        "src/components/admin/AdminLoadingSpinner.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Storefront page route for dashboard",
+      "degree": 1
+    },
+    {
+      "id": "src/app/admin/layout.tsx",
+      "label": "layout.tsx",
+      "path": "src/app/admin/layout.tsx",
+      "type": "layout",
+      "community": "Configuration & Manifests",
+      "lines": 155,
+      "size": 14,
+      "exports": [
+        "AdminLayout"
+      ],
+      "imports": [
+        "src/components/admin/AdminShell.tsx",
+        "src/lib/supabaseClient.ts",
+        "src/lib/rbac.ts",
+        "src/components/common/PortalLoadingScreen.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 4,
+      "description": "Module layout.tsx in Configuration & Manifests",
+      "degree": 4
+    },
+    {
+      "id": "src/app/admin/loading.tsx",
+      "label": "loading.tsx",
+      "path": "src/app/admin/loading.tsx",
+      "type": "module",
+      "community": "Configuration & Manifests",
+      "lines": 14,
+      "size": 14,
+      "exports": [
+        "AdminLoading"
+      ],
+      "imports": [
+        "src/components/common/PortalLoadingScreen.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Module loading.tsx in Configuration & Manifests",
+      "degree": 1
+    },
+    {
+      "id": "src/app/admin/login/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/admin/login/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 852,
+      "size": 14,
+      "exports": [
+        "AdminLoginPage"
+      ],
+      "imports": [
+        "src/lib/supabaseClient.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Storefront page route for login",
+      "degree": 1
+    },
+    {
+      "id": "src/app/admin/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/admin/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 18,
+      "size": 14,
+      "exports": [
+        "AdminRootPage"
+      ],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Storefront page route for admin",
+      "degree": 0
+    },
+    {
+      "id": "src/app/admin/products/approvals/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/admin/products/approvals/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 490,
+      "size": 14,
+      "exports": [
+        "ProductQCApprovalsPage"
+      ],
+      "imports": [
+        "src/components/admin/AdminLoadingSpinner.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Storefront page route for approvals",
+      "degree": 1
+    },
+    {
+      "id": "src/app/admin/products/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/admin/products/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 1364,
+      "size": 14,
+      "exports": [
+        "ProductApprovalsPage"
+      ],
+      "imports": [
+        "src/components/admin/AdminLoadingSpinner.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Storefront page route for products",
+      "degree": 1
+    },
+    {
+      "id": "src/app/api/admin/applications/route.ts",
       "label": "route.ts",
-      "path": "src/app/api/auth/verify-otp/route.ts",
+      "path": "src/app/api/admin/applications/route.ts",
       "type": "api",
       "community": "API Handlers",
-      "lines": 82,
+      "lines": 518,
+      "size": 14,
+      "exports": [],
+      "imports": [
+        "src/lib/supabaseClient.ts",
+        "src/lib/resend.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 2,
+      "description": "Module route.ts in API Handlers",
+      "degree": 2
+    },
+    {
+      "id": "src/app/api/admin/artisans/profile/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/admin/artisans/profile/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 117,
       "size": 14,
       "exports": [],
       "imports": [],
@@ -833,6 +1097,228 @@
       "outDegree": 0,
       "description": "Module route.ts in API Handlers",
       "degree": 0
+    },
+    {
+      "id": "src/app/api/admin/artisans/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/admin/artisans/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 325,
+      "size": 14,
+      "exports": [
+        "generateUniqueArtisanNo"
+      ],
+      "imports": [
+        "src/lib/supabaseClient.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Module route.ts in API Handlers",
+      "degree": 1
+    },
+    {
+      "id": "src/app/api/admin/bespoke/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/admin/bespoke/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 106,
+      "size": 14,
+      "exports": [],
+      "imports": [
+        "src/lib/supabaseClient.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Module route.ts in API Handlers",
+      "degree": 1
+    },
+    {
+      "id": "src/app/api/admin/dashboard/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/admin/dashboard/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 136,
+      "size": 14,
+      "exports": [],
+      "imports": [
+        "src/lib/supabaseClient.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Module route.ts in API Handlers",
+      "degree": 1
+    },
+    {
+      "id": "src/app/api/admin/products/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/admin/products/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 317,
+      "size": 14,
+      "exports": [],
+      "imports": [
+        "src/lib/supabaseClient.ts",
+        "src/data/products.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 2,
+      "description": "Module route.ts in API Handlers",
+      "degree": 2
+    },
+    {
+      "id": "src/app/api/artisan/analytics/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/artisan/analytics/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 140,
+      "size": 14,
+      "exports": [],
+      "imports": [
+        "src/data/products.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Module route.ts in API Handlers",
+      "degree": 1
+    },
+    {
+      "id": "src/app/api/artisan/apply/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/artisan/apply/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 282,
+      "size": 14,
+      "exports": [
+        "ADMIN_OPERATIONS_EMAIL"
+      ],
+      "imports": [
+        "src/lib/resend.ts",
+        "src/lib/supabaseClient.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 2,
+      "description": "Module route.ts in API Handlers",
+      "degree": 2
+    },
+    {
+      "id": "src/app/api/artisan/inventory/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/artisan/inventory/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 123,
+      "size": 14,
+      "exports": [],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Module route.ts in API Handlers",
+      "degree": 0
+    },
+    {
+      "id": "src/app/api/artisan/me/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/artisan/me/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 101,
+      "size": 14,
+      "exports": [],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Module route.ts in API Handlers",
+      "degree": 0
+    },
+    {
+      "id": "src/app/api/artisan/profile/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/artisan/profile/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 117,
+      "size": 14,
+      "exports": [],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Module route.ts in API Handlers",
+      "degree": 0
+    },
+    {
+      "id": "src/app/api/auth/role/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/auth/role/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 26,
+      "size": 14,
+      "exports": [],
+      "imports": [
+        "src/lib/rbac.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Module route.ts in API Handlers",
+      "degree": 1
+    },
+    {
+      "id": "src/app/api/auth/send-otp/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/auth/send-otp/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 316,
+      "size": 14,
+      "exports": [],
+      "imports": [
+        "src/lib/resend.ts",
+        "src/lib/rbac.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 2,
+      "description": "Module route.ts in API Handlers",
+      "degree": 2
+    },
+    {
+      "id": "src/app/api/auth/verify-otp/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/auth/verify-otp/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 93,
+      "size": 14,
+      "exports": [],
+      "imports": [
+        "src/lib/rbac.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Module route.ts in API Handlers",
+      "degree": 1
+    },
+    {
+      "id": "src/app/api/bespoke/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/bespoke/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 116,
+      "size": 14,
+      "exports": [],
+      "imports": [
+        "src/lib/supabaseClient.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Module route.ts in API Handlers",
+      "degree": 1
     },
     {
       "id": "src/app/api/checkout/route.ts",
@@ -857,7 +1343,7 @@
       "path": "src/app/api/orders/route.ts",
       "type": "api",
       "community": "API Handlers",
-      "lines": 108,
+      "lines": 183,
       "size": 14,
       "exports": [],
       "imports": [
@@ -887,12 +1373,194 @@
       "degree": 1
     },
     {
+      "id": "src/app/api/super-admin/admins/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/super-admin/admins/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 151,
+      "size": 14,
+      "exports": [],
+      "imports": [
+        "src/lib/supabaseClient.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Module route.ts in API Handlers",
+      "degree": 1
+    },
+    {
+      "id": "src/app/api/super-admin/bestsellers/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/super-admin/bestsellers/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 165,
+      "size": 14,
+      "exports": [],
+      "imports": [
+        "src/lib/supabaseClient.ts",
+        "src/data/products.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 2,
+      "description": "Module route.ts in API Handlers",
+      "degree": 2
+    },
+    {
+      "id": "src/app/api/super-admin/catalog/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/super-admin/catalog/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 137,
+      "size": 14,
+      "exports": [],
+      "imports": [
+        "src/lib/supabaseClient.ts",
+        "src/data/products.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 2,
+      "description": "Module route.ts in API Handlers",
+      "degree": 2
+    },
+    {
+      "id": "src/app/api/super-admin/categories/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/super-admin/categories/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 151,
+      "size": 14,
+      "exports": [],
+      "imports": [
+        "src/lib/supabaseClient.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Module route.ts in API Handlers",
+      "degree": 1
+    },
+    {
+      "id": "src/app/api/super-admin/dashboard/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/super-admin/dashboard/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 183,
+      "size": 14,
+      "exports": [],
+      "imports": [
+        "src/lib/supabaseClient.ts",
+        "src/data/products.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 2,
+      "description": "Module route.ts in API Handlers",
+      "degree": 2
+    },
+    {
+      "id": "src/app/api/super-admin/revenue/route.ts",
+      "label": "route.ts",
+      "path": "src/app/api/super-admin/revenue/route.ts",
+      "type": "api",
+      "community": "API Handlers",
+      "lines": 120,
+      "size": 14,
+      "exports": [],
+      "imports": [
+        "src/lib/supabaseClient.ts",
+        "src/data/products.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 2,
+      "description": "Module route.ts in API Handlers",
+      "degree": 2
+    },
+    {
+      "id": "src/app/artisan/dashboard/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/artisan/dashboard/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 1055,
+      "size": 14,
+      "exports": [
+        "ArtisanDashboardPage"
+      ],
+      "imports": [
+        "src/lib/supabaseClient.ts"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Storefront page route for dashboard",
+      "degree": 1
+    },
+    {
+      "id": "src/app/artisan/layout.tsx",
+      "label": "layout.tsx",
+      "path": "src/app/artisan/layout.tsx",
+      "type": "layout",
+      "community": "Configuration & Manifests",
+      "lines": 93,
+      "size": 14,
+      "exports": [
+        "ArtisanLayout"
+      ],
+      "imports": [
+        "src/components/common/PortalLoadingScreen.tsx",
+        "src/lib/supabaseClient.ts",
+        "src/components/seller/SellerShell.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 3,
+      "description": "Module layout.tsx in Configuration & Manifests",
+      "degree": 3
+    },
+    {
+      "id": "src/app/artisan/loading.tsx",
+      "label": "loading.tsx",
+      "path": "src/app/artisan/loading.tsx",
+      "type": "module",
+      "community": "Configuration & Manifests",
+      "lines": 14,
+      "size": 14,
+      "exports": [
+        "ArtisanLoading"
+      ],
+      "imports": [
+        "src/components/common/PortalLoadingScreen.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Module loading.tsx in Configuration & Manifests",
+      "degree": 1
+    },
+    {
+      "id": "src/app/artisan/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/artisan/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 19,
+      "size": 14,
+      "exports": [
+        "ArtisanRootPage"
+      ],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Storefront page route for artisan",
+      "degree": 0
+    },
+    {
       "id": "src/app/layout.tsx",
       "label": "layout.tsx",
       "path": "src/app/layout.tsx",
       "type": "layout",
       "community": "Configuration & Manifests",
-      "lines": 167,
+      "lines": 169,
       "size": 14,
       "exports": [
         "metadata",
@@ -902,12 +1570,32 @@
         "src/context/CurrencyContext.tsx",
         "src/context/CustomerAuthContext.tsx",
         "src/context/CartContext.tsx",
-        "src/context/WishlistContext.tsx"
+        "src/context/WishlistContext.tsx",
+        "src/components/common/NetworkStatusBanner.tsx"
       ],
       "inDegree": 0,
-      "outDegree": 4,
+      "outDegree": 5,
       "description": "Module layout.tsx in Configuration & Manifests",
-      "degree": 4
+      "degree": 5
+    },
+    {
+      "id": "src/app/loading.tsx",
+      "label": "loading.tsx",
+      "path": "src/app/loading.tsx",
+      "type": "module",
+      "community": "Configuration & Manifests",
+      "lines": 6,
+      "size": 14,
+      "exports": [
+        "RootLoading"
+      ],
+      "imports": [
+        "src/components/common/PortalLoadingScreen.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Module loading.tsx in Configuration & Manifests",
+      "degree": 1
     },
     {
       "id": "src/app/not-found.tsx",
@@ -915,7 +1603,7 @@
       "path": "src/app/not-found.tsx",
       "type": "module",
       "community": "Configuration & Manifests",
-      "lines": 22,
+      "lines": 225,
       "size": 14,
       "exports": [
         "NotFound"
@@ -944,6 +1632,74 @@
       "degree": 0
     },
     {
+      "id": "src/app/seller/analytics/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/seller/analytics/page.tsx",
+      "type": "page",
+      "community": "Seller Portal",
+      "lines": 394,
+      "size": 14,
+      "exports": [
+        "ArtisanAnalyticsPage"
+      ],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Storefront page route for analytics",
+      "degree": 0
+    },
+    {
+      "id": "src/app/seller/apply/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/seller/apply/page.tsx",
+      "type": "page",
+      "community": "Seller Portal",
+      "lines": 1429,
+      "size": 14,
+      "exports": [
+        "ArtisanApplyPage"
+      ],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Storefront page route for apply",
+      "degree": 0
+    },
+    {
+      "id": "src/app/seller/earnings/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/seller/earnings/page.tsx",
+      "type": "page",
+      "community": "Seller Portal",
+      "lines": 265,
+      "size": 14,
+      "exports": [
+        "ArtisanEarningsPage"
+      ],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Storefront page route for earnings",
+      "degree": 0
+    },
+    {
+      "id": "src/app/seller/inventory/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/seller/inventory/page.tsx",
+      "type": "page",
+      "community": "Seller Portal",
+      "lines": 296,
+      "size": 14,
+      "exports": [
+        "ArtisanInventoryPage"
+      ],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Storefront page route for inventory",
+      "degree": 0
+    },
+    {
       "id": "src/app/seller/layout.tsx",
       "label": "layout.tsx",
       "path": "src/app/seller/layout.tsx",
@@ -955,13 +1711,33 @@
         "SellerLayout"
       ],
       "imports": [
+        "src/components/common/PortalLoadingScreen.tsx",
         "src/lib/supabaseClient.ts",
         "src/components/seller/SellerShell.tsx"
       ],
       "inDegree": 0,
-      "outDegree": 2,
+      "outDegree": 3,
       "description": "Module layout.tsx in Seller Portal",
-      "degree": 2
+      "degree": 3
+    },
+    {
+      "id": "src/app/seller/loading.tsx",
+      "label": "loading.tsx",
+      "path": "src/app/seller/loading.tsx",
+      "type": "module",
+      "community": "Seller Portal",
+      "lines": 14,
+      "size": 14,
+      "exports": [
+        "SellerLoading"
+      ],
+      "imports": [
+        "src/components/common/PortalLoadingScreen.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Module loading.tsx in Seller Portal",
+      "degree": 1
     },
     {
       "id": "src/app/seller/login/page.tsx",
@@ -969,7 +1745,7 @@
       "path": "src/app/seller/login/page.tsx",
       "type": "page",
       "community": "Seller Portal",
-      "lines": 685,
+      "lines": 1054,
       "size": 14,
       "exports": [
         "SellerLoginPage"
@@ -988,19 +1764,18 @@
       "path": "src/app/seller/orders/page.tsx",
       "type": "page",
       "community": "Seller Portal",
-      "lines": 265,
+      "lines": 246,
       "size": 14,
       "exports": [
         "SellerOrdersPage"
       ],
       "imports": [
-        "src/lib/supabaseClient.ts",
         "src/components/CustomDropdown.tsx"
       ],
       "inDegree": 0,
-      "outDegree": 2,
+      "outDegree": 1,
       "description": "Storefront page route for orders",
-      "degree": 2
+      "degree": 1
     },
     {
       "id": "src/app/seller/page.tsx",
@@ -1008,19 +1783,35 @@
       "path": "src/app/seller/page.tsx",
       "type": "page",
       "community": "Seller Portal",
-      "lines": 582,
+      "lines": 41,
       "size": 14,
       "exports": [
-        "SellerDashboardPage"
+        "SellerRootPage"
+      ],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Storefront page route for seller",
+      "degree": 0
+    },
+    {
+      "id": "src/app/seller/products/new/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/seller/products/new/page.tsx",
+      "type": "page",
+      "community": "Seller Portal",
+      "lines": 1002,
+      "size": 14,
+      "exports": [
+        "NewProductCreationPage"
       ],
       "imports": [
-        "src/lib/supabaseClient.ts",
         "src/components/CustomDropdown.tsx"
       ],
       "inDegree": 0,
-      "outDegree": 2,
-      "description": "Storefront page route for seller",
-      "degree": 2
+      "outDegree": 1,
+      "description": "Storefront page route for new",
+      "degree": 1
     },
     {
       "id": "src/app/seller/products/page.tsx",
@@ -1028,19 +1819,37 @@
       "path": "src/app/seller/products/page.tsx",
       "type": "page",
       "community": "Seller Portal",
-      "lines": 516,
+      "lines": 1578,
       "size": 14,
       "exports": [
         "SellerProductsPage"
       ],
       "imports": [
-        "src/lib/supabaseClient.ts",
         "src/components/CustomDropdown.tsx"
       ],
       "inDegree": 0,
-      "outDegree": 2,
+      "outDegree": 1,
       "description": "Storefront page route for products",
-      "degree": 2
+      "degree": 1
+    },
+    {
+      "id": "src/app/seller/profile/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/seller/profile/page.tsx",
+      "type": "page",
+      "community": "Seller Portal",
+      "lines": 924,
+      "size": 14,
+      "exports": [
+        "PersonalArtisanProfilePage"
+      ],
+      "imports": [
+        "src/components/ArtisanProfileModal.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Storefront page route for profile",
+      "degree": 1
     },
     {
       "id": "src/app/sitemap.ts",
@@ -1063,6 +1872,272 @@
       "degree": 2
     },
     {
+      "id": "src/app/super-admin/admins/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/super-admin/admins/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 402,
+      "size": 14,
+      "exports": [
+        "SuperAdminAdminsPage"
+      ],
+      "imports": [
+        "src/components/admin/AdminLoadingSpinner.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Storefront page route for admins",
+      "degree": 1
+    },
+    {
+      "id": "src/app/super-admin/bestsellers/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/super-admin/bestsellers/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 298,
+      "size": 14,
+      "exports": [
+        "SuperAdminBestsellersPage"
+      ],
+      "imports": [
+        "src/components/admin/AdminLoadingSpinner.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Storefront page route for bestsellers",
+      "degree": 1
+    },
+    {
+      "id": "src/app/super-admin/catalog/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/super-admin/catalog/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 363,
+      "size": 14,
+      "exports": [
+        "MasterCatalogPage"
+      ],
+      "imports": [
+        "src/components/admin/AdminLoadingSpinner.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Storefront page route for catalog",
+      "degree": 1
+    },
+    {
+      "id": "src/app/super-admin/categories/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/super-admin/categories/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 374,
+      "size": 14,
+      "exports": [
+        "SuperAdminCategoriesPage"
+      ],
+      "imports": [
+        "src/components/admin/AdminLoadingSpinner.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Storefront page route for categories",
+      "degree": 1
+    },
+    {
+      "id": "src/app/super-admin/dashboard/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/super-admin/dashboard/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 521,
+      "size": 14,
+      "exports": [
+        "SuperAdminOverviewPage"
+      ],
+      "imports": [
+        "src/components/admin/AdminLoadingSpinner.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Storefront page route for dashboard",
+      "degree": 1
+    },
+    {
+      "id": "src/app/super-admin/layout.tsx",
+      "label": "layout.tsx",
+      "path": "src/app/super-admin/layout.tsx",
+      "type": "layout",
+      "community": "Configuration & Manifests",
+      "lines": 146,
+      "size": 14,
+      "exports": [
+        "SuperAdminLayout"
+      ],
+      "imports": [
+        "src/components/super-admin/SuperAdminShell.tsx",
+        "src/lib/supabaseClient.ts",
+        "src/lib/rbac.ts",
+        "src/components/common/PortalLoadingScreen.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 4,
+      "description": "Module layout.tsx in Configuration & Manifests",
+      "degree": 4
+    },
+    {
+      "id": "src/app/super-admin/loading.tsx",
+      "label": "loading.tsx",
+      "path": "src/app/super-admin/loading.tsx",
+      "type": "module",
+      "community": "Configuration & Manifests",
+      "lines": 14,
+      "size": 14,
+      "exports": [
+        "SuperAdminLoading"
+      ],
+      "imports": [
+        "src/components/common/PortalLoadingScreen.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Module loading.tsx in Configuration & Manifests",
+      "degree": 1
+    },
+    {
+      "id": "src/app/super-admin/login/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/super-admin/login/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 18,
+      "size": 14,
+      "exports": [
+        "SuperAdminLoginPage"
+      ],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Storefront page route for login",
+      "degree": 0
+    },
+    {
+      "id": "src/app/super-admin/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/super-admin/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 18,
+      "size": 14,
+      "exports": [
+        "SuperAdminRootPage"
+      ],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Storefront page route for super-admin",
+      "degree": 0
+    },
+    {
+      "id": "src/app/super-admin/revenue/page.tsx",
+      "label": "page.tsx",
+      "path": "src/app/super-admin/revenue/page.tsx",
+      "type": "page",
+      "community": "Configuration & Manifests",
+      "lines": 401,
+      "size": 14,
+      "exports": [
+        "SuperAdminRevenuePage"
+      ],
+      "imports": [
+        "src/components/admin/AdminLoadingSpinner.tsx"
+      ],
+      "inDegree": 0,
+      "outDegree": 1,
+      "description": "Storefront page route for revenue",
+      "degree": 1
+    },
+    {
+      "id": "src/components/admin/AdminLoadingSpinner.tsx",
+      "label": "AdminLoadingSpinner.tsx",
+      "path": "src/components/admin/AdminLoadingSpinner.tsx",
+      "type": "component",
+      "community": "Storefront UI Components",
+      "lines": 101,
+      "size": 52,
+      "exports": [
+        "AdminLoadingSpinner",
+        "AdminPageLoadingBlock"
+      ],
+      "imports": [],
+      "inDegree": 13,
+      "outDegree": 0,
+      "description": "Module AdminLoadingSpinner.tsx in Storefront UI Components",
+      "degree": 13
+    },
+    {
+      "id": "src/components/admin/AdminShell.tsx",
+      "label": "AdminShell.tsx",
+      "path": "src/components/admin/AdminShell.tsx",
+      "type": "component",
+      "community": "Storefront UI Components",
+      "lines": 85,
+      "size": 17.5,
+      "exports": [
+        "AdminShellProps",
+        "AdminShell"
+      ],
+      "imports": [
+        "src/components/admin/AdminSidebar.tsx"
+      ],
+      "inDegree": 1,
+      "outDegree": 1,
+      "description": "Module AdminShell.tsx in Storefront UI Components",
+      "degree": 2
+    },
+    {
+      "id": "src/components/admin/AdminSidebar.tsx",
+      "label": "AdminSidebar.tsx",
+      "path": "src/components/admin/AdminSidebar.tsx",
+      "type": "component",
+      "community": "Storefront UI Components",
+      "lines": 448,
+      "size": 17.5,
+      "exports": [
+        "AdminSidebarProps",
+        "AdminNavItem",
+        "AdminNavGroup",
+        "AdminSidebar"
+      ],
+      "imports": [
+        "src/lib/supabaseClient.ts"
+      ],
+      "inDegree": 1,
+      "outDegree": 1,
+      "description": "Module AdminSidebar.tsx in Storefront UI Components",
+      "degree": 2
+    },
+    {
+      "id": "src/components/ArtisanProfileModal.tsx",
+      "label": "ArtisanProfileModal.tsx",
+      "path": "src/components/ArtisanProfileModal.tsx",
+      "type": "component",
+      "community": "Storefront UI Components",
+      "lines": 344,
+      "size": 17.5,
+      "exports": [
+        "ArtisanProfileModal"
+      ],
+      "imports": [],
+      "inDegree": 1,
+      "outDegree": 0,
+      "description": "Module ArtisanProfileModal.tsx in Storefront UI Components",
+      "degree": 1
+    },
+    {
       "id": "src/components/AtelierNewsletter.tsx",
       "label": "AtelierNewsletter.tsx",
       "path": "src/components/AtelierNewsletter.tsx",
@@ -1080,23 +2155,57 @@
       "degree": 0
     },
     {
+      "id": "src/components/common/NetworkStatusBanner.tsx",
+      "label": "NetworkStatusBanner.tsx",
+      "path": "src/components/common/NetworkStatusBanner.tsx",
+      "type": "component",
+      "community": "Storefront UI Components",
+      "lines": 104,
+      "size": 17.5,
+      "exports": [
+        "NetworkStatusBanner"
+      ],
+      "imports": [],
+      "inDegree": 1,
+      "outDegree": 0,
+      "description": "Module NetworkStatusBanner.tsx in Storefront UI Components",
+      "degree": 1
+    },
+    {
+      "id": "src/components/common/PortalLoadingScreen.tsx",
+      "label": "PortalLoadingScreen.tsx",
+      "path": "src/components/common/PortalLoadingScreen.tsx",
+      "type": "component",
+      "community": "Storefront UI Components",
+      "lines": 70,
+      "size": 45.5,
+      "exports": [
+        "PortalLoadingScreen"
+      ],
+      "imports": [],
+      "inDegree": 9,
+      "outDegree": 0,
+      "description": "Module PortalLoadingScreen.tsx in Storefront UI Components",
+      "degree": 9
+    },
+    {
       "id": "src/components/CustomDropdown.tsx",
       "label": "CustomDropdown.tsx",
       "path": "src/components/CustomDropdown.tsx",
       "type": "component",
       "community": "Storefront UI Components",
       "lines": 212,
-      "size": 35,
+      "size": 38.5,
       "exports": [
         "DropdownOption",
         "CustomDropdownProps",
         "CustomDropdown"
       ],
       "imports": [],
-      "inDegree": 6,
+      "inDegree": 7,
       "outDegree": 0,
       "description": "Module CustomDropdown.tsx in Storefront UI Components",
-      "degree": 6
+      "degree": 7
     },
     {
       "id": "src/components/CustomerLoginModal.tsx",
@@ -1104,19 +2213,18 @@
       "path": "src/components/CustomerLoginModal.tsx",
       "type": "component",
       "community": "Storefront UI Components",
-      "lines": 428,
+      "lines": 334,
       "size": 17.5,
       "exports": [
         "CustomerLoginModal"
       ],
       "imports": [
-        "src/lib/supabaseClient.ts",
         "src/context/CustomerAuthContext.tsx"
       ],
       "inDegree": 1,
-      "outDegree": 2,
+      "outDegree": 1,
       "description": "Module CustomerLoginModal.tsx in Storefront UI Components",
-      "degree": 3
+      "degree": 2
     },
     {
       "id": "src/components/Footer.tsx",
@@ -1124,7 +2232,7 @@
       "path": "src/components/Footer.tsx",
       "type": "component",
       "community": "Storefront UI Components",
-      "lines": 47,
+      "lines": 151,
       "size": 17.5,
       "exports": [
         "Footer"
@@ -1141,7 +2249,7 @@
       "path": "src/components/HeroBanner.tsx",
       "type": "component",
       "community": "Storefront UI Components",
-      "lines": 261,
+      "lines": 283,
       "size": 17.5,
       "exports": [
         "HeroBanner"
@@ -1158,10 +2266,11 @@
       "path": "src/components/Icons.tsx",
       "type": "component",
       "community": "Storefront UI Components",
-      "lines": 188,
-      "size": 42,
+      "lines": 196,
+      "size": 35,
       "exports": [
         "SearchIcon",
+        "MicIcon",
         "WishlistIcon",
         "HeartFilledIcon",
         "CartIcon",
@@ -1185,10 +2294,10 @@
         "FilterIcon"
       ],
       "imports": [],
-      "inDegree": 8,
+      "inDegree": 6,
       "outDegree": 0,
       "description": "Module Icons.tsx in Storefront UI Components",
-      "degree": 8
+      "degree": 6
     },
     {
       "id": "src/components/Navbar.tsx",
@@ -1196,7 +2305,7 @@
       "path": "src/components/Navbar.tsx",
       "type": "component",
       "community": "Storefront UI Components",
-      "lines": 190,
+      "lines": 472,
       "size": 17.5,
       "exports": [
         "Navbar"
@@ -1205,14 +2314,15 @@
         "src/lib/supabaseClient.ts",
         "src/components/CustomerLoginModal.tsx",
         "src/components/Icons.tsx",
+        "src/components/SearchDropdown.tsx",
         "src/context/CartContext.tsx",
         "src/context/WishlistContext.tsx",
         "src/context/CustomerAuthContext.tsx"
       ],
       "inDegree": 1,
-      "outDegree": 6,
+      "outDegree": 7,
       "description": "Module Navbar.tsx in Storefront UI Components",
-      "degree": 7
+      "degree": 8
     },
     {
       "id": "src/components/ProductCard.tsx",
@@ -1220,8 +2330,8 @@
       "path": "src/components/ProductCard.tsx",
       "type": "component",
       "community": "Storefront UI Components",
-      "lines": 91,
-      "size": 35,
+      "lines": 117,
+      "size": 38.5,
       "exports": [
         "ProductCard"
       ],
@@ -1233,10 +2343,10 @@
         "src/context/CurrencyContext.tsx",
         "src/context/CustomerAuthContext.tsx"
       ],
-      "inDegree": 6,
+      "inDegree": 7,
       "outDegree": 6,
       "description": "Module ProductCard.tsx in Storefront UI Components",
-      "degree": 12
+      "degree": 13
     },
     {
       "id": "src/components/ScrollReveal.tsx",
@@ -1244,16 +2354,44 @@
       "path": "src/components/ScrollReveal.tsx",
       "type": "component",
       "community": "Storefront UI Components",
-      "lines": 38,
+      "lines": 48,
       "size": 52,
       "exports": [
         "ScrollReveal"
       ],
       "imports": [],
-      "inDegree": 14,
+      "inDegree": 11,
       "outDegree": 0,
       "description": "Module ScrollReveal.tsx in Storefront UI Components",
-      "degree": 14
+      "degree": 11
+    },
+    {
+      "id": "src/components/SearchDropdown.tsx",
+      "label": "SearchDropdown.tsx",
+      "path": "src/components/SearchDropdown.tsx",
+      "type": "component",
+      "community": "Storefront UI Components",
+      "lines": 331,
+      "size": 21,
+      "exports": [
+        "TOP_3_SEARCH_TERMS",
+        "TopSearchItem",
+        "TOP_3_SEARCHES",
+        "getSearchHistory",
+        "saveSearchHistory",
+        "removeSearchHistoryItem",
+        "clearSearchHistory",
+        "SearchDropdown"
+      ],
+      "imports": [
+        "src/context/CurrencyContext.tsx",
+        "src/data/products.ts",
+        "src/types/index.ts"
+      ],
+      "inDegree": 2,
+      "outDegree": 3,
+      "description": "Module SearchDropdown.tsx in Storefront UI Components",
+      "degree": 5
     },
     {
       "id": "src/components/seller/SellerShell.tsx",
@@ -1262,7 +2400,7 @@
       "type": "component",
       "community": "Seller Components",
       "lines": 132,
-      "size": 17.5,
+      "size": 21,
       "exports": [
         "SellerShellProps",
         "SellerShell"
@@ -1270,10 +2408,10 @@
       "imports": [
         "src/components/seller/SellerSidebar.tsx"
       ],
-      "inDegree": 1,
+      "inDegree": 2,
       "outDegree": 1,
       "description": "Module SellerShell.tsx in Seller Components",
-      "degree": 2
+      "degree": 3
     },
     {
       "id": "src/components/seller/SellerSidebar.tsx",
@@ -1281,7 +2419,7 @@
       "path": "src/components/seller/SellerSidebar.tsx",
       "type": "component",
       "community": "Seller Components",
-      "lines": 309,
+      "lines": 438,
       "size": 17.5,
       "exports": [
         "SellerSidebarProps",
@@ -1295,6 +2433,48 @@
       "inDegree": 1,
       "outDegree": 1,
       "description": "Module SellerSidebar.tsx in Seller Components",
+      "degree": 2
+    },
+    {
+      "id": "src/components/super-admin/SuperAdminShell.tsx",
+      "label": "SuperAdminShell.tsx",
+      "path": "src/components/super-admin/SuperAdminShell.tsx",
+      "type": "component",
+      "community": "Storefront UI Components",
+      "lines": 100,
+      "size": 17.5,
+      "exports": [
+        "SuperAdminShellProps",
+        "SuperAdminShell"
+      ],
+      "imports": [
+        "src/components/super-admin/SuperAdminSidebar.tsx"
+      ],
+      "inDegree": 1,
+      "outDegree": 1,
+      "description": "Module SuperAdminShell.tsx in Storefront UI Components",
+      "degree": 2
+    },
+    {
+      "id": "src/components/super-admin/SuperAdminSidebar.tsx",
+      "label": "SuperAdminSidebar.tsx",
+      "path": "src/components/super-admin/SuperAdminSidebar.tsx",
+      "type": "component",
+      "community": "Storefront UI Components",
+      "lines": 473,
+      "size": 17.5,
+      "exports": [
+        "SuperAdminSidebarProps",
+        "SuperAdminNavItem",
+        "SuperAdminNavGroup",
+        "SuperAdminSidebar"
+      ],
+      "imports": [
+        "src/lib/supabaseClient.ts"
+      ],
+      "inDegree": 1,
+      "outDegree": 1,
+      "description": "Module SuperAdminSidebar.tsx in Storefront UI Components",
       "degree": 2
     },
     {
@@ -1327,7 +2507,7 @@
       "type": "context",
       "community": "State & Context Providers",
       "lines": 154,
-      "size": 28,
+      "size": 31.5,
       "exports": [
         "CurrencyCode",
         "CurrencyConfig",
@@ -1336,10 +2516,10 @@
         "useCurrency"
       ],
       "imports": [],
-      "inDegree": 4,
+      "inDegree": 5,
       "outDegree": 0,
       "description": "Module CurrencyContext.tsx in State & Context Providers",
-      "degree": 4
+      "degree": 5
     },
     {
       "id": "src/context/CustomerAuthContext.tsx",
@@ -1348,7 +2528,7 @@
       "type": "context",
       "community": "State & Context Providers",
       "lines": 179,
-      "size": 49,
+      "size": 52,
       "exports": [
         "Customer",
         "CustomerAuthProvider",
@@ -1358,10 +2538,10 @@
         "src/lib/supabaseClient.ts",
         "src/lib/realtimeSync.ts"
       ],
-      "inDegree": 10,
+      "inDegree": 11,
       "outDegree": 2,
       "description": "Strict Email OTP customer authentication and multi-tab session state",
-      "degree": 12
+      "degree": 13
     },
     {
       "id": "src/context/WishlistContext.tsx",
@@ -1392,7 +2572,7 @@
       "path": "src/data/artisans.ts",
       "type": "data",
       "community": "Data Models & Catalog",
-      "lines": 177,
+      "lines": 280,
       "size": 31.5,
       "exports": [
         "artisans",
@@ -1401,12 +2581,133 @@
         "getAllArtisans"
       ],
       "imports": [
+        "src/data/artisan_profiles_list.json",
         "src/types/index.ts"
       ],
       "inDegree": 5,
-      "outDegree": 1,
+      "outDegree": 2,
       "description": "10 generational master artisan guild records and provenance helpers",
-      "degree": 6
+      "degree": 7
+    },
+    {
+      "id": "src/data/artisan_applications.json",
+      "label": "artisan_applications.json",
+      "path": "src/data/artisan_applications.json",
+      "type": "data",
+      "community": "Data Models & Catalog",
+      "lines": 41,
+      "size": 14,
+      "exports": [],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Module artisan_applications.json in Data Models & Catalog",
+      "degree": 0
+    },
+    {
+      "id": "src/data/artisan_inventory.json",
+      "label": "artisan_inventory.json",
+      "path": "src/data/artisan_inventory.json",
+      "type": "data",
+      "community": "Data Models & Catalog",
+      "lines": 67,
+      "size": 14,
+      "exports": [],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Module artisan_inventory.json in Data Models & Catalog",
+      "degree": 0
+    },
+    {
+      "id": "src/data/artisan_profile.json",
+      "label": "artisan_profile.json",
+      "path": "src/data/artisan_profile.json",
+      "type": "data",
+      "community": "Data Models & Catalog",
+      "lines": 28,
+      "size": 14,
+      "exports": [],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Module artisan_profile.json in Data Models & Catalog",
+      "degree": 0
+    },
+    {
+      "id": "src/data/artisan_profiles_list.json",
+      "label": "artisan_profiles_list.json",
+      "path": "src/data/artisan_profiles_list.json",
+      "type": "data",
+      "community": "Data Models & Catalog",
+      "lines": 29,
+      "size": 17.5,
+      "exports": [],
+      "imports": [],
+      "inDegree": 1,
+      "outDegree": 0,
+      "description": "Module artisan_profiles_list.json in Data Models & Catalog",
+      "degree": 1
+    },
+    {
+      "id": "src/data/backend_orders.json",
+      "label": "backend_orders.json",
+      "path": "src/data/backend_orders.json",
+      "type": "data",
+      "community": "Data Models & Catalog",
+      "lines": 1,
+      "size": 14,
+      "exports": [],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Module backend_orders.json in Data Models & Catalog",
+      "degree": 0
+    },
+    {
+      "id": "src/data/bespoke_requests.json",
+      "label": "bespoke_requests.json",
+      "path": "src/data/bespoke_requests.json",
+      "type": "data",
+      "community": "Data Models & Catalog",
+      "lines": 20,
+      "size": 14,
+      "exports": [],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Module bespoke_requests.json in Data Models & Catalog",
+      "degree": 0
+    },
+    {
+      "id": "src/data/categories.json",
+      "label": "categories.json",
+      "path": "src/data/categories.json",
+      "type": "data",
+      "community": "Data Models & Catalog",
+      "lines": 57,
+      "size": 14,
+      "exports": [],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Module categories.json in Data Models & Catalog",
+      "degree": 0
+    },
+    {
+      "id": "src/data/orders_overrides.json",
+      "label": "orders_overrides.json",
+      "path": "src/data/orders_overrides.json",
+      "type": "data",
+      "community": "Data Models & Catalog",
+      "lines": 1,
+      "size": 14,
+      "exports": [],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Module orders_overrides.json in Data Models & Catalog",
+      "degree": 0
     },
     {
       "id": "src/data/products.ts",
@@ -1414,12 +2715,12 @@
       "path": "src/data/products.ts",
       "type": "data",
       "community": "Data Models & Catalog",
-      "lines": 399,
+      "lines": 391,
       "size": 52,
       "exports": [
         "categories",
-        "products",
         "featuredProductIds",
+        "products",
         "getProduct",
         "getProductsByCategory",
         "getCategory",
@@ -1428,12 +2729,43 @@
       ],
       "imports": [
         "src/types/index.ts",
+        "src/data/product_overrides.json",
         "src/data/artisans.ts"
       ],
-      "inDegree": 15,
-      "outDegree": 2,
+      "inDegree": 23,
+      "outDegree": 3,
       "description": "18 catalog luxury products with price, images, and artisan mappings",
-      "degree": 17
+      "degree": 26
+    },
+    {
+      "id": "src/data/product_numbers.json",
+      "label": "product_numbers.json",
+      "path": "src/data/product_numbers.json",
+      "type": "data",
+      "community": "Data Models & Catalog",
+      "lines": 23,
+      "size": 14,
+      "exports": [],
+      "imports": [],
+      "inDegree": 0,
+      "outDegree": 0,
+      "description": "Module product_numbers.json in Data Models & Catalog",
+      "degree": 0
+    },
+    {
+      "id": "src/data/product_overrides.json",
+      "label": "product_overrides.json",
+      "path": "src/data/product_overrides.json",
+      "type": "data",
+      "community": "Data Models & Catalog",
+      "lines": 132,
+      "size": 17.5,
+      "exports": [],
+      "imports": [],
+      "inDegree": 1,
+      "outDegree": 0,
+      "description": "Module product_overrides.json in Data Models & Catalog",
+      "degree": 1
     },
     {
       "id": "src/hooks/useSEO.ts",
@@ -1458,7 +2790,7 @@
       "path": "src/index.css",
       "type": "style",
       "community": "Design System & Styles",
-      "lines": 3413,
+      "lines": 9317,
       "size": 14,
       "exports": [],
       "imports": [],
@@ -1466,6 +2798,47 @@
       "outDegree": 0,
       "description": "Module index.css in Design System & Styles",
       "degree": 0
+    },
+    {
+      "id": "src/lib/apiClient.ts",
+      "label": "apiClient.ts",
+      "path": "src/lib/apiClient.ts",
+      "type": "lib",
+      "community": "Infrastructure & Realtime Mesh",
+      "lines": 113,
+      "size": 17.5,
+      "exports": [
+        "apiClient"
+      ],
+      "imports": [],
+      "inDegree": 1,
+      "outDegree": 0,
+      "description": "Module apiClient.ts in Infrastructure & Realtime Mesh",
+      "degree": 1
+    },
+    {
+      "id": "src/lib/rbac.ts",
+      "label": "rbac.ts",
+      "path": "src/lib/rbac.ts",
+      "type": "lib",
+      "community": "Infrastructure & Realtime Mesh",
+      "lines": 87,
+      "size": 31.5,
+      "exports": [
+        "AppRole",
+        "VERIFIED_ROLES",
+        "canAccessSuperAdmin",
+        "canAccessAdmin",
+        "canAccessSeller",
+        "canAccessCustomer"
+      ],
+      "imports": [
+        "src/lib/supabaseClient.ts"
+      ],
+      "inDegree": 5,
+      "outDegree": 1,
+      "description": "Module rbac.ts in Infrastructure & Realtime Mesh",
+      "degree": 6
     },
     {
       "id": "src/lib/realtimeSync.ts",
@@ -1496,17 +2869,17 @@
       "type": "lib",
       "community": "Infrastructure & Realtime Mesh",
       "lines": 8,
-      "size": 17.5,
+      "size": 24.5,
       "exports": [
         "resend",
         "NOREPLY_EMAIL",
         "CONCIERGE_EMAIL"
       ],
       "imports": [],
-      "inDegree": 1,
+      "inDegree": 3,
       "outDegree": 0,
       "description": "Resend email client integration for noreply@gargisaha.com",
-      "degree": 1
+      "degree": 3
     },
     {
       "id": "src/lib/supabaseClient.ts",
@@ -1520,10 +2893,10 @@
         "supabase"
       ],
       "imports": [],
-      "inDegree": 12,
+      "inDegree": 29,
       "outDegree": 0,
       "description": "Supabase client instance for database and auth",
-      "degree": 12
+      "degree": 29
     },
     {
       "id": "src/seller.css",
@@ -1531,7 +2904,7 @@
       "path": "src/seller.css",
       "type": "style",
       "community": "Design System & Styles",
-      "lines": 686,
+      "lines": 911,
       "size": 14,
       "exports": [],
       "imports": [],
@@ -1546,8 +2919,8 @@
       "path": "src/types/index.ts",
       "type": "module",
       "community": "Type Definitions",
-      "lines": 81,
-      "size": 35,
+      "lines": 87,
+      "size": 38.5,
       "exports": [
         "Product",
         "Artisan",
@@ -1558,10 +2931,10 @@
         "BespokeInquiry"
       ],
       "imports": [],
-      "inDegree": 6,
+      "inDegree": 7,
       "outDegree": 0,
       "description": "Module index.ts in Type Definitions",
-      "degree": 6
+      "degree": 7
     },
     {
       "id": "supabase_schema.sql",
@@ -1692,22 +3065,17 @@
     },
     {
       "source": "src/app/(storefront)/artisan/[id]/page.tsx",
-      "target": "src/components/ScrollReveal.tsx",
-      "type": "imports"
-    },
-    {
-      "source": "src/app/(storefront)/artisan/[id]/page.tsx",
-      "target": "src/components/ProductCard.tsx",
-      "type": "imports"
-    },
-    {
-      "source": "src/app/(storefront)/artisan/[id]/page.tsx",
       "target": "src/data/artisans.ts",
       "type": "imports"
     },
     {
       "source": "src/app/(storefront)/artisan/[id]/page.tsx",
       "target": "src/data/products.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/(storefront)/artisan/[id]/page.tsx",
+      "target": "src/components/ProductCard.tsx",
       "type": "imports"
     },
     {
@@ -1718,6 +3086,11 @@
     {
       "source": "src/app/(storefront)/bespoke/page.tsx",
       "target": "src/components/CustomDropdown.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/(storefront)/bespoke/page.tsx",
+      "target": "src/context/CustomerAuthContext.tsx",
       "type": "imports"
     },
     {
@@ -1757,11 +3130,6 @@
     },
     {
       "source": "src/app/(storefront)/category/[id]/page.tsx",
-      "target": "src/components/ScrollReveal.tsx",
-      "type": "imports"
-    },
-    {
-      "source": "src/app/(storefront)/category/[id]/page.tsx",
       "target": "src/components/CustomDropdown.tsx",
       "type": "imports"
     },
@@ -1771,8 +3139,28 @@
       "type": "imports"
     },
     {
-      "source": "src/app/(storefront)/category/[id]/page.tsx",
-      "target": "src/components/Icons.tsx",
+      "source": "src/app/(storefront)/explore/ExploreContent.tsx",
+      "target": "src/data/products.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/(storefront)/explore/ExploreContent.tsx",
+      "target": "src/components/ProductCard.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/(storefront)/explore/ExploreContent.tsx",
+      "target": "src/components/CustomDropdown.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/(storefront)/explore/ExploreContent.tsx",
+      "target": "src/components/SearchDropdown.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/(storefront)/explore/page.tsx",
+      "target": "src/app/(storefront)/explore/ExploreContent.tsx",
       "type": "imports"
     },
     {
@@ -1808,6 +3196,11 @@
     {
       "source": "src/app/(storefront)/our-story/page.tsx",
       "target": "src/components/Icons.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/(storefront)/page.tsx",
+      "target": "src/lib/apiClient.ts",
       "type": "imports"
     },
     {
@@ -1902,22 +3295,12 @@
     },
     {
       "source": "src/app/(storefront)/shop/page.tsx",
-      "target": "src/components/ScrollReveal.tsx",
-      "type": "imports"
-    },
-    {
-      "source": "src/app/(storefront)/shop/page.tsx",
       "target": "src/components/CustomDropdown.tsx",
       "type": "imports"
     },
     {
       "source": "src/app/(storefront)/shop/page.tsx",
       "target": "src/data/products.ts",
-      "type": "imports"
-    },
-    {
-      "source": "src/app/(storefront)/shop/page.tsx",
-      "target": "src/components/Icons.tsx",
       "type": "imports"
     },
     {
@@ -1961,8 +3344,143 @@
       "type": "imports"
     },
     {
+      "source": "src/app/admin/artisans/applications/page.tsx",
+      "target": "src/components/admin/AdminLoadingSpinner.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/admin/artisans/page.tsx",
+      "target": "src/components/admin/AdminLoadingSpinner.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/admin/artisans/profile/page.tsx",
+      "target": "src/components/admin/AdminLoadingSpinner.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/admin/bespoke/page.tsx",
+      "target": "src/components/admin/AdminLoadingSpinner.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/admin/dashboard/page.tsx",
+      "target": "src/components/admin/AdminLoadingSpinner.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/admin/layout.tsx",
+      "target": "src/components/admin/AdminShell.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/admin/layout.tsx",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/admin/layout.tsx",
+      "target": "src/lib/rbac.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/admin/layout.tsx",
+      "target": "src/components/common/PortalLoadingScreen.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/admin/loading.tsx",
+      "target": "src/components/common/PortalLoadingScreen.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/admin/login/page.tsx",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/admin/products/approvals/page.tsx",
+      "target": "src/components/admin/AdminLoadingSpinner.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/admin/products/page.tsx",
+      "target": "src/components/admin/AdminLoadingSpinner.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/admin/applications/route.ts",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/admin/applications/route.ts",
+      "target": "src/lib/resend.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/admin/artisans/route.ts",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/admin/bespoke/route.ts",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/admin/dashboard/route.ts",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/admin/products/route.ts",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/admin/products/route.ts",
+      "target": "src/data/products.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/artisan/analytics/route.ts",
+      "target": "src/data/products.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/artisan/apply/route.ts",
+      "target": "src/lib/resend.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/artisan/apply/route.ts",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/auth/role/route.ts",
+      "target": "src/lib/rbac.ts",
+      "type": "imports"
+    },
+    {
       "source": "src/app/api/auth/send-otp/route.ts",
       "target": "src/lib/resend.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/auth/send-otp/route.ts",
+      "target": "src/lib/rbac.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/auth/verify-otp/route.ts",
+      "target": "src/lib/rbac.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/bespoke/route.ts",
+      "target": "src/lib/supabaseClient.ts",
       "type": "imports"
     },
     {
@@ -1986,6 +3504,81 @@
       "type": "imports"
     },
     {
+      "source": "src/app/api/super-admin/admins/route.ts",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/super-admin/bestsellers/route.ts",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/super-admin/bestsellers/route.ts",
+      "target": "src/data/products.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/super-admin/catalog/route.ts",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/super-admin/catalog/route.ts",
+      "target": "src/data/products.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/super-admin/categories/route.ts",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/super-admin/dashboard/route.ts",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/super-admin/dashboard/route.ts",
+      "target": "src/data/products.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/super-admin/revenue/route.ts",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/api/super-admin/revenue/route.ts",
+      "target": "src/data/products.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/artisan/dashboard/page.tsx",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/artisan/layout.tsx",
+      "target": "src/components/common/PortalLoadingScreen.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/artisan/layout.tsx",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/artisan/layout.tsx",
+      "target": "src/components/seller/SellerShell.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/artisan/loading.tsx",
+      "target": "src/components/common/PortalLoadingScreen.tsx",
+      "type": "imports"
+    },
+    {
       "source": "src/app/layout.tsx",
       "target": "src/context/CurrencyContext.tsx",
       "type": "imports"
@@ -2006,6 +3599,21 @@
       "type": "imports"
     },
     {
+      "source": "src/app/layout.tsx",
+      "target": "src/components/common/NetworkStatusBanner.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/loading.tsx",
+      "target": "src/components/common/PortalLoadingScreen.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/seller/layout.tsx",
+      "target": "src/components/common/PortalLoadingScreen.tsx",
+      "type": "imports"
+    },
+    {
       "source": "src/app/seller/layout.tsx",
       "target": "src/lib/supabaseClient.ts",
       "type": "imports"
@@ -2016,38 +3624,33 @@
       "type": "imports"
     },
     {
+      "source": "src/app/seller/loading.tsx",
+      "target": "src/components/common/PortalLoadingScreen.tsx",
+      "type": "imports"
+    },
+    {
       "source": "src/app/seller/login/page.tsx",
       "target": "src/lib/supabaseClient.ts",
       "type": "imports"
     },
     {
       "source": "src/app/seller/orders/page.tsx",
-      "target": "src/lib/supabaseClient.ts",
-      "type": "imports"
-    },
-    {
-      "source": "src/app/seller/orders/page.tsx",
       "target": "src/components/CustomDropdown.tsx",
       "type": "imports"
     },
     {
-      "source": "src/app/seller/page.tsx",
-      "target": "src/lib/supabaseClient.ts",
-      "type": "imports"
-    },
-    {
-      "source": "src/app/seller/page.tsx",
+      "source": "src/app/seller/products/new/page.tsx",
       "target": "src/components/CustomDropdown.tsx",
       "type": "imports"
     },
     {
       "source": "src/app/seller/products/page.tsx",
-      "target": "src/lib/supabaseClient.ts",
+      "target": "src/components/CustomDropdown.tsx",
       "type": "imports"
     },
     {
-      "source": "src/app/seller/products/page.tsx",
-      "target": "src/components/CustomDropdown.tsx",
+      "source": "src/app/seller/profile/page.tsx",
+      "target": "src/components/ArtisanProfileModal.tsx",
       "type": "imports"
     },
     {
@@ -2061,7 +3664,67 @@
       "type": "imports"
     },
     {
-      "source": "src/components/CustomerLoginModal.tsx",
+      "source": "src/app/super-admin/admins/page.tsx",
+      "target": "src/components/admin/AdminLoadingSpinner.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/super-admin/bestsellers/page.tsx",
+      "target": "src/components/admin/AdminLoadingSpinner.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/super-admin/catalog/page.tsx",
+      "target": "src/components/admin/AdminLoadingSpinner.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/super-admin/categories/page.tsx",
+      "target": "src/components/admin/AdminLoadingSpinner.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/super-admin/dashboard/page.tsx",
+      "target": "src/components/admin/AdminLoadingSpinner.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/super-admin/layout.tsx",
+      "target": "src/components/super-admin/SuperAdminShell.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/super-admin/layout.tsx",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/super-admin/layout.tsx",
+      "target": "src/lib/rbac.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/super-admin/layout.tsx",
+      "target": "src/components/common/PortalLoadingScreen.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/super-admin/loading.tsx",
+      "target": "src/components/common/PortalLoadingScreen.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/super-admin/revenue/page.tsx",
+      "target": "src/components/admin/AdminLoadingSpinner.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/components/admin/AdminShell.tsx",
+      "target": "src/components/admin/AdminSidebar.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/components/admin/AdminSidebar.tsx",
       "target": "src/lib/supabaseClient.ts",
       "type": "imports"
     },
@@ -2083,6 +3746,11 @@
     {
       "source": "src/components/Navbar.tsx",
       "target": "src/components/Icons.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/components/Navbar.tsx",
+      "target": "src/components/SearchDropdown.tsx",
       "type": "imports"
     },
     {
@@ -2131,12 +3799,37 @@
       "type": "imports"
     },
     {
+      "source": "src/components/SearchDropdown.tsx",
+      "target": "src/context/CurrencyContext.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/components/SearchDropdown.tsx",
+      "target": "src/data/products.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/components/SearchDropdown.tsx",
+      "target": "src/types/index.ts",
+      "type": "imports"
+    },
+    {
       "source": "src/components/seller/SellerShell.tsx",
       "target": "src/components/seller/SellerSidebar.tsx",
       "type": "imports"
     },
     {
       "source": "src/components/seller/SellerSidebar.tsx",
+      "target": "src/lib/supabaseClient.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/components/super-admin/SuperAdminShell.tsx",
+      "target": "src/components/super-admin/SuperAdminSidebar.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/components/super-admin/SuperAdminSidebar.tsx",
       "target": "src/lib/supabaseClient.ts",
       "type": "imports"
     },
@@ -2192,17 +3885,32 @@
     },
     {
       "source": "src/data/artisans.ts",
+      "target": "src/data/artisan_profiles_list.json",
+      "type": "imports"
+    },
+    {
+      "source": "src/data/artisans.ts",
       "target": "src/types/index.ts",
       "type": "imports"
     },
     {
       "source": "src/data/products.ts",
       "target": "src/types/index.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/data/products.ts",
+      "target": "src/data/product_overrides.json",
       "type": "imports"
     },
     {
       "source": "src/data/products.ts",
       "target": "src/data/artisans.ts",
+      "type": "imports"
+    },
+    {
+      "source": "src/lib/rbac.ts",
+      "target": "src/lib/supabaseClient.ts",
       "type": "imports"
     },
     {
