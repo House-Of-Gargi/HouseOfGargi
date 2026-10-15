@@ -127,6 +127,16 @@
   },
   "banarasi-katan-silk-kadwa-saree": {
     "isFeatured": true,
-    "isVisible": true
+    "isVisible": true,
+    "name": "Artisan Couture Creation",
+    "isHidden": false,
+    "updatedAt": "2026-10-15T18:57:18.806Z"
+  },
+  "dummy-test-item-999": {
+    "name": "Dummy Delete Test Saree",
+    "price": 5000,
+    "stock": 5,
+    "category": "sarees",
+    "isDeleted": true
   }
 }
