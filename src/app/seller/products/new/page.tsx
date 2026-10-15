@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   PlusCircle, 
@@ -17,14 +17,36 @@ import {
 } from 'lucide-react';
 import CustomDropdown from '@/components/CustomDropdown';
 
-const CATEGORY_OPTIONS = [
+const DEFAULT_CATEGORY_OPTIONS = [
   { value: 'sarees', label: 'Sarees' },
   { value: 'lehengas', label: 'Lehengas' },
   { value: 'kurta-sets', label: 'Kurta Sets' },
   { value: 'accessories', label: 'Accessories' },
+  { value: 'bespoke', label: 'Bespoke' },
 ];
 
 export default function NewProductCreationPage() {
+  const [categoryOptions, setCategoryOptions] = useState(DEFAULT_CATEGORY_OPTIONS);
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const res = await fetch('/api/categories');
+        const data = await res.json();
+        if (data.success && Array.isArray(data.categories) && data.categories.length > 0) {
+          const opts = data.categories
+            .filter((c: any) => c.isActive !== false)
+            .map((c: any) => ({
+              value: c.slug || c.id,
+              label: c.name,
+            }));
+          if (opts.length > 0) setCategoryOptions(opts);
+        }
+      } catch {}
+    }
+    loadCategories();
+  }, []);
+
   // Form fields matching Customer Portal & Atelier Specifications
   const [name, setName] = useState('');
   const [category, setCategory] = useState('sarees');
@@ -383,7 +405,7 @@ export default function NewProductCreationPage() {
                     Category *
                   </label>
                   <CustomDropdown
-                    options={CATEGORY_OPTIONS}
+                    options={categoryOptions}
                     value={category}
                     onChange={(val) => setCategory(val)}
                     placeholder="Select category"
