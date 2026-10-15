@@ -12,7 +12,6 @@ import {
   Grid,
   ExternalLink,
   LogOut,
-  X,
   Loader2,
 } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
@@ -77,6 +76,7 @@ export function SuperAdminSidebar({
   const pathname = usePathname();
   const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
+  const [isManualExpanded, setIsManualExpanded] = useState(false);
   const [navigatingTo, setNavigatingTo] = useState<string | null>(null);
   const leaveTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -92,7 +92,12 @@ export function SuperAdminSidebar({
     if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current);
     leaveTimerRef.current = setTimeout(() => {
       setIsHovered(false);
+      setIsManualExpanded(false);
     }, 280);
+  };
+
+  const toggleManualExpand = () => {
+    setIsManualExpanded((prev) => !prev);
   };
 
   useEffect(() => {
@@ -103,6 +108,7 @@ export function SuperAdminSidebar({
 
   useEffect(() => {
     setNavigatingTo(null);
+    setIsManualExpanded(false);
   }, [pathname]);
 
   const handleSignOut = async () => {
@@ -119,7 +125,7 @@ export function SuperAdminSidebar({
     }
   };
 
-  const isExpanded = isHovered;
+  const isExpanded = isHovered || isManualExpanded;
 
   const renderNavGroup = (group: SuperAdminNavGroup, isDrawer = false) => (
     <div key={group.section} style={{ marginBottom: '1.25rem' }}>
@@ -251,20 +257,32 @@ export function SuperAdminSidebar({
         }
       `}</style>
 
-      {/* Desktop Floating Rail Sidebar */}
+      {/* Permanent Luxury Rail Sidebar (Visible across all viewport sizes, zero top header required) */}
       <aside
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className="seller-sidebar-desktop"
+        className="seller-sidebar-desktop super-admin-sidebar-rail"
         style={{
+          display: 'flex',
+          position: 'fixed',
+          left: 0,
+          top: 0,
+          height: '100vh',
+          zIndex: 40,
           width: isExpanded ? '264px' : '72px',
-          boxShadow: isExpanded ? '0 10px 30px rgba(43,31,24,0.12)' : 'none',
-          transition: 'width 0.28s cubic-bezier(0.16, 1, 0.3, 1)',
+          boxShadow: isExpanded ? '0 10px 30px rgba(43,31,24,0.12)' : '2px 0 12px rgba(43, 31, 24, 0.03)',
+          transition: 'width 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease',
           backgroundColor: '#FAF7F2',
+          borderRight: '1px solid var(--soft-gold-line)',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          userSelect: 'none',
+          overflow: 'hidden',
         }}
       >
         {/* Brand Header */}
         <div
+          onClick={toggleManualExpand}
           style={{
             height: '74px',
             borderBottom: '1px solid var(--soft-gold-line)',
@@ -273,7 +291,9 @@ export function SuperAdminSidebar({
             padding: isExpanded ? '0 1.25rem' : '0',
             justifyContent: isExpanded ? 'flex-start' : 'center',
             backgroundColor: '#FAF7F2',
+            cursor: 'pointer',
           }}
+          title={isExpanded ? 'Click to collapse navigation' : 'Click or hover to expand navigation'}
         >
           {isExpanded ? (
             /* When side nav is opened: ONLY the House of Gargi long word format logo, nothing else */
@@ -382,91 +402,6 @@ export function SuperAdminSidebar({
           </button>
         </div>
       </aside>
-
-      {/* Mobile Drawer */}
-      {isMobileOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 50,
-            backgroundColor: 'rgba(35, 24, 18, 0.65)',
-            backdropFilter: 'blur(3px)',
-            display: 'flex',
-          }}
-          onClick={onMobileClose}
-        >
-          <div
-            style={{
-              width: '280px',
-              maxWidth: '85vw',
-              height: '100%',
-              backgroundColor: '#FFFFFF',
-              borderRight: '1px solid var(--soft-gold-line)',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div
-              style={{
-                height: 64,
-                borderBottom: '1px solid var(--soft-gold-line)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '0 1.25rem',
-                backgroundColor: '#FAF7F2',
-              }}
-            >
-              {/* When mobile drawer is opened: ONLY the House of Gargi long word format logo, nothing else */}
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <img
-                  src="/logo-images/new-logo.png"
-                  alt="House of Gargi"
-                  style={{ height: 30, width: 'auto', maxWidth: '100%', objectFit: 'contain' }}
-                />
-              </div>
-              <button
-                onClick={onMobileClose}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-brown)' }}
-                aria-label="Close navigation"
-              >
-                <X style={{ width: 20, height: 20 }} />
-              </button>
-            </div>
-
-            <div style={{ flex: 1, overflowY: 'auto', padding: '1rem 0.6rem' }}>
-              {superAdminNavGroups.map((g) => renderNavGroup(g, true))}
-            </div>
-
-            <div style={{ padding: '1rem', borderTop: '1px solid var(--soft-gold-line)', backgroundColor: '#FAF7F2' }}>
-              <button
-                type="button"
-                onClick={handleSignOut}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  width: '100%',
-                  padding: '0.6rem',
-                  border: '1px solid var(--maharani-maroon)',
-                  borderRadius: 2,
-                  background: 'transparent',
-                  color: 'var(--maharani-maroon)',
-                  cursor: 'pointer',
-                  fontWeight: 600,
-                  fontSize: '0.85rem',
-                  justifyContent: 'center',
-                }}
-              >
-                <LogOut style={{ width: 16, height: 16 }} />
-                <span>Sign Out</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
