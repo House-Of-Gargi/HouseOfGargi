@@ -83,7 +83,7 @@ export async function GET() {
         unitsSold: units,
         revenue: rev,
         conversion: units > 0 ? `${(3.2 + (units % 4) * 0.9).toFixed(1)}%` : '0.0%',
-        isFeatured: ov.isFeatured ?? (cp.isFeatured ?? false),
+        isFeatured: ov.isFeatured ?? ((cp as any).isFeatured ?? false),
         imageUrl: ov.images?.[0] || cp.images?.[0] || '/images/category-sarees.png',
       });
     });

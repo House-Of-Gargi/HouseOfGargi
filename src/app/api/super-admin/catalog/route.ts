@@ -60,7 +60,7 @@ export async function GET() {
         price: ov.price || cp.price,
         stock: ov.stock ?? 10,
         isVisible: ov.isVisible !== undefined ? ov.isVisible : true,
-        isHero: ov.isHero !== undefined ? ov.isHero : (cp.isFeatured ?? false),
+        isHero: ov.isHero !== undefined ? ov.isHero : ((cp as any).isFeatured ?? false),
         imageUrl: ov.images?.[0] || cp.images?.[0] || '/images/category-sarees.png',
       });
     });
