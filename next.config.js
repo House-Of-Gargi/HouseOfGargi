@@ -43,6 +43,10 @@ const nextConfig = {
             key: 'Strict-Transport-Security',
             value: 'max-age=63072000; includeSubDomains; preload',
           },
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://wlivgkosmbfgjtecvznj.supabase.co https://images.unsplash.com; font-src 'self' data:; connect-src 'self' https://wlivgkosmbfgjtecvznj.supabase.co https://houseofgargi-backend.onrender.com http://localhost:5000 http://127.0.0.1:5000; frame-ancestors 'none';",
+          },
         ],
       },
       {

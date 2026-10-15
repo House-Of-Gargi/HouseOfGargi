@@ -1,68 +1,24 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import { supabase } from '@/lib/supabaseClient';
 import { products } from '@/data/products';
 
-const BACKEND_ORDERS_FILE = path.join(process.cwd(), 'src', 'data', 'backend_orders.json');
-const ORDERS_OVERRIDE_FILE = path.join(process.cwd(), 'src', 'data', 'orders_overrides.json');
-
-function getStoredOrders(): any[] {
-  if (fs.existsSync(BACKEND_ORDERS_FILE)) {
-    try {
-      return JSON.parse(fs.readFileSync(BACKEND_ORDERS_FILE, 'utf8'));
-    } catch {}
-  }
-  return [];
-}
-
-function saveStoredOrders(data: any[]) {
-  try {
-    fs.writeFileSync(BACKEND_ORDERS_FILE, JSON.stringify(data, null, 2), 'utf8');
-  } catch {}
-}
-
-function getOrderOverrides(): Record<string, string> {
-  if (fs.existsSync(ORDERS_OVERRIDE_FILE)) {
-    try {
-      return JSON.parse(fs.readFileSync(ORDERS_OVERRIDE_FILE, 'utf8'));
-    } catch {}
-  }
-  return {};
-}
-
-function saveOrderOverrides(data: Record<string, string>) {
-  try {
-    fs.writeFileSync(ORDERS_OVERRIDE_FILE, JSON.stringify(data, null, 2), 'utf8');
-  } catch {}
-}
-
 export async function GET() {
-  const overrides = getOrderOverrides();
   let ordersList: any[] = [];
 
-  // 1. Try fetching from Supabase
   try {
-    const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
-    if (!error && data && data.length > 0) {
+    const { data, error } = await supabase
+      .from('orders')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (!error && data) {
       ordersList = data;
     }
   } catch (err) {
-    console.warn('Supabase fetch error, fallback to authoritative store:', err);
+    console.warn('Supabase fetch error:', err);
   }
 
-  // 2. If Supabase is empty or blocked by RLS, load from backend store
-  if (ordersList.length === 0) {
-    ordersList = getStoredOrders();
-  }
-
-  // 3. Apply any persistent status overrides
-  const mapped = ordersList.map((o: any) => ({
-    ...o,
-    status: overrides[o.id] || o.status,
-  }));
-
-  return NextResponse.json({ success: true, orders: mapped });
+  return NextResponse.json({ success: true, orders: ordersList });
 }
 
 export async function PATCH(request: Request) {
@@ -74,24 +30,10 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ success: false, message: 'id and status required' }, { status: 400 });
     }
 
-    // Update in overrides file
-    const overrides = getOrderOverrides();
-    overrides[id] = status;
-    saveOrderOverrides(overrides);
-
-    // Update in backend store
-    const stored = getStoredOrders();
-    const idx = stored.findIndex((o) => o.id === id);
-    if (idx !== -1) {
-      stored[idx].status = status;
-      saveStoredOrders(stored);
-    }
-
-    // Also update in Supabase if session exists
     try {
       await supabase.from('orders').update({ status }).eq('id', id);
     } catch (sbErr) {
-      console.warn('Supabase order status update warning:', sbErr);
+      console.warn('Supabase order status update error:', sbErr);
     }
 
     return NextResponse.json({ success: true, message: 'Order status updated', id, status });
