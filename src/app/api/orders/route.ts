@@ -86,11 +86,6 @@ export async function POST(request: Request) {
       items: validatedItems,
     };
 
-    // Save to persistent backend store
-    const stored = getStoredOrders();
-    stored.unshift(newOrder);
-    saveStoredOrders(stored);
-
     // Attempt insertion into Supabase PostgreSQL orders table
     try {
       const { data, error } = await supabase.from('orders').insert([{

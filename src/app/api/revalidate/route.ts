@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     const path = body.path;
 
     if (tag) {
-      revalidateTag(tag);
+      revalidateTag(tag, 'max');
     }
     if (path) {
       revalidatePath(path);
