@@ -27,6 +27,18 @@ function getProductOverrides(): Record<string, any> {
   return {};
 }
 
+function findOverride(p: any, overrides: Record<string, any>): any {
+  if (overrides[p.id]) return overrides[p.id];
+  const pName = String(p.name || '').toLowerCase().trim();
+  for (const [key, ov] of Object.entries(overrides)) {
+    if (key.toLowerCase().trim() === pName) return ov;
+    if (ov && ov.name && String(ov.name).toLowerCase().trim() === pName) {
+      return ov;
+    }
+  }
+  return {};
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const category = searchParams.get('category');
@@ -38,13 +50,13 @@ export async function GET(request: Request) {
       const idKey = String(p.id).toLowerCase().trim();
       const nameKey = String(p.name).toLowerCase().trim();
       if (deletedSet.has(idKey) || deletedSet.has(nameKey)) return false;
-      const ov = overrides[p.id] || {};
+      const ov = findOverride(p, overrides);
       if (ov.isDeleted) return false;
       if (ov.isHidden) return false;
       return true;
     })
     .map((p) => {
-      const ov = overrides[p.id] || {};
+      const ov = findOverride(p, overrides);
       return {
         ...p,
         name: ov.name || p.name,

@@ -108,52 +108,72 @@ export async function GET() {
 
     const mergedList: any[] = [];
     const processedIds = new Set<string>();
+    const processedNames = new Set<string>();
 
     // Process Supabase products — ALWAYS prioritize authentic catalog details & overrides
     supabaseProducts.forEach((sp) => {
-      processedIds.add(sp.id);
+      const spId = String(sp.id).toLowerCase().trim();
+      const spName = String(sp.name || '').toLowerCase().trim();
+      processedIds.add(spId);
+      if (spName) processedNames.add(spName);
 
-      let pNo = productNumbers[sp.id];
+      const catMatch = catalogProducts.find(
+        (cp) => cp.name.toLowerCase().trim() === spName || cp.id === sp.id
+      );
+      if (catMatch) {
+        processedIds.add(String(catMatch.id).toLowerCase().trim());
+      }
+
+      let pNo = productNumbers[sp.id] || (catMatch ? productNumbers[catMatch.id] : undefined);
       if (!pNo) {
         pNo = generateUniqueProductNo(existingCodes);
         productNumbers[sp.id] = pNo;
+        if (catMatch) productNumbers[catMatch.id] = pNo;
         existingCodes.add(pNo);
+      } else {
+        productNumbers[sp.id] = pNo;
+        if (catMatch) productNumbers[catMatch.id] = pNo;
       }
 
-      const catMatch = catalogProducts.find(
-        (cp) => cp.name.toLowerCase() === (sp.name || '').toLowerCase() || cp.id === sp.id
-      );
-
+      const ov = productOverrides[sp.id] || (catMatch ? productOverrides[catMatch.id] : undefined) || {};
       const baseImages = catMatch?.images || [sp.image_url || '/images/category-sarees.png'];
-      const images = (productOverrides[sp.id]?.images) || baseImages;
+      const images = ov.images || baseImages;
 
       mergedList.push({
         id: sp.id,
         productNo: pNo,
-        name: productOverrides[sp.id]?.name || sp.name,
-        category: productOverrides[sp.id]?.category || catMatch?.category || sp.category || 'sarees',
-        price: productOverrides[sp.id]?.price || sp.price_in_rupees || catMatch?.price || 0,
-        stock: productOverrides[sp.id]?.stock ?? (sp.stock ?? 10),
+        name: ov.name || sp.name,
+        category: ov.category || catMatch?.category || sp.category || 'sarees',
+        price: ov.price !== undefined ? ov.price : (sp.price_in_rupees || catMatch?.price || 0),
+        stock: ov.stock !== undefined ? ov.stock : (sp.stock ?? 10),
         totalSales: realSalesMap[sp.id] || 0,
         images,
-        description: productOverrides[sp.id]?.description || catMatch?.description || (sp as any).description || 'Authentic handcrafted heritage creation.',
+        description: ov.description || catMatch?.description || (sp as any).description || 'Authentic handcrafted heritage creation.',
         artisanName: 'Gopal Chandra Dey',
         artisanNo: 'HG-84192',
         artisanId: 'HG-ART-260501',
-        artType: productOverrides[sp.id]?.artType || productOverrides[sp.id]?.technique || catMatch?.technique || sp.craft_technique || 'Heritage Handloom',
-        fabric: productOverrides[sp.id]?.fabric || catMatch?.fabric || (sp as any).fabric || 'Pure Silk',
-        occasion: productOverrides[sp.id]?.occasion || catMatch?.occasion || (sp as any).occasion || 'Festive',
-        region: productOverrides[sp.id]?.region || catMatch?.region || (sp as any).region || 'India',
-        care: productOverrides[sp.id]?.care || catMatch?.care || 'Dry clean recommended.',
-        sizes: productOverrides[sp.id]?.sizes || catMatch?.sizes || ['Free Size'],
-        curationStatus: productOverrides[sp.id]?.curationStatus || sp.curation_status || 'approved',
+        artType: ov.artType || ov.technique || catMatch?.technique || sp.craft_technique || 'Heritage Handloom',
+        fabric: ov.fabric || catMatch?.fabric || (sp as any).fabric || 'Pure Silk',
+        occasion: ov.occasion || catMatch?.occasion || (sp as any).occasion || 'Festive',
+        region: ov.region || catMatch?.region || (sp as any).region || 'India',
+        care: ov.care || catMatch?.care || 'Dry clean recommended.',
+        sizes: ov.sizes || catMatch?.sizes || ['Free Size'],
+        curationStatus: ov.curationStatus || sp.curation_status || 'approved',
         createdAt: sp.created_at || new Date().toISOString(),
+        isHidden: Boolean(ov.isHidden || (sp as any).is_hidden),
+        isDeleted: Boolean(ov.isDeleted),
       });
     });
 
-    // Add any remaining catalog products
+    // Add any remaining catalog products that are not yet represented
     catalogProducts.forEach((cp) => {
-      if (!processedIds.has(cp.id) && !mergedList.some((m) => m.name.toLowerCase() === cp.name.toLowerCase())) {
+      const cpId = String(cp.id).toLowerCase().trim();
+      const cpName = String(cp.name || '').toLowerCase().trim();
+
+      if (!processedIds.has(cpId) && !processedNames.has(cpName) && !mergedList.some((m) => (m.name || '').toLowerCase().trim() === cpName)) {
+        processedIds.add(cpId);
+        if (cpName) processedNames.add(cpName);
+
         let pNo = productNumbers[cp.id];
         if (!pNo) {
           pNo = generateUniqueProductNo(existingCodes);
@@ -161,43 +181,74 @@ export async function GET() {
           existingCodes.add(pNo);
         }
 
-        const images = productOverrides[cp.id]?.images || cp.images || ['/images/category-sarees.png'];
+        const ov = productOverrides[cp.id] || {};
+        const images = ov.images || cp.images || ['/images/category-sarees.png'];
 
         mergedList.push({
           id: cp.id,
           productNo: pNo,
-          name: productOverrides[cp.id]?.name || cp.name,
-          category: productOverrides[cp.id]?.category || cp.category,
-          price: productOverrides[cp.id]?.price || cp.price,
-          stock: productOverrides[cp.id]?.stock ?? 12,
+          name: ov.name || cp.name,
+          category: ov.category || cp.category,
+          price: ov.price !== undefined ? ov.price : cp.price,
+          stock: ov.stock !== undefined ? ov.stock : 12,
           totalSales: realSalesMap[cp.id] || 0,
           images,
-          description: productOverrides[cp.id]?.description || cp.description,
+          description: ov.description || cp.description,
           artisanName: 'Gopal Chandra Dey',
           artisanNo: 'HG-84192',
           artisanId: 'HG-ART-260501',
-          artType: productOverrides[cp.id]?.artType || productOverrides[cp.id]?.technique || cp.technique || 'Heritage Handloom',
-          fabric: productOverrides[cp.id]?.fabric || cp.fabric || 'Pure Silk',
-          occasion: productOverrides[cp.id]?.occasion || cp.occasion || 'Festive',
-          region: productOverrides[cp.id]?.region || cp.region || 'India',
-          care: productOverrides[cp.id]?.care || cp.care || 'Dry clean recommended.',
-          sizes: productOverrides[cp.id]?.sizes || cp.sizes || ['Free Size'],
-          curationStatus: productOverrides[cp.id]?.curationStatus || 'approved',
+          artType: ov.artType || ov.technique || cp.technique || 'Heritage Handloom',
+          fabric: ov.fabric || cp.fabric || 'Pure Silk',
+          occasion: ov.occasion || cp.occasion || 'Festive',
+          region: ov.region || cp.region || 'India',
+          care: ov.care || cp.care || 'Dry clean recommended.',
+          sizes: ov.sizes || cp.sizes || ['Free Size'],
+          curationStatus: ov.curationStatus || 'approved',
           createdAt: new Date().toISOString(),
+          isHidden: Boolean(ov.isHidden),
+          isDeleted: Boolean(ov.isDeleted),
         });
       }
     });
 
-    // Add any custom registered products in productOverrides
+    // Process productOverrides — apply to existing item if matching by ID or Name, DO NOT duplicate!
     Object.entries(productOverrides).forEach(([overrideId, ov]: [string, any]) => {
-      if (!processedIds.has(overrideId) && !mergedList.some((m) => m.id === overrideId)) {
-        processedIds.add(overrideId);
+      const oId = String(overrideId).toLowerCase().trim();
+      const oName = String(ov.name || '').toLowerCase().trim();
+
+      // Check if product already exists in mergedList
+      const existingItem = mergedList.find(
+        (m) => String(m.id).toLowerCase().trim() === oId || (oName && String(m.name || '').toLowerCase().trim() === oName)
+      );
+
+      if (existingItem) {
+        // Sync override values to the existing product
+        if (ov.isHidden !== undefined) existingItem.isHidden = Boolean(ov.isHidden);
+        if (ov.isDeleted !== undefined) existingItem.isDeleted = Boolean(ov.isDeleted);
+        if (ov.price !== undefined) existingItem.price = ov.price;
+        if (ov.stock !== undefined) existingItem.stock = ov.stock;
+        if (ov.images && ov.images.length > 0) existingItem.images = ov.images;
+        if (ov.description) existingItem.description = ov.description;
+        if (ov.curationStatus) existingItem.curationStatus = ov.curationStatus;
+        return; // Prevent duplicate row
+      }
+
+      // Only if truly a new custom creation:
+      if (
+        !processedIds.has(oId) &&
+        (!oName || !processedNames.has(oName)) &&
+        !mergedList.some((m) => m.id === overrideId || (oName && (m.name || '').toLowerCase().trim() === oName))
+      ) {
+        processedIds.add(oId);
+        if (oName) processedNames.add(oName);
+
         let pNo = productNumbers[overrideId] || ov.productNo;
         if (!pNo) {
           pNo = generateUniqueProductNo(existingCodes);
           productNumbers[overrideId] = pNo;
           existingCodes.add(pNo);
         }
+
         mergedList.unshift({
           id: overrideId,
           productNo: pNo,
@@ -219,6 +270,8 @@ export async function GET() {
           sizes: ov.sizes || ['Free Size'],
           curationStatus: ov.curationStatus || 'approved',
           createdAt: ov.createdAt || ov.updatedAt || new Date().toISOString(),
+          isHidden: Boolean(ov.isHidden),
+          isDeleted: Boolean(ov.isDeleted),
         });
       }
     });
@@ -232,6 +285,7 @@ export async function GET() {
         const idKey = String(item.id || '').toLowerCase().trim();
         const nameKey = String(item.name || '').toLowerCase().trim();
         if (deletedSet.has(idKey) || deletedSet.has(nameKey)) return false;
+        if (item.isDeleted) return false;
         if (productOverrides[item.id]?.isDeleted) return false;
         return true;
       })
@@ -239,7 +293,7 @@ export async function GET() {
         const ov = productOverrides[item.id] || {};
         return {
           ...item,
-          isHidden: Boolean(ov.isHidden || (item as any).is_hidden),
+          isHidden: Boolean(item.isHidden || ov.isHidden || (item as any).is_hidden),
         };
       });
 

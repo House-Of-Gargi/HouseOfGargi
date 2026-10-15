@@ -372,8 +372,12 @@ export const products: Product[] = baseProducts
 
 export function getProduct(id: string): Product | undefined {
   const p = products.find(prod => prod.id === id);
+  if (p && !p.isHidden && !p.isDeleted) return p;
   const ov = (productOverrides as Record<string, any>)[id];
-  if (!p && ov) {
+  if (ov && !ov.isHidden && !ov.isDeleted) {
+    const idKey = String(id).toLowerCase().trim();
+    const nameKey = String(ov.name || '').toLowerCase().trim();
+    if (deletedSet.has(idKey) || deletedSet.has(nameKey)) return undefined;
     return {
       id,
       category: ov.category || 'sarees',
@@ -392,8 +396,7 @@ export function getProduct(id: string): Product | undefined {
       images: ov.images && ov.images.length > 0 ? ov.images : ['/images/category-sarees.png'],
     };
   }
-  if (!p) return undefined;
-  return applyProductOverride(p);
+  return undefined;
 }
 
 
