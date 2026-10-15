@@ -14,6 +14,9 @@ export interface Product {
   sizes: string[];
   care: string;
   images: string[];
+  isHidden?: boolean;
+  isDeleted?: boolean;
+  stock?: number;
 }
 
 export interface Artisan {

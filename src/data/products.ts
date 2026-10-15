@@ -317,9 +317,29 @@ export const featuredProductIds = [
 ];
 
 import productOverrides from './product_overrides.json';
+import deletedProducts from './deleted_products.json';
+
+const deletedSet = new Set(
+  (Array.isArray(deletedProducts) ? deletedProducts : []).map((s: string) =>
+    String(s).toLowerCase().trim()
+  )
+);
+
+function getOverrideForProduct(id: string, name: string): any {
+  const overrides = (productOverrides || {}) as Record<string, any>;
+  if (overrides[id]) return overrides[id];
+  const pName = (name || '').toLowerCase().trim();
+  for (const [key, ov] of Object.entries(overrides)) {
+    if (key.toLowerCase().trim() === pName) return ov;
+    if (ov && ov.name && String(ov.name).toLowerCase().trim() === pName) {
+      return ov;
+    }
+  }
+  return undefined;
+}
 
 function applyProductOverride(p: Product): Product {
-  const ov = (productOverrides as Record<string, any>)[p.id];
+  const ov = getOverrideForProduct(p.id, p.name);
   if (!ov) return p;
   return {
     ...p,
@@ -334,10 +354,21 @@ function applyProductOverride(p: Product): Product {
     care: ov.care || p.care,
     sizes: ov.sizes || p.sizes,
     images: ov.images && ov.images.length > 0 ? ov.images : p.images,
+    isHidden: Boolean(ov.isHidden),
+    isDeleted: Boolean(ov.isDeleted),
   };
 }
 
-export const products: Product[] = baseProducts.map(applyProductOverride);
+export const products: Product[] = baseProducts
+  .map(applyProductOverride)
+  .filter((p) => {
+    const idKey = String(p.id).toLowerCase().trim();
+    const nameKey = String(p.name).toLowerCase().trim();
+    if (deletedSet.has(idKey) || deletedSet.has(nameKey)) return false;
+    if (p.isDeleted) return false;
+    if (p.isHidden) return false;
+    return true;
+  });
 
 export function getProduct(id: string): Product | undefined {
   const p = products.find(prod => prod.id === id);
