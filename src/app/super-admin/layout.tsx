@@ -23,7 +23,7 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
         let activeEmail = '';
 
         if (typeof window !== 'undefined') {
-          const stored = localStorage.getItem('auth_session') || localStorage.getItem('super_admin_session') || localStorage.getItem('artisan_session');
+          const stored = localStorage.getItem('auth_session') || localStorage.getItem('super_admin_session') || localStorage.getItem('artisan_session') || localStorage.getItem('admin_session');
           if (stored) {
             try {
               const parsed = JSON.parse(stored);
@@ -48,7 +48,8 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
           'tanmaysaaagr@gmail.com',
           'tanmaysaagar@gmail.com',
           'gargisaha1508@gmail.com',
-          'shawsumit6286@gmail.com'
+          'shawsumit6286@gmail.com',
+          'sumitgreat2705@gmail.com',
         ];
 
         if (superAdmins.includes(cleanEmail)) {
@@ -70,7 +71,6 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
           }
         }
 
-        // If no email found in local session, redirect to login with callback
         setAuthorized(false);
       } catch (err) {
         console.error('Super Admin verify error:', err);
@@ -84,19 +84,21 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
   }, []);
 
   if (checking) {
-    return <PortalLoadingScreen portalName="Executive Command" theme="light" message="Verifying Super Admin credentials..." />;
+    return <PortalLoadingScreen portalName="Executive Super Admin Command" theme="light" message="Verifying executive credentials..." />;
   }
 
   if (!authorized) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#170E0B', color: '#FAF7F2', padding: '1.5rem', fontFamily: 'var(--font-body)' }}>
-        <div style={{ maxWidth: '480px', width: '100%', background: '#1E140F', border: '1.5px solid rgba(228, 211, 174, 0.3)', borderRadius: 6, padding: '2.5rem', textAlign: 'center' }}>
-          <ShieldAlert style={{ width: 48, height: 48, color: '#FF8A80', margin: '0 auto 1.25rem' }} />
-          <h1 style={{ fontSize: '1.5rem', color: '#E4D3AE', margin: '0 0 0.5rem' }}>
-            Access Restricted &bull; 403 Forbidden
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FAF7F2', color: 'var(--ink-brown)', padding: '1.5rem', fontFamily: 'var(--font-body)' }}>
+        <div style={{ maxWidth: '480px', width: '100%', background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 12, padding: '2.5rem', textAlign: 'center', boxShadow: '0 4px 20px rgba(43,31,24,0.06)' }}>
+          <div style={{ width: 64, height: 64, borderRadius: '50%', background: '#FFF5F5', border: '1.5px solid #FFCDD2', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.25rem' }}>
+            <ShieldAlert style={{ width: 32, height: 32, color: 'var(--maharani-maroon)' }} />
+          </div>
+          <h1 style={{ fontSize: '1.6rem', color: 'var(--ink-brown)', margin: '0 0 0.5rem', fontFamily: 'var(--font-serif)', fontWeight: 800 }}>
+            Executive Access <span style={{ color: 'var(--maharani-maroon)' }}>Restricted</span>
           </h1>
-          <p style={{ fontSize: '0.88rem', color: '#A99B8D', lineHeight: 1.6, margin: '0 0 1.75rem' }}>
-            The Super Admin console is strictly restricted to authorized executive leadership (e.g. <code>tanmaysaaagr@gmail.com</code>).
+          <p style={{ fontSize: '0.92rem', color: 'var(--stone-taupe)', lineHeight: 1.6, margin: '0 0 1.75rem' }}>
+            The Super Admin console is strictly restricted to executive leadership (e.g. <code>tanmaysaaagr@gmail.com</code>).
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             <Link
@@ -104,21 +106,21 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
               style={{
                 display: 'inline-block',
                 padding: '0.75rem 1.5rem',
-                borderRadius: 2,
+                borderRadius: 4,
                 background: 'var(--maharani-maroon)',
                 color: '#FFF',
                 fontWeight: 700,
-                fontSize: '0.85rem',
+                fontSize: '0.9rem',
                 textDecoration: 'none',
               }}
             >
-              Sign In to Admin & Super Admin Portal
+              Sign In to Executive Console
             </Link>
             <Link
               href="/"
               style={{
-                fontSize: '0.8rem',
-                color: '#E4D3AE',
+                fontSize: '0.85rem',
+                color: 'var(--stone-taupe)',
                 textDecoration: 'none',
                 display: 'inline-flex',
                 alignItems: 'center',
