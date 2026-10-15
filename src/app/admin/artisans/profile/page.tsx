@@ -7,12 +7,8 @@ import {
   X,
   Check,
   Loader2,
-  Users,
   Search,
   MapPin,
-  Clock,
-  Palette,
-  ShieldCheck,
   Upload,
   Camera,
   Image as ImageIcon,
@@ -161,14 +157,10 @@ export default function ArtisanProfileTablePage() {
   return (
     <div style={{ maxWidth: '1400px', margin: '0 auto', paddingBottom: '3rem' }}>
       {/* ════════════ PAGE HEADER ════════════ */}
-      <div style={{ marginBottom: '2rem' }}>
+      <div style={{ marginBottom: '1.5rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.4rem' }}>
           <span style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--maharani-maroon)' }}>
             Artisan Administration
-          </span>
-          <span style={{ color: 'var(--gargi-gold)' }}>✦</span>
-          <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--stone-taupe)' }}>
-            Master Atelier Directory
           </span>
         </div>
         <h1 style={{ margin: '0 0 0.5rem', fontSize: '2rem', fontWeight: 800, color: 'var(--ink-brown)', letterSpacing: '-0.02em' }}>
@@ -177,76 +169,6 @@ export default function ArtisanProfileTablePage() {
         <p style={{ margin: 0, fontSize: '0.95rem', color: '#6A5A50', maxWidth: '750px', lineHeight: 1.55 }}>
           Manage artisan biographies, regional belonging, loom heritage, and official profile pictures. All changes publish immediately to the live customer portal and dedicated artisan profile pages.
         </p>
-      </div>
-
-      {/* ════════════ METRICS BAR ════════════ */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-          gap: '1rem',
-          marginBottom: '1.75rem',
-        }}
-      >
-        <div
-          style={{
-            background: '#FAF7F2',
-            border: '1px solid var(--soft-gold-line)',
-            borderRadius: '10px',
-            padding: '1.25rem 1.4rem',
-            boxShadow: '0 2px 8px rgba(35, 24, 18, 0.04)',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-            <span style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#7A6B60' }}>
-              Total Artisans
-            </span>
-            <Users size={18} color="var(--maharani-maroon)" />
-          </div>
-          <div style={{ fontSize: '1.9rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
-            {profiles.length}
-          </div>
-        </div>
-
-        <div
-          style={{
-            background: '#FAF7F2',
-            border: '1px solid var(--soft-gold-line)',
-            borderRadius: '10px',
-            padding: '1.25rem 1.4rem',
-            boxShadow: '0 2px 8px rgba(35, 24, 18, 0.04)',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-            <span style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#7A6B60' }}>
-              Live on Storefront
-            </span>
-            <ShieldCheck size={18} color="var(--gargi-gold)" />
-          </div>
-          <div style={{ fontSize: '1.9rem', fontWeight: 800, color: 'var(--maharani-maroon)' }}>
-            {profiles.length}
-          </div>
-        </div>
-
-        <div
-          style={{
-            background: '#FAF7F2',
-            border: '1px solid var(--soft-gold-line)',
-            borderRadius: '10px',
-            padding: '1.25rem 1.4rem',
-            boxShadow: '0 2px 8px rgba(35, 24, 18, 0.04)',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-            <span style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#7A6B60' }}>
-              Primary Art Styles
-            </span>
-            <Palette size={18} color="#2A6F4E" />
-          </div>
-          <div style={{ fontSize: '1.9rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
-            Jamdani & Kadwa
-          </div>
-        </div>
       </div>
 
       {/* ════════════ SEARCH & CONTROLS ════════════ */}
@@ -301,7 +223,7 @@ export default function ArtisanProfileTablePage() {
             border: '1.5px solid var(--soft-gold-line)',
             borderRadius: '12px',
             boxShadow: '0 4px 16px rgba(35, 24, 18, 0.05)',
-            overflow: 'hidden',
+            overflowX: 'auto',
           }}
         >
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
@@ -312,19 +234,13 @@ export default function ArtisanProfileTablePage() {
                   borderBottom: '1.5px solid var(--soft-gold-line)',
                 }}
               >
-                <th style={{ padding: '0.95rem 1.3rem', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043' }}>
+                <th style={{ padding: '0.95rem 1.3rem', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', whiteSpace: 'nowrap' }}>
                   Master Artisan
                 </th>
-                <th style={{ padding: '0.95rem 1.3rem', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043' }}>
-                  Art Style
-                </th>
-                <th style={{ padding: '0.95rem 1.3rem', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043' }}>
+                <th style={{ padding: '0.95rem 1.3rem', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', whiteSpace: 'nowrap' }}>
                   Regional Belonging
                 </th>
-                <th style={{ padding: '0.95rem 1.3rem', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043' }}>
-                  Experience
-                </th>
-                <th style={{ padding: '0.95rem 1.3rem', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', textAlign: 'right' }}>
+                <th style={{ padding: '0.95rem 1.3rem', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', textAlign: 'right', whiteSpace: 'nowrap' }}>
                   Actions
                 </th>
               </tr>
@@ -340,16 +256,16 @@ export default function ArtisanProfileTablePage() {
                   onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#FAF7F2')}
                   onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFFFFF')}
                 >
-                  {/* 1. Name, Photo & Artisan No */}
-                  <td style={{ padding: '1rem 1.3rem', borderBottom: '1px solid #F0E8DC' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                  {/* 1. Name, Photo & Artisan No - Single Line */}
+                  <td style={{ padding: '0.85rem 1.3rem', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', whiteSpace: 'nowrap' }}>
                       <div style={{
-                        width: '44px',
-                        height: '44px',
+                        width: '38px',
+                        height: '38px',
                         borderRadius: '50%',
                         overflow: 'hidden',
                         border: '1.5px solid var(--gargi-gold)',
-                        padding: '1.5px',
+                        padding: '1px',
                         background: '#FFFFFF',
                         flexShrink: 0,
                       }}>
@@ -362,48 +278,34 @@ export default function ArtisanProfileTablePage() {
                           }}
                         />
                       </div>
-                      <div>
-                        <div style={{ fontWeight: 800, color: 'var(--ink-brown)', fontSize: '1rem' }}>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}>
+                        <span style={{ fontWeight: 800, color: 'var(--ink-brown)', fontSize: '0.95rem', whiteSpace: 'nowrap' }}>
                           {artisan.name}
-                        </div>
-                        <div style={{ fontFamily: 'monospace', fontSize: '0.8rem', fontWeight: 800, color: 'var(--maharani-maroon)', marginTop: '1px' }}>
+                        </span>
+                        <span style={{ fontFamily: 'monospace', fontSize: '0.78rem', fontWeight: 700, color: 'var(--maharani-maroon)', backgroundColor: '#FAF3E8', border: '1px solid #E8DAC6', padding: '0.15rem 0.45rem', borderRadius: '4px', whiteSpace: 'nowrap' }}>
                           {artisan.artisanNo}
-                        </div>
+                        </span>
                       </div>
                     </div>
                   </td>
 
-                  {/* 2. Art Style */}
-                  <td style={{ padding: '1.1rem 1.3rem', borderBottom: '1px solid #F0E8DC' }}>
-                    <span style={{ fontWeight: 700, color: 'var(--ink-brown)', fontSize: '0.94rem' }}>
-                      {artisan.artStyle}
-                    </span>
-                  </td>
-
-                  {/* 3. Regional Belonging */}
-                  <td style={{ padding: '1.1rem 1.3rem', borderBottom: '1px solid #F0E8DC' }}>
-                    <span style={{ fontSize: '0.92rem', color: '#4A3E36', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  {/* 2. Regional Belonging - Single Line */}
+                  <td style={{ padding: '0.85rem 1.3rem', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
+                    <span style={{ fontSize: '0.92rem', color: '#4A3E36', display: 'inline-flex', alignItems: 'center', gap: '5px', whiteSpace: 'nowrap' }}>
                       <MapPin size={14} color="var(--stone-taupe)" />
                       <span>{artisan.regionalBelonging}</span>
                     </span>
                   </td>
 
-                  {/* 4. Experience */}
-                  <td style={{ padding: '1.1rem 1.3rem', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
-                    <span style={{ fontWeight: 700, fontSize: '0.94rem', color: 'var(--maharani-maroon)' }}>
-                      {artisan.experience}
-                    </span>
-                  </td>
-
-                  {/* 5. Actions: View Public Profile & Edit Public Profile */}
-                  <td style={{ padding: '1.1rem 1.3rem', textAlign: 'right', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.55rem' }}>
+                  {/* 3. Actions - Single Line */}
+                  <td style={{ padding: '0.85rem 1.3rem', textAlign: 'right', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.55rem', whiteSpace: 'nowrap' }}>
                       {/* View Public Profile */}
                       <button
                         type="button"
                         onClick={() => setViewingProfile(artisan)}
                         style={{
-                          padding: '0.5rem 0.95rem',
+                          padding: '0.45rem 0.9rem',
                           backgroundColor: '#FFFFFF',
                           border: '1.5px solid var(--soft-gold-line)',
                           color: 'var(--ink-brown)',
@@ -415,6 +317,7 @@ export default function ArtisanProfileTablePage() {
                           alignItems: 'center',
                           gap: '0.35rem',
                           transition: 'all 0.15s ease',
+                          whiteSpace: 'nowrap',
                         }}
                         onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--gargi-gold)')}
                         onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--soft-gold-line)')}
@@ -428,7 +331,7 @@ export default function ArtisanProfileTablePage() {
                         type="button"
                         onClick={() => handleOpenEdit(artisan)}
                         style={{
-                          padding: '0.5rem 1rem',
+                          padding: '0.45rem 0.95rem',
                           backgroundColor: 'var(--maharani-maroon)',
                           border: '1.5px solid var(--maharani-maroon)',
                           color: '#FFFFFF',
@@ -441,6 +344,7 @@ export default function ArtisanProfileTablePage() {
                           gap: '0.35rem',
                           transition: 'all 0.15s ease',
                           boxShadow: '0 2px 6px rgba(122, 35, 49, 0.15)',
+                          whiteSpace: 'nowrap',
                         }}
                       >
                         <Edit3 size={14} />

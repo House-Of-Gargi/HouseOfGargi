@@ -174,7 +174,7 @@ export default function HeroBanner() {
         );
       })}
 
-      {/* ── MINIMALIST CONTROLS: ELEGANT PIPS & GLASS ARROWS ── */}
+      {/* ── MINIMALIST CONTROLS: GLASS ARROWS ── */}
       <div
         style={{
           position: 'absolute',
@@ -183,51 +183,12 @@ export default function HeroBanner() {
           right: '0',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-end',
           padding: '0 28px',
           zIndex: 10,
           pointerEvents: 'none',
         }}
       >
-        {/* Pagination Pips */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            pointerEvents: 'auto',
-            background: 'rgba(24, 16, 12, 0.45)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-            padding: '6px 12px',
-            borderRadius: '9999px',
-            border: '1px solid rgba(228, 211, 174, 0.25)',
-          }}
-        >
-          {slides.map((s, idx) => {
-            const isSelected = idx === currentIndex;
-            return (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => setCurrentIndex(idx)}
-                aria-label={`Go to slide ${idx + 1}`}
-                style={{
-                  width: isSelected ? '28px' : '8px',
-                  height: '5px',
-                  borderRadius: '3px',
-                  background: isSelected ? 'var(--gargi-gold)' : 'rgba(255, 255, 255, 0.45)',
-                  border: 'none',
-                  padding: 0,
-                  cursor: 'pointer',
-                  transition: 'all 320ms cubic-bezier(0.16, 1, 0.3, 1)',
-                  boxShadow: isSelected ? '0 0 8px rgba(184, 142, 24, 0.65)' : 'none',
-                }}
-              />
-            );
-          })}
-        </div>
-
         {/* Minimalist Prev/Next Arrow Pair */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', pointerEvents: 'auto' }}>
           <button
