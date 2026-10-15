@@ -18,8 +18,8 @@ const slides: HeroSlide[] = [
   {
     id: 'hero-1',
     link: '/category/sarees',
-    desktopWebp: '/banners/desktop-banner-1.webp',
-    desktopFallback: '/banners/desktop-banner-1.jpg',
+    desktopWebp: '/banners/desktop-banner-1.webp?v=3',
+    desktopFallback: '/banners/desktop-banner-1.jpg?v=3',
     mobileWebp: '/banners/mobile-banner-1.webp',
     mobileFallback: '/banners/mobile-banner-1.jpg',
     altText: 'House of Gargi - A Story Woven In Thread Pure Silk Sarees',
@@ -27,8 +27,8 @@ const slides: HeroSlide[] = [
   {
     id: 'hero-2',
     link: '/category/lehengas',
-    desktopWebp: '/banners/desktop-banner-2.webp',
-    desktopFallback: '/banners/desktop-banner-2.jpg',
+    desktopWebp: '/banners/desktop-banner-2.webp?v=3',
+    desktopFallback: '/banners/desktop-banner-2.jpg?v=3',
     mobileWebp: '/banners/mobile-banner-2.webp',
     mobileFallback: '/banners/mobile-banner-2.jpg',
     altText: 'House of Gargi - Crafted for The Queen In You Heritage Couture',
@@ -36,8 +36,8 @@ const slides: HeroSlide[] = [
   {
     id: 'hero-3',
     link: '/category/kurta-sets',
-    desktopWebp: '/banners/desktop-banner-3.webp',
-    desktopFallback: '/banners/desktop-banner-3.jpg',
+    desktopWebp: '/banners/desktop-banner-3.webp?v=3',
+    desktopFallback: '/banners/desktop-banner-3.jpg?v=3',
     mobileWebp: '/banners/mobile-banner-3.webp',
     mobileFallback: '/banners/mobile-banner-3.jpg',
     altText: 'House of Gargi - Own Your Style Handcrafted Menswear & Kurta Sets',
@@ -45,8 +45,8 @@ const slides: HeroSlide[] = [
   {
     id: 'hero-4',
     link: '/shop',
-    desktopWebp: '/banners/desktop-banner-4.webp',
-    desktopFallback: '/banners/desktop-banner-4.jpg',
+    desktopWebp: '/banners/desktop-banner-4.webp?v=3',
+    desktopFallback: '/banners/desktop-banner-4.jpg?v=3',
     mobileWebp: '/banners/mobile-banner-4.webp',
     mobileFallback: '/banners/mobile-banner-4.jpg',
     altText: 'House of Gargi - Little Styles Big Smiles Festive Collections',
