@@ -81,6 +81,45 @@ export default function VerifiedArtisansPage() {
     setCurrentPage(1);
   }, [searchQuery]);
 
+  const handleOpenArtisanProducts = async (artisan: VerifiedArtisan) => {
+    setSelectedArtisanForProducts(artisan);
+    try {
+      const res = await fetch('/api/admin/products');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.products)) {
+        const isGopal = (artisan.artisanNo === 'HG-84192') ||
+          (artisan.name && artisan.name.toLowerCase().includes('gopal')) ||
+          (artisan.applicationId === 'HG-ART-260501');
+
+        let matched = data.products;
+        if (!isGopal) {
+          matched = data.products.filter((p: any) =>
+            (p.artisanNo && p.artisanNo === artisan.artisanNo) ||
+            (p.artisanName && p.artisanName.toLowerCase() === artisan.name.toLowerCase()) ||
+            (p.artisanId && p.artisanId === artisan.applicationId)
+          );
+        }
+
+        const formatted = matched.map((p: any) => ({
+          id: p.id,
+          name: p.name,
+          category: p.category,
+          price: p.price,
+          stock: p.stock ?? 0,
+          image: p.images?.[0] || '/images/category-sarees.png',
+        }));
+
+        setSelectedArtisanForProducts((prev) => prev ? {
+          ...prev,
+          totalRegisteredProducts: formatted.length,
+          products: formatted,
+        } : null);
+      }
+    } catch (err) {
+      console.warn('Error refreshing live artisan products:', err);
+    }
+  };
+
   const handleOpenAssignModal = (artisan: VerifiedArtisan) => {
     setEditingArtisan(artisan);
     setNewCodeInput(artisan.artisanNo || '');
@@ -375,7 +414,7 @@ export default function VerifiedArtisansPage() {
                   <td style={{ padding: '1.1rem 1.4rem', textAlign: 'right', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
                     <button
                       type="button"
-                      onClick={() => setSelectedArtisanForProducts(artisan)}
+                      onClick={() => handleOpenArtisanProducts(artisan)}
                       style={{
                         padding: '0.55rem 1.15rem',
                         backgroundColor: '#FFFFFF',

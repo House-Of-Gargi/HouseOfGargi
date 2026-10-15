@@ -157,69 +157,94 @@ export async function GET() {
     }
 
     const allProductsMap = new Map<string, any>();
+    const nameToKeyMap = new Map<string, string>();
 
-    // 1. Base from catalogProducts
-    catalogProducts.forEach((cp) => {
-      const ov = productOverrides[cp.id] || {};
-      allProductsMap.set(cp.id, {
-        id: cp.id,
-        name: ov.name || cp.name,
-        category: ov.category || cp.category,
-        price: ov.price !== undefined ? ov.price : cp.price,
-        stock: ov.stock !== undefined ? ov.stock : 10,
-        image: ov.images?.[0] || cp.images?.[0] || '/images/category-sarees.png',
-        created_at: cp.createdAt || new Date().toISOString(),
-        artisan_id: cp.artisanId || 'HG-ART-260501',
-        artisan_no: 'HG-84192',
-        artisan_name: 'Gopal Chandra Dey',
-      });
-    });
-
-    // 2. Supabase live records merged with live overrides
+    // 1. Supabase live records first
     supabaseProducts.forEach((sp) => {
+      const normName = (sp.name || '').toLowerCase().trim();
       const catMatch = catalogProducts.find(
-        (cp) => cp.name.toLowerCase().trim() === (sp.name || '').toLowerCase().trim() || cp.id === sp.id
+        (cp) => cp.name.toLowerCase().trim() === normName || cp.id === sp.id
       );
       // Look up overrides by Supabase ID, catalog slug, or name
       let ov = productOverrides[sp.id] || (catMatch ? productOverrides[catMatch.id] : undefined);
-      if (!ov && sp.name) {
+      if (!ov && normName) {
         const matchKey = Object.keys(productOverrides).find(
-          (k) => productOverrides[k]?.name && productOverrides[k].name.toLowerCase().trim() === sp.name.toLowerCase().trim()
+          (k) => productOverrides[k]?.name && productOverrides[k].name.toLowerCase().trim() === normName
         );
         if (matchKey) ov = productOverrides[matchKey];
       }
-      const existing = allProductsMap.get(sp.id) || (catMatch ? allProductsMap.get(catMatch.id) : undefined);
 
-      allProductsMap.set(sp.id, {
+      const item = {
         id: sp.id,
-        name: ov?.name || sp.name || existing?.name,
-        category: ov?.category || sp.category || existing?.category || 'sarees',
-        price: ov?.price !== undefined ? ov.price : (sp.price_in_rupees || existing?.price || 0),
-        stock: ov?.stock !== undefined ? ov.stock : (sp.stock !== undefined ? sp.stock : (existing?.stock ?? 10)),
-        image: ov?.images?.[0] || sp.image_url || existing?.image || '/images/category-sarees.png',
-        created_at: sp.created_at || existing?.created_at,
-        artisan_id: sp.artisan_id || existing?.artisan_id || 'HG-ART-260501',
-        artisan_no: sp.artisan_no || existing?.artisan_no || 'HG-84192',
-        artisan_name: sp.artisan_name || existing?.artisan_name || 'Gopal Chandra Dey',
-      });
+        name: ov?.name || sp.name || catMatch?.name,
+        category: ov?.category || sp.category || catMatch?.category || 'sarees',
+        price: ov?.price !== undefined ? ov.price : (sp.price_in_rupees || catMatch?.price || 0),
+        stock: ov?.stock !== undefined ? ov.stock : (sp.stock !== undefined ? sp.stock : 10),
+        image: ov?.images?.[0] || sp.image_url || catMatch?.images?.[0] || '/images/category-sarees.png',
+        created_at: sp.created_at || new Date().toISOString(),
+        artisan_id: sp.artisan_id || catMatch?.artisanId || 'HG-ART-260501',
+        artisan_no: 'HG-84192',
+        artisan_name: 'Gopal Chandra Dey',
+      };
+
+      allProductsMap.set(sp.id, item);
+      if (normName) nameToKeyMap.set(normName, sp.id);
+    });
+
+    // 2. Catalog fallback: only add if not already in allProductsMap by name
+    catalogProducts.forEach((cp) => {
+      const normName = (cp.name || '').toLowerCase().trim();
+      if (!nameToKeyMap.has(normName) && !allProductsMap.has(cp.id)) {
+        const ov = productOverrides[cp.id] || {};
+        const item = {
+          id: cp.id,
+          name: ov.name || cp.name,
+          category: ov.category || cp.category,
+          price: ov.price !== undefined ? ov.price : cp.price,
+          stock: ov.stock !== undefined ? ov.stock : 10,
+          image: ov.images?.[0] || cp.images?.[0] || '/images/category-sarees.png',
+          created_at: cp.createdAt || new Date().toISOString(),
+          artisan_id: cp.artisanId || 'HG-ART-260501',
+          artisan_no: 'HG-84192',
+          artisan_name: 'Gopal Chandra Dey',
+        };
+        allProductsMap.set(cp.id, item);
+        if (normName) nameToKeyMap.set(normName, cp.id);
+      }
     });
 
     // 3. Custom artisan-created products in productOverrides
     Object.entries(productOverrides).forEach(([id, ov]: [string, any]) => {
-      if (!allProductsMap.has(id)) {
-        allProductsMap.set(id, {
-          id,
-          name: ov.name || 'Artisan Couture Creation',
-          category: ov.category || 'sarees',
-          price: ov.price || 0,
-          stock: ov.stock !== undefined ? ov.stock : 10,
-          image: ov.images?.[0] || '/images/category-sarees.png',
-          created_at: ov.createdAt || new Date().toISOString(),
-          artisan_id: ov.artisanId || 'HG-ART-260501',
-          artisan_no: ov.artisanNo || 'HG-84192',
-          artisan_name: ov.artisanName || 'Gopal Chandra Dey',
-        });
+      const normName = (ov.name || '').toLowerCase().trim();
+      if (allProductsMap.has(id)) {
+        const existing = allProductsMap.get(id);
+        if (ov.stock !== undefined) existing.stock = ov.stock;
+        if (ov.price !== undefined) existing.price = ov.price;
+        return;
       }
+      if (normName && nameToKeyMap.has(normName)) {
+        const existingId = nameToKeyMap.get(normName)!;
+        const existing = allProductsMap.get(existingId);
+        if (existing) {
+          if (ov.stock !== undefined) existing.stock = ov.stock;
+          if (ov.price !== undefined) existing.price = ov.price;
+        }
+        return;
+      }
+
+      allProductsMap.set(id, {
+        id,
+        name: ov.name || 'Artisan Couture Creation',
+        category: ov.category || 'sarees',
+        price: ov.price || 0,
+        stock: ov.stock !== undefined ? ov.stock : 10,
+        image: ov.images?.[0] || '/images/category-sarees.png',
+        created_at: ov.createdAt || new Date().toISOString(),
+        artisan_id: ov.artisanId || 'HG-ART-260501',
+        artisan_no: ov.artisanNo || 'HG-84192',
+        artisan_name: ov.artisanName || 'Gopal Chandra Dey',
+      });
+      if (normName) nameToKeyMap.set(normName, id);
     });
 
     const allProducts = Array.from(allProductsMap.values());

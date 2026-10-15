@@ -278,10 +278,18 @@ export async function PATCH(req: Request) {
     current.updatedAt = new Date().toISOString();
     productOverrides[id] = current;
 
-    // Dual-sync: If id is a UUID, also sync to matching catalog slug (e.g. sanganeri-block-print-kurta)
-    const matchedSlug = catalogProducts.find(cp => cp.name.toLowerCase() === (current.name || '').toLowerCase() || cp.id === id);
-    if (matchedSlug && matchedSlug.id !== id) {
-      productOverrides[matchedSlug.id] = { ...current };
+    // Comprehensive multi-key sync: sync across catalog slug, Supabase UUID, and name
+    const prodName = (current.name || '').toLowerCase().trim();
+    if (prodName) {
+      const catMatch = catalogProducts.find(cp => cp.name.toLowerCase().trim() === prodName || cp.id === id);
+      if (catMatch && catMatch.id !== id) {
+        productOverrides[catMatch.id] = { ...(productOverrides[catMatch.id] || {}), ...current };
+      }
+      Object.keys(productOverrides).forEach((k) => {
+        if (k !== id && productOverrides[k]?.name && productOverrides[k].name.toLowerCase().trim() === prodName) {
+          productOverrides[k] = { ...productOverrides[k], ...current };
+        }
+      });
     }
 
     saveProductOverrides(productOverrides);
