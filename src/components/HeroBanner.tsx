@@ -55,7 +55,6 @@ const slides: HeroSlide[] = [
 
 export default function HeroBanner() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
@@ -67,12 +66,11 @@ export default function HeroBanner() {
     setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
   }, []);
 
-  // Auto-advance every 4.5 seconds when not hovered
+  // Unconditional auto-advance every 3.5 seconds (no matter what, never pauses on hover)
   useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(nextSlide, 4500);
+    const interval = setInterval(nextSlide, 3500);
     return () => clearInterval(interval);
-  }, [isPaused, nextSlide]);
+  }, [nextSlide, currentIndex]);
 
   // Preload all subsequent images in memory for zero-lag instant transitions
   useEffect(() => {
@@ -108,8 +106,6 @@ export default function HeroBanner() {
   return (
     <section
       className="hero"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
