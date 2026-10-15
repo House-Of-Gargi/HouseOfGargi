@@ -1,21 +1,22 @@
 import { NextResponse } from 'next/server';
 
-const BACKEND_BASE =
+const FALLBACK_BACKEND =
+  process.env.NEXT_PUBLIC_API_URL || 'https://houseofgargi-backend.onrender.com';
+
+const PRIMARY_BACKEND =
   process.env.BACKEND_INTERNAL_URL ||
-  (process.env.NODE_ENV === 'development'
-    ? 'http://localhost:5000'
-    : (process.env.NEXT_PUBLIC_API_URL || 'https://houseofgargi-backend.onrender.com'));
+  (process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : FALLBACK_BACKEND);
 
 /**
  * Standardized Next.js route proxy to Fastify API Gateway
  * Forwards cookies, headers, body, and propagates Set-Cookie headers back to browser
+ * Gracefully falls back to live deployed backend if local dev server is offline
  */
 export async function proxyToBackend(
   req: Request,
   backendPath: string,
   options: { method?: string; body?: any } = {}
 ) {
-  const url = `${BACKEND_BASE}${backendPath}`;
   const incomingHeaders = new Headers(req.headers);
 
   const headers: Record<string, string> = {
@@ -39,13 +40,27 @@ export async function proxyToBackend(
     bodyContent = JSON.stringify(bodyContent);
   }
 
-  try {
-    const res = await fetch(url, {
+  const executeFetch = async (baseUrl: string) => {
+    return fetch(`${baseUrl}${backendPath}`, {
       method: options.method || req.method,
       headers,
       body: bodyContent,
       cache: 'no-store',
     });
+  };
+
+  try {
+    let res: Response;
+    try {
+      res = await executeFetch(PRIMARY_BACKEND);
+    } catch (primaryErr: any) {
+      // If primary local server is down, fallback to deployed backend
+      if (PRIMARY_BACKEND !== FALLBACK_BACKEND) {
+        res = await executeFetch(FALLBACK_BACKEND);
+      } else {
+        throw primaryErr;
+      }
+    }
 
     const data = await res.json().catch(() => ({}));
     const response = NextResponse.json(data, { status: res.status });
