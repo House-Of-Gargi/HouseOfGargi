@@ -2,29 +2,11 @@ import { supabase } from '@/lib/supabaseClient';
 
 export type AppRole = 'patron' | 'artisan' | 'admin' | 'super_admin';
 
-// Static executive registry as ground truth
-export const VERIFIED_ROLES: Record<string, AppRole> = {
-  'tanmaysaaagr@gmail.com': 'super_admin',
-  'tanmaysaagar@gmail.com': 'super_admin',
-  'gargisaha1508@gmail.com': 'super_admin',
-  'shawsumit6286@gmail.com': 'super_admin',
-  'sumitgreat2705@gmail.com': 'admin',
-  'admin@gargisaha.com': 'admin',
-  'curator@gargisaha.com': 'admin',
-  'artisan@gargisaha.com': 'artisan',
-  'team.anga9@gmail.com': 'artisan',
-};
-
 export async function getUserRole(email: string | null | undefined): Promise<AppRole> {
   if (!email) return 'patron';
   const cleanEmail = email.toLowerCase().trim();
 
-  // 1. Check known ground-truth registry first
-  if (VERIFIED_ROLES[cleanEmail]) {
-    return VERIFIED_ROLES[cleanEmail];
-  }
-
-  // 2. Query Supabase user_roles
+  // 1. Query Supabase user_roles (ground truth in database)
   try {
     const { data, error } = await supabase
       .from('user_roles')
