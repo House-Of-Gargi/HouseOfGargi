@@ -2,8 +2,19 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { supabase } from '@/lib/supabaseClient';
+import { products as catalogProducts } from '@/data/products';
 
 const APPLICATIONS_FILE = path.join(process.cwd(), 'src', 'data', 'artisan_applications.json');
+const PRODUCT_OVERRIDES_FILE = path.join(process.cwd(), 'src', 'data', 'product_overrides.json');
+
+function getProductOverrides(): Record<string, any> {
+  if (fs.existsSync(PRODUCT_OVERRIDES_FILE)) {
+    try {
+      return JSON.parse(fs.readFileSync(PRODUCT_OVERRIDES_FILE, 'utf8'));
+    } catch {}
+  }
+  return {};
+}
 
 function getLocalApplications(): any[] {
   if (fs.existsSync(APPLICATIONS_FILE)) {
@@ -135,14 +146,83 @@ export async function GET() {
       saveLocalApplications(localApps);
     }
 
-    // Fetch registered products from Supabase to count real products & sales
-    let allProducts: any[] = [];
+    // Fetch registered products with live database state & artisan overrides
+    const productOverrides = getProductOverrides();
+    let supabaseProducts: any[] = [];
     try {
       const { data: pData } = await supabase.from('products').select('*');
-      if (pData) allProducts = pData;
+      if (pData) supabaseProducts = pData;
     } catch (pErr) {
       console.warn('Products query error:', pErr);
     }
+
+    const allProductsMap = new Map<string, any>();
+
+    // 1. Base from catalogProducts
+    catalogProducts.forEach((cp) => {
+      const ov = productOverrides[cp.id] || {};
+      allProductsMap.set(cp.id, {
+        id: cp.id,
+        name: ov.name || cp.name,
+        category: ov.category || cp.category,
+        price: ov.price !== undefined ? ov.price : cp.price,
+        stock: ov.stock !== undefined ? ov.stock : 10,
+        image: ov.images?.[0] || cp.images?.[0] || '/images/category-sarees.png',
+        created_at: cp.createdAt || new Date().toISOString(),
+        artisan_id: cp.artisanId || 'HG-ART-260501',
+        artisan_no: 'HG-84192',
+        artisan_name: 'Gopal Chandra Dey',
+      });
+    });
+
+    // 2. Supabase live records merged with live overrides
+    supabaseProducts.forEach((sp) => {
+      const catMatch = catalogProducts.find(
+        (cp) => cp.name.toLowerCase().trim() === (sp.name || '').toLowerCase().trim() || cp.id === sp.id
+      );
+      // Look up overrides by Supabase ID, catalog slug, or name
+      let ov = productOverrides[sp.id] || (catMatch ? productOverrides[catMatch.id] : undefined);
+      if (!ov && sp.name) {
+        const matchKey = Object.keys(productOverrides).find(
+          (k) => productOverrides[k]?.name && productOverrides[k].name.toLowerCase().trim() === sp.name.toLowerCase().trim()
+        );
+        if (matchKey) ov = productOverrides[matchKey];
+      }
+      const existing = allProductsMap.get(sp.id) || (catMatch ? allProductsMap.get(catMatch.id) : undefined);
+
+      allProductsMap.set(sp.id, {
+        id: sp.id,
+        name: ov?.name || sp.name || existing?.name,
+        category: ov?.category || sp.category || existing?.category || 'sarees',
+        price: ov?.price !== undefined ? ov.price : (sp.price_in_rupees || existing?.price || 0),
+        stock: ov?.stock !== undefined ? ov.stock : (sp.stock !== undefined ? sp.stock : (existing?.stock ?? 10)),
+        image: ov?.images?.[0] || sp.image_url || existing?.image || '/images/category-sarees.png',
+        created_at: sp.created_at || existing?.created_at,
+        artisan_id: sp.artisan_id || existing?.artisan_id || 'HG-ART-260501',
+        artisan_no: sp.artisan_no || existing?.artisan_no || 'HG-84192',
+        artisan_name: sp.artisan_name || existing?.artisan_name || 'Gopal Chandra Dey',
+      });
+    });
+
+    // 3. Custom artisan-created products in productOverrides
+    Object.entries(productOverrides).forEach(([id, ov]: [string, any]) => {
+      if (!allProductsMap.has(id)) {
+        allProductsMap.set(id, {
+          id,
+          name: ov.name || 'Artisan Couture Creation',
+          category: ov.category || 'sarees',
+          price: ov.price || 0,
+          stock: ov.stock !== undefined ? ov.stock : 10,
+          image: ov.images?.[0] || '/images/category-sarees.png',
+          created_at: ov.createdAt || new Date().toISOString(),
+          artisan_id: ov.artisanId || 'HG-ART-260501',
+          artisan_no: ov.artisanNo || 'HG-84192',
+          artisan_name: ov.artisanName || 'Gopal Chandra Dey',
+        });
+      }
+    });
+
+    const allProducts = Array.from(allProductsMap.values());
 
     // Fetch orders if available to compute real sales
     let allOrders: any[] = [];
@@ -206,9 +286,9 @@ export async function GET() {
           id: p.id,
           name: p.name || 'Handcrafted Heritage Piece',
           category: p.category || 'Apparel',
-          price: p.price_in_rupees || p.price || 0,
+          price: p.price || 0,
           stock: p.stock ?? 0,
-          image: p.image_url || (p.images && p.images[0]) || '/images/category-sarees.png',
+          image: p.image || '/images/category-sarees.png',
           created_at: p.created_at,
         })),
       };
