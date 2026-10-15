@@ -188,7 +188,7 @@ export default function OurArtisansPage() {
                       padding: '4px 10px',
                       borderRadius: '12px',
                       fontSize: '11px',
-                      fontWeight: 700,
+                      fontWeight: 500,
                       fontFamily: 'var(--font-nav)',
                       letterSpacing: '0.06em',
                       textTransform: 'uppercase',
@@ -206,7 +206,7 @@ export default function OurArtisansPage() {
                       gap: '5px',
                       color: '#FFFFFF',
                       fontSize: '12px',
-                      fontWeight: 600,
+                      fontWeight: 400,
                       fontFamily: 'var(--font-nav)',
                       textShadow: '0 1px 3px rgba(0,0,0,0.6)',
                     }}>
@@ -222,7 +222,7 @@ export default function OurArtisansPage() {
                       fontSize: '20px',
                       color: 'var(--ink-brown)',
                       marginBottom: '4px',
-                      fontWeight: 700,
+                      fontWeight: 400,
                     }}>
                       {artisan.name}
                     </h3>

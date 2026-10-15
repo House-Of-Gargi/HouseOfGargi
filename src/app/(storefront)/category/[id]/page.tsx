@@ -233,7 +233,7 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
             <h2 style={{ 
               fontFamily: 'var(--font-display)', 
               fontSize: 'clamp(26px, 3.2vw, 36px)', 
-              fontWeight: 600, 
+              fontWeight: 400, 
               color: 'var(--ink-brown)',
               margin: 0
             }}>
@@ -269,7 +269,7 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
                 <img src={cat.exploreImage || cat.image} alt={cat.name} loading="lazy" />
                 <div className="category-tile__border" />
                 <div className="category-tile__label">
-                  <h3 style={{ fontSize: '24px', marginBottom: '6px' }}>{cat.name}</h3>
+                  <h3 style={{ fontSize: '24px', marginBottom: '6px', fontWeight: 400 }}>{cat.name}</h3>
                   {cat.tagline && (
                     <p style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.88)', lineHeight: 1.5, marginBottom: '12px' }}>
                       {cat.tagline}
@@ -281,7 +281,7 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
                     gap: '8px',
                     fontFamily: 'var(--font-nav)',
                     fontSize: '13px',
-                    fontWeight: 700,
+                    fontWeight: 500,
                     letterSpacing: '0.12em',
                     textTransform: 'uppercase',
                     color: 'var(--gargi-gold)'

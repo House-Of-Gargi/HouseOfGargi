@@ -329,7 +329,7 @@ export default function CartPage() {
                         style={{ 
                           fontFamily: 'var(--font-display)', 
                           fontSize: '22px', 
-                          fontWeight: 600, 
+                          fontWeight: 400, 
                           color: 'var(--ink-brown)',
                           lineHeight: 1.3,
                           display: 'inline-block'

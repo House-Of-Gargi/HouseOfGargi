@@ -201,12 +201,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
             {/* Master Artisan Attribution (Links directly to artisan dedicated page) */}
             <div className="pdp-artisan-row" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '14px 0' }}>
-              <span className="pdp-artisan-row__label" style={{ fontSize: '0.86rem', color: '#6A5A50', fontWeight: 600 }}>Master Artisan:</span>
+              <span className="pdp-artisan-row__label" style={{ fontSize: '0.86rem', color: '#6A5A50', fontWeight: 400 }}>Master Artisan:</span>
               <Link 
                 href={`/artisan/${artisanCode || 'HG-84192'}`}
                 style={{
                   color: 'var(--maharani-maroon)',
-                  fontWeight: 800,
+                  fontWeight: 500,
                   fontSize: '0.94rem',
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -317,7 +317,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   <p style={{ marginTop: '8px' }}>
                     <strong>Master Craftsman:</strong>{' '}
                     {artisan ? (
-                      <Link href={`/artisan/${artisan.id}`} style={{ color: 'var(--maharani-maroon)', fontWeight: 600, textDecoration: 'underline' }}>
+                      <Link href={`/artisan/${artisan.id}`} style={{ color: 'var(--maharani-maroon)', fontWeight: 400, textDecoration: 'underline' }}>
                         {artisan.name} ({artisan.region}) &rarr;
                       </Link>
                     ) : (
