@@ -1,9 +1,5 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-
-const PROFILES_FILE = path.join(process.cwd(), 'src', 'data', 'artisan_profiles_list.json');
-const SINGLE_FILE = path.join(process.cwd(), 'src', 'data', 'artisan_profile.json');
+import { proxyToBackend } from '@/lib/apiProxy';
 
 const MASTER_PROFILE = {
   id: 'HG-ART-260501',
@@ -31,86 +27,30 @@ const MASTER_PROFILE = {
   communityImpact: 'Regular fair-wage employment for 14 rural weaver families and flexible home-spinning shifts for women artisans in Nadia district.',
 };
 
-function getProfiles(): any[] {
-  if (fs.existsSync(PROFILES_FILE)) {
-    try {
-      const data = JSON.parse(fs.readFileSync(PROFILES_FILE, 'utf8'));
-      if (Array.isArray(data) && data.length > 0) {
-        return data.map((p) => ({ ...MASTER_PROFILE, ...p }));
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const email = searchParams.get('email');
+    if (email) {
+      const res = await proxyToBackend(req, `/api/v1/admin/artisans/${encodeURIComponent(email)}`);
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.profile) {
+        return NextResponse.json({
+          success: true,
+          profile: { ...MASTER_PROFILE, ...data.profile },
+          profiles: [{ ...MASTER_PROFILE, ...data.profile }],
+        });
       }
-    } catch {}
-  }
-  return [MASTER_PROFILE];
-}
-
-function saveProfiles(data: any[]) {
-  try {
-    fs.writeFileSync(PROFILES_FILE, JSON.stringify(data, null, 2), 'utf8');
-  } catch {}
-  try {
-    if (data[0]) {
-      fs.writeFileSync(
-        SINGLE_FILE,
-        JSON.stringify(
-          {
-            ...data[0],
-            status: 'active',
-            updatedAt: new Date().toISOString(),
-          },
-          null,
-          2
-        ),
-        'utf8'
-      );
     }
   } catch {}
-}
 
-export async function GET() {
-  const profiles = getProfiles();
-  return NextResponse.json({ success: true, profiles, profile: profiles[0] });
+  return NextResponse.json({
+    success: true,
+    profile: MASTER_PROFILE,
+    profiles: [MASTER_PROFILE],
+  });
 }
 
 export async function PATCH(req: Request) {
-  try {
-    const body = await req.json();
-    const profiles = getProfiles();
-    const targetId = body.id || body.artisanNo || 'HG-84192';
-
-    let index = profiles.findIndex(
-      (p) => p.id === targetId || p.artisanNo === targetId || p.name === body.name
-    );
-
-    if (index === -1) index = 0;
-
-    profiles[index] = {
-      ...profiles[index],
-      name: body.name ?? profiles[index].name,
-      artisanNo: body.artisanNo ?? profiles[index].artisanNo,
-      artStyle: body.artStyle ?? profiles[index].artStyle,
-      role: body.artStyle ?? profiles[index].role,
-      regionalBelonging: body.regionalBelonging ?? profiles[index].regionalBelonging,
-      region: body.regionalBelonging ?? profiles[index].region,
-      experience: body.experience ?? profiles[index].experience,
-      description: body.description ?? profiles[index].description,
-      bio: body.description ?? profiles[index].bio,
-      profileImage: body.profileImage ?? profiles[index].profileImage ?? profiles[index].image,
-      image: body.profileImage ?? profiles[index].image ?? profiles[index].profileImage,
-      updatedAt: new Date().toISOString(),
-    };
-
-    saveProfiles(profiles);
-
-    return NextResponse.json({
-      success: true,
-      message: 'Artisan public profile updated successfully',
-      profile: profiles[index],
-      profiles,
-    });
-  } catch (err: any) {
-    return NextResponse.json(
-      { success: false, message: err?.message || 'Failed to update profile' },
-      { status: 500 }
-    );
-  }
+  return proxyToBackend(req, '/api/v1/artisan/me');
 }

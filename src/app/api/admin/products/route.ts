@@ -1,441 +1,90 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { proxyToBackend } from '@/lib/apiProxy';
 import { supabase } from '@/lib/supabaseClient';
-import { products as catalogProducts } from '@/data/products';
 
-const PRODUCT_NUMBERS_FILE = path.join(process.cwd(), 'src', 'data', 'product_numbers.json');
-const PRODUCT_OVERRIDES_FILE = path.join(process.cwd(), 'src', 'data', 'product_overrides.json');
-const DELETED_PRODUCTS_FILE = path.join(process.cwd(), 'src', 'data', 'deleted_products.json');
-
-function getDeletedProducts(): Set<string> {
-  if (fs.existsSync(DELETED_PRODUCTS_FILE)) {
-    try {
-      const arr = JSON.parse(fs.readFileSync(DELETED_PRODUCTS_FILE, 'utf8'));
-      if (Array.isArray(arr)) {
-        return new Set(arr.map((s: string) => String(s).toLowerCase().trim()));
-      }
-    } catch {}
-  }
-  return new Set();
-}
-
-function saveDeletedProducts(set: Set<string>) {
+export async function GET(req: Request) {
   try {
-    fs.writeFileSync(DELETED_PRODUCTS_FILE, JSON.stringify(Array.from(set), null, 2), 'utf8');
-  } catch {}
-}
+    const { search } = new URL(req.url);
+    const res = await proxyToBackend(req, `/api/v1/admin/products${search}`);
+    const data = await res.json().catch(() => ({}));
 
-function getProductNumbers(): Record<string, string> {
-  if (fs.existsSync(PRODUCT_NUMBERS_FILE)) {
-    try {
-      return JSON.parse(fs.readFileSync(PRODUCT_NUMBERS_FILE, 'utf8'));
-    } catch {}
-  }
-  return {};
-}
-
-function saveProductNumbers(data: Record<string, string>) {
-  try {
-    fs.writeFileSync(PRODUCT_NUMBERS_FILE, JSON.stringify(data, null, 2), 'utf8');
-  } catch {}
-}
-
-function getProductOverrides(): Record<string, any> {
-  if (fs.existsSync(PRODUCT_OVERRIDES_FILE)) {
-    try {
-      return JSON.parse(fs.readFileSync(PRODUCT_OVERRIDES_FILE, 'utf8'));
-    } catch {}
-  }
-  return {};
-}
-
-function saveProductOverrides(data: Record<string, any>) {
-  try {
-    fs.writeFileSync(PRODUCT_OVERRIDES_FILE, JSON.stringify(data, null, 2), 'utf8');
-  } catch {}
-}
-
-function generateUniqueProductNo(existingCodes: Set<string>): string {
-  let code = '';
-  let attempts = 0;
-  do {
-    const randomFive = Math.floor(10000 + Math.random() * 90000);
-    code = `ART-${randomFive}`;
-    attempts++;
-  } while (existingCodes.has(code) && attempts < 1000);
-  return code;
-}
-
-// Consistent Sales Units Map
-const ORDERS_FILE = path.join(process.cwd(), 'src', 'data', 'backend_orders.json');
-function getRealProductSalesMap(): Record<string, number> {
-  const map: Record<string, number> = {};
-  if (fs.existsSync(ORDERS_FILE)) {
-    try {
-      const orders = JSON.parse(fs.readFileSync(ORDERS_FILE, 'utf8'));
-      if (Array.isArray(orders)) {
-        orders.forEach((o: any) => {
-          if (Array.isArray(o.items)) {
-            o.items.forEach((it: any) => {
-              map[it.id] = (map[it.id] || 0) + (Number(it.quantity) || 1);
-            });
-          }
-        });
-      }
-    } catch {}
-  }
-  return map;
-}
-
-export async function GET() {
-  try {
-    const productNumbers = getProductNumbers();
-    const realSalesMap = getRealProductSalesMap();
-    const productOverrides = getProductOverrides();
-    const existingCodes = new Set(Object.values(productNumbers));
-
-    // 1. Fetch Supabase products
-    let supabaseProducts: any[] = [];
-    try {
-      const { data, error } = await supabase.from('products').select('*');
-      if (!error && data) {
-        supabaseProducts = data;
-      }
-    } catch (sbErr) {
-      console.warn('Supabase fetch products warning:', sbErr);
+    if (res.ok && Array.isArray(data.products)) {
+      return NextResponse.json(data);
     }
+  } catch {}
 
-    const mergedList: any[] = [];
-    const processedIds = new Set<string>();
-    const processedNames = new Set<string>();
+  // Authoritative Supabase fallback
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .is('deleted_at', null)
+      .order('created_at', { ascending: false });
 
-    // Process Supabase products — ALWAYS prioritize authentic catalog details & overrides
-    supabaseProducts.forEach((sp) => {
-      const spId = String(sp.id).toLowerCase().trim();
-      const spName = String(sp.name || '').toLowerCase().trim();
-      processedIds.add(spId);
-      if (spName) processedNames.add(spName);
+    if (!error && data) {
+      const formatted = data.map((p) => ({
+        id: p.id,
+        productNo: p.product_number || `ART-${p.id.slice(0, 5)}`,
+        name: p.name,
+        category: p.category,
+        price: p.price_in_rupees || p.price || 0,
+        stock: p.stock ?? 10,
+        totalSales: p.total_units_sold || 0,
+        images: Array.isArray(p.images) && p.images.length > 0 ? p.images : [p.image_url || '/images/category-sarees.png'],
+        description: p.description || '',
+        artisanName: p.artisan_name || 'Master Handloom Guild',
+        artType: p.craft_technique || p.technique || 'Handloom Heritage',
+        fabric: p.fabric || 'Pure Silk',
+        occasion: p.occasion || 'Festive',
+        region: p.region || 'India',
+        care: p.care || 'Dry clean recommended.',
+        sizes: p.sizes || ['Free Size'],
+        curationStatus: p.curation_status || 'approved',
+        createdAt: p.created_at,
+        isHidden: Boolean(p.is_hidden),
+        isDeleted: false,
+      }));
 
-      const catMatch = catalogProducts.find(
-        (cp) => cp.name.toLowerCase().trim() === spName || cp.id === sp.id
-      );
-      if (catMatch) {
-        processedIds.add(String(catMatch.id).toLowerCase().trim());
-      }
-
-      let pNo = productNumbers[sp.id] || (catMatch ? productNumbers[catMatch.id] : undefined);
-      if (!pNo) {
-        pNo = generateUniqueProductNo(existingCodes);
-        productNumbers[sp.id] = pNo;
-        if (catMatch) productNumbers[catMatch.id] = pNo;
-        existingCodes.add(pNo);
-      } else {
-        productNumbers[sp.id] = pNo;
-        if (catMatch) productNumbers[catMatch.id] = pNo;
-      }
-
-      const ov = productOverrides[sp.id] || (catMatch ? productOverrides[catMatch.id] : undefined) || {};
-      const baseImages = catMatch?.images || [sp.image_url || '/images/category-sarees.png'];
-      const images = ov.images || baseImages;
-
-      mergedList.push({
-        id: sp.id,
-        productNo: pNo,
-        name: ov.name || sp.name,
-        category: ov.category || catMatch?.category || sp.category || 'sarees',
-        price: ov.price !== undefined ? ov.price : (sp.price_in_rupees || catMatch?.price || 0),
-        stock: ov.stock !== undefined ? ov.stock : (sp.stock ?? 10),
-        totalSales: realSalesMap[sp.id] || 0,
-        images,
-        description: ov.description || catMatch?.description || (sp as any).description || 'Authentic handcrafted heritage creation.',
-        artisanName: 'Gopal Chandra Dey',
-        artisanNo: 'HG-84192',
-        artisanId: 'HG-ART-260501',
-        artType: ov.artType || ov.technique || catMatch?.technique || sp.craft_technique || 'Heritage Handloom',
-        fabric: ov.fabric || catMatch?.fabric || (sp as any).fabric || 'Pure Silk',
-        occasion: ov.occasion || catMatch?.occasion || (sp as any).occasion || 'Festive',
-        region: ov.region || catMatch?.region || (sp as any).region || 'India',
-        care: ov.care || catMatch?.care || 'Dry clean recommended.',
-        sizes: ov.sizes || catMatch?.sizes || ['Free Size'],
-        curationStatus: ov.curationStatus || sp.curation_status || 'approved',
-        createdAt: sp.created_at || new Date().toISOString(),
-        isHidden: Boolean(ov.isHidden || (sp as any).is_hidden),
-        isDeleted: Boolean(ov.isDeleted),
+      return NextResponse.json({
+        success: true,
+        products: formatted,
+        totalCount: formatted.length,
       });
-    });
-
-    // Add any remaining catalog products that are not yet represented
-    catalogProducts.forEach((cp) => {
-      const cpId = String(cp.id).toLowerCase().trim();
-      const cpName = String(cp.name || '').toLowerCase().trim();
-
-      if (!processedIds.has(cpId) && !processedNames.has(cpName) && !mergedList.some((m) => (m.name || '').toLowerCase().trim() === cpName)) {
-        processedIds.add(cpId);
-        if (cpName) processedNames.add(cpName);
-
-        let pNo = productNumbers[cp.id];
-        if (!pNo) {
-          pNo = generateUniqueProductNo(existingCodes);
-          productNumbers[cp.id] = pNo;
-          existingCodes.add(pNo);
-        }
-
-        const ov = productOverrides[cp.id] || {};
-        const images = ov.images || cp.images || ['/images/category-sarees.png'];
-
-        mergedList.push({
-          id: cp.id,
-          productNo: pNo,
-          name: ov.name || cp.name,
-          category: ov.category || cp.category,
-          price: ov.price !== undefined ? ov.price : cp.price,
-          stock: ov.stock !== undefined ? ov.stock : 12,
-          totalSales: realSalesMap[cp.id] || 0,
-          images,
-          description: ov.description || cp.description,
-          artisanName: 'Gopal Chandra Dey',
-          artisanNo: 'HG-84192',
-          artisanId: 'HG-ART-260501',
-          artType: ov.artType || ov.technique || cp.technique || 'Heritage Handloom',
-          fabric: ov.fabric || cp.fabric || 'Pure Silk',
-          occasion: ov.occasion || cp.occasion || 'Festive',
-          region: ov.region || cp.region || 'India',
-          care: ov.care || cp.care || 'Dry clean recommended.',
-          sizes: ov.sizes || cp.sizes || ['Free Size'],
-          curationStatus: ov.curationStatus || 'approved',
-          createdAt: new Date().toISOString(),
-          isHidden: Boolean(ov.isHidden),
-          isDeleted: Boolean(ov.isDeleted),
-        });
-      }
-    });
-
-    // Process productOverrides — apply to existing item if matching by ID or Name, DO NOT duplicate!
-    Object.entries(productOverrides).forEach(([overrideId, ov]: [string, any]) => {
-      const oId = String(overrideId).toLowerCase().trim();
-      const oName = String(ov.name || '').toLowerCase().trim();
-
-      // Check if product already exists in mergedList
-      const existingItem = mergedList.find(
-        (m) => String(m.id).toLowerCase().trim() === oId || (oName && String(m.name || '').toLowerCase().trim() === oName)
-      );
-
-      if (existingItem) {
-        // Sync override values to the existing product
-        if (ov.isHidden !== undefined) existingItem.isHidden = Boolean(ov.isHidden);
-        if (ov.isDeleted !== undefined) existingItem.isDeleted = Boolean(ov.isDeleted);
-        if (ov.price !== undefined) existingItem.price = ov.price;
-        if (ov.stock !== undefined) existingItem.stock = ov.stock;
-        if (ov.images && ov.images.length > 0) existingItem.images = ov.images;
-        if (ov.description) existingItem.description = ov.description;
-        if (ov.curationStatus) existingItem.curationStatus = ov.curationStatus;
-        return; // Prevent duplicate row
-      }
-
-      // Only if truly a new custom creation:
-      if (
-        !processedIds.has(oId) &&
-        (!oName || !processedNames.has(oName)) &&
-        !mergedList.some((m) => m.id === overrideId || (oName && (m.name || '').toLowerCase().trim() === oName))
-      ) {
-        processedIds.add(oId);
-        if (oName) processedNames.add(oName);
-
-        let pNo = productNumbers[overrideId] || ov.productNo;
-        if (!pNo) {
-          pNo = generateUniqueProductNo(existingCodes);
-          productNumbers[overrideId] = pNo;
-          existingCodes.add(pNo);
-        }
-
-        mergedList.unshift({
-          id: overrideId,
-          productNo: pNo,
-          name: ov.name || 'Artisan Couture Creation',
-          category: ov.category || 'sarees',
-          price: ov.price || 0,
-          stock: ov.stock ?? 10,
-          totalSales: realSalesMap[overrideId] || 0,
-          images: ov.images || ['/images/category-sarees.png'],
-          description: ov.description || 'Authentic handcrafted heritage creation.',
-          artisanName: 'Gopal Chandra Dey',
-          artisanNo: 'HG-84192',
-          artisanId: 'HG-ART-260501',
-          artType: ov.artType || ov.technique || 'Handloom Kadwa Weave',
-          fabric: ov.fabric || 'Pure Silk',
-          occasion: ov.occasion || 'Festive',
-          region: ov.region || 'India',
-          care: ov.care || 'Dry clean recommended.',
-          sizes: ov.sizes || ['Free Size'],
-          curationStatus: ov.curationStatus || 'approved',
-          createdAt: ov.createdAt || ov.updatedAt || new Date().toISOString(),
-          isHidden: Boolean(ov.isHidden),
-          isDeleted: Boolean(ov.isDeleted),
-        });
-      }
-    });
-
-    saveProductNumbers(productNumbers);
-
-    const deletedSet = getDeletedProducts();
-
-    const finalProducts = mergedList
-      .filter((item) => {
-        const idKey = String(item.id || '').toLowerCase().trim();
-        const nameKey = String(item.name || '').toLowerCase().trim();
-        if (deletedSet.has(idKey) || deletedSet.has(nameKey)) return false;
-        if (item.isDeleted) return false;
-        if (productOverrides[item.id]?.isDeleted) return false;
-        return true;
-      })
-      .map((item) => {
-        const ov = productOverrides[item.id] || {};
-        return {
-          ...item,
-          isHidden: Boolean(item.isHidden || ov.isHidden || (item as any).is_hidden),
-        };
-      });
-
-    return NextResponse.json({
-      success: true,
-      products: finalProducts,
-      totalCount: finalProducts.length,
-    });
+    }
   } catch (err: any) {
-    console.error('Error fetching admin products:', err);
     return NextResponse.json(
-      { success: false, message: err?.message || 'Error loading products' },
+      { success: false, message: err?.message || 'Error fetching products' },
       { status: 500 }
     );
   }
+
+  return NextResponse.json({ success: true, products: [], totalCount: 0 });
 }
 
 export async function PATCH(req: Request) {
   try {
     const body = await req.json();
-    const { 
-      id, 
-      name, 
-      description, 
-      price, 
-      stock, 
-      category, 
-      artType, 
-      technique, 
-      craft_technique, 
-      fabric, 
-      occasion, 
-      region, 
-      care,
-      sizes,
-      images, 
-      curationStatus,
-      isHidden,
-      isDeleted
-    } = body;
+    const id = body.id;
 
     if (!id) {
-      return NextResponse.json({ success: false, message: 'Product id is required' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'Product ID required' }, { status: 400 });
     }
 
-    const productOverrides = getProductOverrides();
-    const current = productOverrides[id] || {};
-
-    if (body.productNo) {
-      const productNumbers = getProductNumbers();
-      productNumbers[id] = body.productNo;
-      saveProductNumbers(productNumbers);
-    }
-
-    if (name !== undefined) current.name = name;
-    if (description !== undefined) current.description = description;
-    if (price !== undefined) current.price = Number(price);
-    if (stock !== undefined) current.stock = Number(stock);
-    if (category !== undefined) current.category = category;
-    if (fabric !== undefined) current.fabric = fabric;
-    if (isHidden !== undefined) current.isHidden = Boolean(isHidden);
-    if (isDeleted !== undefined) {
-      current.isDeleted = Boolean(isDeleted);
-      if (current.isDeleted) {
-        const deletedSet = getDeletedProducts();
-        deletedSet.add(String(id).toLowerCase().trim());
-        if (current.name) deletedSet.add(String(current.name).toLowerCase().trim());
-        saveDeletedProducts(deletedSet);
-      }
-    }
-    
-    const finalTech = artType || technique || craft_technique;
-    if (finalTech !== undefined) {
-      current.artType = finalTech;
-      current.technique = finalTech;
-    }
-    
-    if (occasion !== undefined) current.occasion = occasion;
-    if (region !== undefined) current.region = region;
-    if (care !== undefined) current.care = care;
-    if (sizes !== undefined) current.sizes = sizes;
-    if (images !== undefined) current.images = images;
-    if (curationStatus !== undefined) current.curationStatus = curationStatus;
-
-    current.updatedAt = new Date().toISOString();
-    productOverrides[id] = current;
-
-    // Comprehensive multi-key sync: sync across catalog slug, Supabase UUID, and name
-    const prodName = (current.name || '').toLowerCase().trim();
-    if (prodName) {
-      const catMatch = catalogProducts.find(cp => cp.name.toLowerCase().trim() === prodName || cp.id === id);
-      if (catMatch && catMatch.id !== id) {
-        productOverrides[catMatch.id] = { ...(productOverrides[catMatch.id] || {}), ...current };
-      }
-      Object.keys(productOverrides).forEach((k) => {
-        if (k !== id && productOverrides[k]?.name && productOverrides[k].name.toLowerCase().trim() === prodName) {
-          productOverrides[k] = { ...productOverrides[k], ...current };
-        }
+    if (body.isHidden !== undefined) {
+      return proxyToBackend(req, `/api/v1/admin/products/${id}/visibility`, {
+        method: 'PATCH',
+        body: { isHidden: Boolean(body.isHidden) },
       });
     }
 
-    saveProductOverrides(productOverrides);
-
-    // Authoritative update to Supabase database
-    try {
-      const updatePayload: any = { updated_at: new Date().toISOString() };
-      if (name !== undefined) updatePayload.name = name;
-      if (price !== undefined) {
-        updatePayload.price_in_rupees = Number(price);
-        updatePayload.price = Number(price);
-      }
-      if (stock !== undefined) updatePayload.stock = Number(stock);
-      if (isHidden !== undefined) updatePayload.is_hidden = Boolean(isHidden);
-      if (isDeleted !== undefined && isDeleted) {
-        updatePayload.deleted_at = new Date().toISOString();
-        updatePayload.is_hidden = true;
-      }
-      if (curationStatus !== undefined) updatePayload.curation_status = curationStatus;
-      if (category !== undefined) updatePayload.category = category;
-      if (finalTech !== undefined) {
-        updatePayload.craft_technique = finalTech;
-        updatePayload.technique = finalTech;
-      }
-      if (images && Array.isArray(images) && images.length > 0) {
-        updatePayload.images = images;
-        updatePayload.image_url = images[0];
-      }
-
-      await supabase.from('products').update(updatePayload).or(`id.eq.${id},slug.eq.${id}`);
-    } catch (sbErr) {
-      console.warn('Supabase product update error:', sbErr);
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: 'Product updated and published live to customer storefront',
-      updated: current,
+    return proxyToBackend(req, `/api/v1/admin/products/${id}`, {
+      method: 'PATCH',
+      body,
     });
   } catch (err: any) {
     return NextResponse.json(
-      { success: false, message: err?.message || 'Failed to update product' },
-      { status: 500 }
+      { success: false, message: err?.message || 'Error updating product' },
+      { status: 400 }
     );
   }
 }
@@ -444,82 +93,29 @@ export async function DELETE(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     let id = searchParams.get('id');
-    let name = searchParams.get('name');
 
-    // Also support JSON body if passed
     if (!id) {
       try {
         const body = await req.json();
         id = body.id;
-        name = body.name || name;
       } catch {}
     }
 
-    if (!id && !name) {
-      return NextResponse.json({ success: false, message: 'Product ID or name is required' }, { status: 400 });
+    if (!id) {
+      return NextResponse.json({ success: false, message: 'Product ID required' }, { status: 400 });
     }
 
-    const deletedSet = getDeletedProducts();
-    if (id) deletedSet.add(String(id).toLowerCase().trim());
-    if (name) deletedSet.add(String(name).toLowerCase().trim());
-
-    // Check if there is a matching catalog product by slug or name
-    const catMatch = catalogProducts.find(
-      (cp) => (id && cp.id.toLowerCase() === id.toLowerCase()) || 
-              (name && cp.name.toLowerCase().trim() === name.toLowerCase().trim())
-    );
-    if (catMatch) {
-      deletedSet.add(catMatch.id.toLowerCase().trim());
-      deletedSet.add(catMatch.name.toLowerCase().trim());
-    }
-
-    saveDeletedProducts(deletedSet);
-
-    // Also flag isDeleted in product_overrides.json
-    const productOverrides = getProductOverrides();
-    if (id && productOverrides[id]) {
-      productOverrides[id].isDeleted = true;
-    }
-    if (catMatch && productOverrides[catMatch.id]) {
-      productOverrides[catMatch.id].isDeleted = true;
-    }
-    if (name) {
-      const normName = name.toLowerCase().trim();
-      Object.keys(productOverrides).forEach((k) => {
-        if (productOverrides[k]?.name && productOverrides[k].name.toLowerCase().trim() === normName) {
-          productOverrides[k].isDeleted = true;
-        }
-      });
-    }
-    saveProductOverrides(productOverrides);
-
-    // Authoritative soft-delete in Supabase database
-    try {
-      const softDeletePayload = {
-        deleted_at: new Date().toISOString(),
-        is_hidden: true,
-        updated_at: new Date().toISOString(),
-      };
-      if (id) {
-        await supabase.from('products').update(softDeletePayload).or(`id.eq.${id},slug.eq.${id}`);
-      }
-      if (name) {
-        await supabase.from('products').update(softDeletePayload).ilike('name', name);
-      }
-    } catch (sbErr) {
-      console.warn('Supabase product soft-delete attempt:', sbErr);
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: 'Product permanently deleted from existence across all portals',
-      deletedId: id,
+    return proxyToBackend(req, `/api/v1/admin/products/${id}`, {
+      method: 'DELETE',
     });
   } catch (err: any) {
-    console.error('Error deleting product:', err);
     return NextResponse.json(
-      { success: false, message: err?.message || 'Failed to delete product' },
-      { status: 500 }
+      { success: false, message: err?.message || 'Error deleting product' },
+      { status: 400 }
     );
   }
+}
+
+export async function POST(req: Request) {
+  return proxyToBackend(req, '/api/v1/artisan/products', { method: 'POST' });
 }
