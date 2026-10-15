@@ -44,21 +44,6 @@ export default function SuperAdminLayout({ children }: { children: ReactNode }) 
         }
 
         const cleanEmail = (activeEmail || '').toLowerCase().trim();
-        const superAdmins = [
-          'tanmaysaaagr@gmail.com',
-          'tanmaysaagar@gmail.com',
-          'gargisaha1508@gmail.com',
-          'shawsumit6286@gmail.com',
-          'sumitgreat2705@gmail.com',
-        ];
-
-        if (superAdmins.includes(cleanEmail)) {
-          setUserEmail(cleanEmail);
-          setUserName(cleanEmail.split('@')[0]);
-          setAuthorized(true);
-          setChecking(false);
-          return;
-        }
 
         if (cleanEmail) {
           const role: AppRole = await getUserRole(cleanEmail);

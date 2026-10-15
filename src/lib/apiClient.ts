@@ -28,6 +28,7 @@ async function request<T = any>(endpoint: string, options: RequestInit = {}): Pr
     const res = await fetch(url, {
       ...options,
       headers,
+      credentials: 'include',
       signal: options.signal || controller.signal,
       next: { revalidate: 60 },
     });
@@ -48,7 +49,7 @@ async function request<T = any>(endpoint: string, options: RequestInit = {}): Pr
 }
 
 export const apiClient = {
-  // Authentication & OTP
+  // Authentication & Session
   auth: {
     sendOtp: async (email: string) => {
       return request('/api/v1/auth/otp/send', {
@@ -60,6 +61,14 @@ export const apiClient = {
       return request('/api/v1/auth/otp/verify', {
         method: 'POST',
         body: JSON.stringify({ email, otp, token, expiresAt }),
+      });
+    },
+    me: async () => {
+      return request('/api/v1/auth/me');
+    },
+    logout: async () => {
+      return request('/api/v1/auth/logout', {
+        method: 'POST',
       });
     },
   },
@@ -79,6 +88,12 @@ export const apiClient = {
     },
     categories: async () => {
       return request('/api/v1/products/categories');
+    },
+    featured: async (limit = 6) => {
+      return request(`/api/v1/products/featured?limit=${limit}`);
+    },
+    newArrivals: async (limit = 12) => {
+      return request(`/api/v1/products/new-arrivals?limit=${limit}`);
     },
   },
 
