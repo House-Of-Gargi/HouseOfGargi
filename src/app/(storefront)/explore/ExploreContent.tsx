@@ -43,7 +43,24 @@ export default function ExploreContent() {
       .then((res) => res.json())
       .then((data) => {
         if (data.success && Array.isArray(data.products)) {
-          setLiveProducts(data.products);
+          const normalized = data.products.map((p: any) => {
+            const staticMatch = products.find(
+              (sp) =>
+                sp.id === p.id ||
+                sp.id === p.slug ||
+                sp.name.toLowerCase().trim() === (p.name || '').toLowerCase().trim()
+            );
+            return {
+              ...staticMatch,
+              ...p,
+              id: p.id || staticMatch?.id,
+              name: p.name || staticMatch?.name,
+              price: Number(p.price ?? p.price_in_rupees ?? staticMatch?.price ?? 0),
+              fabric: (p.fabric && p.fabric !== 'Pure Mulberry Silk' ? p.fabric : staticMatch?.fabric) || p.fabric || 'Pure Silk',
+              images: (Array.isArray(p.images) && p.images.length > 0) ? p.images : (staticMatch?.images || [p.image_url || '/images/category-sarees.png']),
+            };
+          });
+          setLiveProducts(normalized);
         }
       })
       .catch(() => {});
@@ -52,6 +69,15 @@ export default function ExploreContent() {
   const activeProducts = useMemo(() => {
     return liveProducts || products;
   }, [liveProducts]);
+
+  const getProductPrice = (p: any): number => {
+    const val = Number(p.price ?? p.price_in_rupees ?? 0);
+    return isNaN(val) ? 0 : val;
+  };
+
+  const getProductFabric = (p: any): string => {
+    return String(p.fabric || '').toLowerCase().trim();
+  };
 
   // Sync state if URL search params change
   useEffect(() => {
@@ -109,25 +135,28 @@ export default function ExploreContent() {
 
     // Fabric filter
     if (selectedFabric) {
-      result = result.filter(p => p.fabric.toLowerCase().includes(selectedFabric.toLowerCase()));
+      result = result.filter(p => getProductFabric(p).includes(selectedFabric.toLowerCase().trim()));
     }
 
     // Price tier filter
     if (selectedPriceTier === 'under-15k') {
-      result = result.filter(p => p.price < 15000);
+      result = result.filter(p => getProductPrice(p) < 15000);
     } else if (selectedPriceTier === '15k-40k') {
-      result = result.filter(p => p.price >= 15000 && p.price <= 40000);
+      result = result.filter(p => {
+        const pr = getProductPrice(p);
+        return pr >= 15000 && pr <= 40000;
+      });
     } else if (selectedPriceTier === 'above-40k') {
-      result = result.filter(p => p.price > 40000);
+      result = result.filter(p => getProductPrice(p) > 40000);
     }
 
     // Sort order
     if (selectedSort === 'price-asc') {
-      result.sort((a, b) => a.price - b.price);
+      result.sort((a, b) => getProductPrice(a) - getProductPrice(b));
     } else if (selectedSort === 'price-desc') {
-      result.sort((a, b) => b.price - a.price);
+      result.sort((a, b) => getProductPrice(b) - getProductPrice(a));
     } else if (selectedSort === 'name-asc') {
-      result.sort((a, b) => a.name.localeCompare(b.name));
+      result.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
     }
 
     // If a product was directly selected from the dropdown, prioritize it at the top
@@ -140,7 +169,7 @@ export default function ExploreContent() {
     }
 
     return result;
-  }, [searchTerm, selectedCategory, selectedFabric, selectedPriceTier, selectedSort, highlightedProductId]);
+  }, [activeProducts, searchTerm, selectedCategory, selectedFabric, selectedPriceTier, selectedSort, highlightedProductId]);
 
   const hasActiveFilters = Boolean(
     searchTerm.trim() ||

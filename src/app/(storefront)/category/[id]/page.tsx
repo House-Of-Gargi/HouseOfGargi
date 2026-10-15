@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import ProductCard from '@/components/ProductCard';
 import CustomDropdown from '@/components/CustomDropdown';
-import { getCategory, getProductsByCategory, categories } from '@/data/products';
+import { getCategory, getProductsByCategory, categories, products } from '@/data/products';
 import { Product } from '@/types';
 import { 
   X, 
@@ -35,7 +35,24 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
       .then((res) => res.json())
       .then((data) => {
         if (data.success && Array.isArray(data.products)) {
-          setLiveItems(data.products);
+          const normalized = data.products.map((p: any) => {
+            const staticMatch = products.find(
+              (sp) =>
+                sp.id === p.id ||
+                sp.id === p.slug ||
+                sp.name.toLowerCase().trim() === (p.name || '').toLowerCase().trim()
+            );
+            return {
+              ...staticMatch,
+              ...p,
+              id: p.id || staticMatch?.id,
+              name: p.name || staticMatch?.name,
+              price: Number(p.price ?? p.price_in_rupees ?? staticMatch?.price ?? 0),
+              fabric: (p.fabric && p.fabric !== 'Pure Mulberry Silk' ? p.fabric : staticMatch?.fabric) || p.fabric || 'Pure Silk',
+              images: (Array.isArray(p.images) && p.images.length > 0) ? p.images : (staticMatch?.images || [p.image_url || '/images/category-sarees.png']),
+            };
+          });
+          setLiveItems(normalized);
         }
       })
       .catch(() => {});
@@ -46,6 +63,15 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
     if (liveItems) return liveItems;
     return getProductsByCategory(id);
   }, [id, liveItems]);
+
+  const getProductPrice = (p: any): number => {
+    const val = Number(p.price ?? p.price_in_rupees ?? 0);
+    return isNaN(val) ? 0 : val;
+  };
+
+  const getProductFabric = (p: any): string => {
+    return String(p.fabric || '').toLowerCase().trim();
+  };
 
   // Derived fabrics
   const allFabrics = useMemo(() => {
@@ -73,23 +99,26 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
     let result = [...baseItems];
 
     if (fabric) {
-      result = result.filter(p => p.fabric.toLowerCase().includes(fabric.toLowerCase()));
+      result = result.filter(p => getProductFabric(p).includes(fabric.toLowerCase().trim()));
     }
 
     if (priceTier === 'under-15k') {
-      result = result.filter(p => p.price < 15000);
+      result = result.filter(p => getProductPrice(p) < 15000);
     } else if (priceTier === '15k-40k') {
-      result = result.filter(p => p.price >= 15000 && p.price <= 40000);
+      result = result.filter(p => {
+        const pr = getProductPrice(p);
+        return pr >= 15000 && pr <= 40000;
+      });
     } else if (priceTier === 'above-40k') {
-      result = result.filter(p => p.price > 40000);
+      result = result.filter(p => getProductPrice(p) > 40000);
     }
 
     if (sort === 'price-asc') {
-      result.sort((a, b) => a.price - b.price);
+      result.sort((a, b) => getProductPrice(a) - getProductPrice(b));
     } else if (sort === 'price-desc') {
-      result.sort((a, b) => b.price - a.price);
+      result.sort((a, b) => getProductPrice(b) - getProductPrice(a));
     } else if (sort === 'name-asc') {
-      result.sort((a, b) => a.name.localeCompare(b.name));
+      result.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
     }
 
     return result;
