@@ -10,7 +10,9 @@ import {
   CheckCircle2,
   X,
   Loader2,
+  ShieldAlert,
 } from 'lucide-react';
+import { AdminLoadingSpinner } from '@/components/admin/AdminLoadingSpinner';
 
 export default function SuperAdminAdminsPage() {
   const [admins, setAdmins] = useState<any[]>([]);
@@ -81,14 +83,24 @@ export default function SuperAdminAdminsPage() {
     }
   };
 
+  const superAdminsCount = admins.filter((a) => a.role === 'super_admin').length;
+  const curatorsCount = admins.filter((a) => a.role !== 'super_admin').length;
+
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      {/* Header Lockup */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.5rem' }}>
         <div>
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
+            <ShieldCheck style={{ width: 18, height: 18, color: 'var(--maharani-maroon)' }} />
+            <span style={{ fontSize: '0.82rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
+              Team Access & Privileges
+            </span>
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0, lineHeight: 1.2 }}>
             Admin & Staff Privilege <span style={{ color: 'var(--maharani-maroon)' }}>Management</span>
           </h1>
-          <p style={{ margin: '0.35rem 0 0', fontSize: '1.05rem', color: '#4A3E36' }}>
+          <p style={{ margin: '0.4rem 0 0', fontSize: '1.02rem', color: '#4A3E36', lineHeight: 1.55 }}>
             Exclusive Super Admin function: control operations team access, invite curators, and assign permissions.
           </p>
         </div>
@@ -98,65 +110,150 @@ export default function SuperAdminAdminsPage() {
           onClick={() => setIsInviteOpen(true)}
           style={{
             padding: '0.65rem 1.25rem',
-            borderRadius: 2,
+            borderRadius: 4,
             border: 'none',
             backgroundColor: 'var(--maharani-maroon)',
             color: '#FFFFFF',
             fontWeight: 700,
-            fontSize: '0.92rem',
+            fontSize: '0.88rem',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             gap: '0.45rem',
+            boxShadow: '0 2px 8px rgba(122,35,49,0.2)',
           }}
         >
           <PlusCircle style={{ width: 16, height: 16 }} />
-          Invite New Admin
+          Invite Operations Staff
         </button>
       </div>
 
+      {/* 3 Metric Summary Boxes - Minimal Box Styling & Proportional Font Sizes */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '12px',
+            padding: '1.5rem 1.6rem',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            minHeight: '135px',
+          }}
+        >
+          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            Total Governance Staff
+          </div>
+          <div style={{ fontSize: '2.1rem', fontWeight: 800, lineHeight: 1.15, color: 'var(--ink-brown)', letterSpacing: '-0.025em' }}>
+            {loading ? <AdminLoadingSpinner size={26} /> : `${admins.length} Members`}
+          </div>
+          <div style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)' }}>
+            Authorized operations team
+          </div>
+        </div>
+
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '12px',
+            padding: '1.5rem 1.6rem',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            minHeight: '135px',
+          }}
+        >
+          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            Executive Super Admins
+          </div>
+          <div style={{ fontSize: '2.1rem', fontWeight: 800, lineHeight: 1.15, color: 'var(--maharani-maroon)', letterSpacing: '-0.025em' }}>
+            {loading ? <AdminLoadingSpinner size={26} /> : `${superAdminsCount} Super Admins`}
+          </div>
+          <div style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)' }}>
+            Unrestricted governance privilege
+          </div>
+        </div>
+
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--soft-gold-line)',
+            borderRadius: '12px',
+            padding: '1.5rem 1.6rem',
+            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            minHeight: '135px',
+          }}
+        >
+          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            Operations & Curators
+          </div>
+          <div style={{ fontSize: '2.1rem', fontWeight: 800, lineHeight: 1.15, color: 'var(--ink-brown)', letterSpacing: '-0.025em' }}>
+            {loading ? <AdminLoadingSpinner size={26} /> : `${curatorsCount} Staff`}
+          </div>
+          <div style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)' }}>
+            Artisan & catalog review permissions
+          </div>
+        </div>
+      </div>
+
       {/* Admins Table */}
-      <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 2px 14px rgba(43,31,24,0.03)' }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid var(--soft-gold-line)', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 2px 14px rgba(43,31,24,0.03)' }}>
         {loading ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--stone-taupe)' }}>
-            <Loader2 style={{ width: 24, height: 24, animation: 'spin 1s linear infinite', margin: '0 auto 0.5rem', color: 'var(--maharani-maroon)' }} />
-            Loading admin staff...
+          <div style={{ padding: '3.5rem', textAlign: 'center', color: 'var(--stone-taupe)' }}>
+            <AdminLoadingSpinner size={28} />
           </div>
         ) : (
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.95rem' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
             <thead>
-              <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.88rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                <th style={{ padding: '0.85rem 1rem' }}>Staff Member</th>
-                <th style={{ padding: '0.85rem 1rem' }}>Email Address</th>
-                <th style={{ padding: '0.85rem 1rem' }}>Role Tier</th>
-                <th style={{ padding: '0.85rem 1rem' }}>Department / Scope</th>
-                <th style={{ padding: '0.85rem 1rem' }}>Last Active</th>
-                <th style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>Action</th>
+              <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                <th style={{ padding: '0.85rem 1.25rem' }}>Staff Member</th>
+                <th style={{ padding: '0.85rem 1.25rem' }}>Email Address</th>
+                <th style={{ padding: '0.85rem 1.25rem' }}>Role Tier</th>
+                <th style={{ padding: '0.85rem 1.25rem' }}>Department / Scope</th>
+                <th style={{ padding: '0.85rem 1.25rem' }}>Last Active</th>
+                <th style={{ padding: '0.85rem 1.25rem', textAlign: 'right' }}>Action</th>
               </tr>
             </thead>
             <tbody>
               {admins.map((adm) => (
                 <tr key={adm.id} style={{ borderBottom: '1px solid #F0E8DC' }}>
-                  <td style={{ padding: '0.85rem 1rem', fontWeight: 600, color: 'var(--ink-brown)' }}>{adm.name}</td>
-                  <td style={{ padding: '0.85rem 1rem', color: 'var(--stone-taupe)' }}>{adm.email}</td>
-                  <td style={{ padding: '0.85rem 1rem' }}>
+                  <td style={{ padding: '0.85rem 1.25rem', fontWeight: 600, color: 'var(--ink-brown)' }}>
+                    {adm.name}
+                  </td>
+                  <td style={{ padding: '0.85rem 1.25rem', color: 'var(--stone-taupe)' }}>
+                    {adm.email}
+                  </td>
+                  <td style={{ padding: '0.85rem 1.25rem' }}>
                     <span
                       style={{
-                        fontSize: '0.68rem',
+                        fontSize: '0.72rem',
                         fontWeight: 700,
-                        padding: '0.15rem 0.5rem',
-                        borderRadius: 2,
-                        backgroundColor: adm.role === 'super_admin' ? '#7A2331' : '#E0E7FF',
-                        color: adm.role === 'super_admin' ? '#FFFFFF' : '#3730A3',
+                        padding: '0.2rem 0.55rem',
+                        borderRadius: 4,
+                        backgroundColor: adm.role === 'super_admin' ? '#FAF0E6' : '#FAF7F2',
+                        color: adm.role === 'super_admin' ? 'var(--maharani-maroon)' : 'var(--ink-brown)',
+                        border: adm.role === 'super_admin' ? '1px solid rgba(122,35,49,0.3)' : '1px solid var(--soft-gold-line)',
                         textTransform: 'uppercase',
+                        letterSpacing: '0.04em',
                       }}
                     >
-                      {adm.role}
+                      {adm.role === 'super_admin' ? 'Super Admin' : 'Admin Curator'}
                     </span>
                   </td>
-                  <td style={{ padding: '0.85rem 1rem', color: 'var(--ink-brown)' }}>{adm.department}</td>
-                  <td style={{ padding: '0.85rem 1rem', color: 'var(--stone-taupe)' }}>{adm.lastActive}</td>
-                  <td style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
+                  <td style={{ padding: '0.85rem 1.25rem', color: 'var(--ink-brown)' }}>
+                    {adm.department}
+                  </td>
+                  <td style={{ padding: '0.85rem 1.25rem', color: 'var(--stone-taupe)' }}>
+                    {adm.lastActive}
+                  </td>
+                  <td style={{ padding: '0.85rem 1.25rem', textAlign: 'right' }}>
                     {adm.role !== 'super_admin' && (
                       <button
                         type="button"
@@ -166,7 +263,8 @@ export default function SuperAdminAdminsPage() {
                           border: 'none',
                           color: '#C62828',
                           cursor: 'pointer',
-                          padding: '0.3rem',
+                          padding: '0.35rem',
+                          borderRadius: 4,
                         }}
                         title="Revoke Admin Access"
                       >
@@ -188,7 +286,7 @@ export default function SuperAdminAdminsPage() {
             position: 'fixed',
             inset: 0,
             zIndex: 60,
-            backgroundColor: 'rgba(35, 24, 18, 0.65)',
+            backgroundColor: 'rgba(35, 24, 18, 0.5)',
             backdropFilter: 'blur(3px)',
             display: 'flex',
             alignItems: 'center',
@@ -202,18 +300,21 @@ export default function SuperAdminAdminsPage() {
               width: '480px',
               maxWidth: '100%',
               backgroundColor: '#FFFFFF',
-              borderRadius: 4,
+              borderRadius: 12,
               border: '1.5px solid var(--soft-gold-line)',
-              boxShadow: '0 12px 36px rgba(0,0,0,0.2)',
+              boxShadow: '0 12px 36px rgba(43,31,24,0.15)',
               overflow: 'hidden',
             }}
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--soft-gold-line)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FAF7F2' }}>
               <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 700, margin: 0, color: 'var(--ink-brown)' }}>
-                Invite Operations Admin
+                Invite Operations Staff
               </h2>
-              <button onClick={() => setIsInviteOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+              <button
+                onClick={() => setIsInviteOpen(false)}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--stone-taupe)' }}
+              >
                 <X style={{ width: 20, height: 20 }} />
               </button>
             </div>
@@ -229,7 +330,7 @@ export default function SuperAdminAdminsPage() {
                   placeholder="e.g. Anandita Bose"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.75rem', borderRadius: 2, border: '1px solid #D8CBB6', outline: 'none', boxSizing: 'border-box' }}
+                  style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: 4, border: '1px solid var(--soft-gold-line)', outline: 'none', boxSizing: 'border-box' }}
                 />
               </div>
 
@@ -243,7 +344,7 @@ export default function SuperAdminAdminsPage() {
                   placeholder="admin.name@gargisaha.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.75rem', borderRadius: 2, border: '1px solid #D8CBB6', outline: 'none', boxSizing: 'border-box' }}
+                  style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: 4, border: '1px solid var(--soft-gold-line)', outline: 'none', boxSizing: 'border-box' }}
                 />
               </div>
 
@@ -254,9 +355,9 @@ export default function SuperAdminAdminsPage() {
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.75rem', borderRadius: 2, border: '1px solid #D8CBB6', outline: 'none', boxSizing: 'border-box' }}
+                  style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: 4, border: '1px solid var(--soft-gold-line)', outline: 'none', boxSizing: 'border-box', background: '#FFFFFF' }}
                 >
-                  <option value="admin">Operations Admin (Artisans & QC)</option>
+                  <option value="admin">Operations Curator (Catalog & Artisans)</option>
                   <option value="super_admin">Super Admin (Full Governance)</option>
                 </select>
               </div>
@@ -267,10 +368,11 @@ export default function SuperAdminAdminsPage() {
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Handloom QC & Silk Verification"
+                  required
+                  placeholder="e.g. Handloom Quality Control"
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.75rem', borderRadius: 2, border: '1px solid #D8CBB6', outline: 'none', boxSizing: 'border-box' }}
+                  style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: 4, border: '1px solid var(--soft-gold-line)', outline: 'none', boxSizing: 'border-box' }}
                 />
               </div>
 
@@ -278,16 +380,16 @@ export default function SuperAdminAdminsPage() {
                 <button
                   type="button"
                   onClick={() => setIsInviteOpen(false)}
-                  style={{ padding: '0.6rem 1.25rem', borderRadius: 2, border: '1px solid #D8CBB6', background: 'transparent', cursor: 'pointer' }}
+                  style={{ padding: '0.65rem 1.15rem', borderRadius: 4, border: '1px solid var(--soft-gold-line)', background: '#FAF7F2', color: 'var(--ink-brown)', fontWeight: 600, fontSize: '0.86rem', cursor: 'pointer' }}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  style={{ padding: '0.6rem 1.25rem', borderRadius: 2, border: 'none', background: 'var(--maharani-maroon)', color: '#FFF', fontWeight: 700, cursor: 'pointer' }}
+                  style={{ padding: '0.65rem 1.35rem', borderRadius: 4, border: 'none', background: 'var(--maharani-maroon)', color: '#FFFFFF', fontWeight: 700, fontSize: '0.86rem', cursor: submitting ? 'not-allowed' : 'pointer' }}
                 >
-                  {submitting ? 'Inviting...' : 'Send Invitation'}
+                  {submitting ? 'Granting Access...' : 'Send Access Invitation'}
                 </button>
               </div>
             </form>
