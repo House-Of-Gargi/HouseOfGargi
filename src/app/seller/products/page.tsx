@@ -795,62 +795,6 @@ export default function SellerProductsPage() {
                         >
                           View More
                         </button>
-
-                        {/* Hide / Unhide Button */}
-                        <button
-                          type="button"
-                          onClick={() => handleToggleHide(product)}
-                          disabled={togglingHideId === product.id}
-                          title={product.isHidden ? 'Product is Hidden — click to Unhide' : 'Hide from customer storefront'}
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.35rem',
-                            padding: '0.38rem 0.65rem',
-                            borderRadius: 4,
-                            background: product.isHidden ? '#FFF3E0' : '#FFFFFF',
-                            border: product.isHidden ? '1px solid #D97706' : '1px solid var(--soft-gold-line)',
-                            color: product.isHidden ? '#D97706' : 'var(--ink-brown)',
-                            fontSize: '0.8rem',
-                            fontWeight: 700,
-                            cursor: 'pointer',
-                            transition: 'all 0.15s ease',
-                          }}
-                        >
-                          {togglingHideId === product.id ? (
-                            <Loader2 size={13} className="animate-spin" />
-                          ) : product.isHidden ? (
-                            <EyeOff size={13} />
-                          ) : (
-                            <Eye size={13} />
-                          )}
-                          <span>{product.isHidden ? 'Hidden' : 'Hide'}</span>
-                        </button>
-
-                        {/* Delete Icon Button */}
-                        <button
-                          type="button"
-                          onClick={() => setDeleteConfirmProduct(product)}
-                          title="Delete piece from existence"
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            padding: '0.38rem 0.6rem',
-                            borderRadius: 4,
-                            background: '#FFEBEE',
-                            border: '1px solid #FFCDD2',
-                            color: '#C62828',
-                            fontSize: '0.8rem',
-                            fontWeight: 700,
-                            cursor: 'pointer',
-                            transition: 'all 0.15s ease',
-                          }}
-                          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#FFCDD2')}
-                          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFEBEE')}
-                        >
-                          <Trash2 size={14} />
-                        </button>
                       </div>
                     </td>
                   </tr>

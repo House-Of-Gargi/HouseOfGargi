@@ -34,7 +34,8 @@
     "technique": "Kadwa Zari Handloom Weave",
     "occasion": "Royal Wedding & Celebration",
     "region": "Varanasi, Uttar Pradesh",
-    "updatedAt": "2026-10-14T21:51:05.009Z"
+    "updatedAt": "2026-10-15T19:06:17.074Z",
+    "isHidden": true
   },
   "0bb4b132-4a1e-409b-a9bb-94ab8b88b3b7": {
     "name": "Banarasi Gold Weave Saree",
@@ -46,7 +47,8 @@
     "technique": "Kadwa Zari Handloom Weave",
     "occasion": "Royal Wedding & Celebration",
     "region": "Varanasi, Uttar Pradesh",
-    "updatedAt": "2026-10-14T21:51:05.009Z"
+    "updatedAt": "2026-10-15T19:06:17.074Z",
+    "isHidden": true
   },
   "c88b8436-1613-441b-a3c6-92b1b0f64661": {
     "name": "Sanganeri Block Print Kurta Set",
@@ -130,7 +132,14 @@
     "isVisible": true,
     "name": "Artisan Couture Creation",
     "isHidden": false,
-    "updatedAt": "2026-10-15T18:57:18.806Z"
+    "updatedAt": "2026-10-15T19:05:26.501Z",
+    "description": "Authentic handcrafted heritage creation.",
+    "price": 1000,
+    "stock": 10,
+    "images": [
+      "/images/category-sarees.png"
+    ],
+    "isDeleted": true
   },
   "dummy-test-item-999": {
     "name": "Dummy Delete Test Saree",

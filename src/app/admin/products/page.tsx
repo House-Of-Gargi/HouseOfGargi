@@ -488,33 +488,33 @@ export default function ProductApprovalsPage() {
                   letterSpacing: '0.08em',
                 }}
               >
-                {/* 1. Small icon & Product No (ART-XXXXX) */}
-                <th style={{ padding: '1rem 1.25rem', width: '220px', borderTopLeftRadius: '11px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
-                  Product No. &amp; Icon
+                {/* 1. Small icon */}
+                <th style={{ padding: '0.85rem 1rem', width: '70px', borderTopLeftRadius: '11px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                  Piece
                 </th>
 
                 {/* 2. Product Name */}
-                <th style={{ padding: '1rem 1.25rem', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                <th style={{ padding: '0.85rem 1.25rem', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
                   Product Name
                 </th>
 
                 {/* 3. Artisan */}
-                <th style={{ padding: '1rem 1.25rem', width: '220px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                <th style={{ padding: '0.85rem 1.25rem', width: '200px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
                   Artisan
                 </th>
 
                 {/* 4. Inventory */}
-                <th style={{ padding: '1rem 1.25rem', width: '150px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                <th style={{ padding: '0.85rem 1.25rem', width: '130px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
                   Inventory
                 </th>
 
                 {/* 5. Total Sales */}
-                <th style={{ padding: '1rem 1.25rem', width: '140px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                <th style={{ padding: '0.85rem 1.25rem', width: '120px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
                   Total Sales
                 </th>
 
-                {/* 6. Actions (View More & Edit Product) */}
-                <th style={{ padding: '1rem 1.25rem', textAlign: 'right', width: '250px', borderTopRightRadius: '11px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
+                {/* 6. Actions (View More & Edit Product only) */}
+                <th style={{ padding: '0.85rem 1.25rem', textAlign: 'right', width: '220px', borderTopRightRadius: '11px', borderBottom: '1.5px solid var(--soft-gold-line)' }}>
                   Actions
                 </th>
               </tr>
@@ -529,93 +529,80 @@ export default function ProductApprovalsPage() {
                     style={{
                       borderBottom: '1px solid #F0E8DC',
                       transition: 'background-color 0.15s ease',
+                      height: '62px',
                     }}
                     onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#FAF7F2')}
                     onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFFFFF')}
                   >
-                    {/* 1. Image Icon & Product No. (ART-XXXXX) */}
-                    <td style={{ padding: '1rem 1.25rem', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-                        {/* Small Image Icon */}
-                        <div
-                          style={{
-                            width: '46px',
-                            height: '46px',
-                            borderRadius: '6px',
-                            overflow: 'hidden',
-                            border: '1px solid var(--soft-gold-line)',
-                            backgroundColor: '#F5EFE6',
-                            flexShrink: 0,
-                          }}
-                        >
-                          <img
-                            src={primaryImage}
-                            alt={p.name}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                          />
-                        </div>
-
-                        {/* In front of it: Product Number ART-XXXXX */}
-                        <span
-                          style={{
-                            fontFamily: 'monospace',
-                            fontWeight: 800,
-                            fontSize: '0.92rem',
-                            color: 'var(--maharani-maroon)',
-                            background: 'rgba(122, 35, 49, 0.08)',
-                            padding: '0.35rem 0.75rem',
-                            borderRadius: '6px',
-                            letterSpacing: '0.04em',
-                            display: 'inline-block',
-                          }}
-                        >
-                          {p.productNo}
-                        </span>
+                    {/* 1. Image Icon Only (Product No. hidden from row) */}
+                    <td style={{ padding: '0.65rem 1rem', width: '70px', verticalAlign: 'middle', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
+                      <div
+                        style={{
+                          width: '42px',
+                          height: '42px',
+                          borderRadius: '6px',
+                          overflow: 'hidden',
+                          border: '1px solid var(--soft-gold-line)',
+                          backgroundColor: '#F5EFE6',
+                          flexShrink: 0,
+                        }}
+                      >
+                        <img
+                          src={primaryImage}
+                          alt={p.name}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                        />
                       </div>
                     </td>
 
-                    {/* 2. Product Name & Category */}
-                    <td style={{ padding: '1rem 1.25rem', borderBottom: '1px solid #F0E8DC' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                        <span style={{ fontWeight: 800, color: 'var(--ink-brown)', fontSize: '1.02rem' }}>
+                    {/* 2. Product Name: Strictly Single Line (Category & Price viewable in View More) */}
+                    <td style={{ padding: '0.65rem 1.25rem', verticalAlign: 'middle', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', maxWidth: '380px' }}>
+                        <span
+                          title={p.name}
+                          style={{
+                            fontWeight: 800,
+                            color: 'var(--ink-brown)',
+                            fontSize: '0.96rem',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            display: 'inline-block',
+                          }}
+                        >
                           {p.name}
                         </span>
                         {p.isHidden && (
                           <span
                             style={{
-                              fontSize: '0.72rem',
+                              fontSize: '0.7rem',
                               fontWeight: 800,
                               textTransform: 'uppercase',
                               letterSpacing: '0.04em',
-                              padding: '2px 7px',
+                              padding: '2px 6px',
                               borderRadius: 4,
                               background: '#FFF3E0',
                               color: '#D97706',
                               border: '1px solid #FFE0B2',
+                              flexShrink: 0,
                             }}
                           >
                             Hidden
                           </span>
                         )}
                       </div>
-                      <div style={{ fontSize: '0.82rem', color: '#6A5A50', marginTop: '2px', textTransform: 'capitalize' }}>
-                        {p.category} &bull; ₹{p.price.toLocaleString('en-IN')}
-                      </div>
                     </td>
 
-                    {/* 3. Artisan Name & Code */}
-                    <td style={{ padding: '1rem 1.25rem', borderBottom: '1px solid #F0E8DC' }}>
-                      <div style={{ fontWeight: 700, color: 'var(--ink-brown)', fontSize: '0.94rem' }}>
+                    {/* 3. Artisan: Strictly Single Line (Artisan Code HG-XXXXX hidden, viewable in View More) */}
+                    <td style={{ padding: '0.65rem 1.25rem', verticalAlign: 'middle', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
+                      <span style={{ fontWeight: 700, color: 'var(--ink-brown)', fontSize: '0.94rem' }}>
                         {p.artisanName}
-                      </div>
-                      <div style={{ fontSize: '0.78rem', color: 'var(--maharani-maroon)', fontFamily: 'monospace', fontWeight: 700, marginTop: '2px' }}>
-                        {p.artisanNo}
-                      </div>
+                      </span>
                     </td>
 
-                    {/* 4. Inventory */}
-                    <td style={{ padding: '1rem 1.25rem', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
-                      <span style={{ fontWeight: 700, fontSize: '0.96rem', color: 'var(--ink-brown)' }}>
+                    {/* 4. Inventory: Strictly Single Line */}
+                    <td style={{ padding: '0.65rem 1.25rem', verticalAlign: 'middle', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
+                      <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--ink-brown)' }}>
                         {p.stock}{' '}
                         <span style={{ fontSize: '0.82rem', color: '#2E7D32', fontWeight: 600 }}>
                           in Stock
@@ -623,9 +610,9 @@ export default function ProductApprovalsPage() {
                       </span>
                     </td>
 
-                    {/* 5. Total Sales */}
-                    <td style={{ padding: '1rem 1.25rem', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
-                      <span style={{ fontWeight: 700, fontSize: '0.96rem', color: 'var(--ink-brown)' }}>
+                    {/* 5. Total Sales: Strictly Single Line */}
+                    <td style={{ padding: '0.65rem 1.25rem', verticalAlign: 'middle', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
+                      <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--ink-brown)' }}>
                         {p.totalSales}{' '}
                         <span style={{ fontSize: '0.82rem', color: '#6A5A50', fontWeight: 500 }}>
                           Sold
@@ -633,15 +620,15 @@ export default function ProductApprovalsPage() {
                       </span>
                     </td>
 
-                    {/* 6. Actions: View More, Edit Product, Hide & Delete */}
-                    <td style={{ padding: '1rem 1.25rem', textAlign: 'right', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
-                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+                    {/* 6. Actions: Only View More and Edit Product (Hide & Delete inside Edit modal only) */}
+                    <td style={{ padding: '0.65rem 1.25rem', textAlign: 'right', verticalAlign: 'middle', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'flex-end' }}>
                         {/* View More Button */}
                         <button
                           type="button"
                           onClick={() => handleOpenViewModal(p)}
                           style={{
-                            padding: '0.48rem 0.85rem',
+                            padding: '0.45rem 0.85rem',
                             backgroundColor: '#FFFFFF',
                             border: '1.5px solid var(--soft-gold-line)',
                             color: 'var(--ink-brown)',
@@ -666,7 +653,7 @@ export default function ProductApprovalsPage() {
                           type="button"
                           onClick={() => handleOpenEditModal(p)}
                           style={{
-                            padding: '0.48rem 0.95rem',
+                            padding: '0.45rem 0.95rem',
                             backgroundColor: 'var(--maharani-maroon)',
                             border: '1.5px solid var(--maharani-maroon)',
                             color: '#FFFFFF',
@@ -683,62 +670,6 @@ export default function ProductApprovalsPage() {
                         >
                           <Edit3 size={14} />
                           <span>Edit Product</span>
-                        </button>
-
-                        {/* Hide / Unhide Quick Action Button */}
-                        <button
-                          type="button"
-                          onClick={() => handleToggleHideProduct(p)}
-                          disabled={togglingHideId === p.id}
-                          title={p.isHidden ? 'Product is Hidden — click to Unhide' : 'Hide from customer storefront'}
-                          style={{
-                            padding: '0.48rem 0.75rem',
-                            backgroundColor: p.isHidden ? '#FFF3E0' : '#FFFFFF',
-                            border: p.isHidden ? '1.5px solid #D97706' : '1.5px solid var(--soft-gold-line)',
-                            color: p.isHidden ? '#D97706' : 'var(--ink-brown)',
-                            borderRadius: '5px',
-                            fontWeight: 700,
-                            fontSize: '0.82rem',
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.35rem',
-                            transition: 'all 0.15s ease',
-                          }}
-                        >
-                          {togglingHideId === p.id ? (
-                            <Loader2 size={13} className="animate-spin" />
-                          ) : p.isHidden ? (
-                            <EyeOff size={13} />
-                          ) : (
-                            <Eye size={13} />
-                          )}
-                          <span>{p.isHidden ? 'Hidden' : 'Hide'}</span>
-                        </button>
-
-                        {/* Delete Icon Button */}
-                        <button
-                          type="button"
-                          onClick={() => setDeleteConfirmProduct(p)}
-                          title="Delete product from existence"
-                          style={{
-                            padding: '0.48rem 0.65rem',
-                            backgroundColor: '#FFEBEE',
-                            border: '1.5px solid #FFCDD2',
-                            color: '#C62828',
-                            borderRadius: '5px',
-                            fontWeight: 700,
-                            fontSize: '0.82rem',
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            transition: 'all 0.15s ease',
-                          }}
-                          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#FFCDD2')}
-                          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFEBEE')}
-                        >
-                          <Trash2 size={14} />
                         </button>
                       </div>
                     </td>
@@ -949,10 +880,10 @@ export default function ProductApprovalsPage() {
 
                 <div>
                   <div style={{ fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#8C7B70', fontWeight: 800 }}>
-                    Art Type &amp; Technique
+                    Craft &amp; Collection
                   </div>
-                  <div style={{ fontWeight: 800, color: 'var(--ink-brown)', fontSize: '1.05rem', marginTop: '2px' }}>
-                    {viewingProduct.artType}
+                  <div style={{ fontWeight: 800, color: 'var(--ink-brown)', fontSize: '1.05rem', marginTop: '2px', textTransform: 'capitalize' }}>
+                    {viewingProduct.artType} &bull; {viewingProduct.category}
                   </div>
                   <div style={{ fontSize: '0.8rem', color: '#6A5A50' }}>
                     Fabric: {viewingProduct.fabric || 'Pure Silk'}
