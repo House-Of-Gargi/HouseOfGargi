@@ -1872,6 +1872,8 @@ export default function SellerProductsPage() {
             </div>
           </div>
         </div>
+      )}
+
       {/* ════════════ PERMANENT DELETE CONFIRMATION MODAL ════════════ */}
       {deleteConfirmProduct && (
         <div
