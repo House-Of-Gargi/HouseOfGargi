@@ -397,18 +397,32 @@ export async function PATCH(req: Request) {
 
     saveProductOverrides(productOverrides);
 
-    // Also update Supabase in background
+    // Authoritative update to Supabase database
     try {
-      const updatePayload: any = {};
+      const updatePayload: any = { updated_at: new Date().toISOString() };
       if (name !== undefined) updatePayload.name = name;
-      if (price !== undefined) updatePayload.price_in_rupees = Number(price);
+      if (price !== undefined) {
+        updatePayload.price_in_rupees = Number(price);
+        updatePayload.price = Number(price);
+      }
       if (stock !== undefined) updatePayload.stock = Number(stock);
+      if (isHidden !== undefined) updatePayload.is_hidden = Boolean(isHidden);
+      if (isDeleted !== undefined && isDeleted) {
+        updatePayload.deleted_at = new Date().toISOString();
+        updatePayload.is_hidden = true;
+      }
       if (curationStatus !== undefined) updatePayload.curation_status = curationStatus;
       if (category !== undefined) updatePayload.category = category;
-      if (finalTech !== undefined) updatePayload.craft_technique = finalTech;
-      if (images && images.length > 0) updatePayload.image_url = images[0];
+      if (finalTech !== undefined) {
+        updatePayload.craft_technique = finalTech;
+        updatePayload.technique = finalTech;
+      }
+      if (images && Array.isArray(images) && images.length > 0) {
+        updatePayload.images = images;
+        updatePayload.image_url = images[0];
+      }
 
-      await supabase.from('products').update(updatePayload).eq('id', id);
+      await supabase.from('products').update(updatePayload).or(`id.eq.${id},slug.eq.${id}`);
     } catch (sbErr) {
       console.warn('Supabase product update error:', sbErr);
     }
@@ -479,16 +493,21 @@ export async function DELETE(req: Request) {
     }
     saveProductOverrides(productOverrides);
 
-    // Also delete from Supabase in background
+    // Authoritative soft-delete in Supabase database
     try {
+      const softDeletePayload = {
+        deleted_at: new Date().toISOString(),
+        is_hidden: true,
+        updated_at: new Date().toISOString(),
+      };
       if (id) {
-        await supabase.from('products').delete().eq('id', id);
+        await supabase.from('products').update(softDeletePayload).or(`id.eq.${id},slug.eq.${id}`);
       }
       if (name) {
-        await supabase.from('products').delete().ilike('name', name);
+        await supabase.from('products').update(softDeletePayload).ilike('name', name);
       }
     } catch (sbErr) {
-      console.warn('Supabase product delete attempt:', sbErr);
+      console.warn('Supabase product soft-delete attempt:', sbErr);
     }
 
     return NextResponse.json({
