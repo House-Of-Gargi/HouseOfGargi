@@ -52,7 +52,7 @@ export function SuperAdminShell({
             style={{
               width: 38,
               height: 38,
-              borderRadius: 4,
+              borderRadius: 2,
               border: '1px solid var(--soft-gold-line)',
               background: '#FFFFFF',
               display: 'flex',
@@ -69,43 +69,28 @@ export function SuperAdminShell({
           <Link
             href="/super-admin/dashboard"
             style={{
-              fontWeight: 700,
-              fontSize: '1rem',
-              color: 'var(--ink-brown)',
-              textDecoration: 'none',
               display: 'flex',
               alignItems: 'center',
-              gap: '0.6rem',
+              textDecoration: 'none',
             }}
           >
-            <div
+            <img
+              src="/logo-images/new-logo.png"
+              alt="House of Gargi"
               style={{
-                width: 30,
-                height: 30,
-                borderRadius: 4,
-                background: '#FFFFFF',
-                border: '1.5px solid var(--soft-gold-line)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
+                height: 28,
+                width: 'auto',
+                maxWidth: '180px',
+                objectFit: 'contain',
+                display: 'block',
               }}
-            >
-              <img
-                src="/logo-images/small-logo.png"
-                alt="House of Gargi"
-                style={{ width: 20, height: 20, objectFit: 'contain' }}
-              />
-            </div>
-            <span style={{ fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}>
-              Super Admin Console
-            </span>
+            />
           </Link>
 
           <div style={{ width: 38 }} />
         </header>
 
-        <div className="seller-container" style={{ padding: '2rem 2.5rem' }}>
+        <div className="seller-container">
           {children}
         </div>
       </main>

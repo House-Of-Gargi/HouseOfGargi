@@ -124,5 +124,9 @@
       "/images/category-lehengas.png"
     ],
     "curationStatus": "approved"
+  },
+  "banarasi-katan-silk-kadwa-saree": {
+    "isFeatured": true,
+    "isVisible": true
   }
 }
