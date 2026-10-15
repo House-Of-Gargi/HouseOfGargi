@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import CustomerLoginModal from './CustomerLoginModal';
-import { SearchIcon, MicIcon, UserIcon, WishlistIcon, CartIcon, MenuIcon, CloseIcon } from './Icons';
+import { SearchIcon, MicIcon, UserIcon, WishlistIcon, CartIcon, MenuIcon, CloseIcon, ChevronRightIcon } from './Icons';
 import SearchDropdown, { saveSearchHistory } from './SearchDropdown';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
@@ -22,12 +22,49 @@ export default function Navbar() {
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const mobileSearchContainerRef = useRef<HTMLDivElement>(null);
+  const subRowRef = useRef<HTMLDivElement>(null);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isAtEnd, setIsAtEnd] = useState(false);
 
   const pathname = usePathname();
   const router = useRouter();
   const { itemCount } = useCart();
   const { wishlistCount } = useWishlist();
   const { isLoggedIn, openLoginModal } = useCustomerAuth();
+
+  const checkSubRowScroll = () => {
+    if (subRowRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = subRowRef.current;
+      const atEnd = scrollLeft + clientWidth >= scrollWidth - 15;
+      setIsAtEnd(atEnd);
+      setCanScrollRight(scrollWidth > clientWidth);
+    }
+  };
+
+  useEffect(() => {
+    const el = subRowRef.current;
+    if (!el) return;
+    checkSubRowScroll();
+    el.addEventListener('scroll', checkSubRowScroll, { passive: true });
+    window.addEventListener('resize', checkSubRowScroll, { passive: true });
+    return () => {
+      el.removeEventListener('scroll', checkSubRowScroll);
+      window.removeEventListener('resize', checkSubRowScroll);
+    };
+  }, [pathname]);
+
+  const handleSubRowArrowClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (subRowRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = subRowRef.current;
+      if (scrollLeft + clientWidth >= scrollWidth - 15) {
+        subRowRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        subRowRef.current.scrollBy({ left: 140, behavior: 'smooth' });
+      }
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -388,16 +425,30 @@ export default function Navbar() {
 
           {/* Second Line: Sub-bar with Categories (Hidden on product description page) */}
           {!isProductPage && (
-            <div className="navbar__sub-row">
-            <div className="navbar__links">
-              <Link href="/explore" className={pathname === '/explore' ? 'is-active' : ''}>Explore All</Link>
-              <Link href="/category/sarees" className={pathname === '/category/sarees' ? 'is-active' : ''}>Sarees</Link>
-              <Link href="/category/lehengas" className={pathname === '/category/lehengas' ? 'is-active' : ''}>Lehengas</Link>
-              <Link href="/category/kurta-sets" className={pathname === '/category/kurta-sets' ? 'is-active' : ''}>Kurta Sets</Link>
-              <Link href="/category/accessories" className={pathname === '/category/accessories' ? 'is-active' : ''}>Accessories</Link>
-              <Link href="/bespoke" className={pathname === '/bespoke' ? 'is-active' : ''}>Bespoke</Link>
+            <div className="navbar__sub-row-wrapper">
+              <div className="navbar__sub-row" ref={subRowRef}>
+                <div className="navbar__links">
+                  <Link href="/explore" className={pathname === '/explore' ? 'is-active' : ''}>Explore All</Link>
+                  <Link href="/category/sarees" className={pathname === '/category/sarees' ? 'is-active' : ''}>Sarees</Link>
+                  <Link href="/category/lehengas" className={pathname === '/category/lehengas' ? 'is-active' : ''}>Lehengas</Link>
+                  <Link href="/category/kurta-sets" className={pathname === '/category/kurta-sets' ? 'is-active' : ''}>Kurta Sets</Link>
+                  <Link href="/category/accessories" className={pathname === '/category/accessories' ? 'is-active' : ''}>Accessories</Link>
+                  <Link href="/bespoke" className={pathname === '/bespoke' ? 'is-active' : ''}>Bespoke</Link>
+                </div>
+              </div>
+              {/* Mobile Right Arrow Indicator & Click-to-scroll */}
+              {canScrollRight && (
+                <button
+                  type="button"
+                  className={`navbar__sub-row-arrow ${isAtEnd ? 'is-flipped' : ''}`}
+                  onClick={handleSubRowArrowClick}
+                  aria-label={isAtEnd ? "Scroll back to first categories" : "Show next categories"}
+                  title={isAtEnd ? "Scroll back to beginning" : "Show next categories"}
+                >
+                  <ChevronRightIcon size={16} strokeWidth={2.6} />
+                </button>
+              )}
             </div>
-          </div>
           )}
         </div>
       </nav>
