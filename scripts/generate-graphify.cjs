@@ -37,9 +37,15 @@ const files = getAllFiles(rootDir);
 // 2. Classify nodes and communities
 function getCommunity(relPath) {
   if (relPath.startsWith('src/app/(storefront)')) return 'Storefront Pages';
-  if (relPath.startsWith('src/app/seller')) return 'Seller Portal';
+  if (relPath.startsWith('src/app/super-admin')) return 'Super Admin Portal';
+  if (relPath.startsWith('src/app/admin')) return 'Admin Operations Portal';
+  if (relPath.startsWith('src/app/seller')) return 'Artisan / Seller Portal';
+  if (relPath.startsWith('src/app/api/super-admin')) return 'Super Admin APIs';
+  if (relPath.startsWith('src/app/api/admin')) return 'Admin APIs';
   if (relPath.startsWith('src/app/api')) return 'API Handlers';
   if (relPath.startsWith('src/context')) return 'State & Context Providers';
+  if (relPath.startsWith('src/components/super-admin')) return 'Super Admin Components';
+  if (relPath.startsWith('src/components/admin')) return 'Admin Components';
   if (relPath.startsWith('src/components/seller')) return 'Seller Components';
   if (relPath.startsWith('src/components')) return 'Storefront UI Components';
   if (relPath.startsWith('src/data')) return 'Data Models & Catalog';
@@ -82,16 +88,24 @@ for (const file of files) {
 
   // Generate a concise description
   let description = `Module ${file.name} in ${community}`;
-  if (file.relPath.includes('page.tsx')) description = `Storefront page route for ${path.dirname(file.relPath).split('/').pop()}`;
-  if (file.relPath.includes('CustomerAuthContext')) description = 'Strict Email OTP customer authentication and multi-tab session state';
-  if (file.relPath.includes('realtimeSync')) description = 'Cross-tab WebSocket and BroadcastChannel synchronization mesh';
-  if (file.relPath.includes('HeroBanner')) description = 'Interactive 3-concept hero carousel with responsive WebP picture sources';
-  if (file.relPath.includes('WishlistContext')) description = 'Email-keyed wishlist state with real-time cross-tab sync';
-  if (file.relPath.includes('CartContext')) description = 'Email-keyed shopping bag with real-time cross-tab sync';
-  if (file.relPath.includes('artisans.ts')) description = '10 generational master artisan guild records and provenance helpers';
-  if (file.relPath.includes('products.ts')) description = '18 catalog luxury products with price, images, and artisan mappings';
-  if (file.relPath.includes('resend.ts')) description = 'Resend email client integration for noreply@gargisaha.com';
-  if (file.relPath.includes('supabaseClient.ts')) description = 'Supabase client instance for database and auth';
+  if (file.relPath.includes('super-admin/admins/page.tsx')) description = 'Super Admin team privilege and admin invitation control center';
+  else if (file.relPath.includes('super-admin/bestsellers/page.tsx')) description = 'Sales velocity tracking, revenue leaders, and best seller rankings';
+  else if (file.relPath.includes('super-admin/catalog/page.tsx')) description = 'Master catalog display governance and storefront product overrides';
+  else if (file.relPath.includes('super-admin/categories/page.tsx')) description = 'Taxonomy, collection management, and storefront banner curation';
+  else if (file.relPath.includes('super-admin/dashboard/page.tsx')) description = 'Executive Overview command dashboard with live revenue and order stats';
+  else if (file.relPath.includes('super-admin/revenue/page.tsx')) description = 'Financial ledger, GMV metrics, take-rate, and profit margins';
+  else if (file.relPath.includes('SuperAdminShell.tsx')) description = 'Executive layout shell with zero-header permanent luxury side nav rail';
+  else if (file.relPath.includes('SuperAdminSidebar.tsx')) description = 'Hover-collapsible 72px to 264px floating luxury side navigation rail';
+  else if (file.relPath.includes('page.tsx')) description = `Route page for ${path.dirname(file.relPath).split('/').pop()}`;
+  else if (file.relPath.includes('CustomerAuthContext')) description = 'Strict Email OTP customer authentication and multi-tab session state';
+  else if (file.relPath.includes('realtimeSync')) description = 'Cross-tab WebSocket and BroadcastChannel synchronization mesh';
+  else if (file.relPath.includes('HeroBanner')) description = 'Interactive 3-concept hero carousel with responsive WebP picture sources';
+  else if (file.relPath.includes('WishlistContext')) description = 'Email-keyed wishlist state with real-time cross-tab sync';
+  else if (file.relPath.includes('CartContext')) description = 'Email-keyed shopping bag with real-time cross-tab sync';
+  else if (file.relPath.includes('artisans.ts')) description = '10 generational master artisan guild records and provenance helpers';
+  else if (file.relPath.includes('products.ts')) description = '18 catalog luxury products with price, images, and artisan mappings';
+  else if (file.relPath.includes('resend.ts')) description = 'Resend email client integration for noreply@gargisaha.com';
+  else if (file.relPath.includes('supabaseClient.ts')) description = 'Supabase client instance for database and auth';
 
   const node = {
     id: file.relPath,
@@ -270,15 +284,21 @@ fs.writeFileSync(path.join(outDir, 'GRAPH_REPORT.md'), reportContent, 'utf8');
 // 6. Output interactive graph.html
 const communityColors = {
   'Storefront Pages': '#7D1A27',
+  'Super Admin Portal': '#991B1B',
+  'Super Admin Components': '#DC2626',
+  'Super Admin APIs': '#B91C1C',
+  'Admin Operations Portal': '#0F766E',
+  'Admin Components': '#0D9488',
+  'Admin APIs': '#14B8A6',
+  'Artisan / Seller Portal': '#581C87',
+  'Seller Components': '#7C2D12',
   'State & Context Providers': '#C9A227',
   'Storefront UI Components': '#2E5A44',
   'Data Models & Catalog': '#85581A',
   'Infrastructure & Realtime Mesh': '#1E3A8A',
-  'Seller Portal': '#581C87',
-  'Seller Components': '#7C2D12',
-  'API Handlers': '#0D9488',
+  'API Handlers': '#0284C7',
   'Type Definitions': '#475569',
-  'Design System & Styles': '#B91C1C',
+  'Design System & Styles': '#E11D48',
   'Configuration & Manifests': '#4B5563',
   'Automation Scripts': '#65A30D',
   'Database Migrations': '#9333EA',
