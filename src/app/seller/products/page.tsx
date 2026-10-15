@@ -22,11 +22,12 @@ import {
 } from 'lucide-react';
 import CustomDropdown from '@/components/CustomDropdown';
 
-const CATEGORY_OPTIONS = [
+const DEFAULT_CATEGORY_OPTIONS = [
   { value: 'sarees', label: 'Sarees' },
   { value: 'lehengas', label: 'Lehengas' },
   { value: 'kurta-sets', label: 'Kurta Sets' },
   { value: 'accessories', label: 'Accessories' },
+  { value: 'bespoke', label: 'Bespoke' },
 ];
 
 function formatCategoryName(cat: string): string {
@@ -35,6 +36,7 @@ function formatCategoryName(cat: string): string {
   if (c === 'lehengas') return 'Lehengas';
   if (c === 'kurta-sets') return 'Kurta Sets';
   if (c === 'accessories') return 'Accessories';
+  if (c === 'bespoke') return 'Bespoke';
   return cat ? cat.charAt(0).toUpperCase() + cat.slice(1) : 'Sarees';
 }
 
@@ -44,6 +46,38 @@ export default function SellerProductsPage() {
   const [refreshing, setRefreshing] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [categoriesList, setCategoriesList] = useState<{ id: string; name: string; slug: string }[]>([
+    { id: 'sarees', name: 'Sarees', slug: 'sarees' },
+    { id: 'lehengas', name: 'Lehengas', slug: 'lehengas' },
+    { id: 'kurta-sets', name: 'Kurta Sets', slug: 'kurta-sets' },
+    { id: 'accessories', name: 'Accessories', slug: 'accessories' },
+    { id: 'bespoke', name: 'Bespoke', slug: 'bespoke' },
+  ]);
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const res = await fetch('/api/categories');
+        const data = await res.json();
+        if (data.success && Array.isArray(data.categories) && data.categories.length > 0) {
+          setCategoriesList(
+            data.categories
+              .filter((c: any) => c.isActive !== false)
+              .map((c: any) => ({
+                id: c.slug || c.id,
+                name: c.name,
+                slug: c.slug || c.id,
+              }))
+          );
+        }
+      } catch {}
+    }
+    loadCategories();
+  }, []);
+
+  const categoryOptions = useMemo(() => {
+    return categoriesList.map((c) => ({ value: c.slug || c.id, label: c.name }));
+  }, [categoriesList]);
 
   // Modals
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -486,10 +520,7 @@ export default function SellerProductsPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
           {[
             { id: 'all', label: 'All Collections' },
-            { id: 'sarees', label: 'Sarees' },
-            { id: 'lehengas', label: 'Lehengas' },
-            { id: 'kurta-sets', label: 'Kurta Sets' },
-            { id: 'accessories', label: 'Accessories' },
+            ...categoriesList.map((c) => ({ id: c.slug, label: c.name })),
           ].map(f => (
             <button
               key={f.id}
@@ -801,7 +832,7 @@ export default function SellerProductsPage() {
                     </label>
                     <CustomDropdown
                       value={editForm.category}
-                      options={CATEGORY_OPTIONS}
+                      options={categoryOptions}
                       onChange={(val) => setEditForm({ ...editForm, category: val })}
                     />
                   </div>
@@ -1081,7 +1112,7 @@ export default function SellerProductsPage() {
                   </label>
                   <CustomDropdown
                     value={newProduct.category}
-                    options={CATEGORY_OPTIONS}
+                    options={categoryOptions}
                     onChange={(val) => setNewProduct({ ...newProduct, category: val })}
                   />
                 </div>

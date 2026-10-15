@@ -39,24 +39,24 @@ export interface SuperAdminNavGroup {
 
 const superAdminNavGroups: SuperAdminNavGroup[] = [
   {
-    section: 'Executive Governance',
+    section: 'Sales & Revenue',
     items: [
-      { label: 'Executive Overview', href: '/super-admin/dashboard', icon: Landmark },
-      { label: 'Revenue & Ledger', href: '/super-admin/revenue', icon: DollarSign },
-      { label: 'Hot & Best Sellers', href: '/super-admin/bestsellers', icon: Flame },
+      { label: 'Overview', href: '/super-admin/dashboard', icon: Landmark },
+      { label: 'Revenue & Sales', href: '/super-admin/revenue', icon: DollarSign },
+      { label: 'Best Sellers', href: '/super-admin/bestsellers', icon: Flame },
     ],
   },
   {
-    section: 'Team & Privileges',
+    section: 'Team Access',
     items: [
       { label: 'Admin Management', href: '/super-admin/admins', icon: ShieldCheck },
     ],
   },
   {
-    section: 'Storefront Architecture',
+    section: 'Catalog & Store',
     items: [
-      { label: 'Categories & Taxonomies', href: '/super-admin/categories', icon: FolderTree },
-      { label: 'Master Catalog Display', href: '/super-admin/catalog', icon: Grid },
+      { label: 'Product Categories', href: '/super-admin/categories', icon: FolderTree },
+      { label: 'Master Catalog', href: '/super-admin/catalog', icon: Grid },
     ],
   },
   {
