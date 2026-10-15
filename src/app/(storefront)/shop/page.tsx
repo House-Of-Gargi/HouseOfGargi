@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import ProductCard from '@/components/ProductCard';
 import CustomDropdown from '@/components/CustomDropdown';
 import { products, categories } from '@/data/products';
+import { Product } from '@/types';
 import { 
   X, 
   SlidersHorizontal, 
@@ -18,11 +19,27 @@ export default function ShopPage() {
   const [selectedPriceTier, setSelectedPriceTier] = useState<string>('all');
   const [sort, setSort] = useState<string>('');
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [liveProducts, setLiveProducts] = useState<Product[] | null>(null);
+
+  useEffect(() => {
+    fetch('/api/products', { cache: 'no-store' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.products)) {
+          setLiveProducts(data.products);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const activeProducts = useMemo(() => {
+    return liveProducts || products;
+  }, [liveProducts]);
 
   // Derived options
   const allFabrics = useMemo(() => {
-    return Array.from(new Set(products.map(p => p.fabric))).filter(Boolean);
-  }, []);
+    return Array.from(new Set(activeProducts.map(p => p.fabric))).filter(Boolean);
+  }, [activeProducts]);
 
   const fabricOptions = useMemo(() => {
     return allFabrics.map(f => ({ value: f, label: f }));
@@ -45,7 +62,7 @@ export default function ShopPage() {
   ], []);
 
   const filteredItems = useMemo(() => {
-    let result = [...products];
+    let result = [...activeProducts];
 
     if (selectedCategory !== 'all') {
       result = result.filter(p => p.category === selectedCategory);

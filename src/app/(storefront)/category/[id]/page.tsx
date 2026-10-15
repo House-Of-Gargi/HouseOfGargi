@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, use, useMemo } from 'react';
+import { useState, use, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import ProductCard from '@/components/ProductCard';
 import CustomDropdown from '@/components/CustomDropdown';
 import { getCategory, getProductsByCategory, categories } from '@/data/products';
+import { Product } from '@/types';
 import { 
   X, 
   SlidersHorizontal, 
@@ -27,11 +28,24 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
   const [priceTier, setPriceTier] = useState<string>('all');
   const [sort, setSort] = useState<string>('');
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [liveItems, setLiveItems] = useState<Product[] | null>(null);
 
-  // Raw items for this category
-  const baseItems = useMemo(() => {
-    return getProductsByCategory(id);
+  useEffect(() => {
+    fetch(`/api/products?category=${encodeURIComponent(id)}`, { cache: 'no-store' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.products)) {
+          setLiveItems(data.products);
+        }
+      })
+      .catch(() => {});
   }, [id]);
+
+  // Raw items for this category (live items prioritized, fallback to filtered static catalog)
+  const baseItems = useMemo(() => {
+    if (liveItems) return liveItems;
+    return getProductsByCategory(id);
+  }, [id, liveItems]);
 
   // Derived fabrics
   const allFabrics = useMemo(() => {

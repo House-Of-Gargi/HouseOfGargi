@@ -13,6 +13,8 @@ import ProductCard from '@/components/ProductCard';
 import CustomDropdown from '@/components/CustomDropdown';
 import { TOP_3_SEARCH_TERMS, saveSearchHistory } from '@/components/SearchDropdown';
 
+import { Product } from '@/types';
+
 export default function ExploreContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -34,6 +36,22 @@ export default function ExploreContent() {
 
   // UI state
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [liveProducts, setLiveProducts] = useState<Product[] | null>(null);
+
+  useEffect(() => {
+    fetch('/api/products', { cache: 'no-store' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.products)) {
+          setLiveProducts(data.products);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const activeProducts = useMemo(() => {
+    return liveProducts || products;
+  }, [liveProducts]);
 
   // Sync state if URL search params change
   useEffect(() => {
@@ -46,8 +64,8 @@ export default function ExploreContent() {
 
   // Derived filter options from catalog
   const allFabrics = useMemo(() => {
-    return Array.from(new Set(products.map(p => p.fabric))).filter(Boolean);
-  }, []);
+    return Array.from(new Set(activeProducts.map(p => p.fabric))).filter(Boolean);
+  }, [activeProducts]);
 
   const fabricOptions = useMemo(() => {
     return allFabrics.map(f => ({ value: f, label: f }));
@@ -67,7 +85,7 @@ export default function ExploreContent() {
 
   // Filter & sort logic with smart synonyms
   const filteredProducts = useMemo(() => {
-    let result = [...products];
+    let result = [...activeProducts];
 
     // Search query filter with smart synonyms
     const q = searchTerm.trim().toLowerCase();
