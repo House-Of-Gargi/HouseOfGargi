@@ -233,7 +233,7 @@ export default function NewProductCreationPage() {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
           <Link
-            href="/seller/products"
+            href="/artisan/products"
             style={{
               background: 'var(--pure-white)',
               border: '1.5px solid var(--soft-gold-line)',
@@ -295,7 +295,7 @@ export default function NewProductCreationPage() {
 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
             <Link
-              href="/seller/products"
+              href="/artisan/products"
               style={{ 
                 padding: '0.75rem 1.6rem', 
                 borderRadius: 4, 
@@ -969,7 +969,7 @@ export default function NewProductCreationPage() {
           {/* ── Form Actions ── */}
           <div style={{ borderTop: '1px solid var(--soft-gold-line)', paddingTop: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '1rem', flexWrap: 'wrap' }}>
             <Link
-              href="/seller/products"
+              href="/artisan/products"
               style={{
                 padding: '0.8rem 1.4rem',
                 borderRadius: 4,
