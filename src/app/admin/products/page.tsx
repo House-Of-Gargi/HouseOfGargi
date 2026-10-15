@@ -21,6 +21,8 @@ import {
   Image as ImageIcon,
   ChevronRight,
   ShoppingBag,
+  Trash2,
+  EyeOff,
 } from 'lucide-react';
 import { AdminPageLoadingBlock } from '@/components/admin/AdminLoadingSpinner';
 
@@ -41,6 +43,7 @@ interface ProductItem {
   occasion?: string;
   curationStatus: 'approved' | 'pending' | 'rejected';
   createdAt?: string;
+  isHidden?: boolean;
 }
 
 export default function ProductApprovalsPage() {
@@ -72,6 +75,69 @@ export default function ProductApprovalsPage() {
   const [savingEdit, setSavingEdit] = useState(false);
   const [editSuccessMsg, setEditSuccessMsg] = useState('');
   const [customerPreviewIndex, setCustomerPreviewIndex] = useState(0);
+
+  // Delete & Hide states
+  const [deleteConfirmProduct, setDeleteConfirmProduct] = useState<ProductItem | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [togglingHideId, setTogglingHideId] = useState<string | null>(null);
+
+  const handleToggleHideProduct = async (product: ProductItem) => {
+    const newHidden = !product.isHidden;
+    setTogglingHideId(product.id);
+    // Optimistic update
+    setProducts((prev) =>
+      prev.map((p) => (p.id === product.id ? { ...p, isHidden: newHidden } : p))
+    );
+    if (editingProduct && editingProduct.id === product.id) {
+      setEditingProduct({ ...editingProduct, isHidden: newHidden });
+    }
+
+    try {
+      await fetch('/api/admin/products', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: product.id, name: product.name, isHidden: newHidden }),
+      });
+    } catch (err) {
+      console.error('Error toggling hide status:', err);
+      fetchProducts();
+    } finally {
+      setTogglingHideId(null);
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!deleteConfirmProduct) return;
+    const target = deleteConfirmProduct;
+    setIsDeleting(true);
+
+    try {
+      const res = await fetch(
+        `/api/admin/products?id=${encodeURIComponent(target.id)}&name=${encodeURIComponent(target.name)}`,
+        {
+          method: 'DELETE',
+        }
+      );
+      const data = await res.json();
+      if (data.success) {
+        setProducts((prev) => prev.filter((p) => p.id !== target.id));
+        if (editingProduct && editingProduct.id === target.id) {
+          setEditingProduct(null);
+        }
+        if (viewingProduct && viewingProduct.id === target.id) {
+          setViewingProduct(null);
+        }
+        setDeleteConfirmProduct(null);
+      } else {
+        alert('Failed to delete creation: ' + (data.message || 'Server error'));
+      }
+    } catch (err: any) {
+      console.error('Error deleting product:', err);
+      alert('Error deleting creation: ' + (err.message || 'Network error'));
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const fetchProducts = async () => {
     try {
@@ -510,8 +576,27 @@ export default function ProductApprovalsPage() {
 
                     {/* 2. Product Name & Category */}
                     <td style={{ padding: '1rem 1.25rem', borderBottom: '1px solid #F0E8DC' }}>
-                      <div style={{ fontWeight: 800, color: 'var(--ink-brown)', fontSize: '1.02rem' }}>
-                        {p.name}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                        <span style={{ fontWeight: 800, color: 'var(--ink-brown)', fontSize: '1.02rem' }}>
+                          {p.name}
+                        </span>
+                        {p.isHidden && (
+                          <span
+                            style={{
+                              fontSize: '0.72rem',
+                              fontWeight: 800,
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.04em',
+                              padding: '2px 7px',
+                              borderRadius: 4,
+                              background: '#FFF3E0',
+                              color: '#D97706',
+                              border: '1px solid #FFE0B2',
+                            }}
+                          >
+                            Hidden
+                          </span>
+                        )}
                       </div>
                       <div style={{ fontSize: '0.82rem', color: '#6A5A50', marginTop: '2px', textTransform: 'capitalize' }}>
                         {p.category} &bull; ₹{p.price.toLocaleString('en-IN')}
@@ -548,15 +633,15 @@ export default function ProductApprovalsPage() {
                       </span>
                     </td>
 
-                    {/* 6. Actions: View More & Edit Product */}
+                    {/* 6. Actions: View More, Edit Product, Hide & Delete */}
                     <td style={{ padding: '1rem 1.25rem', textAlign: 'right', whiteSpace: 'nowrap', borderBottom: '1px solid #F0E8DC' }}>
-                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.55rem' }}>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
                         {/* View More Button */}
                         <button
                           type="button"
                           onClick={() => handleOpenViewModal(p)}
                           style={{
-                            padding: '0.48rem 0.88rem',
+                            padding: '0.48rem 0.85rem',
                             backgroundColor: '#FFFFFF',
                             border: '1.5px solid var(--soft-gold-line)',
                             color: 'var(--ink-brown)',
@@ -598,6 +683,62 @@ export default function ProductApprovalsPage() {
                         >
                           <Edit3 size={14} />
                           <span>Edit Product</span>
+                        </button>
+
+                        {/* Hide / Unhide Quick Action Button */}
+                        <button
+                          type="button"
+                          onClick={() => handleToggleHideProduct(p)}
+                          disabled={togglingHideId === p.id}
+                          title={p.isHidden ? 'Product is Hidden — click to Unhide' : 'Hide from customer storefront'}
+                          style={{
+                            padding: '0.48rem 0.75rem',
+                            backgroundColor: p.isHidden ? '#FFF3E0' : '#FFFFFF',
+                            border: p.isHidden ? '1.5px solid #D97706' : '1.5px solid var(--soft-gold-line)',
+                            color: p.isHidden ? '#D97706' : 'var(--ink-brown)',
+                            borderRadius: '5px',
+                            fontWeight: 700,
+                            fontSize: '0.82rem',
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.35rem',
+                            transition: 'all 0.15s ease',
+                          }}
+                        >
+                          {togglingHideId === p.id ? (
+                            <Loader2 size={13} className="animate-spin" />
+                          ) : p.isHidden ? (
+                            <EyeOff size={13} />
+                          ) : (
+                            <Eye size={13} />
+                          )}
+                          <span>{p.isHidden ? 'Hidden' : 'Hide'}</span>
+                        </button>
+
+                        {/* Delete Icon Button */}
+                        <button
+                          type="button"
+                          onClick={() => setDeleteConfirmProduct(p)}
+                          title="Delete product from existence"
+                          style={{
+                            padding: '0.48rem 0.65rem',
+                            backgroundColor: '#FFEBEE',
+                            border: '1.5px solid #FFCDD2',
+                            color: '#C62828',
+                            borderRadius: '5px',
+                            fontWeight: 700,
+                            fontSize: '0.82rem',
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transition: 'all 0.15s ease',
+                          }}
+                          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#FFCDD2')}
+                          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFEBEE')}
+                        >
+                          <Trash2 size={14} />
                         </button>
                       </div>
                     </td>
@@ -1314,47 +1455,213 @@ export default function ProductApprovalsPage() {
                     </div>
                   )}
 
-                  {/* Save Button */}
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--soft-gold-line)' }}>
-                    <button
-                      type="button"
-                      onClick={() => setEditingProduct(null)}
-                      style={{
-                        padding: '0.6rem 1.15rem',
-                        background: '#FAF7F2',
-                        border: '1px solid var(--soft-gold-line)',
-                        borderRadius: '4px',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                      }}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={savingEdit}
-                      style={{
-                        padding: '0.6rem 1.5rem',
-                        backgroundColor: 'var(--maharani-maroon)',
-                        color: '#FFFFFF',
-                        border: 'none',
-                        borderRadius: '4px',
-                        fontWeight: 700,
-                        fontSize: '0.92rem',
-                        cursor: 'pointer',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        boxShadow: '0 2px 8px rgba(122, 35, 49, 0.2)',
-                      }}
-                    >
-                      {savingEdit ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
-                      <span>Save Changes</span>
-                    </button>
+                  {/* Modal Footer with Hide & Delete in Edit Option */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem', marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--soft-gold-line)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      {/* Hide / Unhide in Edit Modal */}
+                      <button
+                        type="button"
+                        onClick={() => editingProduct && handleToggleHideProduct(editingProduct)}
+                        disabled={togglingHideId === editingProduct.id}
+                        style={{
+                          padding: '0.55rem 0.95rem',
+                          background: editingProduct.isHidden ? '#FFF3E0' : '#FAF7F2',
+                          border: editingProduct.isHidden ? '1.5px solid #D97706' : '1px solid var(--soft-gold-line)',
+                          color: editingProduct.isHidden ? '#D97706' : 'var(--ink-brown)',
+                          borderRadius: '4px',
+                          fontWeight: 700,
+                          fontSize: '0.84rem',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.4rem',
+                        }}
+                      >
+                        {togglingHideId === editingProduct.id ? (
+                          <Loader2 size={14} className="animate-spin" />
+                        ) : editingProduct.isHidden ? (
+                          <EyeOff size={14} />
+                        ) : (
+                          <Eye size={14} />
+                        )}
+                        <span>{editingProduct.isHidden ? 'Unhide Product' : 'Hide from Storefront'}</span>
+                      </button>
+
+                      {/* Delete from Existence in Edit Modal */}
+                      <button
+                        type="button"
+                        onClick={() => setDeleteConfirmProduct(editingProduct)}
+                        style={{
+                          padding: '0.55rem 0.95rem',
+                          background: '#FFEBEE',
+                          border: '1px solid #FFCDD2',
+                          color: '#C62828',
+                          borderRadius: '4px',
+                          fontWeight: 700,
+                          fontSize: '0.84rem',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.4rem',
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#FFCDD2')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFEBEE')}
+                      >
+                        <Trash2 size={14} />
+                        <span>Delete from Existence</span>
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <button
+                        type="button"
+                        onClick={() => setEditingProduct(null)}
+                        style={{
+                          padding: '0.6rem 1.15rem',
+                          background: '#FAF7F2',
+                          border: '1px solid var(--soft-gold-line)',
+                          borderRadius: '4px',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={savingEdit}
+                        style={{
+                          padding: '0.6rem 1.5rem',
+                          backgroundColor: 'var(--maharani-maroon)',
+                          color: '#FFFFFF',
+                          border: 'none',
+                          borderRadius: '4px',
+                          fontWeight: 700,
+                          fontSize: '0.92rem',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          boxShadow: '0 2px 8px rgba(122, 35, 49, 0.2)',
+                        }}
+                      >
+                        {savingEdit ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
+                        <span>Save Changes</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ════════════ PERMANENT DELETE CONFIRMATION DIALOGUE ════════════ */}
+      {deleteConfirmProduct && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 999,
+            backgroundColor: 'rgba(35, 24, 18, 0.72)',
+            backdropFilter: 'blur(4px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1.25rem',
+          }}
+          onClick={() => !isDeleting && setDeleteConfirmProduct(null)}
+        >
+          <div
+            style={{
+              backgroundColor: '#FFFFFF',
+              border: '1.5px solid var(--soft-gold-line)',
+              borderRadius: '12px',
+              maxWidth: '480px',
+              width: '100%',
+              padding: '1.75rem',
+              boxShadow: '0 24px 50px rgba(0,0,0,0.3)',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1rem' }}>
+              <div
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: '50%',
+                  background: '#FFEBEE',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <Trash2 size={22} color="#C62828" />
+              </div>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '1.22rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
+                  Delete Creation from Existence?
+                </h3>
+                <span
+                  style={{
+                    fontSize: '0.82rem',
+                    color: 'var(--maharani-maroon)',
+                    fontFamily: 'monospace',
+                    fontWeight: 800,
+                  }}
+                >
+                  {deleteConfirmProduct.productNo}
+                </span>
+              </div>
+            </div>
+
+            <p style={{ fontSize: '0.94rem', color: '#4A3E36', lineHeight: 1.55, margin: '0 0 1.5rem 0' }}>
+              Are you sure you want to permanently delete <strong>{deleteConfirmProduct.name}</strong>?
+              This will remove the creation completely from the <strong>Admin Catalog</strong>, the <strong>Artisan Atelier</strong>, and the <strong>customer storefront</strong>. This cannot be undone.
+            </p>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={() => setDeleteConfirmProduct(null)}
+                style={{
+                  padding: '0.6rem 1.25rem',
+                  background: '#FAF7F2',
+                  border: '1px solid var(--soft-gold-line)',
+                  borderRadius: '4px',
+                  fontWeight: 600,
+                  fontSize: '0.88rem',
+                  cursor: isDeleting ? 'not-allowed' : 'pointer',
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={handleConfirmDelete}
+                style={{
+                  padding: '0.6rem 1.5rem',
+                  background: '#C62828',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '4px',
+                  fontWeight: 700,
+                  fontSize: '0.9rem',
+                  cursor: isDeleting ? 'not-allowed' : 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.45rem',
+                  boxShadow: '0 2px 8px rgba(198, 40, 40, 0.25)',
+                }}
+              >
+                {isDeleting ? <Loader2 size={16} className="animate-spin" /> : <Trash2 size={16} />}
+                <span>{isDeleting ? 'Deleting...' : 'Delete from Existence'}</span>
+              </button>
+            </div>
           </div>
         </div>
       )}

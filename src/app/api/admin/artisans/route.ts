@@ -247,7 +247,23 @@ export async function GET() {
       if (normName) nameToKeyMap.set(normName, id);
     });
 
-    const allProducts = Array.from(allProductsMap.values());
+    const deletedProductsFile = path.join(process.cwd(), 'src', 'data', 'deleted_products.json');
+    let deletedSet = new Set<string>();
+    if (fs.existsSync(deletedProductsFile)) {
+      try {
+        const arr = JSON.parse(fs.readFileSync(deletedProductsFile, 'utf8'));
+        if (Array.isArray(arr)) deletedSet = new Set(arr.map((s: string) => String(s).toLowerCase().trim()));
+      } catch {}
+    }
+
+    const allProducts = Array.from(allProductsMap.values()).filter((p) => {
+      const idKey = String(p.id).toLowerCase().trim();
+      const nameKey = String(p.name).toLowerCase().trim();
+      if (deletedSet.has(idKey) || deletedSet.has(nameKey)) return false;
+      const ov = productOverrides[p.id] || {};
+      if (ov.isDeleted) return false;
+      return true;
+    });
 
     // Fetch orders if available to compute real sales
     let allOrders: any[] = [];

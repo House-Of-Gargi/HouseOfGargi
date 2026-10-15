@@ -6,6 +6,25 @@ import { products as catalogProducts } from '@/data/products';
 
 const PRODUCT_NUMBERS_FILE = path.join(process.cwd(), 'src', 'data', 'product_numbers.json');
 const PRODUCT_OVERRIDES_FILE = path.join(process.cwd(), 'src', 'data', 'product_overrides.json');
+const DELETED_PRODUCTS_FILE = path.join(process.cwd(), 'src', 'data', 'deleted_products.json');
+
+function getDeletedProducts(): Set<string> {
+  if (fs.existsSync(DELETED_PRODUCTS_FILE)) {
+    try {
+      const arr = JSON.parse(fs.readFileSync(DELETED_PRODUCTS_FILE, 'utf8'));
+      if (Array.isArray(arr)) {
+        return new Set(arr.map((s: string) => String(s).toLowerCase().trim()));
+      }
+    } catch {}
+  }
+  return new Set();
+}
+
+function saveDeletedProducts(set: Set<string>) {
+  try {
+    fs.writeFileSync(DELETED_PRODUCTS_FILE, JSON.stringify(Array.from(set), null, 2), 'utf8');
+  } catch {}
+}
 
 function getProductNumbers(): Record<string, string> {
   if (fs.existsSync(PRODUCT_NUMBERS_FILE)) {
@@ -206,10 +225,28 @@ export async function GET() {
 
     saveProductNumbers(productNumbers);
 
+    const deletedSet = getDeletedProducts();
+
+    const finalProducts = mergedList
+      .filter((item) => {
+        const idKey = String(item.id || '').toLowerCase().trim();
+        const nameKey = String(item.name || '').toLowerCase().trim();
+        if (deletedSet.has(idKey) || deletedSet.has(nameKey)) return false;
+        if (productOverrides[item.id]?.isDeleted) return false;
+        return true;
+      })
+      .map((item) => {
+        const ov = productOverrides[item.id] || {};
+        return {
+          ...item,
+          isHidden: Boolean(ov.isHidden || (item as any).is_hidden),
+        };
+      });
+
     return NextResponse.json({
       success: true,
-      products: mergedList,
-      totalCount: mergedList.length,
+      products: finalProducts,
+      totalCount: finalProducts.length,
     });
   } catch (err: any) {
     console.error('Error fetching admin products:', err);
@@ -239,7 +276,9 @@ export async function PATCH(req: Request) {
       care,
       sizes,
       images, 
-      curationStatus 
+      curationStatus,
+      isHidden,
+      isDeleted
     } = body;
 
     if (!id) {
@@ -261,6 +300,16 @@ export async function PATCH(req: Request) {
     if (stock !== undefined) current.stock = Number(stock);
     if (category !== undefined) current.category = category;
     if (fabric !== undefined) current.fabric = fabric;
+    if (isHidden !== undefined) current.isHidden = Boolean(isHidden);
+    if (isDeleted !== undefined) {
+      current.isDeleted = Boolean(isDeleted);
+      if (current.isDeleted) {
+        const deletedSet = getDeletedProducts();
+        deletedSet.add(String(id).toLowerCase().trim());
+        if (current.name) deletedSet.add(String(current.name).toLowerCase().trim());
+        saveDeletedProducts(deletedSet);
+      }
+    }
     
     const finalTech = artType || technique || craft_technique;
     if (finalTech !== undefined) {
@@ -318,6 +367,85 @@ export async function PATCH(req: Request) {
   } catch (err: any) {
     return NextResponse.json(
       { success: false, message: err?.message || 'Failed to update product' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    let id = searchParams.get('id');
+    let name = searchParams.get('name');
+
+    // Also support JSON body if passed
+    if (!id) {
+      try {
+        const body = await req.json();
+        id = body.id;
+        name = body.name || name;
+      } catch {}
+    }
+
+    if (!id && !name) {
+      return NextResponse.json({ success: false, message: 'Product ID or name is required' }, { status: 400 });
+    }
+
+    const deletedSet = getDeletedProducts();
+    if (id) deletedSet.add(String(id).toLowerCase().trim());
+    if (name) deletedSet.add(String(name).toLowerCase().trim());
+
+    // Check if there is a matching catalog product by slug or name
+    const catMatch = catalogProducts.find(
+      (cp) => (id && cp.id.toLowerCase() === id.toLowerCase()) || 
+              (name && cp.name.toLowerCase().trim() === name.toLowerCase().trim())
+    );
+    if (catMatch) {
+      deletedSet.add(catMatch.id.toLowerCase().trim());
+      deletedSet.add(catMatch.name.toLowerCase().trim());
+    }
+
+    saveDeletedProducts(deletedSet);
+
+    // Also flag isDeleted in product_overrides.json
+    const productOverrides = getProductOverrides();
+    if (id && productOverrides[id]) {
+      productOverrides[id].isDeleted = true;
+    }
+    if (catMatch && productOverrides[catMatch.id]) {
+      productOverrides[catMatch.id].isDeleted = true;
+    }
+    if (name) {
+      const normName = name.toLowerCase().trim();
+      Object.keys(productOverrides).forEach((k) => {
+        if (productOverrides[k]?.name && productOverrides[k].name.toLowerCase().trim() === normName) {
+          productOverrides[k].isDeleted = true;
+        }
+      });
+    }
+    saveProductOverrides(productOverrides);
+
+    // Also delete from Supabase in background
+    try {
+      if (id) {
+        await supabase.from('products').delete().eq('id', id);
+      }
+      if (name) {
+        await supabase.from('products').delete().ilike('name', name);
+      }
+    } catch (sbErr) {
+      console.warn('Supabase product delete attempt:', sbErr);
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: 'Product permanently deleted from existence across all portals',
+      deletedId: id,
+    });
+  } catch (err: any) {
+    console.error('Error deleting product:', err);
+    return NextResponse.json(
+      { success: false, message: err?.message || 'Failed to delete product' },
       { status: 500 }
     );
   }
