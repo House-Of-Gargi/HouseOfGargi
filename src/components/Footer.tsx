@@ -85,7 +85,7 @@ export default function Footer() {
             <div className="footer__nav-col">
               <h4 className="footer__heading">Access &amp; Support</h4>
               <div className="footer__links-list">
-                <Link href="/seller/login" className="footer__portal-link">
+                <Link href="/artisan/login" className="footer__portal-link">
                   <span className="footer__portal-text">Artisan Portal</span> <span className="footer__portal-arrow">→</span>
                 </Link>
                 <a

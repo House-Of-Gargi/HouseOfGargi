@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/seller/', '/seller/*', '/api/*'],
+        disallow: ['/seller/', '/seller/*', '/artisan/', '/artisan/*', '/api/*'],
       },
     ],
     sitemap: 'https://www.gargisaha.com/sitemap.xml',

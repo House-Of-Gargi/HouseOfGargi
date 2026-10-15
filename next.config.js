@@ -40,6 +40,20 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/seller',
+        destination: '/artisan/dashboard',
+        permanent: false,
+      },
+      {
+        source: '/seller/:path*',
+        destination: '/artisan/:path*',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

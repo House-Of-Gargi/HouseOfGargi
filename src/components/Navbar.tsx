@@ -248,7 +248,7 @@ export default function Navbar() {
                     Login
                   </button>
                   <Link 
-                    href="/seller/login" 
+                    href="/artisan/login" 
                     className="navbar__join-pill-btn navbar__join-pill-btn--desktop-only"
                     aria-label="Join Us - Artisan Portal"
                   >
@@ -436,7 +436,7 @@ export default function Navbar() {
             {isLoggedIn ? 'My Account' : 'Sign In'}
           </button>
           <Link 
-            href="/seller/login" 
+            href="/artisan/login" 
             className="mobile-drawer__auth-btn" 
             onClick={() => setMobileOpen(false)}
           >
