@@ -168,8 +168,8 @@ export default function HeroBanner() {
                     display: 'block',
                     width: '100%',
                     height: '100%',
-                    objectFit: 'contain',
-                    objectPosition: 'center',
+                    objectFit: 'cover',
+                    objectPosition: 'center bottom',
                   }}
                 />
               </picture>
