@@ -370,7 +370,7 @@ export default function ArtisanApplyPage() {
           gap: '0.75rem',
         }}>
           <Link
-            href="/seller/login"
+            href="/artisan/login"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -492,7 +492,7 @@ export default function ArtisanApplyPage() {
 
             <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
               <Link
-                href="/seller/login"
+                href="/artisan/login"
                 style={{
                   background: '#7A2331',
                   color: '#FFFFFF',

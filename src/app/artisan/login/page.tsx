@@ -1010,7 +1010,7 @@ export default function SellerLoginPage() {
               textAlign: 'center',
             }}>
               <Link
-                href="/seller/apply"
+                href="/artisan/apply"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',

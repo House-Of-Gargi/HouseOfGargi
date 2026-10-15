@@ -127,7 +127,7 @@ export default function ArtisanDashboardPage() {
     try {
       await supabase.auth.signOut();
     } catch {}
-    router.push('/seller/login?logout=true');
+    router.push('/artisan/login?logout=true');
   };
 
   // Compute live business metrics
@@ -953,7 +953,7 @@ export default function ArtisanDashboardPage() {
           </div>
 
           <Link
-            href="/seller/inventory"
+            href="/artisan/inventory"
             style={{
               fontFamily: 'var(--font-nav)',
               fontSize: '0.82rem',
