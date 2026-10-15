@@ -24,41 +24,72 @@ export const metadata: Metadata = {
   },
 };
 
+import productOverrides from '@/data/product_overrides.json';
+import deletedProducts from '@/data/deleted_products.json';
+
+const deletedSet = new Set(
+  (Array.isArray(deletedProducts) ? deletedProducts : []).map((s: string) =>
+    String(s).toLowerCase().trim()
+  )
+);
+
+function isItemHiddenOrDeleted(id: string, name: string): boolean {
+  const idKey = String(id || '').toLowerCase().trim();
+  const nameKey = String(name || '').toLowerCase().trim();
+  if (deletedSet.has(idKey) || deletedSet.has(nameKey)) return true;
+
+  const overrides = (productOverrides || {}) as Record<string, any>;
+  if (overrides[id]?.isHidden || overrides[id]?.isDeleted) return true;
+  for (const [key, ov] of Object.entries(overrides)) {
+    if (key.toLowerCase().trim() === nameKey && (ov.isHidden || ov.isDeleted)) return true;
+    if (ov && ov.name && String(ov.name).toLowerCase().trim() === nameKey && (ov.isHidden || ov.isDeleted)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 export default async function HomePage() {
   const featured = featuredProductIds
     .map(id => products.find(p => p.id === id))
-    .filter((p): p is typeof products[0] => Boolean(p));
+    .filter((p): p is typeof products[0] => p !== undefined && !isItemHiddenOrDeleted(p.id, p.name));
 
-  // Fetch 12 most recent products from Fastify backend (with resilient catalog fallback)
+  // Fetch 12 most recent products from Fastify backend (strictly filtered by active storefront status)
   let newArrivals: typeof products = [];
   try {
     const res = await apiClient.products.list();
     if (res && res.products && Array.isArray(res.products) && res.products.length > 0) {
-      newArrivals = res.products.slice(0, 12).map((item: any) => {
-        const matched = products.find(p => p.id === item.id || p.name.toLowerCase() === item.name.toLowerCase());
-        if (matched) return matched;
-        return {
-          id: String(item.id),
-          category: item.category || 'sarees',
-          name: item.name,
-          price: item.price || item.price_in_rupees || 0,
-          artisanNote: item.artisanNote || item.artisan_note || 'Crafted by master weavers in India',
-          description: item.description || `${item.name} handcrafted with heritage artisanal techniques.`,
-          fabric: item.fabric || 'Pure Silk',
-          technique: item.technique || 'Handloom Weave',
-          region: item.region || 'India',
-          occasion: item.occasion || 'Bridal & Festive',
-          sizes: item.sizes || ['Free Size'],
-          care: item.care || 'Dry clean only',
-          images: item.images && Array.isArray(item.images) ? item.images : [item.image_url || item.image || '/images/category-sarees.png'],
-        };
-      });
+      newArrivals = res.products
+        .filter((item: any) => !isItemHiddenOrDeleted(item.id, item.name))
+        .map((item: any) => {
+          const matched = products.find(p => p.id === item.id || p.name.toLowerCase() === item.name.toLowerCase());
+          if (matched) return matched;
+          return {
+            id: String(item.id),
+            category: item.category || 'sarees',
+            name: item.name,
+            price: item.price || item.price_in_rupees || 0,
+            artisanNote: item.artisanNote || item.artisan_note || 'Crafted by master weavers in India',
+            description: item.description || `${item.name} handcrafted with heritage artisanal techniques.`,
+            fabric: item.fabric || 'Pure Silk',
+            technique: item.technique || 'Handloom Weave',
+            region: item.region || 'India',
+            occasion: item.occasion || 'Bridal & Festive',
+            sizes: item.sizes || ['Free Size'],
+            care: item.care || 'Dry clean only',
+            images: item.images && Array.isArray(item.images) ? item.images : [item.image_url || item.image || '/images/category-sarees.png'],
+          };
+        })
+        .filter((p): p is typeof products[0] => p !== undefined && !isItemHiddenOrDeleted(p.id, p.name))
+        .slice(0, 12);
     }
   } catch (err) {
     // Graceful fallback to static products
   }
   if (!newArrivals || newArrivals.length === 0) {
-    newArrivals = products.slice(0, 12);
+    newArrivals = products.filter(p => !isItemHiddenOrDeleted(p.id, p.name)).slice(0, 12);
+  } else {
+    newArrivals = newArrivals.filter(p => !isItemHiddenOrDeleted(p.id, p.name));
   }
 
   return (
