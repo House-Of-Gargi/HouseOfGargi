@@ -4,7 +4,7 @@ import Link from 'next/link';
 import ScrollReveal from '@/components/ScrollReveal';
 import ProductCard from '@/components/ProductCard';
 import HeroBanner from '@/components/HeroBanner';
-import { categories, products, featuredProductIds } from '@/data/products';
+import { categories, products } from '@/data/products';
 import { ArrowRightIcon } from '@/components/Icons';
 
 export const metadata: Metadata = {
