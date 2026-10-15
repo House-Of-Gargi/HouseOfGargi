@@ -1,0 +1,1428 @@
+'use client';
+
+import { useState, FormEvent, useEffect } from 'react';
+import Link from 'next/link';
+import { ArrowLeft, ArrowRight, Check, ShieldCheck, AlertCircle, Loader2 } from 'lucide-react';
+
+interface FormData {
+  name: string;
+  dob: string;
+  age: string;
+  gender: string;
+  state: string;
+  placeOfBirth: string;
+  typeOfArt: string;
+  phone: string;
+  email: string;
+  answers: Record<string, string>;
+  agreedChildLabor: boolean;
+  agreedInspection: boolean;
+  signature: string;
+  signatureDate: string;
+}
+
+const INDIAN_STATES = [
+  'West Bengal',
+  'Uttar Pradesh',
+  'Rajasthan',
+  'Gujarat',
+  'Madhya Pradesh',
+  'Maharashtra',
+  'Tamil Nadu',
+  'Odisha',
+  'Assam',
+  'Bihar',
+  'Karnataka',
+  'Andhra Pradesh',
+  'Telangana',
+  'Kerala',
+  'Punjab',
+  'Haryana',
+  'Himachal Pradesh',
+  'Jammu & Kashmir',
+  'Chhattisgarh',
+  'Jharkhand',
+  'Uttarakhand',
+  'Delhi NCR',
+  'Other State / Union Territory',
+];
+
+const CRAFT_TYPES = [
+  'Pure Silk Handloom Weaving',
+  'Jamdani Handloom Weaving',
+  'Kantha Stitch Embroidery',
+  'Awadhi Zardozi & Aari',
+  'Lucknowi Chikankari',
+  'Banarasi Kadwa Gold Weave',
+  'Chanderi Gossamer Silk',
+  'Dokra Lost-Wax Metal Craft',
+  'Teak Wood Block Print & Dabu',
+  'Patola & Bandhani Tie-Dye',
+  'Temple Jewellery & Meenakari',
+  'Terracotta & Clay Craft',
+  'Other Traditional Craft',
+];
+
+const STEPS = [
+  { step: 1, labelEn: '1. Basic Info', titleEn: 'Basic Profile & Contact' },
+  { step: 2, labelEn: '2. Journey', titleEn: 'Part I: Personal Life & Dreams' },
+  { step: 3, labelEn: '3. Craft & Materials', titleEn: 'Part II: Craft, Lineage & Materials' },
+  { step: 4, labelEn: '4. Atelier', titleEn: 'Part III: Community, Inspiration & Design' },
+  { step: 5, labelEn: '5. Agreement', titleEn: 'Ethical Agreement & Submission' },
+];
+
+export default function ArtisanApplyPage() {
+  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    dob: '',
+    age: '',
+    gender: '',
+    state: '',
+    placeOfBirth: '',
+    typeOfArt: '',
+    phone: '',
+    email: '',
+    answers: {},
+    agreedChildLabor: false,
+    agreedInspection: false,
+    signature: '',
+    signatureDate: new Date().toISOString().split('T')[0],
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [submittedAppId, setSubmittedAppId] = useState<string | null>(null);
+
+  // Auto calculate age when DOB changes
+  useEffect(() => {
+    if (formData.dob) {
+      const birthYear = new Date(formData.dob).getFullYear();
+      const currentYear = new Date().getFullYear();
+      if (birthYear > 1900 && currentYear > birthYear) {
+        setFormData((prev) => ({ ...prev, age: String(currentYear - birthYear) }));
+      }
+    }
+  }, [formData.dob]);
+
+  const handleInputChange = (field: keyof FormData, value: any) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    setError('');
+  };
+
+  const handleAnswerChange = (qKey: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      answers: { ...prev.answers, [qKey]: value },
+    }));
+  };
+
+  const validateStep1 = () => {
+    if (!formData.name.trim()) return 'Please enter your full name';
+    if (!formData.phone.trim() || formData.phone.replace(/\D/g, '').length < 10) {
+      return 'Please enter a valid 10-digit mobile number';
+    }
+    if (!formData.email.trim() || !formData.email.includes('@')) {
+      return 'Please enter a valid email address';
+    }
+    if (!formData.gender) return 'Please select your gender';
+    if (!formData.state) return 'Please select your state';
+    if (!formData.typeOfArt) return 'Please select your craft type';
+    return null;
+  };
+
+  const handleNext = () => {
+    if (currentStep === 1) {
+      const err = validateStep1();
+      if (err) {
+        setError(err);
+        window.scrollTo({ top: 120, behavior: 'smooth' });
+        return;
+      }
+    }
+    setError('');
+    setCurrentStep((prev) => Math.min(prev + 1, 5));
+    window.scrollTo({ top: 80, behavior: 'smooth' });
+  };
+
+  const handlePrev = () => {
+    setError('');
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
+    window.scrollTo({ top: 80, behavior: 'smooth' });
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!formData.agreedChildLabor || !formData.agreedInspection) {
+      setError('Please check both compulsory agreement checkboxes to submit');
+      return;
+    }
+    if (!formData.signature.trim()) {
+      setError('Please enter your full legal name as your signature');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const res = await fetch('/api/artisan/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Failed to submit application.');
+      }
+
+      setSubmittedAppId(data.applicationId || 'HG-ART-2026');
+      window.scrollTo({ top: 60, behavior: 'smooth' });
+    } catch (err: any) {
+      setError(err?.message || 'Error submitting application. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="artisan-apply-root">
+      
+      {/* Background Soft Ivory Overlay (Line art remains clearly visible, exactly like seller login) */}
+      <div className="artisan-apply-overlay" />
+
+      {/* Embedded Responsive Styles */}
+      <style>{`
+        .artisan-apply-root {
+          min-height: 100vh;
+          width: 100%;
+          position: relative;
+          background-image: url('/images/atelier-lineart-bg.jpg');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+          background-color: #FBF6EE;
+          font-family: var(--font-nav);
+          color: #241A15;
+          padding: 2.25rem 1rem 5rem;
+          overflow-x: hidden;
+          box-sizing: border-box;
+        }
+
+        .artisan-apply-overlay {
+          position: absolute;
+          inset: 0;
+          background-color: rgba(251, 246, 238, 0.28);
+          pointer-events: none;
+          z-index: 1;
+        }
+
+        .artisan-apply-container {
+          position: relative;
+          z-index: 10;
+          width: 100%;
+          max-width: 840px;
+          margin: 0 auto;
+        }
+
+        .artisan-apply-card {
+          background: #FFFFFF;
+          border: 1.5px solid var(--soft-gold-line);
+          border-radius: 12px;
+          padding: 2.75rem 2.5rem;
+          box-shadow: 0 16px 40px -10px rgba(43, 31, 24, 0.08);
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .artisan-form-grid-2 {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1.15rem;
+        }
+
+        .artisan-form-grid-sig {
+          display: grid;
+          grid-template-columns: 2fr 1fr;
+          gap: 1.15rem;
+        }
+
+        .artisan-input-field {
+          width: 100%;
+          padding: 0.85rem 1rem;
+          border-radius: 8px;
+          border: 1.5px solid var(--soft-gold-line);
+          font-size: 1rem;
+          outline: none;
+          color: #241A15;
+          background: #FFFFFF;
+          font-family: var(--font-nav);
+          box-sizing: border-box;
+          transition: border-color 150ms ease, box-shadow 150ms ease;
+        }
+
+        .artisan-input-field:focus {
+          border-color: #7A2331;
+          box-shadow: 0 0 0 3px rgba(122, 35, 49, 0.1);
+        }
+
+        .artisan-nav-actions {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-top: 1px solid #F0E6D2;
+          padding-top: 1.75rem;
+          margin-top: 2rem;
+          gap: 1rem;
+        }
+
+        .artisan-stepper-track {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin: 1.75rem 0;
+          padding: 0.85rem 1rem;
+          background: #FAF7F2;
+          border-radius: 9px;
+          border: 1px solid #EAE2D5;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        /* ── MOBILE OPTIMIZATIONS ── */
+        @media (max-width: 680px) {
+          .artisan-apply-root {
+            padding: 1.25rem 0.65rem 3.5rem;
+          }
+
+          .artisan-apply-card {
+            padding: 1.6rem 1.1rem;
+            border-radius: 10px;
+          }
+
+          .artisan-form-grid-2 {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+
+          .artisan-form-grid-sig {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+
+          .artisan-nav-actions {
+            flex-direction: column-reverse;
+            gap: 0.85rem;
+          }
+
+          .artisan-nav-actions button {
+            width: 100% !important;
+            justify-content: center;
+            padding: 0.95rem 1rem !important;
+          }
+
+          .artisan-header-title {
+            font-size: 1.6rem !important;
+          }
+
+          .artisan-header-sub {
+            font-size: 1.1rem !important;
+          }
+
+          .artisan-stepper-track {
+            padding: 0.65rem 0.5rem;
+            gap: 0.5rem;
+          }
+
+          .stepper-label-text {
+            display: none;
+          }
+
+          .stepper-circle {
+            width: 32px !important;
+            height: 32px !important;
+            font-size: 0.88rem !important;
+          }
+
+          .mobile-step-banner {
+            display: block !important;
+          }
+        }
+
+        @media (min-width: 681px) {
+          .mobile-step-banner {
+            display: none !important;
+          }
+        }
+      `}</style>
+
+      <div className="artisan-apply-container">
+        
+        {/* Top Navigation Bar */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '1.5rem',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
+        }}>
+          <Link
+            href="/seller/login"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              padding: '0.55rem 1.1rem',
+              borderRadius: '8px',
+              background: '#FFFFFF',
+              border: '1.2px solid var(--soft-gold-line)',
+              color: 'var(--ink-brown)',
+              fontSize: '0.85rem',
+              fontFamily: 'var(--font-nav)',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              textDecoration: 'none',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+              transition: 'all 200ms ease',
+            }}
+          >
+            <ArrowLeft style={{ width: 14, height: 14 }} />
+            Artisan Login
+          </Link>
+
+          <Link
+            href="/"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.35rem',
+              padding: '0.55rem 0.95rem',
+              borderRadius: '8px',
+              background: 'rgba(255, 255, 255, 0.85)',
+              border: '1.2px solid var(--soft-gold-line)',
+              fontSize: '0.82rem',
+              fontWeight: 700,
+              color: 'var(--ink-brown)',
+              textDecoration: 'none',
+              textTransform: 'uppercase',
+              letterSpacing: '0.06em',
+            }}
+          >
+            Storefront &rarr;
+          </Link>
+        </div>
+
+        {/* ════════════ SUCCESS SUBMITTED STATE ════════════ */}
+        {submittedAppId ? (
+          <div className="artisan-apply-card" style={{ textAlign: 'center', padding: '3.5rem 1.75rem' }}>
+            <div style={{
+              width: '68px',
+              height: '68px',
+              borderRadius: '50%',
+              background: '#FAF7F2',
+              border: '2px solid #7A2331',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '1.5rem',
+              color: '#7A2331',
+            }}>
+              <Check style={{ width: 36, height: 36, strokeWidth: 2.5 }} />
+            </div>
+
+            <h1 style={{
+              fontFamily: 'var(--font-serif)',
+              fontSize: '2.1rem',
+              color: '#7A2331',
+              margin: '0 0 0.5rem',
+              fontWeight: 600,
+            }}>
+              Application Received
+            </h1>
+
+            <p style={{
+              fontSize: '1.05rem',
+              color: '#241A15',
+              lineHeight: 1.6,
+              maxWidth: '560px',
+              margin: '0.75rem auto 1.25rem',
+            }}>
+              Thank you, <strong>{formData.name}</strong>, for sharing your story and craft with House of Gargi.
+            </p>
+
+            <p style={{
+              fontSize: '0.98rem',
+              color: '#6B584E',
+              lineHeight: 1.6,
+              maxWidth: '560px',
+              margin: '0 auto 2rem',
+              fontStyle: 'italic',
+            }}>
+              Your application to join the House of Gargi Artisan Guild has been received. Our curation desk will review your submission and contact you shortly.
+            </p>
+
+            <div style={{
+              display: 'inline-block',
+              background: '#FAF7F2',
+              border: '1.5px solid #D4AF37',
+              borderRadius: '9px',
+              padding: '1.25rem 2.25rem',
+              marginBottom: '2.5rem',
+              maxWidth: '100%',
+              boxSizing: 'border-box',
+            }}>
+              <span style={{ fontSize: '0.85rem', color: '#8C7B70', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                Application Reference ID:
+              </span>
+              <div style={{
+                fontFamily: "'Courier New', monospace",
+                fontSize: '1.8rem',
+                fontWeight: 700,
+                color: '#7A2331',
+                marginTop: '0.35rem',
+                letterSpacing: '0.08em',
+              }}>
+                {submittedAppId}
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+              <Link
+                href="/seller/login"
+                style={{
+                  background: '#7A2331',
+                  color: '#FFFFFF',
+                  padding: '0.95rem 2rem',
+                  borderRadius: '8px',
+                  fontWeight: 700,
+                  fontSize: '0.92rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  textDecoration: 'none',
+                  minHeight: '48px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                Go to Artisan Portal Login
+              </Link>
+              <Link
+                href="/"
+                style={{
+                  background: '#FFFFFF',
+                  color: '#241A15',
+                  border: '1.5px solid var(--soft-gold-line)',
+                  padding: '0.95rem 2rem',
+                  borderRadius: '8px',
+                  fontWeight: 700,
+                  fontSize: '0.92rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  textDecoration: 'none',
+                  minHeight: '48px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                Return to Storefront
+              </Link>
+            </div>
+          </div>
+        ) : (
+          /* ════════════ MAIN FORM CARD ════════════ */
+          <div className="artisan-apply-card">
+            
+            {/* Header Crest */}
+            <div style={{ textAlign: 'center', paddingBottom: '1.5rem', borderBottom: '1px solid #F0E6D2' }}>
+              <span style={{
+                fontSize: '0.88rem',
+                letterSpacing: '0.22em',
+                fontWeight: 700,
+                color: '#8C7B70',
+                textTransform: 'uppercase',
+                display: 'block',
+                marginBottom: '0.35rem',
+              }}>
+                HOUSE OF GARGI
+              </span>
+              <p style={{
+                margin: 0,
+                fontSize: '0.8rem',
+                color: '#B88E18',
+                letterSpacing: '0.15em',
+                fontStyle: 'italic',
+              }}>
+                — TRADITION &middot; CRAFT &middot; HERITAGE —
+              </p>
+
+              <h1 className="artisan-header-title" style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '2rem',
+                fontWeight: 600,
+                color: '#7A2331',
+                margin: '1rem 0 0.2rem',
+                letterSpacing: '0.04em',
+                lineHeight: 1.2,
+              }}>
+                ARTIST QUESTIONNAIRE
+              </h1>
+              <h2 className="artisan-header-sub" style={{
+                fontSize: '1.25rem',
+                fontWeight: 500,
+                color: '#4A3C33',
+                margin: 0,
+              }}>
+                Heritage Artisan Registry
+              </h2>
+            </div>
+
+            {/* Stepper Progress Track */}
+            <div className="artisan-stepper-track">
+              {STEPS.map((s) => (
+                <div
+                  key={s.step}
+                  onClick={() => s.step < currentStep && setCurrentStep(s.step)}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '4px',
+                    cursor: s.step < currentStep ? 'pointer' : 'default',
+                    opacity: currentStep === s.step ? 1 : currentStep > s.step ? 0.9 : 0.45,
+                    flex: 1,
+                    minWidth: '50px',
+                  }}
+                >
+                  <div
+                    className="stepper-circle"
+                    style={{
+                      width: '30px',
+                      height: '30px',
+                      borderRadius: '50%',
+                      background: currentStep === s.step ? '#7A2331' : currentStep > s.step ? '#2E6F40' : '#D5C7B3',
+                      color: '#FFFFFF',
+                      fontSize: '0.82rem',
+                      fontWeight: 700,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      transition: 'all 200ms ease',
+                    }}
+                  >
+                    {currentStep > s.step ? <Check style={{ width: 14, height: 14 }} /> : s.step}
+                  </div>
+                  <span className="stepper-label-text" style={{ fontSize: '0.72rem', fontWeight: 700, color: currentStep === s.step ? '#7A2331' : '#6A5A50', textAlign: 'center', whiteSpace: 'nowrap' }}>
+                    {s.labelEn}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Mobile Active Step Sub-Banner */}
+            <div className="mobile-step-banner" style={{
+              background: '#FAF7F2',
+              border: '1px solid #EAE2D5',
+              borderRadius: '7px',
+              padding: '0.5rem 0.85rem',
+              marginBottom: '1.25rem',
+              textAlign: 'center',
+            }}>
+              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#7A2331' }}>
+                Step {currentStep} of 5: {STEPS[currentStep - 1].titleEn}
+              </span>
+            </div>
+
+            {/* Error Notification */}
+            {error && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.65rem',
+                background: '#FEF2F2',
+                border: '1.5px solid #FECDD3',
+                color: '#7A2331',
+                padding: '0.85rem 1.15rem',
+                borderRadius: '8px',
+                fontSize: '0.92rem',
+                marginBottom: '1.75rem',
+                fontWeight: 600,
+              }}>
+                <AlertCircle style={{ width: 18, height: 18, flexShrink: 0 }} />
+                <span>{error}</span>
+              </div>
+            )}
+
+            {/* Introductory Mission Callout (Steps 2-4) */}
+            {currentStep >= 2 && currentStep <= 4 && (
+              <div style={{
+                background: '#FAF7F2',
+                borderLeft: '4px solid #7A2331',
+                borderTop: '1px solid #EAE2D5',
+                borderRight: '1px solid #EAE2D5',
+                borderBottom: '1px solid #EAE2D5',
+                borderRadius: '0 8px 8px 0',
+                padding: '1.15rem 1.25rem',
+                marginBottom: '2rem',
+              }}>
+                <p style={{ margin: '0 0 0.5rem', fontSize: '0.92rem', lineHeight: 1.55, color: '#3E3029' }}>
+                  At House of Gargi we are especially interested in getting to know you, and introduce you to our customers around the world. Can you help us by providing the following information so we can write your story for the website?
+                </p>
+                <p style={{ margin: 0, fontSize: '0.88rem', lineHeight: 1.55, color: '#665349', fontStyle: 'italic' }}>
+                                  ।                  ?
+                </p>
+              </div>
+            )}
+
+            {/* ═══════════════ STEP 1: BASIC INFORMATION ═══════════════ */}
+            {currentStep === 1 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.35rem' }}>
+                <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem', marginBottom: '0.25rem' }}>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 700 }}>
+                    1. Basic Profile &amp; Contact &bull;    
+                  </h3>
+                  <p style={{ margin: '0.25rem 0 0', fontSize: '0.84rem', color: '#8C7B70' }}>
+                    Please fill out your verified details to register on the Artisan Portal.
+                  </p>
+                </div>
+
+                {/* ARTIST NAME */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                    • ARTIST NAME: /  : <span style={{ color: '#7A2331' }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    placeholder="Enter full name (e.g., Ramdas Mishra /  )"
+                    required
+                    className="artisan-input-field"
+                  />
+                </div>
+
+                {/* DOB & AGE */}
+                <div className="artisan-form-grid-2">
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                      • DATE OF BIRTH: /  :
+                    </label>
+                    <input
+                      type="date"
+                      value={formData.dob}
+                      onChange={(e) => handleInputChange('dob', e.target.value)}
+                      className="artisan-input-field"
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                      AGE / :
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.age}
+                      onChange={(e) => handleInputChange('age', e.target.value)}
+                      placeholder="e.g. 42"
+                      className="artisan-input-field"
+                    />
+                  </div>
+                </div>
+
+                {/* GENDER & STATE */}
+                <div className="artisan-form-grid-2">
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                      GENDER / : <span style={{ color: '#7A2331' }}>*</span>
+                    </label>
+                    <select
+                      value={formData.gender}
+                      onChange={(e) => handleInputChange('gender', e.target.value)}
+                      required
+                      className="artisan-input-field"
+                    >
+                      <option value="">Select Gender /  </option>
+                      <option value="Male">Male / </option>
+                      <option value="Female">Female / </option>
+                      <option value="Other">Other / </option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                      STATE / : <span style={{ color: '#7A2331' }}>*</span>
+                    </label>
+                    <select
+                      value={formData.state}
+                      onChange={(e) => handleInputChange('state', e.target.value)}
+                      required
+                      className="artisan-input-field"
+                    >
+                      <option value="">Select State /   </option>
+                      {INDIAN_STATES.map((st) => (
+                        <option key={st} value={st}>{st}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* PLACE OF BIRTH & TYPE OF ART */}
+                <div className="artisan-form-grid-2">
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                      • PLACE OF BIRTH: / :
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.placeOfBirth}
+                      onChange={(e) => handleInputChange('placeOfBirth', e.target.value)}
+                      placeholder="Village / Town / District (  )"
+                      className="artisan-input-field"
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                      • TYPE OF ART / CRAFT: /  : <span style={{ color: '#7A2331' }}>*</span>
+                    </label>
+                    <select
+                      value={formData.typeOfArt}
+                      onChange={(e) => handleInputChange('typeOfArt', e.target.value)}
+                      required
+                      className="artisan-input-field"
+                    >
+                      <option value="">Select Craft /  </option>
+                      {CRAFT_TYPES.map((c) => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* PHONE & EMAIL */}
+                <div className="artisan-form-grid-2">
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                      MOBILE NUMBER: /  : <span style={{ color: '#7A2331' }}>*</span>
+                    </label>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      border: '1.5px solid var(--soft-gold-line)',
+                      borderRadius: '8px',
+                      overflow: 'hidden',
+                      background: '#FFFFFF',
+                      width: '100%',
+                      boxSizing: 'border-box',
+                    }}>
+                      <span style={{
+                        padding: '0.85rem 0.85rem',
+                        background: '#FAF7F2',
+                        borderRight: '1px solid var(--soft-gold-line)',
+                        fontSize: '0.92rem',
+                        fontWeight: 700,
+                        color: '#7A2331',
+                        flexShrink: 0,
+                      }}>
+                        +91
+                      </span>
+                      <input
+                        type="tel"
+                        value={formData.phone.replace(/^\+91\s*/, '')}
+                        onChange={(e) => {
+                          const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+                          handleInputChange('phone', `+91 ${digits}`);
+                        }}
+                        placeholder="10-digit number"
+                        required
+                        style={{
+                          flex: 1,
+                          padding: '0.85rem 0.95rem',
+                          border: 'none',
+                          outline: 'none',
+                          fontSize: '1rem',
+                          color: '#241A15',
+                          fontFamily: 'var(--font-nav)',
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                      EMAIL ADDRESS: /  : <span style={{ color: '#7A2331' }}>*</span>
+                    </label>
+                    <input
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      placeholder="e.g. artisan@gmail.com"
+                      required
+                      className="artisan-input-field"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ═══════════════ STEP 2: QUESTIONS 1 TO 4 ═══════════════ */}
+            {currentStep === 2 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
+                <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 700 }}>
+                    Part I: Personal Life &amp; Dreams &bull;  :    (Q1 - Q4)
+                  </h3>
+                </div>
+
+                {/* Q1 */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                    1) If friends were to describe you, what 3 things would they say about you?
+                  </label>
+                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
+                         ,        ?
+                  </p>
+                  <textarea
+                    rows={3}
+                    value={formData.answers.q1 || ''}
+                    onChange={(e) => handleAnswerChange('q1', e.target.value)}
+                    placeholder="Describe 3 qualities..."
+                    className="artisan-input-field"
+                  />
+                </div>
+
+                {/* Q2 */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                    2) Have you ever experienced difficult moments in your life that you&apos;re proud to have overcome?
+                  </label>
+                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
+                                       ?
+                  </p>
+                  <textarea
+                    rows={3}
+                    value={formData.answers.q2 || ''}
+                    onChange={(e) => handleAnswerChange('q2', e.target.value)}
+                    placeholder="Share any challenges you overcame..."
+                    className="artisan-input-field"
+                  />
+                </div>
+
+                {/* Q3 */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                    3) Have you experienced funny, embarrassing or silly moments in your life that have made you laugh - would you share them with us?
+                  </label>
+                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
+                         ,        ?       ?
+                  </p>
+                  <textarea
+                    rows={3}
+                    value={formData.answers.q3 || ''}
+                    onChange={(e) => handleAnswerChange('q3', e.target.value)}
+                    placeholder="Share a lighthearted memory..."
+                    className="artisan-input-field"
+                  />
+                </div>
+
+                {/* Q4 */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                    4) What are your hopes, plans and dreams for the future?
+                  </label>
+                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
+                       ,     ?
+                  </p>
+                  <textarea
+                    rows={3}
+                    value={formData.answers.q4 || ''}
+                    onChange={(e) => handleAnswerChange('q4', e.target.value)}
+                    placeholder="Your dreams for your craft, family and atelier..."
+                    className="artisan-input-field"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* ═══════════════ STEP 3: QUESTIONS 5 TO 8 ═══════════════ */}
+            {currentStep === 3 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
+                <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 700 }}>
+                    Part II: Craft, Lineage &amp; Materials &bull;  : ,    (Q5 - Q8)
+                  </h3>
+                </div>
+
+                {/* Q5 */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                    5) How did you get interested in this art / craft, and what is it about this art that attracts you to it?
+                  </label>
+                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
+                        /    ,             ?
+                  </p>
+                  <textarea
+                    rows={3}
+                    value={formData.answers.q5 || ''}
+                    onChange={(e) => handleAnswerChange('q5', e.target.value)}
+                    placeholder="Your passion and beginnings..."
+                    className="artisan-input-field"
+                  />
+                </div>
+
+                {/* Q6 */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                    6) Who taught you? Do you also now teach to others? (please specify who and where)
+                  </label>
+                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
+                      ?     ? ( ,    ,   )
+                  </p>
+                  <textarea
+                    rows={3}
+                    value={formData.answers.q6 || ''}
+                    onChange={(e) => handleAnswerChange('q6', e.target.value)}
+                    placeholder="Master weavers, teachers, apprentices..."
+                    className="artisan-input-field"
+                  />
+                </div>
+
+                {/* Q7 */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                    7) What did you have to do to learn and master this art / craft?
+                  </label>
+                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
+                      /          ?
+                  </p>
+                  <textarea
+                    rows={3}
+                    value={formData.answers.q7 || ''}
+                    onChange={(e) => handleAnswerChange('q7', e.target.value)}
+                    placeholder="Years of practice, dedication, master techniques..."
+                    className="artisan-input-field"
+                  />
+                </div>
+
+                {/* Q8 */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                    8) What kind of materials do you use? Are they easy / difficult to work with? How do you obtain them? Do you make / prepare any of them? Are any of your materials recycled, reclaimed or reused?
+                  </label>
+                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
+                         ?      / ?      ?      /  ?        /   (recycled / reclaimed or reused) ?
+                  </p>
+                  <textarea
+                    rows={3}
+                    value={formData.answers.q8 || ''}
+                    onChange={(e) => handleAnswerChange('q8', e.target.value)}
+                    placeholder="Mulberry silk, metallic zari, natural indigo dyes, teak wood..."
+                    className="artisan-input-field"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* ═══════════════ STEP 4: QUESTIONS 9 TO 14 ═══════════════ */}
+            {currentStep === 4 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
+                <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 700 }}>
+                    Part III: Community, Inspiration &amp; Design &bull;  :    (Q9 - Q14)
+                  </h3>
+                </div>
+
+                {/* Q9 */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                    9) What is your favorite thing about your art / craft? What do you find the most challenging?
+                  </label>
+                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
+                      /      ?         ?
+                  </p>
+                  <textarea
+                    rows={3}
+                    value={formData.answers.q9 || ''}
+                    onChange={(e) => handleAnswerChange('q9', e.target.value)}
+                    placeholder="Your joy and challenges..."
+                    className="artisan-input-field"
+                  />
+                </div>
+
+                {/* Q10 */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                    10) Where do you get your inspiration from?
+                  </label>
+                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
+                          ?
+                  </p>
+                  <textarea
+                    rows={3}
+                    value={formData.answers.q10 || ''}
+                    onChange={(e) => handleAnswerChange('q10', e.target.value)}
+                    placeholder="Temple architecture, nature, royal heritage..."
+                    className="artisan-input-field"
+                  />
+                </div>
+
+                {/* Q11 */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                    11) Describe what it has been like to get started on your own?
+                  </label>
+                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
+                             ,   ।
+                  </p>
+                  <textarea
+                    rows={3}
+                    value={formData.answers.q11 || ''}
+                    onChange={(e) => handleAnswerChange('q11', e.target.value)}
+                    placeholder="Setting up your own loom or workshop..."
+                    className="artisan-input-field"
+                  />
+                </div>
+
+                {/* Q12 */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                    12) If you work with family members, how do you organize the work? (Who does what?)
+                  </label>
+                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
+                          ,      ? (  ?)
+                  </p>
+                  <textarea
+                    rows={3}
+                    value={formData.answers.q12 || ''}
+                    onChange={(e) => handleAnswerChange('q12', e.target.value)}
+                    placeholder="Family roles in spinning, warping, embroidery..."
+                    className="artisan-input-field"
+                  />
+                </div>
+
+                {/* Q13 */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                    13) If you only design, what qualities do you look for in artisans that would craft your designs?
+                  </label>
+                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
+                        ,             ?
+                  </p>
+                  <textarea
+                    rows={3}
+                    value={formData.answers.q13 || ''}
+                    onChange={(e) => handleAnswerChange('q13', e.target.value)}
+                    placeholder="Patience, precision, heritage fidelity..."
+                    className="artisan-input-field"
+                  />
+                </div>
+
+                {/* Q14 */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                    14) Describe any benefits your craft / workshop brings to your local community.
+                  </label>
+                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
+                      /             ।
+                  </p>
+                  <textarea
+                    rows={3}
+                    value={formData.answers.q14 || ''}
+                    onChange={(e) => handleAnswerChange('q14', e.target.value)}
+                    placeholder="Livelihoods, women empowerment, preservation..."
+                    className="artisan-input-field"
+                  />
+                </div>
+
+                <div style={{ textAlign: 'center', padding: '1rem', background: '#FAF7F2', borderRadius: '8px', color: '#7A2331', fontWeight: 700, letterSpacing: '0.1em' }}>
+                  THANK YOU! &bull; !
+                </div>
+              </div>
+            )}
+
+            {/* ═══════════════ STEP 5: CHILD LABOR AGREEMENT & SUBMISSION ═══════════════ */}
+            {currentStep === 5 && (
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
+                <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 700 }}>
+                    Step 5: Ethical Agreement &amp; Submission &bull;     
+                  </h3>
+                  <p style={{ margin: '0.25rem 0 0', fontSize: '0.85rem', color: '#8C7B70' }}>
+                    All master artisans and atelier suppliers must commit to international child labor standards.
+                  </p>
+                </div>
+
+                {/* Agreement Scroll Box */}
+                <div style={{
+                  background: '#FAF7F2',
+                  border: '1.5px solid var(--soft-gold-line)',
+                  borderRadius: '9px',
+                  padding: '1.25rem',
+                  maxHeight: '280px',
+                  overflowY: 'auto',
+                  fontSize: '0.87rem',
+                  lineHeight: 1.6,
+                  color: '#3E3029',
+                  boxSizing: 'border-box',
+                }}>
+                  <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+                    <strong style={{ display: 'block', fontSize: '0.96rem', color: '#7A2331' }}>
+                      HOUSE OF GARGI &amp; NOVICA COMPULSORY CHILD LABOR AGREEMENT
+                    </strong>
+                    <span style={{ fontSize: '0.8rem', color: '#8C7B70' }}>FOR ARTISANS AND SUPPLIERS</span>
+                  </div>
+
+                  <p>
+                    <strong>Commitment:</strong> House of Gargi &amp; NOVICA&apos;s commitment to the respect and promotion of human rights is an essential part of its business practices and mission. The Child Labor Agreement is based on the rights set forth in the UN Convention of the Rights of the Child and in the conventions of the International Labor Organization.
+                  </p>
+                  <p>
+                    All artisans and suppliers are required to sign this Agreement as an indication of their commitment to comply with the regulations herein established.
+                  </p>
+
+                  <p style={{ fontWeight: 700, color: '#241A15' }}>I. &ldquo;No Child Labor&rdquo; Policy:</p>
+                  <p>
+                    For the purposes of the Agreement, child labor is defined as the employment, whether paid or unpaid, of any child under the age of fifteen (15) or fourteen (14) where the local law of the country permits and in any position where:
+                  </p>
+                  <ul style={{ paddingLeft: '1.25rem', margin: '0.5rem 0' }}>
+                    <li>The child is kept from attending school and receiving the education they will need to succeed in life. Work shall never come at the expense of a child&apos;s education. In no case shall a child be granted full-time employment before completing mandatory schooling.</li>
+                    <li>The child is exposed to dangerous pesticides, fumes, toxins, chemicals, or carcinogens, or an unsanitary environment.</li>
+                    <li>National or international laws relating to human rights or working children are violated.</li>
+                    <li>The child is required to operate heavy or dangerous machinery. Heavy or dangerous machinery shall only be operated by adults age eighteen (18) and older.</li>
+                    <li>The child is compelled to work or in any way coerced into completing her/his duties.</li>
+                    <li>The physical, emotional, psychological, or intellectual development of the child could be jeopardized.</li>
+                    <li>Children who perform developmental tasks or vocational apprenticeships at a family workshop are excluded; however, tasks must never interfere with the child&apos;s education, health, safety, or well-being.</li>
+                  </ul>
+
+                  <p style={{ fontWeight: 700, color: '#241A15', marginTop: '1rem' }}>
+                    II. Readiness for Workplace Inspection:
+                  </p>
+                  <p>
+                    In order to enforce its No Child Labor policy and reassure both customers and the public that no children are exploited, House of Gargi &amp; NOVICA requires all artisans to consent to periodic inspections of their workshops or homes by authorized representatives and independent human rights monitors. Advance notice will not always be provided prior to inspection to preserve the integrity of the process.
+                  </p>
+                </div>
+
+                {/* 2 COMPULSORY TICKS (CHECKBOXES) */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', background: '#FFFFFF' }}>
+                  
+                  {/* TICK 1 */}
+                  <label style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '0.85rem',
+                    cursor: 'pointer',
+                    padding: '0.95rem 1.15rem',
+                    borderRadius: '8px',
+                    border: formData.agreedChildLabor ? '1.5px solid #7A2331' : '1.5px solid #E4D3AE',
+                    background: formData.agreedChildLabor ? '#FAF7F2' : '#FFFFFF',
+                    transition: 'all 150ms ease',
+                    boxSizing: 'border-box',
+                  }}>
+                    <input
+                      type="checkbox"
+                      checked={formData.agreedChildLabor}
+                      onChange={(e) => handleInputChange('agreedChildLabor', e.target.checked)}
+                      style={{
+                        accentColor: '#7A2331',
+                        width: '20px',
+                        height: '20px',
+                        marginTop: '2px',
+                        cursor: 'pointer',
+                        flexShrink: 0,
+                      }}
+                    />
+                    <div>
+                      <strong style={{ display: 'block', fontSize: '0.92rem', color: '#241A15', lineHeight: 1.45 }}>
+                        1. I hereby agree to abide by the House of Gargi &amp; NOVICA Child Labor Agreement.
+                      </strong>
+                      <span style={{ display: 'block', fontSize: '0.84rem', color: '#6E5D53', fontStyle: 'italic', marginTop: '0.25rem', lineHeight: 1.4 }}>
+                                  ।
+                      </span>
+                    </div>
+                  </label>
+
+                  {/* TICK 2 */}
+                  <label style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '0.85rem',
+                    cursor: 'pointer',
+                    padding: '0.95rem 1.15rem',
+                    borderRadius: '8px',
+                    border: formData.agreedInspection ? '1.5px solid #7A2331' : '1.5px solid #E4D3AE',
+                    background: formData.agreedInspection ? '#FAF7F2' : '#FFFFFF',
+                    transition: 'all 150ms ease',
+                    boxSizing: 'border-box',
+                  }}>
+                    <input
+                      type="checkbox"
+                      checked={formData.agreedInspection}
+                      onChange={(e) => handleInputChange('agreedInspection', e.target.checked)}
+                      style={{
+                        accentColor: '#7A2331',
+                        width: '20px',
+                        height: '20px',
+                        marginTop: '2px',
+                        cursor: 'pointer',
+                        flexShrink: 0,
+                      }}
+                    />
+                    <div>
+                      <strong style={{ display: 'block', fontSize: '0.92rem', color: '#241A15', lineHeight: 1.45 }}>
+                        2. I agree to make my workshop readily available for inspection and confirm all answers provided are true.
+                      </strong>
+                      <span style={{ display: 'block', fontSize: '0.84rem', color: '#6E5D53', fontStyle: 'italic', marginTop: '0.25rem', lineHeight: 1.4 }}>
+                                       ।
+                      </span>
+                    </div>
+                  </label>
+                </div>
+
+                {/* SIGNATURE & DATE */}
+                <div className="artisan-form-grid-sig" style={{ borderTop: '1px solid #F0E6D2', paddingTop: '1.25rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                      SIGNATURE OF ARTISAN /   : <span style={{ color: '#7A2331' }}>*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.signature}
+                      onChange={(e) => handleInputChange('signature', e.target.value)}
+                      placeholder="Type your full legal name as signature"
+                      required
+                      className="artisan-input-field"
+                      style={{
+                        fontFamily: "'Courier New', monospace",
+                        fontWeight: 700,
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                      DATE / :
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.signatureDate}
+                      readOnly
+                      className="artisan-input-field"
+                      style={{
+                        background: '#FAF7F2',
+                        color: '#6A5A50',
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Final Submit Button */}
+                <button
+                  type="submit"
+                  disabled={loading || !formData.agreedChildLabor || !formData.agreedInspection || !formData.signature.trim()}
+                  style={{
+                    width: '100%',
+                    background: formData.agreedChildLabor && formData.agreedInspection && formData.signature.trim() ? '#7A2331' : '#D6D3D1',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    borderRadius: '9px',
+                    padding: '1.15rem',
+                    fontSize: '1rem',
+                    fontFamily: 'var(--font-nav)',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.12em',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.65rem',
+                    cursor: formData.agreedChildLabor && formData.agreedInspection && !loading ? 'pointer' : 'not-allowed',
+                    transition: 'all 200ms ease',
+                    minHeight: '52px',
+                    boxSizing: 'border-box',
+                    marginTop: '0.5rem',
+                  }}
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 style={{ width: 18, height: 18, animation: 'spin 1s linear infinite' }} />
+                      Submitting Application...
+                    </>
+                  ) : (
+                    <>
+                      <ShieldCheck style={{ width: 20, height: 20 }} />
+                      Submit Artisan Application &bull;   
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+
+            {/* Stepper Navigation Buttons (Steps 1 to 4) */}
+            {currentStep < 5 && (
+              <div className="artisan-nav-actions">
+                {currentStep > 1 ? (
+                  <button
+                    type="button"
+                    onClick={handlePrev}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      padding: '0.85rem 1.6rem',
+                      borderRadius: '8px',
+                      background: '#FFFFFF',
+                      border: '1.5px solid var(--soft-gold-line)',
+                      color: '#241A15',
+                      fontSize: '0.88rem',
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                      cursor: 'pointer',
+                      minHeight: '48px',
+                    }}
+                  >
+                    <ArrowLeft style={{ width: 15, height: 15 }} />
+                    Previous
+                  </button>
+                ) : (
+                  <div />
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.9rem 2.25rem',
+                    borderRadius: '8px',
+                    background: '#7A2331',
+                    border: 'none',
+                    color: '#FFFFFF',
+                    fontSize: '0.92rem',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                    cursor: 'pointer',
+                    transition: 'all 200ms ease',
+                    minHeight: '48px',
+                  }}
+                >
+                  {currentStep === 4 ? 'Proceed to Agreement \u2022  ' : 'Next \u2022 '}
+                  <ArrowRight style={{ width: 15, height: 15 }} />
+                </button>
+              </div>
+            )}
+
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
+}

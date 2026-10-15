@@ -15,6 +15,17 @@ export default function ArtisanLayout({ children }: { children: ReactNode }) {
   const [artisanNo, setArtisanNo] = useState<string>('HG-84192');
 
   useEffect(() => {
+    // Never gate login or apply pages
+    if (
+      pathname === '/artisan/login' ||
+      pathname === '/artisan/apply' ||
+      pathname === '/seller/login' ||
+      pathname === '/seller/apply'
+    ) {
+      setAuthorized(true);
+      return;
+    }
+
     let isMounted = true;
 
     const checkAuth = async () => {
@@ -53,22 +64,29 @@ export default function ArtisanLayout({ children }: { children: ReactNode }) {
         if (session) {
           if (isMounted) setAuthorized(true);
         } else {
-          router.push('/seller/login');
+          router.push('/artisan/login');
         }
       } catch {
-        router.push('/seller/login');
+        router.push('/artisan/login');
       }
     };
 
     checkAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (
+        pathname === '/artisan/login' ||
+        pathname === '/artisan/apply' ||
+        pathname === '/seller/login' ||
+        pathname === '/seller/apply'
+      ) return;
+
       const sessionStr = typeof window !== 'undefined'
         ? (localStorage.getItem('artisan_session') || localStorage.getItem('auth_session'))
         : null;
 
       if (!session && !sessionStr) {
-        router.push('/seller/login');
+        router.push('/artisan/login');
       } else {
         if (isMounted) setAuthorized(true);
       }
@@ -79,6 +97,15 @@ export default function ArtisanLayout({ children }: { children: ReactNode }) {
       subscription.unsubscribe();
     };
   }, [pathname, router]);
+
+  if (
+    pathname === '/artisan/login' ||
+    pathname === '/artisan/apply' ||
+    pathname === '/seller/login' ||
+    pathname === '/seller/apply'
+  ) {
+    return <>{children}</>;
+  }
 
   if (!authorized) {
     return <PortalLoadingScreen portalName="Artisan Atelier" theme="light" message="Authorizing Artisan Atelier session..." />;
