@@ -181,7 +181,7 @@ export default function ArtisanProfileModal({
                   padding: '2px 9px',
                   borderRadius: '12px',
                   fontSize: '0.72rem',
-                  fontWeight: 800,
+                  fontWeight: 600,
                   textTransform: 'uppercase',
                   letterSpacing: '0.06em',
                   marginBottom: '4px',
@@ -194,7 +194,7 @@ export default function ArtisanProfileModal({
                 style={{
                   margin: '1px 0 2px',
                   fontSize: '1.22rem',
-                  fontWeight: 800,
+                  fontWeight: 500,
                   color: 'var(--ink-brown)',
                 }}
               >
@@ -202,7 +202,7 @@ export default function ArtisanProfileModal({
               </h3>
               <div style={{ fontSize: '0.84rem', color: '#6E5D52' }}>
                 Artisan ID:{' '}
-                <strong style={{ color: 'var(--maharani-maroon)', fontWeight: 800 }}>
+                <strong style={{ color: 'var(--maharani-maroon)', fontWeight: 500 }}>
                   {displayCode}
                 </strong>
               </div>
@@ -226,7 +226,7 @@ export default function ArtisanProfileModal({
                   textTransform: 'uppercase',
                   letterSpacing: '0.08em',
                   color: '#8C7B70',
-                  fontWeight: 800,
+                  fontWeight: 500,
                   marginBottom: '3px',
                 }}
               >
@@ -235,7 +235,7 @@ export default function ArtisanProfileModal({
               <div
                 style={{
                   fontSize: '1.08rem',
-                  fontWeight: 800,
+                  fontWeight: 500,
                   color: 'var(--ink-brown)',
                 }}
               >
@@ -251,13 +251,13 @@ export default function ArtisanProfileModal({
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
                     color: '#8C7B70',
-                    fontWeight: 800,
+                    fontWeight: 500,
                     marginBottom: '3px',
                   }}
                 >
                   REGIONAL BELONGING
                 </div>
-                <div style={{ fontSize: '0.94rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
+                <div style={{ fontSize: '0.94rem', fontWeight: 500, color: 'var(--ink-brown)' }}>
                   {displayRegion}
                 </div>
               </div>
@@ -269,13 +269,13 @@ export default function ArtisanProfileModal({
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
                     color: '#8C7B70',
-                    fontWeight: 800,
+                    fontWeight: 500,
                     marginBottom: '3px',
                   }}
                 >
                   EXPERIENCE
                 </div>
-                <div style={{ fontSize: '0.94rem', fontWeight: 800, color: 'var(--maharani-maroon)' }}>
+                <div style={{ fontSize: '0.94rem', fontWeight: 500, color: 'var(--maharani-maroon)' }}>
                   {displayExperience}
                 </div>
               </div>
@@ -287,7 +287,7 @@ export default function ArtisanProfileModal({
             <div
               style={{
                 fontSize: '0.75rem',
-                fontWeight: 800,
+                fontWeight: 500,
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
                 color: '#5C5043',
@@ -326,7 +326,7 @@ export default function ArtisanProfileModal({
               backgroundColor: 'var(--maharani-maroon)',
               color: '#FFFFFF',
               borderRadius: '6px',
-              fontWeight: 800,
+              fontWeight: 500,
               fontSize: '0.9rem',
               textDecoration: 'none',
               boxShadow: '0 4px 14px rgba(122, 35, 49, 0.2)',

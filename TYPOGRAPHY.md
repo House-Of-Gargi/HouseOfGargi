@@ -46,10 +46,10 @@ A comprehensive architectural reference detailing every font family, desktop siz
 
 | Element | Selector / Location | Font Family | Desktop Size | Mobile Size | Weight | Line Height | Color |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Category Heading** | `h2.section-heading-bold` | Cormorant Garamond / Playfair | `clamp(38px, 4.6vw, 52px)` | `32px` | 700 (Bold) | 1.2 | Maharani Maroon (`#7A2331`) |
-| **Category Subtitle** | `.subtitle-italic` | Cormorant Garamond (Upright)| `clamp(19px, 2.2vw, 23px)` | `17px` | 500 | 1.6 | Stone Taupe (`#5C5043`) |
-| **Featured Heading** | `h2.section-heading-bold` | Cormorant Garamond / Playfair | `clamp(38px, 4.6vw, 52px)` | `32px` | 700 (Bold) | 1.2 | Maharani Maroon (`#7A2331`) |
-| **Featured Subtitle** | `.subtitle-italic` | Cormorant Garamond (Upright)| `clamp(19px, 2.2vw, 23px)` | `17px` | 500 | 1.6 | Stone Taupe (`#5C5043`) |
+| **Category Heading** | `.royal-header-title`, `h2.section-heading-bold` | Cormorant Garamond / Playfair | `clamp(32px, 4.2vw, 48px)` | `26px` | 400 (Unbolded) | 1.2 | Maharani Maroon (`#7A2331`) |
+| **Category Subtitle** | `.royal-header-desc`, `.subtitle-italic` | Cormorant Garamond (Upright)| `clamp(17px, 1.8vw, 19.5px)` | `17px` | 400 | 1.6 | Deep Rich Ink (`#2D2017`) |
+| **Featured Heading** | `.royal-header-title`, `h2.section-heading-bold` | Cormorant Garamond / Playfair | `clamp(32px, 4.2vw, 48px)` | `26px` | 400 (Unbolded) | 1.2 | Maharani Maroon (`#7A2331`) |
+| **Featured Subtitle** | `.royal-header-desc`, `.subtitle-italic` | Cormorant Garamond (Upright)| `clamp(17px, 1.8vw, 19.5px)` | `17px` | 400 | 1.6 | Deep Rich Ink (`#2D2017`) |
 
 ---
 
@@ -59,8 +59,8 @@ A comprehensive architectural reference detailing every font family, desktop siz
 
 | Element | Selector / Location | Font Family | Desktop Size | Mobile Size | Weight | Tracking / Transform | Color |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Category Title** | `.category-tile__label h3` | Cormorant Garamond / Playfair | `26px` | `20px` | 700 | Normal | Pure White (`#FFFFFF`) |
-| **Explore Link** | `.category-tile__label span` | Plus Jakarta Sans | `13.5px` | `12px` | 700 | `0.10em` / Uppercase | Gargi Gold (`#B88E18`) |
+| **Category Title** | `.category-tile__label h3` | Cormorant Garamond / Playfair | `28px` | `20px` | 400 (Unbolded) | Normal | Pure White (`#FFFFFF`) |
+| **Explore Link** | `.category-tile__label span` | Plus Jakarta Sans | `13.5px` | `12px` | 500 | `0.12em` / Uppercase | Gargi Gold (`#B88E18`) |
 
 ---
 
@@ -70,9 +70,9 @@ A comprehensive architectural reference detailing every font family, desktop siz
 
 | Element | Selector / Location | Font Family | Desktop Size | Mobile Size | Weight | Line Height | Color |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Product Title** | `.product-card__name` | Plus Jakarta Sans / Outfit | `19px` (Large & Clear) | `17px` | 700 (Bold) | 1.35 | Ink Brown (`#231812`) |
-| **Artisan Subtitle** | `.product-card__artisan` | Outfit / Sans | `15px` (Legible) | `14px` | 500 | 1.45 | High Contrast (`#42352B`) |
-| **Price Tag** | `.product-card__price` | Plus Jakarta Sans / Outfit | `20px` (Large) | `18px` | 700 (Bold) | 1.2 | Maharani Maroon (`#7A2331`) |
+| **Product Title** | `.product-card__name` | Plus Jakarta Sans / Outfit | `18px` | `15px` | 400 (Unbolded) | 1.35 | Ink Brown (`#231812`) |
+| **Artisan Subtitle** | `.product-card__artisan` | Outfit / Sans | `15px` (Legible) | `14px` | 400 | 1.45 | High Contrast (`#42352B`) |
+| **Price Tag** | `.product-card__price` | Plus Jakarta Sans / Outfit | `20px` (Large) | `17px` | 500 (Refined) | 1.2 | Maharani Maroon (`#7A2331`) |
 
 ---
 
@@ -80,9 +80,9 @@ A comprehensive architectural reference detailing every font family, desktop siz
 
 | Element | Selector / Location | Styling & Formatting |
 | :--- | :--- | :--- |
-| **Product Title (H1)** | `h1` | Playfair Display, `clamp(28px, 3.5vw, 42px)`, bold 600, `#231812` |
+| **Product Title (H1)** | `.pdp-title` | Playfair Display, `clamp(28px, 3.2vw, 38px)`, 400 (Unbolded), `#231812` |
 | **Price & Currency** | `.pdp-price__number` | Outfit, `32px`, bold 700, Maharani Maroon (`#7A2331`) |
-| **Artisan Attribution** | Native Inline Link | **Clean same-page background (`#FBF6EE`)** — No white box, no border, no description paragraph, no gold verified badge. Displays simply as `Artisan: [Artisan Name]`. |
+| **Artisan Attribution** | Native Inline Link | **Clean same-page background (`#FBF6EE`)** — No white box, no border, no description paragraph, no gold verified badge. Displays simply as `Master Artisan: [Artisan Name]` with unbolded 400/500 weight. |
 
 ---
 
