@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import { resend, NOREPLY_EMAIL } from '@/lib/resend';
 import { getUserRole } from '@/lib/rbac';
 
-const AUTH_SECRET = process.env.AUTH_SECRET || process.env.RESEND_API_KEY || 'house_of_gargi_vedic_auth_secret_2026';
+const AUTH_SECRET = process.env.AUTH_SECRET || (process.env.NODE_ENV !== 'production' ? 'house_of_gargi_dev_auth_secret_only' : '');
 const LOGO_URL = 'https://wlivgkosmbfgjtecvznj.supabase.co/storage/v1/object/public/images/logo-email.png';
 
 function generateHmacToken(email: string, otp: string, expiresAt: number): string {

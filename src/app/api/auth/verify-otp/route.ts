@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { getUserRole } from '@/lib/rbac';
 
-const AUTH_SECRET = process.env.AUTH_SECRET || process.env.RESEND_API_KEY || 'house_of_gargi_vedic_auth_secret_2026';
+const AUTH_SECRET = process.env.AUTH_SECRET || (process.env.NODE_ENV !== 'production' ? 'house_of_gargi_dev_auth_secret_only' : '');
 
 function generateHmacToken(email: string, otp: string, expiresAt: number): string {
   const payload = `${email.toLowerCase().trim()}:${otp.trim()}:${expiresAt}`;
@@ -24,8 +24,9 @@ export async function POST(req: Request) {
     const cleanEmail = email.toLowerCase().trim();
     const cleanOtp = otp.toString().trim();
 
-    // Verify cryptographic HMAC signature or built-in test accounts
-    const isSpecialTest = (cleanOtp === '123456' || cleanEmail === 'patron@gargisaha.com' || cleanEmail === 'artisan@gargisaha.com');
+    // Verify cryptographic HMAC signature (test mode only active if explicitly enabled in non-production)
+    const allowTestOtp = process.env.NODE_ENV !== 'production' && process.env.ALLOW_TEST_OTP === 'true';
+    const isSpecialTest = Boolean(allowTestOtp && process.env.TEST_OTP_CODE && cleanOtp === process.env.TEST_OTP_CODE);
 
     if (!isSpecialTest) {
       if (!verificationToken || !expiresAt) {
