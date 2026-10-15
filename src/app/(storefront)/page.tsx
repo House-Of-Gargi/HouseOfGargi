@@ -125,66 +125,48 @@ function getArrivalTimestamp(p: any): number {
 }
 
 export default async function HomePage() {
-  const salesMap = getSalesMap();
+  let featured: any[] = [];
+  let newArrivals: any[] = [];
 
-  // 1. Gather candidate creations (catalog + any dynamic additions)
-  let candidatePool: typeof products = [...products];
-
+  // 1. Fetch live curated and ranked creations from Fastify backend
   try {
-    const res = await apiClient.products.list();
-    if (res && res.products && Array.isArray(res.products) && res.products.length > 0) {
-      res.products.forEach((item: any) => {
-        const itemId = String(item.id || '').toLowerCase().trim();
-        const itemName = String(item.name || '').toLowerCase().trim();
-        const exists = candidatePool.some(
-          (c) => String(c.id).toLowerCase().trim() === itemId || String(c.name).toLowerCase().trim() === itemName
-        );
-        if (!exists && !isItemHiddenOrDeleted(item.id, item.name)) {
-          candidatePool.push({
-            id: String(item.id),
-            category: item.category || 'sarees',
-            name: item.name,
-            price: item.price || item.price_in_rupees || 0,
-            artisanNote: item.artisanNote || item.artisan_note || 'Crafted by master weavers in India',
-            description: item.description || `${item.name} handcrafted with heritage artisanal techniques.`,
-            fabric: item.fabric || 'Pure Silk',
-            technique: item.technique || 'Handloom Weave',
-            region: item.region || 'India',
-            occasion: item.occasion || 'Bridal & Festive',
-            sizes: item.sizes || ['Free Size'],
-            care: item.care || 'Dry clean only',
-            images: item.images && Array.isArray(item.images) ? item.images : [item.image_url || item.image || '/images/category-sarees.png'],
-          });
-        }
-      });
+    const [featRes, newRes] = await Promise.allSettled([
+      apiClient.products.featured(6),
+      apiClient.products.newArrivals(12),
+    ]);
+
+    if (featRes.status === 'fulfilled' && featRes.value && Array.isArray(featRes.value.products) && featRes.value.products.length > 0) {
+      featured = featRes.value.products;
+    }
+    if (newRes.status === 'fulfilled' && newRes.value && Array.isArray(newRes.value.products) && newRes.value.products.length > 0) {
+      newArrivals = newRes.value.products;
     }
   } catch (err) {
     // Resilient fallback to local catalog
   }
 
-  // Strictly filter out any hidden or deleted items from the candidate pool
-  const activeProducts = candidatePool.filter((p) => !isItemHiddenOrDeleted(p.id, p.name));
+  // 2. Resilient fallback if backend was sleeping or during static build
+  if (featured.length === 0 || newArrivals.length === 0) {
+    const salesMap = getSalesMap();
+    const activeProducts = products.filter((p) => !isItemHiddenOrDeleted(p.id, p.name));
 
-  // ── FEATURED CURATION (Top 6 by amount sold; if equal/zero, curated priority; immediate next rank fills if hidden/deleted) ──
-  const featured = [...activeProducts]
-    .sort((a, b) => {
-      const salesA = getProductSales(a, salesMap);
-      const salesB = getProductSales(b, salesMap);
-      if (salesB !== salesA) {
-        return salesB - salesA; // Highest amount sold first
-      }
-      return getBaseCurationRank(a) - getBaseCurationRank(b); // Tie-breaker: curated rank sequence
-    })
-    .slice(0, 6);
+    if (featured.length === 0) {
+      featured = [...activeProducts]
+        .sort((a, b) => {
+          const salesA = getProductSales(a, salesMap);
+          const salesB = getProductSales(b, salesMap);
+          if (salesB !== salesA) return salesB - salesA;
+          return getBaseCurationRank(a) - getBaseCurationRank(b);
+        })
+        .slice(0, 6);
+    }
 
-  // ── NEW ARRIVALS (Top 12 most recent additions; immediate next incoming fills if hidden/deleted) ──
-  const newArrivals = [...activeProducts]
-    .sort((a, b) => {
-      const timeA = getArrivalTimestamp(a);
-      const timeB = getArrivalTimestamp(b);
-      return timeB - timeA; // Most recent additions first
-    })
-    .slice(0, 12);
+    if (newArrivals.length === 0) {
+      newArrivals = [...activeProducts]
+        .sort((a, b) => getArrivalTimestamp(b) - getArrivalTimestamp(a))
+        .slice(0, 12);
+    }
+  }
 
   return (
     <>
