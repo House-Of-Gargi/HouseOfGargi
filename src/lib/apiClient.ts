@@ -30,6 +30,14 @@ async function request<T = any>(endpoint: string, options: RequestInit = {}): Pr
 
     const data = await res.json();
     if (!res.ok) {
+      if (res.status === 401 && typeof window !== 'undefined') {
+        const path = window.location.pathname;
+        if ((path.startsWith('/admin') || path.startsWith('/super-admin')) && !path.startsWith('/admin/login')) {
+          window.location.href = '/admin/login';
+        } else if ((path.startsWith('/artisan') || path.startsWith('/seller')) && !path.startsWith('/artisan/login')) {
+          window.location.href = '/artisan/login';
+        }
+      }
       throw new Error(data.message || `API request error: ${res.status}`);
     }
     return data;
