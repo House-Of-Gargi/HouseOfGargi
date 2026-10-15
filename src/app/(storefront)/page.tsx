@@ -6,6 +6,7 @@ import ProductCard from '@/components/ProductCard';
 import HeroBanner from '@/components/HeroBanner';
 import { categories, products } from '@/data/products';
 import { ArrowRightIcon } from '@/components/Icons';
+import CategoryCollectionRail from '@/components/CategoryCollectionRail';
 
 export const metadata: Metadata = {
   title: {
@@ -198,22 +199,7 @@ export default async function HomePage() {
               </p>
             </div>
           </ScrollReveal>
-          <div className="category-grid">
-            {categories.map((cat, i) => (
-              <ScrollReveal key={cat.id} style={{ transitionDelay: `${i * 100}ms` }}>
-                <Link href={`/category/${cat.id}`} className="category-tile">
-                  <img src={cat.collectionTileImage || cat.image} alt={cat.name} loading="lazy" />
-                  <div className="category-tile__border" />
-                  <div className="category-tile__label">
-                    <h3>{cat.name}</h3>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      Explore <ArrowRightIcon size={14} />
-                    </span>
-                  </div>
-                </Link>
-              </ScrollReveal>
-            ))}
-          </div>
+          <CategoryCollectionRail categories={categories} />
         </div>
       </section>
 
