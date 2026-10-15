@@ -23,7 +23,7 @@ A comprehensive architectural reference detailing every font family, desktop siz
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Brand Signature (Hero)** | `.navbar--hero .navbar__logo-img--white` | Custom Script Image | Height: `72px` | Height: `58px` | — | Drop shadow `0 2px 10px rgba(0,0,0,0.35)` | Pure White (`#FFFFFF`) |
 | **Brand Signature (Scrolled)**| `.navbar--scrolled .navbar__logo-img--dark` | Custom Script Image | Height: `66px` | Height: `52px` | — | Crisp transparent PNG | Maharani Maroon (`#7A2331`) |
-| **Navigation Links** | `.navbar__links a` | Plus Jakarta Sans | `15.5px` (Enlarged) | Drawer (`18px`) | 600 | `gap: 28px`, Tracking: `0.05em` / Uppercase | `#FFFFFF` (Hero) / `#231812` (Scrolled) |
+| **Navigation Links** | `.navbar__links a` | Plus Jakarta Sans | `15.5px` (Enlarged) | Drawer (`18px`) | 500 (Refined) | `gap: 28px`, Tracking: `0.05em` / Uppercase | `#FFFFFF` (Hero) / `#231812` (Scrolled) |
 | **Navigation Icons** | `.navbar__icons` | Lucide SVG Icons | Icon `23px` (box `40px`) | Icon `20px` (box `36px`) | — | Clustered (`gap: 8px`), no spreading | `#FFFFFF` (Hero) / `#231812` (Scrolled) |
 | **Drawer Nav Links** | `.mobile-drawer__links .nav-label` | Plus Jakarta Sans | — | `18px` | 600 | `0.10em` / Uppercase | `#231812` |
 
@@ -70,9 +70,9 @@ A comprehensive architectural reference detailing every font family, desktop siz
 
 | Element | Selector / Location | Font Family | Desktop Size | Mobile Size | Weight | Line Height | Color |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Product Title** | `.product-card__name` | Plus Jakarta Sans / Outfit | `18px` | `15px` | 400 (Unbolded) | 1.35 | Ink Brown (`#231812`) |
+| **Product Title** | `.product-card__name` | Plus Jakarta Sans / Outfit | `18px` | `15px` | 600 (Semi-Bold) | 1.35 | Ink Brown (`#231812`) |
 | **Artisan Subtitle** | `.product-card__artisan` | Outfit / Sans | `15px` (Legible) | `14px` | 400 | 1.45 | High Contrast (`#42352B`) |
-| **Price Tag** | `.product-card__price` | Plus Jakarta Sans / Outfit | `20px` (Large) | `17px` | 500 (Refined) | 1.2 | Maharani Maroon (`#7A2331`) |
+| **Price Tag** | `.product-card__price` | Plus Jakarta Sans / Outfit | `20px` (Large) | `17px` | 600 (Semi-Bold) | 1.2 | Maharani Maroon (`#7A2331`) |
 
 ---
 

@@ -201,7 +201,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
             {/* Master Artisan Attribution (Links directly to artisan dedicated page) */}
             <div className="pdp-artisan-row" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '14px 0' }}>
-              <span className="pdp-artisan-row__label" style={{ fontSize: '0.86rem', color: '#6A5A50', fontWeight: 400 }}>Master Artisan:</span>
+              <span className="pdp-artisan-row__label" style={{ fontSize: '0.86rem', color: '#6A5A50', fontWeight: 600 }}>Master Artisan:</span>
               <Link 
                 href={`/artisan/${artisanCode || 'HG-84192'}`}
                 style={{

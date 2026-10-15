@@ -390,7 +390,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 .product-card__name {
   font-family: 'Plus Jakarta Sans', 'Outfit', -apple-system, sans-serif !important;
   font-size: 18px !important;
-  font-weight: 400 !important;
+  font-weight: 600 !important;
   color: var(--ink-brown) !important;
   margin-bottom: 6px !important;
   line-height: 1.35 !important;
@@ -404,7 +404,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 
 .product-card__price {
   font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 20px;
   color: var(--maharani-maroon);
   margin-bottom: 8px;
@@ -692,7 +692,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 .navbar__links a {
   font-family: var(--font-nav);
   font-size: 15.5px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--ink-brown);
@@ -3325,7 +3325,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 
   .product-card__name {
     font-size: 17px;
-    font-weight: 400;
+    font-weight: 600;
   }
   .product-card__artisan {
     font-size: 14px;
@@ -3334,7 +3334,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   }
   .product-card__price {
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
   }
 
   .product-grid, .related-grid { grid-template-columns: 1fr 1fr; column-gap: 14px; row-gap: 36px; }
@@ -4476,7 +4476,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 .navbar__links a {
   font-family: var(--font-nav);
   font-size: 15.5px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--ink-brown);
@@ -7651,7 +7651,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   text-transform: uppercase !important;
   letter-spacing: 0.1em !important;
   color: var(--stone-taupe) !important;
-  font-weight: 400 !important;
+  font-weight: 600 !important;
 }
 
 .pdp-artisan-row__name {
@@ -7787,9 +7787,9 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 }
 
 @media (max-width: 900px) {
-  /* Generous top padding for mobile status bar / notch breathing room */
+  /* Reduced top padding so category strip lifts cleanly upwards */
   .navbar {
-    padding: 16px 0 10px 0 !important;
+    padding: 8px 0 2px 0 !important;
   }
 
   .navbar__inner {
@@ -7805,7 +7805,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     align-items: center !important;
     justify-content: space-between !important;
     width: 100% !important;
-    height: 52px !important;
+    height: 42px !important;
     position: relative !important;
   }
 
@@ -7822,16 +7822,16 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     line-height: 0 !important;
   }
 
-  /* Noticeably scaled logo for mobile view */
+  /* Scaled logo for mobile view */
   .navbar__logo-img {
-    height: 50px !important;
-    max-width: 210px !important;
+    height: 38px !important;
+    max-width: 165px !important;
     object-fit: contain !important;
   }
 
   .navbar--hero .navbar__logo-img--white {
     display: block !important;
-    height: 54px !important;
+    height: 40px !important;
   }
   .navbar--hero .navbar__logo-img--dark {
     display: none !important;
@@ -7841,7 +7841,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   }
   .navbar--scrolled .navbar__logo-img--dark {
     display: block !important;
-    height: 50px !important;
+    height: 38px !important;
   }
 
   .navbar__search-wrapper {
@@ -7893,13 +7893,13 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     justify-content: center !important;
     background: transparent !important;
     border: none !important;
-    padding: 6px !important;
+    padding: 4px !important;
     margin: 0 !important;
     cursor: pointer !important;
     line-height: 1 !important;
     border-radius: 50% !important;
-    width: 40px !important;
-    height: 40px !important;
+    width: 36px !important;
+    height: 36px !important;
     flex-shrink: 0 !important;
     z-index: 10 !important;
     transition: transform 150ms ease !important;
@@ -7921,13 +7921,13 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     justify-content: center !important;
     background: transparent !important;
     border: none !important;
-    padding: 6px !important;
+    padding: 4px !important;
     margin: 0 !important;
     cursor: pointer !important;
     line-height: 1 !important;
     border-radius: 4px !important;
-    width: 40px !important;
-    height: 40px !important;
+    width: 36px !important;
+    height: 36px !important;
     flex-shrink: 0 !important;
     z-index: 10 !important;
   }
@@ -7947,17 +7947,17 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     display: none !important;
   }
 
-  /* 2. Second Nav Bar: Categories Horizontally Scrollable & Properly Spaced */
+  /* 2. Second Nav Bar: Categories Horizontally Scrollable & Lifted Upwards */
   .navbar:not(.navbar--sub-hidden) .navbar__sub-row,
   .navbar__sub-row {
     display: flex !important;
     justify-content: flex-start !important; /* CRITICAL: Must align to start so first item is never cut off */
     align-items: center !important;
     width: 100% !important;
-    max-height: 44px !important;
+    max-height: 34px !important;
     opacity: 1 !important;
     transform: none !important;
-    margin-top: 14px !important; /* Generous space between top bar and category strip */
+    margin-top: 4px !important; /* Compact space lifting category strip upwards */
     overflow-x: auto !important;
     overflow-y: hidden !important;
     -webkit-overflow-scrolling: touch !important;
@@ -7981,8 +7981,8 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     justify-content: flex-start !important; /* CRITICAL: Never center */
     align-items: center !important;
     margin: 0 !important; /* CRITICAL: Clear margin 0 auto */
-    gap: 22px !important;
-    padding: 4px 18px 8px 18px !important; /* 18px padding so 'Explore All' & 'Sarees' are 100% visible */
+    gap: 20px !important;
+    padding: 2px 16px 4px 16px !important;
     white-space: nowrap !important;
     flex-wrap: nowrap !important;
     width: max-content !important;
@@ -7991,12 +7991,12 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 
   .navbar__links a {
     font-size: 12.5px !important;
-    font-weight: 600 !important;
+    font-weight: 500 !important;
     letter-spacing: 0.08em !important;
     text-transform: uppercase !important;
     white-space: nowrap !important;
     flex-shrink: 0 !important;
-    padding: 4px 2px !important;
+    padding: 2px 2px !important;
     position: relative !important;
   }
 
@@ -8005,7 +8005,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   }
   .navbar--hero .navbar__links a.is-active {
     color: #FFFFFF !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important;
   }
   .navbar--hero .navbar__links a.is-active::after {
     background: var(--gargi-gold) !important;
@@ -8017,7 +8017,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   }
   .navbar--scrolled .navbar__links a.is-active {
     color: var(--maharani-maroon) !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important;
   }
   .navbar--scrolled .navbar__links a.is-active::after {
     background: var(--maharani-maroon) !important;
@@ -8026,7 +8026,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 
   /* 3. Page Content Clearance: Ensure Fixed 2-Row Mobile Navbar Never Overlaps Content */
   .explore-page {
-    padding-top: 165px !important;
+    padding-top: 120px !important;
   }
 }
 
@@ -8304,7 +8304,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 @media (max-width: 860px) {
   .product-card__name {
     font-size: 16px !important;
-    font-weight: 400 !important;
+    font-weight: 600 !important;
     margin-bottom: 4px !important;
     line-height: 1.3 !important;
     white-space: nowrap !important;
@@ -8316,7 +8316,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   .product-card__price {
     font-size: 18px !important;
     margin-bottom: 6px !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
   }
   .product-card__desc {
     font-size: 14px !important;
@@ -8912,11 +8912,11 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   width: 100% !important;
 }
 
-/* ── Category Filter Pills: Playfair Display Serif (Matching SS3 font style) ── */
+/* ── Category Filter Pills: Playfair Display Serif (Refined unbolded style) ── */
 .artisan-pill {
   font-family: 'Playfair Display', Georgia, serif !important;
   font-size: 15px !important;
-  font-weight: 600 !important;
+  font-weight: 400 !important;
   letter-spacing: 0.015em !important;
   padding: 8px 18px !important;
   border-radius: 24px !important;
@@ -8939,6 +8939,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   background-color: var(--maharani-maroon) !important;
   border-color: var(--maharani-maroon) !important;
   color: #FFFFFF !important;
+  font-weight: 400 !important;
 }
 
 .artisan-pill--active:hover {
@@ -8947,7 +8948,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 .artisan-pill-count {
   font-family: var(--font-nav, 'Plus Jakarta Sans', -apple-system, sans-serif) !important;
   font-size: 13px !important;
-  font-weight: 600 !important;
+  font-weight: 400 !important;
   letter-spacing: 0.02em !important;
   margin-left: 4px !important;
   display: inline-block !important;
@@ -9190,6 +9191,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     flex-shrink: 0 !important;
     white-space: nowrap !important;
     font-size: 14px !important;
+    font-weight: 400 !important;
     padding: 7px 15px !important;
   }
 }
@@ -9226,7 +9228,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 
   .product-card__name {
     font-size: 15px !important;
-    font-weight: 400 !important;
+    font-weight: 600 !important;
     line-height: 1.25 !important;
     margin-bottom: 3px !important;
     width: 100% !important;
@@ -9239,7 +9241,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 
   .product-card__price {
     font-size: 17px !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
     margin-bottom: 5px !important;
     line-height: 1.2 !important;
   }
@@ -9295,13 +9297,13 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 
   .product-card__name {
     font-size: 14px !important;
-    font-weight: 400 !important;
+    font-weight: 600 !important;
     margin-bottom: 2px !important;
   }
 
   .product-card__price {
     font-size: 16px !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
     margin-bottom: 4px !important;
   }
 
