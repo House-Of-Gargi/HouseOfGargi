@@ -26,6 +26,7 @@ export const metadata: Metadata = {
 
 import productOverrides from '@/data/product_overrides.json';
 import deletedProducts from '@/data/deleted_products.json';
+import backendOrders from '@/data/backend_orders.json';
 
 const deletedSet = new Set(
   (Array.isArray(deletedProducts) ? deletedProducts : []).map((s: string) =>
@@ -49,22 +50,97 @@ function isItemHiddenOrDeleted(id: string, name: string): boolean {
   return false;
 }
 
-export default async function HomePage() {
-  const featured = featuredProductIds
-    .map(id => products.find(p => p.id === id))
-    .filter((p): p is typeof products[0] => p !== undefined && !isItemHiddenOrDeleted(p.id, p.name));
+// Curation base rank sequence (used when sales are 0 or tied)
+const CURATED_FEATURED_RANK: string[] = [
+  'royal-zardozi-lehenga',
+  'banarasi-gold-weave',
+  'sanganeri-block-print-kurta',
+  'kundan-choker-set',
+  'kanchipuram-temple-border',
+  'chanderi-floral-jaal',
+  'gota-patti-lehenga',
+  'tussar-block-print',
+  'paithani-peacock',
+  'chikankari-white-kurta',
+  'ajrakh-silk-kurta',
+  'meenakari-jhumka',
+  'temple-jewellery-set',
+  'phulkari-dupatta',
+  'chikankari-anarkali-lehenga',
+  'mirror-work-lehenga',
+  'kalamkari-anarkali-kurta',
+  'bandhani-silk-kurta',
+];
 
-  // Fetch 12 most recent products from Fastify backend (strictly filtered by active storefront status)
-  let newArrivals: typeof products = [];
+function getSalesMap(): Record<string, number> {
+  const map: Record<string, number> = {};
+  if (Array.isArray(backendOrders)) {
+    backendOrders.forEach((o: any) => {
+      if (Array.isArray(o.items)) {
+        o.items.forEach((it: any) => {
+          const key = String(it.id || '').toLowerCase().trim();
+          const nameKey = String(it.name || '').toLowerCase().trim();
+          const qty = Number(it.quantity) || 1;
+          if (key) map[key] = (map[key] || 0) + qty;
+          if (nameKey) map[nameKey] = (map[nameKey] || 0) + qty;
+        });
+      }
+    });
+  }
+  return map;
+}
+
+function getProductSales(p: any, salesMap: Record<string, number>): number {
+  const idKey = String(p.id || '').toLowerCase().trim();
+  const nameKey = String(p.name || '').toLowerCase().trim();
+  return salesMap[idKey] || salesMap[nameKey] || p.totalSales || 0;
+}
+
+function getBaseCurationRank(p: any): number {
+  const idKey = String(p.id || '').toLowerCase().trim();
+  const nameKey = String(p.name || '').toLowerCase().trim();
+  const idx = CURATED_FEATURED_RANK.findIndex(
+    (r) => r === idKey || r === nameKey
+  );
+  return idx >= 0 ? idx : 999;
+}
+
+function getArrivalTimestamp(p: any): number {
+  const overrides = (productOverrides || {}) as Record<string, any>;
+  const ov =
+    overrides[p.id] ||
+    Object.values(overrides).find(
+      (o: any) => (o.name || '').toLowerCase().trim() === (p.name || '').toLowerCase().trim()
+    );
+  const dateStr = p.createdAt || ov?.createdAt || ov?.updatedAt;
+  if (dateStr) {
+    const t = new Date(dateStr).getTime();
+    if (!isNaN(t)) return t;
+  }
+  // Baseline arrival order: reverse catalog order (newest loom additions first)
+  const idx = products.findIndex(
+    (item) => item.id === p.id || item.name.toLowerCase() === p.name.toLowerCase()
+  );
+  return idx >= 0 ? 1000000 + (products.length - idx) : 0;
+}
+
+export default async function HomePage() {
+  const salesMap = getSalesMap();
+
+  // 1. Gather candidate creations (catalog + any dynamic additions)
+  let candidatePool: typeof products = [...products];
+
   try {
     const res = await apiClient.products.list();
     if (res && res.products && Array.isArray(res.products) && res.products.length > 0) {
-      newArrivals = res.products
-        .filter((item: any) => !isItemHiddenOrDeleted(item.id, item.name))
-        .map((item: any) => {
-          const matched = products.find(p => p.id === item.id || p.name.toLowerCase() === item.name.toLowerCase());
-          if (matched) return matched;
-          return {
+      res.products.forEach((item: any) => {
+        const itemId = String(item.id || '').toLowerCase().trim();
+        const itemName = String(item.name || '').toLowerCase().trim();
+        const exists = candidatePool.some(
+          (c) => String(c.id).toLowerCase().trim() === itemId || String(c.name).toLowerCase().trim() === itemName
+        );
+        if (!exists && !isItemHiddenOrDeleted(item.id, item.name)) {
+          candidatePool.push({
             id: String(item.id),
             category: item.category || 'sarees',
             name: item.name,
@@ -78,19 +154,37 @@ export default async function HomePage() {
             sizes: item.sizes || ['Free Size'],
             care: item.care || 'Dry clean only',
             images: item.images && Array.isArray(item.images) ? item.images : [item.image_url || item.image || '/images/category-sarees.png'],
-          };
-        })
-        .filter((p): p is typeof products[0] => p !== undefined && !isItemHiddenOrDeleted(p.id, p.name))
-        .slice(0, 12);
+          });
+        }
+      });
     }
   } catch (err) {
-    // Graceful fallback to static products
+    // Resilient fallback to local catalog
   }
-  if (!newArrivals || newArrivals.length === 0) {
-    newArrivals = products.filter(p => !isItemHiddenOrDeleted(p.id, p.name)).slice(0, 12);
-  } else {
-    newArrivals = newArrivals.filter(p => !isItemHiddenOrDeleted(p.id, p.name));
-  }
+
+  // Strictly filter out any hidden or deleted items from the candidate pool
+  const activeProducts = candidatePool.filter((p) => !isItemHiddenOrDeleted(p.id, p.name));
+
+  // ── FEATURED CURATION (Top 6 by amount sold; if equal/zero, curated priority; immediate next rank fills if hidden/deleted) ──
+  const featured = [...activeProducts]
+    .sort((a, b) => {
+      const salesA = getProductSales(a, salesMap);
+      const salesB = getProductSales(b, salesMap);
+      if (salesB !== salesA) {
+        return salesB - salesA; // Highest amount sold first
+      }
+      return getBaseCurationRank(a) - getBaseCurationRank(b); // Tie-breaker: curated rank sequence
+    })
+    .slice(0, 6);
+
+  // ── NEW ARRIVALS (Top 12 most recent additions; immediate next incoming fills if hidden/deleted) ──
+  const newArrivals = [...activeProducts]
+    .sort((a, b) => {
+      const timeA = getArrivalTimestamp(a);
+      const timeB = getArrivalTimestamp(b);
+      return timeB - timeA; // Most recent additions first
+    })
+    .slice(0, 12);
 
   return (
     <>

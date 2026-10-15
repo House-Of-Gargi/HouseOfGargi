@@ -17,6 +17,8 @@ export interface Product {
   isHidden?: boolean;
   isDeleted?: boolean;
   stock?: number;
+  totalSales?: number;
+  createdAt?: string;
 }
 
 export interface Artisan {
