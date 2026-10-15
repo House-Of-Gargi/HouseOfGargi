@@ -735,10 +735,13 @@ export default function AdminLoginPage() {
                         ref={(el) => { otpInputRefs.current[idx] = el; }}
                         type="text"
                         inputMode="numeric"
-                        maxLength={1}
+                        autoComplete={idx === 0 ? 'one-time-code' : 'off'}
+                        maxLength={6}
                         value={val}
                         onChange={(e) => handleOtpChange(idx, e.target.value)}
                         onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                        onPaste={handleOtpPaste}
+                        onFocus={(e) => e.target.select()}
                         className="otp-digit-box"
                         autoFocus={idx === 0}
                       />

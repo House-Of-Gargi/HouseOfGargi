@@ -219,13 +219,26 @@ export default function SellerLoginPage() {
     }
   };
 
-  // OTP Input navigation
+  // OTP Input navigation & Paste support
+  const handleOtpPaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+    if (!pasted) return;
+    const newValues = ['', '', '', '', '', ''];
+    for (let i = 0; i < pasted.length; i++) {
+      newValues[i] = pasted[i];
+    }
+    setOtpValues(newValues);
+    const focusIndex = Math.min(pasted.length, 5);
+    otpInputRefs.current[focusIndex]?.focus();
+  };
+
   const handleOtpChange = (index: number, value: string) => {
     const sanitized = value.replace(/\D/g, '');
     
     if (sanitized.length > 1) {
       const pastedChars = sanitized.slice(0, 6).split('');
-      const newValues = [...otpValues];
+      const newValues = ['', '', '', '', '', ''];
       pastedChars.forEach((char, i) => {
         if (i < 6) newValues[i] = char;
       });
@@ -236,7 +249,7 @@ export default function SellerLoginPage() {
     }
 
     const newValues = [...otpValues];
-    newValues[index] = sanitized;
+    newValues[index] = sanitized ? sanitized.slice(-1) : '';
     setOtpValues(newValues);
 
     if (sanitized && index < 5) {
@@ -245,8 +258,14 @@ export default function SellerLoginPage() {
   };
 
   const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && !otpValues[index] && index > 0) {
+    if (e.key === 'Backspace') {
+      if (!otpValues[index] && index > 0) {
+        otpInputRefs.current[index - 1]?.focus();
+      }
+    } else if (e.key === 'ArrowLeft' && index > 0) {
       otpInputRefs.current[index - 1]?.focus();
+    } else if (e.key === 'ArrowRight' && index < 5) {
+      otpInputRefs.current[index + 1]?.focus();
     }
   };
 
@@ -921,17 +940,20 @@ export default function SellerLoginPage() {
                     </button>
                   </div>
 
-                  <div className="otp-boxes-grid">
+                  <div className="otp-boxes-grid" onPaste={handleOtpPaste}>
                     {otpValues.map((digit, idx) => (
                       <input
                         key={idx}
                         ref={(el) => { otpInputRefs.current[idx] = el; }}
                         type="text"
                         inputMode="numeric"
-                        maxLength={1}
+                        autoComplete={idx === 0 ? 'one-time-code' : 'off'}
+                        maxLength={6}
                         value={digit}
                         onChange={(e) => handleOtpChange(idx, e.target.value)}
                         onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                        onPaste={handleOtpPaste}
+                        onFocus={(e) => e.target.select()}
                         className="otp-digit-box"
                         placeholder="·"
                       />
