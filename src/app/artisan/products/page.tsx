@@ -14,6 +14,7 @@ import {
   Pencil,
   Images,
   Trash2,
+  EyeOff,
   ChevronLeft,
   ChevronRight,
   Upload,
@@ -83,6 +84,68 @@ export default function SellerProductsPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+
+  // Delete & Hide states
+  const [deleteConfirmProduct, setDeleteConfirmProduct] = useState<any | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [togglingHideId, setTogglingHideId] = useState<string | null>(null);
+
+  const handleToggleHide = async (product: any) => {
+    const newHidden = !product.isHidden;
+    setTogglingHideId(product.id);
+    setProducts((prev) =>
+      prev.map((p) => (p.id === product.id ? { ...p, isHidden: newHidden } : p))
+    );
+    if (selectedProduct && selectedProduct.id === product.id) {
+      setSelectedProduct({ ...selectedProduct, isHidden: newHidden });
+    }
+
+    try {
+      await fetch('/api/admin/products', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: product.id, name: product.name, isHidden: newHidden }),
+      });
+    } catch (err) {
+      console.error('Error toggling hide status:', err);
+      fetchProducts();
+    } finally {
+      setTogglingHideId(null);
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!deleteConfirmProduct) return;
+    const target = deleteConfirmProduct;
+    setIsDeleting(true);
+
+    try {
+      const res = await fetch(
+        `/api/admin/products?id=${encodeURIComponent(target.id)}&name=${encodeURIComponent(target.name)}`,
+        {
+          method: 'DELETE',
+        }
+      );
+      const data = await res.json();
+      if (data.success) {
+        setProducts((prev) => prev.filter((p) => p.id !== target.id));
+        if (selectedProduct && selectedProduct.id === target.id) {
+          setSelectedProduct(null);
+        }
+        if (imageEditorProduct && imageEditorProduct.id === target.id) {
+          setImageEditorProduct(null);
+        }
+        setDeleteConfirmProduct(null);
+      } else {
+        alert('Failed to delete piece: ' + (data.message || 'Server error'));
+      }
+    } catch (err: any) {
+      console.error('Error deleting creation:', err);
+      alert('Error deleting creation: ' + (err.message || 'Network error'));
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   // Image Editor Modal State
   const [imageEditorProduct, setImageEditorProduct] = useState<any | null>(null);
@@ -489,7 +552,7 @@ export default function SellerProductsPage() {
           </button>
 
           <Link
-            href="/seller/products/new"
+            href="/artisan/products/new"
             style={{
               background: 'var(--maharani-maroon)',
               color: '#FFFFFF',
@@ -615,6 +678,23 @@ export default function SellerProductsPage() {
                         <span style={{ color: 'var(--ink-brown)', fontWeight: 700, fontSize: '0.9rem' }}>
                           {product.name}
                         </span>
+                        {product.isHidden && (
+                          <span
+                            style={{
+                              fontSize: '0.72rem',
+                              fontWeight: 800,
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.04em',
+                              padding: '2px 7px',
+                              borderRadius: 4,
+                              background: '#FFF3E0',
+                              color: '#D97706',
+                              border: '1px solid #FFE0B2',
+                            }}
+                          >
+                            Hidden
+                          </span>
+                        )}
                       </div>
                     </td>
 
@@ -645,7 +725,7 @@ export default function SellerProductsPage() {
                       {product.totalSales || 0} Pieces
                     </td>
 
-                    {/* Actions: Edit Images & View More */}
+                    {/* Actions: Edit Images, Edit Piece, View More, Hide & Delete */}
                     <td style={{ padding: '0.65rem 1rem', textAlign: 'right', whiteSpace: 'nowrap' }}>
                       <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', justifyContent: 'flex-end' }}>
                         <button
@@ -672,6 +752,32 @@ export default function SellerProductsPage() {
 
                         <button
                           type="button"
+                          onClick={() => {
+                            handleOpenDetails(product);
+                            setIsEditing(true);
+                          }}
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.35rem',
+                            padding: '0.38rem 0.75rem',
+                            borderRadius: 4,
+                            background: 'var(--maharani-maroon)',
+                            border: '1px solid var(--maharani-maroon)',
+                            color: '#FFFFFF',
+                            fontSize: '0.8rem',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            transition: 'all 0.15s ease',
+                            boxShadow: '0 1px 4px rgba(122, 35, 49, 0.15)',
+                          }}
+                        >
+                          <Pencil style={{ width: 13, height: 13 }} />
+                          Edit Piece
+                        </button>
+
+                        <button
+                          type="button"
                           onClick={() => handleOpenDetails(product)}
                           style={{
                             display: 'inline-flex',
@@ -688,6 +794,62 @@ export default function SellerProductsPage() {
                           }}
                         >
                           View More
+                        </button>
+
+                        {/* Hide / Unhide Button */}
+                        <button
+                          type="button"
+                          onClick={() => handleToggleHide(product)}
+                          disabled={togglingHideId === product.id}
+                          title={product.isHidden ? 'Product is Hidden — click to Unhide' : 'Hide from customer storefront'}
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.35rem',
+                            padding: '0.38rem 0.65rem',
+                            borderRadius: 4,
+                            background: product.isHidden ? '#FFF3E0' : '#FFFFFF',
+                            border: product.isHidden ? '1px solid #D97706' : '1px solid var(--soft-gold-line)',
+                            color: product.isHidden ? '#D97706' : 'var(--ink-brown)',
+                            fontSize: '0.8rem',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            transition: 'all 0.15s ease',
+                          }}
+                        >
+                          {togglingHideId === product.id ? (
+                            <Loader2 size={13} className="animate-spin" />
+                          ) : product.isHidden ? (
+                            <EyeOff size={13} />
+                          ) : (
+                            <Eye size={13} />
+                          )}
+                          <span>{product.isHidden ? 'Hidden' : 'Hide'}</span>
+                        </button>
+
+                        {/* Delete Icon Button */}
+                        <button
+                          type="button"
+                          onClick={() => setDeleteConfirmProduct(product)}
+                          title="Delete piece from existence"
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: '0.38rem 0.6rem',
+                            borderRadius: 4,
+                            background: '#FFEBEE',
+                            border: '1px solid #FFCDD2',
+                            color: '#C62828',
+                            fontSize: '0.8rem',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            transition: 'all 0.15s ease',
+                          }}
+                          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#FFCDD2')}
+                          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFEBEE')}
+                        >
+                          <Trash2 size={14} />
                         </button>
                       </div>
                     </td>

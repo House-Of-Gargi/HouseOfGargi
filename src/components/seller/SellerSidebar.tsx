@@ -46,29 +46,29 @@ const sellerNavGroups: SellerNavGroup[] = [
     section: 'Overview & Profile',
     items: [
       { label: 'Dashboard', href: '/artisan/dashboard', icon: LayoutDashboard },
-      { label: 'Artisan Profile', href: '/seller/profile', icon: UserCheck },
-      { label: 'Performance Analytics', href: '/seller/analytics', icon: TrendingUp },
+      { label: 'Artisan Profile', href: '/artisan/profile', icon: UserCheck },
+      { label: 'Performance Analytics', href: '/artisan/analytics', icon: TrendingUp },
     ],
   },
   {
     section: 'My Creations',
     items: [
-      { label: 'My Products', href: '/seller/products', icon: Shirt },
-      { label: 'Add New Creation', href: '/seller/products/new', icon: PlusCircle },
-      { label: 'Inventory & Loom Stock', href: '/seller/inventory', icon: Boxes },
+      { label: 'My Products', href: '/artisan/products', icon: Shirt },
+      { label: 'Add New Creation', href: '/artisan/products/new', icon: PlusCircle },
+      { label: 'Inventory & Loom Stock', href: '/artisan/inventory', icon: Boxes },
     ],
   },
   {
     section: 'Orders & Dispatch',
     items: [
-      { label: 'Assigned Orders', href: '/seller/orders', icon: ShoppingBag },
-      { label: 'Dispatch Slips', href: '/seller/orders?filter=dispatch', icon: Truck },
+      { label: 'Assigned Orders', href: '/artisan/orders', icon: ShoppingBag },
+      { label: 'Dispatch Slips', href: '/artisan/orders?filter=dispatch', icon: Truck },
     ],
   },
   {
     section: 'Finances',
     items: [
-      { label: 'Earnings Ledger', href: '/seller/earnings', icon: Wallet },
+      { label: 'Earnings Ledger', href: '/artisan/earnings', icon: Wallet },
     ],
   },
   {
@@ -122,9 +122,9 @@ export function SellerSidebar({
       if (typeof window !== 'undefined') {
         localStorage.removeItem('artisan_session');
       }
-      router.push('/seller/login');
+      router.push('/artisan/login');
     } catch {
-      router.push('/seller/login');
+      router.push('/artisan/login');
     }
   };
 
