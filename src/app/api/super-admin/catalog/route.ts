@@ -1,103 +1,52 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { proxyToBackend } from '@/lib/apiProxy';
 import { supabase } from '@/lib/supabaseClient';
-import { products as catalogProducts } from '@/data/products';
 
-const PRODUCT_OVERRIDES_FILE = path.join(process.cwd(), 'src', 'data', 'product_overrides.json');
-const PRODUCT_NUMBERS_FILE = path.join(process.cwd(), 'src', 'data', 'product_numbers.json');
-
-function getProductOverrides(): Record<string, any> {
-  if (fs.existsSync(PRODUCT_OVERRIDES_FILE)) {
-    try {
-      return JSON.parse(fs.readFileSync(PRODUCT_OVERRIDES_FILE, 'utf8'));
-    } catch {}
-  }
-  return {};
-}
-
-function saveProductOverrides(overrides: Record<string, any>) {
+export async function GET(req: Request) {
   try {
-    fs.writeFileSync(PRODUCT_OVERRIDES_FILE, JSON.stringify(overrides, null, 2), 'utf8');
-  } catch (e) {
-    console.error('Error saving overrides:', e);
-  }
-}
+    const res = await proxyToBackend(req, '/api/v1/super-admin/catalog');
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && Array.isArray(data.items)) {
+      return NextResponse.json(data);
+    }
+  } catch {}
 
-function getProductNumbers(): Record<string, string> {
-  if (fs.existsSync(PRODUCT_NUMBERS_FILE)) {
-    try {
-      return JSON.parse(fs.readFileSync(PRODUCT_NUMBERS_FILE, 'utf8'));
-    } catch {}
-  }
-  return {};
-}
-
-export async function GET() {
+  // Live Supabase fallback
   try {
-    const overrides = getProductOverrides();
-    const productNumbers = getProductNumbers();
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .is('deleted_at', null)
+      .order('created_at', { ascending: false });
 
-    // 1. Fetch live products from Supabase
-    let supabaseProducts: any[] = [];
-    try {
-      const { data } = await supabase.from('products').select('*');
-      if (data && data.length > 0) supabaseProducts = data;
-    } catch {}
+    if (!error && data) {
+      const items = data.map((p, idx) => ({
+        id: p.id,
+        productNo: p.product_number || `HG-CREATION-${1000 + idx}`,
+        title: p.name,
+        category: p.category,
+        artisan: p.artisan_name || 'Master Handloom Guild',
+        price: p.price_in_rupees || p.price || 0,
+        stock: p.stock ?? 10,
+        isVisible: !p.is_hidden,
+        isHero: Boolean(p.is_featured),
+        imageUrl: Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : (p.image_url || '/images/category-sarees.png'),
+      }));
 
-    const itemsMap = new Map<string, any>();
-
-    catalogProducts.forEach((cp, idx) => {
-      const ov = overrides[cp.id] || {};
-      const pNo = productNumbers[cp.id] || `HG-CREATION-${1000 + idx}`;
-
-      itemsMap.set(cp.id, {
-        id: cp.id,
-        productNo: pNo,
-        title: ov.name || cp.name,
-        category: ov.category || cp.category,
-        artisan: cp.artisanName || 'Gopal Chandra Dey Guild',
-        price: ov.price || cp.price,
-        stock: ov.stock ?? 10,
-        isVisible: ov.isVisible !== undefined ? ov.isVisible : true,
-        isHero: ov.isHero !== undefined ? ov.isHero : ((cp as any).isFeatured ?? false),
-        imageUrl: ov.images?.[0] || cp.images?.[0] || '/images/category-sarees.png',
+      return NextResponse.json({
+        success: true,
+        items,
+        count: items.length,
       });
-    });
-
-    supabaseProducts.forEach((sp, idx) => {
-      const ov = overrides[sp.id] || {};
-      const existing = itemsMap.get(sp.id);
-      const pNo = productNumbers[sp.id] || (existing?.productNo || `HG-CREATION-${2000 + idx}`);
-
-      itemsMap.set(sp.id, {
-        id: sp.id,
-        productNo: pNo,
-        title: ov.name || sp.name || existing?.title,
-        category: ov.category || sp.category || existing?.category || 'sarees',
-        artisan: sp.artisan_name || existing?.artisan || 'Master Handloom Guild',
-        price: ov.price || sp.price_in_rupees || existing?.price || 0,
-        stock: ov.stock ?? (sp.stock ?? 10),
-        isVisible: ov.isVisible !== undefined ? ov.isVisible : (existing?.isVisible ?? true),
-        isHero: ov.isHero !== undefined ? ov.isHero : (existing?.isHero ?? false),
-        imageUrl: ov.images?.[0] || sp.image_url || existing?.imageUrl || '/images/category-sarees.png',
-      });
-    });
-
-    const items = Array.from(itemsMap.values());
-
-    return NextResponse.json({
-      success: true,
-      items,
-      count: items.length,
-    });
+    }
   } catch (err: any) {
-    console.error('Master catalog API error:', err);
     return NextResponse.json(
       { success: false, message: err?.message || 'Error fetching master catalog' },
       { status: 500 }
     );
   }
+
+  return NextResponse.json({ success: true, items: [], count: 0 });
 }
 
 export async function PATCH(req: Request) {
@@ -109,26 +58,26 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ success: false, message: 'Product ID required' }, { status: 400 });
     }
 
-    const overrides = getProductOverrides();
-    if (!overrides[id]) {
-      overrides[id] = {};
-    }
-
     if (isVisible !== undefined) {
-      overrides[id].isVisible = Boolean(isVisible);
-    }
-    if (isHero !== undefined) {
-      overrides[id].isHero = Boolean(isHero);
+      await proxyToBackend(req, `/api/v1/admin/products/${id}/visibility`, {
+        method: 'PATCH',
+        body: { isHidden: !isVisible },
+      });
     }
 
-    saveProductOverrides(overrides);
+    if (isHero !== undefined) {
+      await proxyToBackend(req, `/api/v1/super-admin/bestsellers/${id}`, {
+        method: 'PATCH',
+        body: { isFeatured: Boolean(isHero) },
+      });
+    }
 
     return NextResponse.json({
       success: true,
       message: `Product ${id} storefront display settings updated`,
       id,
-      isVisible: overrides[id].isVisible,
-      isHero: overrides[id].isHero,
+      isVisible,
+      isHero,
     });
   } catch (err: any) {
     return NextResponse.json({ success: false, message: err?.message }, { status: 500 });

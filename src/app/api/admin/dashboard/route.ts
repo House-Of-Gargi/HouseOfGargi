@@ -1,12 +1,18 @@
-import fs from 'fs';
-import path from 'path';
-const DATA_FILE = path.join(process.cwd(), 'src', 'data', 'artisan_applications.json');
 import { NextResponse } from 'next/server';
+import { proxyToBackend } from '@/lib/apiProxy';
 import { supabase } from '@/lib/supabaseClient';
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    // Fetch live tables from Supabase in parallel
+    const res = await proxyToBackend(req, '/api/v1/admin/dashboard');
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data?.data) {
+      return NextResponse.json(data);
+    }
+  } catch {}
+
+  // Authoritative Supabase fallback without local JSON file reads
+  try {
     const [artisansRes, appsRes, prodsRes, ordersRes] = await Promise.all([
       supabase.from('artisan_profiles').select('*'),
       supabase.from('artisan_applications').select('*'),
@@ -15,58 +21,34 @@ export async function GET() {
     ]);
 
     const artisanProfiles = artisansRes.data || [];
-    let applications = appsRes.data || [];
-    if (fs.existsSync(DATA_FILE)) {
-      try {
-        const localApps = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-        applications = applications.map((app: any) => {
-          const match = localApps.find((l: any) => l.applicationId === app.application_number || l.id === app.id);
-          if (match) {
-            return { ...app, status: match.status || app.status };
-          }
-          return app;
-        });
-      } catch (e) {}
-    }
+    const applications = appsRes.data || [];
     const products = prodsRes.data || [];
     const orders = ordersRes.data || [];
 
-    // Filter applications and products
     const approvedApps = applications.filter((a: any) => a.status === 'approved');
     const pendingApps = applications.filter((a: any) => a.status === 'pending');
     const pendingProducts = products.filter((p: any) => p.curation_status === 'pending');
 
-    // 1. Total Artisans: approved artisans from applications & artisan_profiles
     const totalArtisans = Math.max(artisanProfiles.length, approvedApps.length);
-
-    // 2. Total Products: real products in DB
     const totalProducts = products.length;
-
-    // 3. Total Sales: sum of orders total_rupees
     const totalSales = orders.reduce((sum: number, o: any) => sum + (Number(o.total_rupees) || 0), 0);
 
-    // 4. Pending queues
     const pendingArtisansCount = pendingApps.length;
     const pendingProductsCount = pendingProducts.length;
     const totalPendingCount = pendingArtisansCount + pendingProductsCount;
 
-    // 5. Daily Sales per day for last 7 days and last 30 days
     const now = new Date();
-
     const getDailySales = (daysCount: number) => {
       const days: any[] = [];
       for (let i = daysCount - 1; i >= 0; i--) {
         const d = new Date(now);
         d.setDate(d.getDate() - i);
         const dateStr = d.toISOString().split('T')[0];
-
-        // Format short day label
         const weekdayStr = d.toLocaleDateString('en-US', { weekday: 'short' });
         const dayNumberStr = d.getDate();
         const shortLabel = `${weekdayStr} ${dayNumberStr}`;
         const fullLabel = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 
-        // Sum real orders on this date
         const dayTotal = orders
           .filter((o: any) => o.created_at && o.created_at.startsWith(dateStr))
           .reduce((sum: number, o: any) => sum + (Number(o.total_rupees) || 0), 0);
@@ -84,7 +66,6 @@ export async function GET() {
     const sales7Days = getDailySales(7);
     const sales30Days = getDailySales(30);
 
-    // 6. Top 10 Most Sold Items from products table
     const topProducts = [...products]
       .sort((a: any, b: any) => (Number(b.total_units_sold) || 0) - (Number(a.total_units_sold) || 0))
       .slice(0, 10)
@@ -92,13 +73,12 @@ export async function GET() {
         id: p.id,
         name: p.name,
         category: p.category,
-        price: p.price_in_rupees,
+        price: p.price_in_rupees || p.price || 0,
         unitsSold: Number(p.total_units_sold) || 0,
         revenue: Number(p.total_gross_revenue) || 0,
-        imageUrl: p.image_url,
+        imageUrl: p.image_url || (Array.isArray(p.images) ? p.images[0] : null),
       }));
 
-    // 7. Top 10 Artisans from approved artisans
     const topArtisans = approvedApps.slice(0, 10).map((a: any) => ({
       id: a.id || a.application_number,
       name: a.name,
@@ -126,7 +106,6 @@ export async function GET() {
       },
     });
   } catch (err: any) {
-    console.error('Error calculating admin dashboard stats:', err);
     return NextResponse.json(
       { success: false, message: err?.message || 'Error fetching stats' },
       { status: 500 }
