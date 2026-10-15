@@ -28,7 +28,7 @@ export async function GET(request: Request) {
       stock: ov.stock !== undefined ? ov.stock : ((p as any).stock ?? 10),
       images: ov.images || p.images,
       description: ov.description || p.description,
-      craftTechnique: ov.artType || ov.technique || p.craftTechnique,
+      craftTechnique: ov.artType || ov.technique || (p as any).craftTechnique || p.technique,
       fabric: ov.fabric || p.fabric,
     };
   });

@@ -203,7 +203,7 @@ export async function GET() {
           price: ov.price !== undefined ? ov.price : cp.price,
           stock: ov.stock !== undefined ? ov.stock : 10,
           image: ov.images?.[0] || cp.images?.[0] || '/images/category-sarees.png',
-          created_at: cp.createdAt || new Date().toISOString(),
+          created_at: (cp as any).createdAt || new Date().toISOString(),
           artisan_id: cp.artisanId || 'HG-ART-260501',
           artisan_no: 'HG-84192',
           artisan_name: 'Gopal Chandra Dey',
