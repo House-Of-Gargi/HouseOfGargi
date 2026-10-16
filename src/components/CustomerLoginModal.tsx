@@ -179,7 +179,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
       }
 
       const userName = data.user?.name || cleanEmail.split('@')[0] || 'Customer';
-      login(cleanEmail, userName, data.user?.id);
+      login(cleanEmail, userName, data.user?.id, data.user?.role);
       handleClose();
       if (redirectAfterLogin) router.push(redirectAfterLogin);
     } catch (err: any) {

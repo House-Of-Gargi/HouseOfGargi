@@ -1,20 +1,35 @@
 import { NextResponse } from 'next/server';
 import { proxyToBackend } from '@/lib/apiProxy';
 
+function clearAllAuthCookies(response: NextResponse) {
+  const cookieNames = [
+    'hog_session',
+    'sb-access-token',
+    'sb-refresh-token',
+    'supabase-auth-token',
+  ];
+  for (const name of cookieNames) {
+    response.cookies.set(name, '', {
+      path: '/',
+      maxAge: 0,
+      expires: new Date(0),
+      httpOnly: true,
+      sameSite: 'lax',
+    });
+    response.cookies.delete(name);
+  }
+}
+
 export async function POST(req: Request) {
   try {
-    const res = await proxyToBackend(req, '/api/v1/auth/logout', { method: 'POST' });
+    await proxyToBackend(req, '/api/v1/auth/logout', { method: 'POST' }).catch(() => {});
     const response = NextResponse.json({ success: true, message: 'Logged out successfully' });
-    // Also clear cookie on frontend domain
-    response.cookies.delete('hog_session');
-    response.cookies.delete('sb-access-token');
-    response.cookies.delete('sb-refresh-token');
+    clearAllAuthCookies(response);
     return response;
   } catch {
     const response = NextResponse.json({ success: true, message: 'Logged out locally' });
-    response.cookies.delete('hog_session');
-    response.cookies.delete('sb-access-token');
-    response.cookies.delete('sb-refresh-token');
+    clearAllAuthCookies(response);
     return response;
   }
 }
+

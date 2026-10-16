@@ -118,13 +118,22 @@ export function SellerSidebar({
 
   const handleLogout = async () => {
     try {
-      await supabase.auth.signOut();
+      await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
+      await supabase.auth.signOut().catch(() => {});
       if (typeof window !== 'undefined') {
         localStorage.removeItem('artisan_session');
+        localStorage.removeItem('auth_session');
+        localStorage.removeItem('admin_session');
+        localStorage.removeItem('super_admin_session');
+        localStorage.removeItem('gargi_customer_email');
+        localStorage.removeItem('gargi_customer_name');
+        localStorage.removeItem('gargi_customer_id');
+        localStorage.removeItem('gargi_customer_role');
+        localStorage.removeItem('customer_auth_demo');
       }
-      router.push('/artisan/login');
+      window.location.href = '/artisan/login?logout=true';
     } catch {
-      router.push('/artisan/login');
+      window.location.href = '/artisan/login?logout=true';
     }
   };
 
