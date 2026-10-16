@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Boxes, Plus, Minus, CheckCircle2, AlertTriangle, Clock, RefreshCw, Loader2, Search } from 'lucide-react';
+import { usePortalRealtimeSync, notifyProductUpdated } from '@/lib/realtimeSync';
 
 export default function ArtisanInventoryPage() {
   const [products, setProducts] = useState<any[]>([]);
@@ -30,6 +31,21 @@ export default function ArtisanInventoryPage() {
     fetchInventory();
   }, []);
 
+  // Live WebSocket sync across all portals (Super Admin, Operations Admin, Artisan)
+  usePortalRealtimeSync(
+    [
+      'PRODUCT_CREATED',
+      'PRODUCT_UPDATED',
+      'PRODUCT_DELETED',
+      'PRODUCT_VISIBILITY_CHANGED',
+      'PRODUCT_STATUS_CHANGED',
+      'PORTAL_CATALOG_SYNC',
+    ],
+    () => {
+      fetchInventory();
+    }
+  );
+
   const handleUpdateStock = async (id: string, delta: number) => {
     const item = products.find((i) => i.id === id);
     if (!item) return;
@@ -48,6 +64,7 @@ export default function ArtisanInventoryPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, stock: newCount }),
       });
+      notifyProductUpdated({ ...item, stock: newCount });
     } catch (err) {
       console.error('Stock update error:', err);
       fetchInventory();
@@ -73,6 +90,7 @@ export default function ArtisanInventoryPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, stock: newStock }),
       });
+      notifyProductUpdated({ ...item, stock: newStock });
     } catch (err) {
       console.error('Toggle error:', err);
       fetchInventory();
@@ -102,7 +120,7 @@ export default function ArtisanInventoryPage() {
               Real-time Workshop Stock Manager
             </span>
           </div>
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
+          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.95rem', fontWeight: 600, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
             Manage Product Quantities & <span style={{ color: 'var(--maharani-maroon)' }}>Inventory</span>
           </h1>
           <p style={{ margin: '0.35rem 0 0', fontSize: '1.05rem', color: '#4A3E36' }}>

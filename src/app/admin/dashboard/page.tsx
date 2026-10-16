@@ -13,6 +13,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { AdminLoadingSpinner, AdminPageLoadingBlock } from '@/components/admin/AdminLoadingSpinner';
+import { usePortalRealtimeSync } from '@/lib/realtimeSync';
 
 interface DailySale {
   date: string;
@@ -64,10 +65,9 @@ export default function AdminDashboardPage() {
   const [productPage, setProductPage] = useState<number>(1);
   const PAGE_SIZE = 5;
 
-  useEffect(() => {
-    async function fetchStats() {
-      try {
-        const res = await fetch('/api/admin/dashboard');
+  const fetchStats = async () => {
+    try {
+      const res = await fetch('/api/admin/dashboard');
         const json = await res.json();
         if (json.success && json.data) {
           setData(json.data);
@@ -76,10 +76,30 @@ export default function AdminDashboardPage() {
         console.error('Failed to load dashboard data:', err);
       } finally {
         setLoading(false);
-      }
     }
+  };
+
+  useEffect(() => {
+    setLoading(true);
     fetchStats();
   }, []);
+
+  // Live WebSocket synchronization across Artisan & Admin portals
+  usePortalRealtimeSync(
+    [
+      'PRODUCT_CREATED',
+      'PRODUCT_UPDATED',
+      'PRODUCT_DELETED',
+      'PRODUCT_VISIBILITY_CHANGED',
+      'PRODUCT_STATUS_CHANGED',
+      'ARTISAN_APPLICATION_CHANGED',
+      'ORDER_STATUS_CHANGED',
+      'PORTAL_CATALOG_SYNC',
+    ],
+    () => {
+      fetchStats();
+    }
+  );
 
   const totalArtisans = data?.totalArtisans ?? 0;
   const totalProducts = data?.totalProducts ?? 0;

@@ -22,6 +22,13 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import CustomDropdown from '@/components/CustomDropdown';
+import {
+  usePortalRealtimeSync,
+  notifyProductCreated,
+  notifyProductUpdated,
+  notifyProductDeleted,
+  notifyProductVisibilityChanged,
+} from '@/lib/realtimeSync';
 
 const DEFAULT_CATEGORY_OPTIONS = [
   { value: 'sarees', label: 'Sarees' },
@@ -99,6 +106,8 @@ export default function SellerProductsPage() {
     if (selectedProduct && selectedProduct.id === product.id) {
       setSelectedProduct({ ...selectedProduct, isHidden: newHidden });
     }
+    // Broadcast live to Operations Admin & Super Admin portals
+    notifyProductVisibilityChanged(product.id, newHidden);
 
     try {
       await fetch('/api/admin/products', {
@@ -109,6 +118,7 @@ export default function SellerProductsPage() {
     } catch (err) {
       console.error('Error toggling hide status:', err);
       fetchProducts();
+      notifyProductVisibilityChanged(product.id, !newHidden);
     } finally {
       setTogglingHideId(null);
     }
@@ -135,6 +145,8 @@ export default function SellerProductsPage() {
         if (imageEditorProduct && imageEditorProduct.id === target.id) {
           setImageEditorProduct(null);
         }
+        // Broadcast delete live to Operations Admin & Super Admin portals
+        notifyProductDeleted(target.id, target.name);
         setDeleteConfirmProduct(null);
       } else {
         alert('Failed to delete piece: ' + (data.message || 'Server error'));
@@ -331,6 +343,40 @@ export default function SellerProductsPage() {
     fetchProducts();
   }, []);
 
+  // Live WebSocket synchronization across Artisan, Operations Admin & Super Admin portals
+  usePortalRealtimeSync(
+    ['PRODUCT_CREATED', 'PRODUCT_UPDATED', 'PRODUCT_DELETED', 'PRODUCT_VISIBILITY_CHANGED', 'PRODUCT_STATUS_CHANGED', 'PORTAL_CATALOG_SYNC'],
+    (msg) => {
+      if (msg.type === 'PRODUCT_VISIBILITY_CHANGED') {
+        const { id, isHidden } = msg.payload || {};
+        if (id) {
+          setProducts((prev) =>
+            prev.map((p) => (p.id === id ? { ...p, isHidden } : p))
+          );
+          return;
+        }
+      }
+      if (msg.type === 'PRODUCT_STATUS_CHANGED') {
+        const { id, status } = msg.payload || {};
+        if (id && status) {
+          setProducts((prev) =>
+            prev.map((p) => (p.id === id ? { ...p, curationStatus: status } : p))
+          );
+          return;
+        }
+      }
+      if (msg.type === 'PRODUCT_DELETED') {
+        const { id } = msg.payload || {};
+        if (id) {
+          setProducts((prev) => prev.filter((p) => p.id !== id));
+          return;
+        }
+      }
+      // Re-fetch products list when other portals update catalog
+      fetchProducts();
+    }
+  );
+
   // Open View More Modal
   const handleOpenDetails = (product: any) => {
     setSelectedProduct(product);
@@ -417,6 +463,9 @@ export default function SellerProductsPage() {
           return p;
         }));
 
+        // Broadcast live to Operations Admin & Super Admin portals immediately
+        notifyProductUpdated(payload);
+
         setSaveSuccess('Product details updated successfully!');
         setIsEditing(false);
         setTimeout(() => setSaveSuccess(''), 2000);
@@ -469,6 +518,7 @@ export default function SellerProductsPage() {
         body: JSON.stringify(createdItem),
       });
 
+      notifyProductCreated(createdItem);
       setProducts(prev => [createdItem, ...prev]);
       setNewSuccess('New piece registered successfully!');
 

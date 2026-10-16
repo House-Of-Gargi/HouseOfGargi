@@ -17,8 +17,8 @@ import {
   Loader2,
   Clock,
   CheckCircle2,
-} from 'lucide-react';
 import { AdminLoadingSpinner } from '@/components/admin/AdminLoadingSpinner';
+import { usePortalRealtimeSync } from '@/lib/realtimeSync';
 
 interface TopProduct {
   id: string;
@@ -54,8 +54,6 @@ interface SuperAdminDashboardData {
   topProducts: TopProduct[];
   recentOrders: RecentOrder[];
 }
-
-import { usePortalRealtimeSync } from '@/lib/realtimeSync';
 
 export default function SuperAdminOverviewPage() {
   const [data, setData] = useState<SuperAdminDashboardData | null>(null);

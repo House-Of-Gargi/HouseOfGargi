@@ -14,8 +14,8 @@ import {
   Package,
   Layers,
   ArrowRight,
-} from 'lucide-react';
 import { AdminPageLoadingBlock } from '@/components/admin/AdminLoadingSpinner';
+import { usePortalRealtimeSync, notifyProductStatusChanged } from '@/lib/realtimeSync';
 
 interface SubmissionItem {
   id: string;
@@ -61,6 +61,14 @@ export default function ProductQCApprovalsPage() {
     fetchSubmissions();
   }, []);
 
+  // Live WebSocket synchronization across Artisan & Admin portals
+  usePortalRealtimeSync(
+    ['PRODUCT_CREATED', 'PRODUCT_STATUS_CHANGED', 'PRODUCT_DELETED', 'PORTAL_CATALOG_SYNC'],
+    () => {
+      fetchSubmissions();
+    }
+  );
+
   useEffect(() => {
     setCurrentPage(1);
   }, [activeTab]);
@@ -68,6 +76,9 @@ export default function ProductQCApprovalsPage() {
   const handleDecision = async (id: string, decision: 'approved' | 'rejected') => {
     try {
       setActionSuccess(`Item ${decision === 'approved' ? 'accepted and published to boutique catalog' : 'marked as rejected'}.`);
+      // Broadcast live to Artisan & Super Admin portals immediately
+      notifyProductStatusChanged(id, decision);
+
       await fetch('/api/admin/products', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },

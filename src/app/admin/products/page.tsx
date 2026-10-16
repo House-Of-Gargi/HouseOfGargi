@@ -23,8 +23,14 @@ import {
   ShoppingBag,
   Trash2,
   EyeOff,
-} from 'lucide-react';
 import { AdminPageLoadingBlock } from '@/components/admin/AdminLoadingSpinner';
+import {
+  usePortalRealtimeSync,
+  notifyProductUpdated,
+  notifyProductDeleted,
+  notifyProductVisibilityChanged,
+  notifyProductStatusChanged,
+} from '@/lib/realtimeSync';
 
 interface ProductItem {
   id: string;
@@ -91,6 +97,8 @@ export default function ProductApprovalsPage() {
     if (editingProduct && editingProduct.id === product.id) {
       setEditingProduct({ ...editingProduct, isHidden: newHidden });
     }
+    // Broadcast live to Artisan & Super Admin portals
+    notifyProductVisibilityChanged(product.id, newHidden);
 
     try {
       await fetch('/api/admin/products', {
@@ -101,6 +109,7 @@ export default function ProductApprovalsPage() {
     } catch (err) {
       console.error('Error toggling hide status:', err);
       fetchProducts();
+      notifyProductVisibilityChanged(product.id, !newHidden);
     } finally {
       setTogglingHideId(null);
     }
@@ -127,6 +136,8 @@ export default function ProductApprovalsPage() {
         if (viewingProduct && viewingProduct.id === target.id) {
           setViewingProduct(null);
         }
+        // Broadcast delete to Artisan and Super Admin portals
+        notifyProductDeleted(target.id, target.name);
         setDeleteConfirmProduct(null);
       } else {
         alert('Failed to delete creation: ' + (data.message || 'Server error'));
@@ -160,6 +171,40 @@ export default function ProductApprovalsPage() {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  // Live WebSocket synchronization across Artisan & Admin portals
+  usePortalRealtimeSync(
+    ['PRODUCT_CREATED', 'PRODUCT_UPDATED', 'PRODUCT_DELETED', 'PRODUCT_VISIBILITY_CHANGED', 'PRODUCT_STATUS_CHANGED', 'PORTAL_CATALOG_SYNC'],
+    (msg) => {
+      if (msg.type === 'PRODUCT_VISIBILITY_CHANGED') {
+        const { id, isHidden } = msg.payload || {};
+        if (id) {
+          setProducts((prev) =>
+            prev.map((p) => (p.id === id ? { ...p, isHidden } : p))
+          );
+          return;
+        }
+      }
+      if (msg.type === 'PRODUCT_STATUS_CHANGED') {
+        const { id, status } = msg.payload || {};
+        if (id && status) {
+          setProducts((prev) =>
+            prev.map((p) => (p.id === id ? { ...p, curationStatus: status } : p))
+          );
+          return;
+        }
+      }
+      if (msg.type === 'PRODUCT_DELETED') {
+        const { id } = msg.payload || {};
+        if (id) {
+          setProducts((prev) => prev.filter((p) => p.id !== id));
+          return;
+        }
+      }
+      // Product created by Artisan or updated elsewhere
+      fetchProducts();
+    }
+  );
 
   useEffect(() => {
     setCurrentPage(1);
@@ -258,6 +303,16 @@ export default function ProductApprovalsPage() {
           )
         );
 
+        // Broadcast update to Artisan & Super Admin portals immediately
+        notifyProductUpdated({
+          id: editingProduct.id,
+          name: editForm.name,
+          description: editForm.description,
+          price: editForm.price,
+          stock: editForm.stock,
+          images: editForm.images,
+        });
+
         setTimeout(() => {
           setEditingProduct(null);
         }, 900);
@@ -272,6 +327,9 @@ export default function ProductApprovalsPage() {
   // Quick QC toggle (Approve / Reject)
   const handleToggleQCStatus = async (id: string, newStatus: 'approved' | 'rejected' | 'pending') => {
     try {
+      // Broadcast status update live to Artisan & Super Admin portals
+      notifyProductStatusChanged(id, newStatus);
+
       await fetch('/api/admin/products', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },

@@ -16,6 +16,7 @@ import {
   ImagePlus
 } from 'lucide-react';
 import CustomDropdown from '@/components/CustomDropdown';
+import { notifyProductCreated } from '@/lib/realtimeSync';
 
 const DEFAULT_CATEGORY_OPTIONS = [
   { value: 'sarees', label: 'Sarees' },
@@ -169,6 +170,9 @@ export default function NewProductCreationPage() {
         body: JSON.stringify(payload),
       });
 
+      // Broadcast live to Operations Admin and Super Admin portals
+      notifyProductCreated(payload);
+
       setCreatedProductNo(pNo);
       setSubmitted(true);
     } catch (err) {
@@ -217,7 +221,7 @@ export default function NewProductCreationPage() {
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontSize: '1.85rem',
-                fontWeight: 700,
+                fontWeight: 600,
                 color: 'var(--ink-brown)',
                 margin: 0,
                 lineHeight: 1.2,
@@ -363,8 +367,8 @@ export default function NewProductCreationPage() {
           {/* ── Section 1: Couture Identity & Classification ── */}
           <div>
             <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '0.65rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 800, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>01</span>
-              <h3 style={{ margin: 0, fontSize: '1.08rem', fontWeight: 800, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>01</span>
+              <h3 style={{ margin: 0, fontSize: '1.08rem', fontWeight: 600, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                 Couture Identity &amp; Classification
               </h3>
             </div>
@@ -444,8 +448,8 @@ export default function NewProductCreationPage() {
           {/* ── Section 2: Pricing & Atelier Stock ── */}
           <div>
             <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '0.65rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 800, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>02</span>
-              <h3 style={{ margin: 0, fontSize: '1.08rem', fontWeight: 800, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>02</span>
+              <h3 style={{ margin: 0, fontSize: '1.08rem', fontWeight: 600, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                 Pricing &amp; Atelier Stock
               </h3>
             </div>
@@ -510,8 +514,8 @@ export default function NewProductCreationPage() {
           {/* ── Section 3: Fabric Specifications & Customer Details ── */}
           <div>
             <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '0.65rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 800, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>03</span>
-              <h3 style={{ margin: 0, fontSize: '1.08rem', fontWeight: 800, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>03</span>
+              <h3 style={{ margin: 0, fontSize: '1.08rem', fontWeight: 600, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                 Fabric Specifications &amp; Customer Details
               </h3>
             </div>
@@ -649,8 +653,8 @@ export default function NewProductCreationPage() {
           {/* ── Section 4: Creation Story & Description ── */}
           <div>
             <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '0.65rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 800, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>04</span>
-              <h3 style={{ margin: 0, fontSize: '1.08rem', fontWeight: 800, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>04</span>
+              <h3 style={{ margin: 0, fontSize: '1.08rem', fontWeight: 600, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                 Description &amp; Story
               </h3>
             </div>
@@ -687,8 +691,8 @@ export default function NewProductCreationPage() {
           <div>
             <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '0.65rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 800, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>05</span>
-                <h3 style={{ margin: 0, fontSize: '1.08rem', fontWeight: 800, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>05</span>
+                <h3 style={{ margin: 0, fontSize: '1.08rem', fontWeight: 600, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                   Creation Gallery Images
                 </h3>
               </div>

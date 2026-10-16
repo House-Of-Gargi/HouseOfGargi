@@ -15,6 +15,7 @@ import {
   Award
 } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
+import { usePortalRealtimeSync } from '@/lib/realtimeSync';
 
 interface DailySale {
   date: string;
@@ -116,6 +117,22 @@ export default function ArtisanDashboardPage() {
   useEffect(() => {
     fetchLiveBackendData();
   }, []);
+
+  // Instant real-time WebSocket sync across all portals (Super Admin, Operations Admin, Artisan)
+  usePortalRealtimeSync(
+    [
+      'PRODUCT_CREATED',
+      'PRODUCT_UPDATED',
+      'PRODUCT_DELETED',
+      'PRODUCT_VISIBILITY_CHANGED',
+      'PRODUCT_STATUS_CHANGED',
+      'ORDER_STATUS_CHANGED',
+      'PORTAL_CATALOG_SYNC',
+    ],
+    () => {
+      fetchLiveBackendData();
+    }
+  );
 
   const handleSignOut = async () => {
     if (typeof window !== 'undefined') {

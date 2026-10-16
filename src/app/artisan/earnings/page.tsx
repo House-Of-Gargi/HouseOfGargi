@@ -13,6 +13,7 @@ import {
   TrendingUp,
   DollarSign
 } from 'lucide-react';
+import { usePortalRealtimeSync } from '@/lib/realtimeSync';
 
 export default function ArtisanEarningsPage() {
   const [orders, setOrders] = useState<any[]>([]);
@@ -39,6 +40,18 @@ export default function ArtisanEarningsPage() {
   useEffect(() => {
     fetchEarningsData();
   }, []);
+
+  // Live WebSocket sync across all portals (Super Admin, Operations Admin, Artisan)
+  usePortalRealtimeSync(
+    [
+      'ORDER_STATUS_CHANGED',
+      'PRODUCT_UPDATED',
+      'PORTAL_CATALOG_SYNC',
+    ],
+    () => {
+      fetchEarningsData();
+    }
+  );
 
   const finances = useMemo(() => {
     let cleared = 0;
@@ -79,7 +92,7 @@ export default function ArtisanEarningsPage() {
               Direct Artisan Workshop Payouts
             </span>
           </div>
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
+          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.95rem', fontWeight: 600, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0 }}>
             Earnings Ledger & <span style={{ color: 'var(--maharani-maroon)' }}>Settlements</span>
           </h1>
           <p style={{ margin: '0.35rem 0 0', fontSize: '1.05rem', color: '#4A3E36' }}>
@@ -122,7 +135,7 @@ export default function ArtisanEarningsPage() {
             </span>
             <CheckCircle2 style={{ width: 18, height: 18, color: '#2E7D32' }} />
           </div>
-          <div style={{ fontSize: '2.75rem', fontWeight: 800, lineHeight: 1.05, color: 'var(--maharani-maroon)', fontFamily: 'var(--font-serif)', margin: '0.5rem 0' }}>
+          <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.05, color: 'var(--maharani-maroon)', fontFamily: 'var(--font-serif)', margin: '0.5rem 0' }}>
             ₹ {finances.cleared.toLocaleString('en-IN')}
           </div>
           <p style={{ fontSize: '0.85rem', color: '#2E7D32', fontWeight: 600, margin: '0 0 1rem 0' }}>
@@ -161,7 +174,7 @@ export default function ArtisanEarningsPage() {
             </span>
             <Clock style={{ width: 18, height: 18, color: '#D97706' }} />
           </div>
-          <div style={{ fontSize: '2.75rem', fontWeight: 800, lineHeight: 1.05, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)', margin: '0.5rem 0' }}>
+          <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.05, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)', margin: '0.5rem 0' }}>
             ₹ {finances.inEscrow.toLocaleString('en-IN')}
           </div>
           <p style={{ fontSize: '0.85rem', color: 'var(--stone-taupe)', margin: 0 }}>
@@ -177,7 +190,7 @@ export default function ArtisanEarningsPage() {
             </span>
             <TrendingUp style={{ width: 18, height: 18, color: 'var(--maharani-maroon)' }} />
           </div>
-          <div style={{ fontSize: '2.75rem', fontWeight: 800, lineHeight: 1.05, color: '#1B5E20', fontFamily: 'var(--font-serif)', margin: '0.5rem 0' }}>
+          <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.05, color: '#1B5E20', fontFamily: 'var(--font-serif)', margin: '0.5rem 0' }}>
             ₹ {finances.lifetimeTotal.toLocaleString('en-IN')}
           </div>
           <p style={{ fontSize: '0.85rem', color: 'var(--stone-taupe)', margin: 0 }}>
@@ -231,7 +244,7 @@ export default function ArtisanEarningsPage() {
                   <td style={{ padding: '0.85rem 1rem', fontWeight: 600, color: 'var(--ink-brown)' }}>
                     ₹ {gross.toLocaleString('en-IN')}
                   </td>
-                  <td style={{ padding: '0.85rem 1rem', fontWeight: 800, color: '#2E7D32' }}>
+                  <td style={{ padding: '0.85rem 1rem', fontWeight: 600, color: '#2E7D32' }}>
                     ₹ {share.toLocaleString('en-IN')}
                   </td>
                   <td style={{ padding: '0.85rem 1rem' }}>
