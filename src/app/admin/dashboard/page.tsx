@@ -100,27 +100,28 @@ export default function AdminDashboardPage() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-      {/* Page Title Lockup - Accessible High-Contrast Sizing */}
+      {/* Page Title Lockup */}
       <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.5rem' }}>
         <h1
           style={{
-            fontSize: '2.35rem',
-            fontWeight: 800,
+            fontFamily: 'var(--font-serif)',
+            fontSize: '1.95rem',
+            fontWeight: 600,
             color: 'var(--ink-brown)',
             margin: 0,
-            letterSpacing: '-0.025em',
-            lineHeight: 1.2,
+            letterSpacing: '-0.01em',
+            lineHeight: 1.25,
           }}
         >
           Operations <span style={{ color: 'var(--maharani-maroon)' }}>Dashboard</span>
         </h1>
         <p
           style={{
-            margin: '0.5rem 0 0',
+            margin: '0.4rem 0 0',
             color: '#4A3E36',
-            fontSize: '1.05rem',
+            fontSize: '0.98rem',
             lineHeight: 1.55,
-            fontWeight: 500,
+            fontWeight: 400,
           }}
         >
           Real-time enterprise metrics, active catalog queues, and live revenue analytics.
@@ -141,13 +142,13 @@ export default function AdminDashboardPage() {
             background: '#FFFFFF',
             border: '1px solid var(--soft-gold-line)',
             borderRadius: '12px',
-            padding: '1.75rem 1.65rem',
+            padding: '1.6rem 1.6rem',
             position: 'relative',
             boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: '155px',
+            minHeight: '145px',
             transition: 'all 0.22s ease',
           }}
           onMouseEnter={(e) => {
@@ -164,13 +165,13 @@ export default function AdminDashboardPage() {
           <div
             style={{
               position: 'absolute',
-              top: '1.5rem',
-              right: '1.5rem',
-              width: '46px',
-              height: '46px',
+              top: '1.4rem',
+              right: '1.4rem',
+              width: '42px',
+              height: '42px',
               borderRadius: '50%',
               backgroundColor: '#FAF7F2',
-              border: '1.5px solid #231812',
+              border: '1px solid var(--soft-gold-line)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -178,31 +179,31 @@ export default function AdminDashboardPage() {
               boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
             }}
           >
-            <Users style={{ width: 22, height: 22, color: '#231812' }} strokeWidth={1.8} />
+            <Users style={{ width: 20, height: 20, color: 'var(--ink-brown)' }} strokeWidth={1.8} />
           </div>
           <div>
             <div
               style={{
-                fontSize: '0.92rem',
+                fontSize: '0.82rem',
                 color: '#5C5043',
-                fontWeight: 700,
+                fontWeight: 600,
                 textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-                marginBottom: '0.5rem',
+                letterSpacing: '0.08em',
+                marginBottom: '0.4rem',
               }}
             >
               Total Artisans
             </div>
             <div
               style={{
-                fontSize: '3rem',
-                fontWeight: 800,
+                fontSize: '2rem',
+                fontWeight: 600,
                 color: 'var(--ink-brown)',
-                lineHeight: 1.05,
-                letterSpacing: '-0.03em',
+                lineHeight: 1.15,
+                letterSpacing: '-0.01em',
               }}
             >
-              {loading ? <AdminLoadingSpinner size={32} /> : totalArtisans}
+              {loading ? <AdminLoadingSpinner size={26} /> : totalArtisans}
             </div>
           </div>
         </div>
@@ -213,13 +214,13 @@ export default function AdminDashboardPage() {
             background: '#FFFFFF',
             border: '1px solid var(--soft-gold-line)',
             borderRadius: '12px',
-            padding: '1.75rem 1.65rem',
+            padding: '1.6rem 1.6rem',
             position: 'relative',
             boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: '155px',
+            minHeight: '145px',
             transition: 'all 0.22s ease',
           }}
           onMouseEnter={(e) => {
@@ -236,13 +237,13 @@ export default function AdminDashboardPage() {
           <div
             style={{
               position: 'absolute',
-              top: '1.5rem',
-              right: '1.5rem',
-              width: '46px',
-              height: '46px',
+              top: '1.4rem',
+              right: '1.4rem',
+              width: '42px',
+              height: '42px',
               borderRadius: '50%',
               backgroundColor: '#FAF7F2',
-              border: '1.5px solid #231812',
+              border: '1px solid var(--soft-gold-line)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -250,31 +251,31 @@ export default function AdminDashboardPage() {
               boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
             }}
           >
-            <Package style={{ width: 22, height: 22, color: '#231812' }} strokeWidth={1.8} />
+            <Package style={{ width: 20, height: 20, color: 'var(--ink-brown)' }} strokeWidth={1.8} />
           </div>
           <div>
             <div
               style={{
-                fontSize: '0.92rem',
+                fontSize: '0.82rem',
                 color: '#5C5043',
-                fontWeight: 700,
+                fontWeight: 600,
                 textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-                marginBottom: '0.5rem',
+                letterSpacing: '0.08em',
+                marginBottom: '0.4rem',
               }}
             >
               Total Products
             </div>
             <div
               style={{
-                fontSize: '3rem',
-                fontWeight: 800,
+                fontSize: '2rem',
+                fontWeight: 600,
                 color: 'var(--ink-brown)',
-                lineHeight: 1.05,
-                letterSpacing: '-0.03em',
+                lineHeight: 1.15,
+                letterSpacing: '-0.01em',
               }}
             >
-              {loading ? <AdminLoadingSpinner size={32} /> : totalProducts}
+              {loading ? <AdminLoadingSpinner size={26} /> : totalProducts}
             </div>
           </div>
         </div>
@@ -285,13 +286,13 @@ export default function AdminDashboardPage() {
             background: '#FFFFFF',
             border: '1px solid var(--soft-gold-line)',
             borderRadius: '12px',
-            padding: '1.75rem 1.65rem',
+            padding: '1.6rem 1.6rem',
             position: 'relative',
             boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: '155px',
+            minHeight: '145px',
             transition: 'all 0.22s ease',
           }}
           onMouseEnter={(e) => {
@@ -308,13 +309,13 @@ export default function AdminDashboardPage() {
           <div
             style={{
               position: 'absolute',
-              top: '1.5rem',
-              right: '1.5rem',
-              width: '46px',
-              height: '46px',
+              top: '1.4rem',
+              right: '1.4rem',
+              width: '42px',
+              height: '42px',
               borderRadius: '50%',
               backgroundColor: '#FAF7F2',
-              border: '1.5px solid #231812',
+              border: '1px solid var(--soft-gold-line)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -322,31 +323,31 @@ export default function AdminDashboardPage() {
               boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
             }}
           >
-            <IndianRupee style={{ width: 22, height: 22, color: '#231812' }} strokeWidth={1.8} />
+            <IndianRupee style={{ width: 20, height: 20, color: 'var(--ink-brown)' }} strokeWidth={1.8} />
           </div>
           <div>
             <div
               style={{
-                fontSize: '0.92rem',
+                fontSize: '0.82rem',
                 color: '#5C5043',
-                fontWeight: 700,
+                fontWeight: 600,
                 textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-                marginBottom: '0.5rem',
+                letterSpacing: '0.08em',
+                marginBottom: '0.4rem',
               }}
             >
               Total Sales
             </div>
             <div
               style={{
-                fontSize: '3rem',
-                fontWeight: 800,
+                fontSize: '2rem',
+                fontWeight: 600,
                 color: 'var(--maharani-maroon)',
-                lineHeight: 1.05,
-                letterSpacing: '-0.03em',
+                lineHeight: 1.15,
+                letterSpacing: '-0.01em',
               }}
             >
-              {loading ? <AdminLoadingSpinner size={32} /> : ('₹' + totalSales.toLocaleString('en-IN'))}
+              {loading ? <AdminLoadingSpinner size={26} /> : ('₹' + totalSales.toLocaleString('en-IN'))}
             </div>
           </div>
         </div>
@@ -359,13 +360,13 @@ export default function AdminDashboardPage() {
             background: '#FFFFFF',
             border: '1px solid var(--soft-gold-line)',
             borderRadius: '12px',
-            padding: '1.75rem 1.65rem',
+            padding: '1.6rem 1.6rem',
             position: 'relative',
             boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: '155px',
+            minHeight: '145px',
             cursor: 'pointer',
             transition: 'all 0.22s ease',
           }}
@@ -383,13 +384,13 @@ export default function AdminDashboardPage() {
           <div
             style={{
               position: 'absolute',
-              top: '1.5rem',
-              right: '1.5rem',
-              width: '46px',
-              height: '46px',
+              top: '1.4rem',
+              right: '1.4rem',
+              width: '42px',
+              height: '42px',
               borderRadius: '50%',
               backgroundColor: '#FAF7F2',
-              border: '1.5px solid #231812',
+              border: '1px solid var(--soft-gold-line)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -397,32 +398,32 @@ export default function AdminDashboardPage() {
               boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
             }}
           >
-            <Clock style={{ width: 22, height: 22, color: '#231812' }} strokeWidth={1.8} />
+            <Clock style={{ width: 20, height: 20, color: 'var(--ink-brown)' }} strokeWidth={1.8} />
           </div>
 
           <div>
             <div
               style={{
-                fontSize: '0.92rem',
+                fontSize: '0.82rem',
                 color: '#5C5043',
-                fontWeight: 700,
+                fontWeight: 600,
                 textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-                marginBottom: '0.5rem',
+                letterSpacing: '0.08em',
+                marginBottom: '0.4rem',
               }}
             >
               Pending Artisans
             </div>
             <div
               style={{
-                fontSize: '3rem',
-                fontWeight: 800,
+                fontSize: '2rem',
+                fontWeight: 600,
                 color: 'var(--ink-brown)',
-                lineHeight: 1.05,
-                letterSpacing: '-0.03em',
+                lineHeight: 1.15,
+                letterSpacing: '-0.01em',
               }}
             >
-              {loading ? <AdminLoadingSpinner size={32} /> : pendingArtisans}
+              {loading ? <AdminLoadingSpinner size={26} /> : pendingArtisans}
             </div>
           </div>
         </Link>
