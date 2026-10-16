@@ -182,6 +182,7 @@ export default function ArtisanDashboardPage() {
       artisanShare,
       totalOrders,
       totalStock,
+      totalActiveProducts: products.length,
       activeFulfillment,
       categories: Object.entries(categoriesMap),
       lowStockItems,
