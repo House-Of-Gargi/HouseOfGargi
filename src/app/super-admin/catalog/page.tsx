@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Grid, Eye, EyeOff, Search, Loader2, Sparkles, Check, CheckCircle2 } from 'lucide-react';
+import { Grid, Eye, EyeOff, Search, Loader2, Sparkles, Check, CheckCircle2, Filter } from 'lucide-react';
 import { AdminLoadingSpinner } from '@/components/admin/AdminLoadingSpinner';
 import { usePortalRealtimeSync, notifyProductVisibilityChanged } from '@/lib/realtimeSync';
 
@@ -23,6 +23,7 @@ export default function MasterCatalogPage() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [visibilityFilter, setVisibilityFilter] = useState<'all' | 'visible' | 'hidden'>('all');
   const [togglingId, setTogglingId] = useState<string | null>(null);
 
   const fetchCatalog = async () => {
@@ -30,7 +31,7 @@ export default function MasterCatalogPage() {
       setLoading(true);
       const res = await fetch('/api/super-admin/catalog');
       const data = await res.json();
-      if (data.success && data.items) {
+      if (data.success && Array.isArray(data.items)) {
         setItems(data.items);
       }
     } catch (err) {
@@ -104,7 +105,7 @@ export default function MasterCatalogPage() {
     }
   };
 
-  const categories = ['all', ...Array.from(new Set(items.map((it) => it.category)))];
+  const categories = ['all', ...Array.from(new Set(items.map((it) => it.category).filter(Boolean)))];
 
   const filteredItems = items.filter((it) => {
     const matchesSearch =
@@ -112,7 +113,12 @@ export default function MasterCatalogPage() {
       it.artisan.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (it.productNo && it.productNo.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesCat = selectedCategory === 'all' || it.category === selectedCategory;
-    return matchesSearch && matchesCat;
+    const matchesVisibility =
+      visibilityFilter === 'all' ||
+      (visibilityFilter === 'visible' && it.isVisible) ||
+      (visibilityFilter === 'hidden' && !it.isVisible);
+
+    return matchesSearch && matchesCat && matchesVisibility;
   });
 
   const totalVisible = items.filter((it) => it.isVisible).length;
@@ -136,82 +142,109 @@ export default function MasterCatalogPage() {
         </p>
       </div>
 
-      {/* 3 Stat Overview Tiles - Minimal Box Styling & Proportional Font Sizes */}
+      {/* 3 Interactive Stat Overview Tiles - Clickable to Filter */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
+        {/* Card 1: Total */}
         <div
+          onClick={() => setVisibilityFilter('all')}
           style={{
             background: '#FFFFFF',
-            border: '1px solid var(--soft-gold-line)',
+            border: visibilityFilter === 'all' ? '2px solid var(--maharani-maroon)' : '1px solid var(--soft-gold-line)',
             borderRadius: '12px',
             padding: '1.5rem 1.6rem',
-            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+            boxShadow: visibilityFilter === 'all' ? '0 4px 16px rgba(122,35,49,0.12)' : '0 2px 12px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
             minHeight: '135px',
+            cursor: 'pointer',
+            transition: 'all 0.15s ease',
           }}
         >
-          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-            Total Master Creations
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              Total Master Creations
+            </span>
+            {visibilityFilter === 'all' && (
+              <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--maharani-maroon)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Active Filter</span>
+            )}
           </div>
           <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.15, color: 'var(--ink-brown)', letterSpacing: '-0.01em' }}>
             {loading ? <AdminLoadingSpinner size={26} /> : `${items.length} Items`}
           </div>
           <div style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)' }}>
-            Verified handloom artisan inventory
+            Verified handloom artisan inventory &bull; Click to show all
           </div>
         </div>
 
+        {/* Card 2: Visible */}
         <div
+          onClick={() => setVisibilityFilter('visible')}
           style={{
             background: '#FFFFFF',
-            border: '1px solid var(--soft-gold-line)',
+            border: visibilityFilter === 'visible' ? '2px solid #2E7D32' : '1px solid var(--soft-gold-line)',
             borderRadius: '12px',
             padding: '1.5rem 1.6rem',
-            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+            boxShadow: visibilityFilter === 'visible' ? '0 4px 16px rgba(46,125,50,0.12)' : '0 2px 12px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
             minHeight: '135px',
+            cursor: 'pointer',
+            transition: 'all 0.15s ease',
           }}
         >
-          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-            Storefront Active (Visible)
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              Storefront Active (Visible)
+            </span>
+            {visibilityFilter === 'visible' && (
+              <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#2E7D32', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Active Filter</span>
+            )}
           </div>
           <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.15, color: '#1B5E20', letterSpacing: '-0.01em' }}>
             {loading ? <AdminLoadingSpinner size={26} /> : `${totalVisible} Live`}
           </div>
           <div style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)' }}>
-            Published and shoppable by patrons
+            Published and shoppable by patrons &bull; Click to isolate
           </div>
         </div>
 
+        {/* Card 3: Hidden */}
         <div
+          onClick={() => setVisibilityFilter('hidden')}
           style={{
             background: '#FFFFFF',
-            border: '1px solid var(--soft-gold-line)',
+            border: visibilityFilter === 'hidden' ? '2px solid #D97706' : '1px solid var(--soft-gold-line)',
             borderRadius: '12px',
             padding: '1.5rem 1.6rem',
-            boxShadow: '0 2px 12px rgba(43,31,24,0.03)',
+            boxShadow: visibilityFilter === 'hidden' ? '0 4px 16px rgba(217,119,6,0.12)' : '0 2px 12px rgba(43,31,24,0.03)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
             minHeight: '135px',
+            cursor: 'pointer',
+            transition: 'all 0.15s ease',
           }}
         >
-          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-            Unpublished (Hidden)
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              Unpublished (Hidden)
+            </span>
+            {visibilityFilter === 'hidden' && (
+              <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#D97706', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Active Filter</span>
+            )}
           </div>
-          <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.15, color: totalHidden > 0 ? '#C62828' : 'var(--stone-taupe)', letterSpacing: '-0.01em' }}>
+          <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.15, color: totalHidden > 0 ? '#D97706' : 'var(--stone-taupe)', letterSpacing: '-0.01em' }}>
             {loading ? <AdminLoadingSpinner size={26} /> : `${totalHidden} Hidden`}
           </div>
-          <div style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)' }}>
-            Withheld from public storefront
+          <div style={{ fontSize: '0.82rem', color: totalHidden > 0 ? '#D97706' : 'var(--stone-taupe)', fontWeight: totalHidden > 0 ? 600 : 400 }}>
+            {totalHidden > 0 ? `${totalHidden} piece${totalHidden === 1 ? '' : 's'} withheld from patrons &bull; Click to view` : 'Withheld from public storefront'}
           </div>
         </div>
       </div>
 
-      {/* Filter and Search Bar */}
+      {/* Filter and Search Bar with Quick Visibility Tabs */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ position: 'relative', minWidth: '280px', flex: 1, maxWidth: '420px' }}>
           <Search style={{ width: 18, height: 18, position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--stone-taupe)' }} />
@@ -233,30 +266,88 @@ export default function MasterCatalogPage() {
           />
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <span style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)', fontWeight: 600 }}>Filter:</span>
-          <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            style={{
-              padding: '0.65rem 1rem',
-              borderRadius: 4,
-              border: '1px solid var(--soft-gold-line)',
-              background: '#FFFFFF',
-              fontSize: '0.86rem',
-              fontWeight: 600,
-              color: 'var(--ink-brown)',
-              cursor: 'pointer',
-              outline: 'none',
-              textTransform: 'capitalize',
-            }}
-          >
-            {categories.map((c) => (
-              <option key={c} value={c}>
-                {c === 'all' ? 'All Categories' : c.replace('-', ' ')}
-              </option>
-            ))}
-          </select>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          {/* Quick Visibility Pill Buttons */}
+          <div style={{ display: 'inline-flex', background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', borderRadius: '6px', padding: '3px' }}>
+            <button
+              type="button"
+              onClick={() => setVisibilityFilter('all')}
+              style={{
+                padding: '0.4rem 0.75rem',
+                borderRadius: '4px',
+                border: 'none',
+                background: visibilityFilter === 'all' ? 'var(--maharani-maroon)' : 'transparent',
+                color: visibilityFilter === 'all' ? '#FFFFFF' : 'var(--ink-brown)',
+                fontWeight: 600,
+                fontSize: '0.78rem',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              All ({items.length})
+            </button>
+            <button
+              type="button"
+              onClick={() => setVisibilityFilter('visible')}
+              style={{
+                padding: '0.4rem 0.75rem',
+                borderRadius: '4px',
+                border: 'none',
+                background: visibilityFilter === 'visible' ? '#2E7D32' : 'transparent',
+                color: visibilityFilter === 'visible' ? '#FFFFFF' : 'var(--ink-brown)',
+                fontWeight: 600,
+                fontSize: '0.78rem',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              Live ({totalVisible})
+            </button>
+            <button
+              type="button"
+              onClick={() => setVisibilityFilter('hidden')}
+              style={{
+                padding: '0.4rem 0.75rem',
+                borderRadius: '4px',
+                border: 'none',
+                background: visibilityFilter === 'hidden' ? '#D97706' : 'transparent',
+                color: visibilityFilter === 'hidden' ? '#FFFFFF' : 'var(--ink-brown)',
+                fontWeight: 600,
+                fontSize: '0.78rem',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              Hidden ({totalHidden})
+            </button>
+          </div>
+
+          {/* Category Dropdown */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <span style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)', fontWeight: 600 }}>Category:</span>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              style={{
+                padding: '0.55rem 0.85rem',
+                borderRadius: 4,
+                border: '1px solid var(--soft-gold-line)',
+                background: '#FFFFFF',
+                fontSize: '0.86rem',
+                fontWeight: 600,
+                color: 'var(--ink-brown)',
+                cursor: 'pointer',
+                outline: 'none',
+                textTransform: 'capitalize',
+              }}
+            >
+              {categories.map((c) => (
+                <option key={c} value={c}>
+                  {c === 'all' ? 'All Categories' : c.replace('-', ' ')}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
@@ -267,11 +358,16 @@ export default function MasterCatalogPage() {
             <AdminLoadingSpinner size={28} />
           </div>
         ) : filteredItems.length === 0 ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--stone-taupe)' }}>
+          <div style={{ padding: '3.5rem', textAlign: 'center', color: 'var(--stone-taupe)' }}>
             <Grid style={{ width: 36, height: 36, margin: '0 auto 0.75rem', color: 'var(--soft-gold-line)' }} />
             <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--ink-brown)' }}>
-              No Creations Match Your Search
+              No Creations Match Your Current Filter
             </div>
+            <p style={{ margin: '0.4rem 0 0', fontSize: '0.88rem' }}>
+              {visibilityFilter === 'hidden'
+                ? 'No creations are currently hidden. All pieces are active and visible on the storefront.'
+                : 'Try adjusting your search query or category filters.'}
+            </p>
           </div>
         ) : (
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
@@ -288,7 +384,13 @@ export default function MasterCatalogPage() {
             </thead>
             <tbody>
               {filteredItems.map((it) => (
-                <tr key={it.id} style={{ borderBottom: '1px solid #F0E8DC' }}>
+                <tr
+                  key={it.id}
+                  style={{
+                    borderBottom: '1px solid #F0E8DC',
+                    backgroundColor: it.isVisible ? 'transparent' : 'rgba(255, 243, 224, 0.25)',
+                  }}
+                >
                   <td style={{ padding: '0.85rem 1.25rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--ink-brown)', fontSize: '0.82rem' }}>
                     {it.productNo}
                   </td>
@@ -298,7 +400,14 @@ export default function MasterCatalogPage() {
                         <img
                           src={it.imageUrl}
                           alt={it.title}
-                          style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 4, border: '1px solid var(--soft-gold-line)' }}
+                          style={{
+                            width: 40,
+                            height: 40,
+                            objectFit: 'cover',
+                            borderRadius: 4,
+                            border: it.isVisible ? '1px solid var(--soft-gold-line)' : '1px solid #FFE0B2',
+                            opacity: it.isVisible ? 1 : 0.75,
+                          }}
                         />
                       )}
                       <div>
@@ -308,7 +417,7 @@ export default function MasterCatalogPage() {
                     </div>
                   </td>
                   <td style={{ padding: '0.85rem 1.25rem', color: 'var(--stone-taupe)', textTransform: 'capitalize' }}>
-                    {it.category.replace('-', ' ')}
+                    {(it.category || '').replace('-', ' ')}
                   </td>
                   <td style={{ padding: '0.85rem 1.25rem', color: 'var(--stone-taupe)' }}>
                     {it.artisan}
@@ -321,13 +430,14 @@ export default function MasterCatalogPage() {
                       style={{
                         fontSize: '0.72rem',
                         fontWeight: 700,
-                        padding: '0.2rem 0.55rem',
+                        padding: '0.22rem 0.6rem',
                         borderRadius: 4,
-                        background: it.isVisible ? '#E8F5E9' : '#FFEBEE',
-                        color: it.isVisible ? '#2E7D32' : '#C62828',
+                        background: it.isVisible ? '#E8F5E9' : '#FFF3E0',
+                        color: it.isVisible ? '#2E7D32' : '#D97706',
+                        border: it.isVisible ? '1px solid #C8E6C9' : '1px solid #FFE0B2',
                         display: 'inline-flex',
                         alignItems: 'center',
-                        gap: '0.3rem',
+                        gap: '0.35rem',
                         textTransform: 'uppercase',
                         letterSpacing: '0.04em',
                       }}
@@ -353,8 +463,8 @@ export default function MasterCatalogPage() {
                       style={{
                         padding: '0.45rem 0.95rem',
                         borderRadius: 4,
-                        border: '1px solid var(--soft-gold-line)',
-                        background: '#FAF7F2',
+                        border: it.isVisible ? '1px solid var(--soft-gold-line)' : '1px solid #2E7D32',
+                        background: it.isVisible ? '#FAF7F2' : '#E8F5E9',
                         color: it.isVisible ? '#C62828' : '#2E7D32',
                         fontWeight: 700,
                         fontSize: '0.78rem',

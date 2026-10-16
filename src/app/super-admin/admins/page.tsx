@@ -13,6 +13,7 @@ import {
   ShieldAlert,
 } from 'lucide-react';
 import { AdminLoadingSpinner } from '@/components/admin/AdminLoadingSpinner';
+import { usePortalRealtimeSync } from '@/lib/realtimeSync';
 
 export default function SuperAdminAdminsPage() {
   const [admins, setAdmins] = useState<any[]>([]);
@@ -42,6 +43,10 @@ export default function SuperAdminAdminsPage() {
   useEffect(() => {
     fetchAdmins();
   }, []);
+
+  usePortalRealtimeSync(['PORTAL_CATALOG_SYNC'], () => {
+    fetchAdmins();
+  });
 
   const handleInvite = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -7,10 +7,21 @@ export async function getUserRole(email: string | null | undefined): Promise<App
   const cleanEmail = email.toLowerCase().trim();
 
   // 1. Authoritative seed overrides
-  if (cleanEmail === 'tanmaysaaagr@gmail.com' || cleanEmail === 'shawsumit6286@gmail.com') {
+  if (
+    cleanEmail === 'tanmaysaaagr@gmail.com' ||
+    cleanEmail === 'tanmaysaagr@gmail.com' ||
+    cleanEmail === 'tanmaysaagar@gmail.com' ||
+    cleanEmail === 'shawsumit6286@gmail.com' ||
+    cleanEmail === 'gargisaha1508@gmail.com'
+  ) {
     return 'super_admin';
   }
-  if (cleanEmail === 'sumitgreat2705@gmail.com') {
+  if (
+    cleanEmail === 'sumigreat2705@gmail.com' ||
+    cleanEmail === 'sumitgreat2705@gmail.com' ||
+    cleanEmail === 'admin@gargisaha.com' ||
+    cleanEmail === 'curator@gargisaha.com'
+  ) {
     return 'admin';
   }
 
