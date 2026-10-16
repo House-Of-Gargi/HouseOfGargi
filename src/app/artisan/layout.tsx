@@ -1,6 +1,7 @@
 'use client';
 
 import { PortalLoadingScreen } from '@/components/common/PortalLoadingScreen';
+import { UnauthorizedSessionScreen } from '@/components/common/UnauthorizedSessionScreen';
 import { ReactNode, useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
@@ -10,9 +11,11 @@ import '@/seller.css';
 export default function ArtisanLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [checking, setChecking] = useState(true);
   const [authorized, setAuthorized] = useState(false);
   const [artisanName, setArtisanName] = useState<string>('Gopal Chandra Dey');
   const [artisanNo, setArtisanNo] = useState<string>('HG-84192');
+  const [currentEmail, setCurrentEmail] = useState<string>('');
 
   useEffect(() => {
     // Never gate login or apply pages
@@ -23,6 +26,7 @@ export default function ArtisanLayout({ children }: { children: ReactNode }) {
       pathname === '/seller/apply'
     ) {
       setAuthorized(true);
+      setChecking(false);
       return;
     }
 
@@ -39,7 +43,10 @@ export default function ArtisanLayout({ children }: { children: ReactNode }) {
           try {
             const parsed = JSON.parse(sessionStr);
             if (parsed.name) setArtisanName(parsed.name);
-            if (parsed.email) emailToQuery = parsed.email;
+            if (parsed.email) {
+              emailToQuery = parsed.email;
+              if (isMounted) setCurrentEmail(parsed.email);
+            }
           } catch {}
         }
 
@@ -56,18 +63,31 @@ export default function ArtisanLayout({ children }: { children: ReactNode }) {
         }
 
         if (sessionStr) {
-          if (isMounted) setAuthorized(true);
+          if (isMounted) {
+            setAuthorized(true);
+            setChecking(false);
+          }
           return;
         }
 
         const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-          if (isMounted) setAuthorized(true);
+        if (session?.user?.email) {
+          if (isMounted) {
+            setCurrentEmail(session.user.email);
+            setAuthorized(true);
+            setChecking(false);
+          }
         } else {
-          router.push('/artisan/login');
+          if (isMounted) {
+            setAuthorized(false);
+            setChecking(false);
+          }
         }
       } catch {
-        router.push('/artisan/login');
+        if (isMounted) {
+          setAuthorized(false);
+          setChecking(false);
+        }
       }
     };
 
@@ -86,9 +106,15 @@ export default function ArtisanLayout({ children }: { children: ReactNode }) {
         : null;
 
       if (!session && !sessionStr) {
-        router.push('/artisan/login');
+        if (isMounted) {
+          setAuthorized(false);
+          setChecking(false);
+        }
       } else {
-        if (isMounted) setAuthorized(true);
+        if (isMounted) {
+          setAuthorized(true);
+          setChecking(false);
+        }
       }
     });
 
@@ -107,8 +133,18 @@ export default function ArtisanLayout({ children }: { children: ReactNode }) {
     return <>{children}</>;
   }
 
-  if (!authorized) {
+  if (checking) {
     return <PortalLoadingScreen portalName="Artisan Atelier" theme="light" message="Authorizing Artisan Atelier session..." />;
+  }
+
+  if (!authorized) {
+    return (
+      <UnauthorizedSessionScreen
+        portalTitle="Artisan Atelier Portal"
+        loginPath="/artisan/login"
+        currentEmail={currentEmail || undefined}
+      />
+    );
   }
 
   return (

@@ -6,16 +6,17 @@ import Link from 'next/link';
 import { AdminShell } from '@/components/admin/AdminShell';
 import { supabase } from '@/lib/supabaseClient';
 import { getUserRole, canAccessAdmin, AppRole } from '@/lib/rbac';
-import { ShieldAlert, ArrowLeft, Loader2 } from 'lucide-react';
 import { PortalLoadingScreen } from '@/components/common/PortalLoadingScreen';
+import { UnauthorizedSessionScreen } from '@/components/common/UnauthorizedSessionScreen';
 import '@/seller.css';
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [checking, setChecking] = useState(true);
   const [authorized, setAuthorized] = useState(false);
-  const [adminEmail, setAdminEmail] = useState('sumitgreat2705@gmail.com');
+  const [adminEmail, setAdminEmail] = useState('');
   const [adminName, setAdminName] = useState('Operations Admin');
+  const [currentEmail, setCurrentEmail] = useState('');
 
   useEffect(() => {
     if (pathname === '/admin/login') {
@@ -29,7 +30,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         let activeEmail = '';
 
         if (typeof window !== 'undefined') {
-          const stored = localStorage.getItem('auth_session') || localStorage.getItem('admin_session') || localStorage.getItem('super_admin_session') || localStorage.getItem('artisan_session');
+          const stored = localStorage.getItem('admin_session') || localStorage.getItem('super_admin_session') || localStorage.getItem('auth_session');
           if (stored) {
             try {
               const parsed = JSON.parse(stored);
@@ -50,6 +51,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         }
 
         const cleanEmail = (activeEmail || '').toLowerCase().trim();
+        setCurrentEmail(cleanEmail);
 
         if (cleanEmail) {
           const role: AppRole = await getUserRole(cleanEmail);
@@ -84,49 +86,11 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   if (!authorized) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FAF7F2', color: 'var(--ink-brown)', padding: '1.5rem', fontFamily: 'var(--font-body)' }}>
-        <div style={{ maxWidth: '480px', width: '100%', background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: 6, padding: '2.5rem', textAlign: 'center', boxShadow: '0 8px 30px rgba(0,0,0,0.06)' }}>
-          <ShieldAlert style={{ width: 48, height: 48, color: 'var(--maharani-maroon)', margin: '0 auto 1.25rem' }} />
-          <h1 style={{ fontSize: '1.5rem', color: 'var(--ink-brown)', margin: '0 0 0.5rem' }}>
-            Admin Authorization Required &bull; 403
-          </h1>
-          <p style={{ fontSize: '0.88rem', color: 'var(--stone-taupe)', lineHeight: 1.6, margin: '0 0 1.75rem' }}>
-            The Operations Console is restricted to verified Admin staff (e.g. <code>sumitgreat2705@gmail.com</code>).
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            <Link
-              href="/admin/login"
-              style={{
-                display: 'inline-block',
-                padding: '0.75rem 1.5rem',
-                borderRadius: 2,
-                background: 'var(--maharani-maroon)',
-                color: '#FFF',
-                fontWeight: 700,
-                fontSize: '0.85rem',
-                textDecoration: 'none',
-              }}
-            >
-              Sign In to Admin Console
-            </Link>
-            <Link
-              href="/"
-              style={{
-                fontSize: '0.8rem',
-                color: 'var(--maharani-maroon)',
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.35rem',
-              }}
-            >
-              <ArrowLeft style={{ width: 14, height: 14 }} />
-              Return to Public Boutique
-            </Link>
-          </div>
-        </div>
-      </div>
+      <UnauthorizedSessionScreen
+        portalTitle="Operations Admin Console"
+        loginPath="/admin/login"
+        currentEmail={currentEmail || undefined}
+      />
     );
   }
 
