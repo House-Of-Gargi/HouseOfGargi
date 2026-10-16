@@ -207,12 +207,12 @@ export default function SuperAdminCategoriesPage() {
           <h1
             style={{
               fontFamily: 'var(--font-serif)',
-              fontSize: '2.2rem',
-              fontWeight: 800,
-              letterSpacing: '-0.025em',
+              fontSize: '1.95rem',
+              fontWeight: 600,
+              letterSpacing: '-0.01em',
               color: 'var(--ink-brown)',
               margin: 0,
-              lineHeight: 1.2,
+              lineHeight: 1.25,
             }}
           >
             Product <span style={{ color: 'var(--maharani-maroon)' }}>Categories</span>

@@ -106,7 +106,7 @@ export default function ProductQCApprovalsPage() {
             Quality Inspection Gate
           </span>
         </div>
-        <h1 style={{ fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0, lineHeight: 1.2 }}>
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.95rem', fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--ink-brown)', margin: 0, lineHeight: 1.25 }}>
           Product QC &amp; Storefront <span style={{ color: 'var(--maharani-maroon)' }}>Approvals</span>
         </h1>
         <p style={{ margin: '0.35rem 0 0', color: '#4A3E36', fontSize: '1.05rem' }}>
