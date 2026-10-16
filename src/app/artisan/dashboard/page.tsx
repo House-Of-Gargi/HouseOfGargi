@@ -135,16 +135,22 @@ export default function ArtisanDashboardPage() {
   );
 
   const handleSignOut = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
+      await supabase.auth.signOut().catch(() => {});
+    } catch {}
     if (typeof window !== 'undefined') {
       localStorage.removeItem('artisan_session');
       localStorage.removeItem('admin_session');
       localStorage.removeItem('super_admin_session');
       localStorage.removeItem('auth_session');
+      localStorage.removeItem('gargi_customer_email');
+      localStorage.removeItem('gargi_customer_name');
+      localStorage.removeItem('gargi_customer_id');
+      localStorage.removeItem('gargi_customer_role');
+      localStorage.removeItem('customer_auth_demo');
     }
-    try {
-      await supabase.auth.signOut();
-    } catch {}
-    router.push('/artisan/login?logout=true');
+    window.location.href = '/artisan/login?logout=true';
   };
 
   // Compute live business metrics

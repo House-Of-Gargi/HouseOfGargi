@@ -113,15 +113,22 @@ export function SuperAdminSidebar({
 
   const handleSignOut = async () => {
     try {
-      await supabase.auth.signOut();
+      await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
+      await supabase.auth.signOut().catch(() => {});
       if (typeof window !== 'undefined') {
         localStorage.removeItem('auth_session');
         localStorage.removeItem('super_admin_session');
         localStorage.removeItem('admin_session');
+        localStorage.removeItem('artisan_session');
+        localStorage.removeItem('gargi_customer_email');
+        localStorage.removeItem('gargi_customer_name');
+        localStorage.removeItem('gargi_customer_id');
+        localStorage.removeItem('gargi_customer_role');
+        localStorage.removeItem('customer_auth_demo');
       }
-      router.push('/admin/login?logout=true');
+      window.location.href = '/admin/login?logout=true';
     } catch {
-      router.push('/admin/login?logout=true');
+      window.location.href = '/admin/login?logout=true';
     }
   };
 
