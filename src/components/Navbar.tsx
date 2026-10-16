@@ -10,6 +10,7 @@ import SearchDropdown, { saveSearchHistory } from './SearchDropdown';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
+import { LogOut } from 'lucide-react';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -30,7 +31,7 @@ export default function Navbar() {
   const router = useRouter();
   const { itemCount } = useCart();
   const { wishlistCount } = useWishlist();
-  const { isLoggedIn, openLoginModal } = useCustomerAuth();
+  const { isLoggedIn, role, openLoginModal, logout } = useCustomerAuth();
 
   const checkSubRowScroll = () => {
     if (subRowRef.current) {
@@ -179,7 +180,15 @@ export default function Navbar() {
 
   const handleUserClick = () => {
     if (isLoggedIn) {
-      router.push('/account');
+      if (role === 'artisan') {
+        router.push('/artisan/dashboard');
+      } else if (role === 'super_admin') {
+        router.push('/super-admin/dashboard');
+      } else if (role === 'admin') {
+        router.push('/admin/dashboard');
+      } else {
+        router.push('/account');
+      }
     } else {
       openLoginModal('/account');
     }
@@ -272,7 +281,7 @@ export default function Navbar() {
               />
             </div>
 
-            {/* Right: Auth Action Pills (Bag is only shown after login) */}
+            {/* Right: Auth Action Pills */}
             <div className="navbar__icons">
               {!isLoggedIn ? (
                 <>
@@ -291,6 +300,63 @@ export default function Navbar() {
                   >
                     Join Us
                   </Link>
+                </>
+              ) : role === 'artisan' ? (
+                <>
+                  <Link 
+                    href="/artisan/dashboard" 
+                    className="navbar__login-pill-btn navbar__login-pill-btn--desktop-only"
+                    aria-label="Artisan Portal"
+                  >
+                    Artisan Portal
+                  </Link>
+                  <button 
+                    type="button" 
+                    className="navbar__signout-icon-btn navbar__signout-icon-btn--desktop-only"
+                    onClick={logout}
+                    aria-label="Sign Out"
+                    title="Sign Out"
+                  >
+                    <LogOut size={18} />
+                  </button>
+                </>
+              ) : role === 'super_admin' ? (
+                <>
+                  <Link 
+                    href="/super-admin/dashboard" 
+                    className="navbar__login-pill-btn navbar__login-pill-btn--desktop-only"
+                    aria-label="SA Portal"
+                  >
+                    SA Portal
+                  </Link>
+                  <button 
+                    type="button" 
+                    className="navbar__signout-icon-btn navbar__signout-icon-btn--desktop-only"
+                    onClick={logout}
+                    aria-label="Sign Out"
+                    title="Sign Out"
+                  >
+                    <LogOut size={18} />
+                  </button>
+                </>
+              ) : role === 'admin' ? (
+                <>
+                  <Link 
+                    href="/admin/dashboard" 
+                    className="navbar__login-pill-btn navbar__login-pill-btn--desktop-only"
+                    aria-label="Admin Portal"
+                  >
+                    Admin Portal
+                  </Link>
+                  <button 
+                    type="button" 
+                    className="navbar__signout-icon-btn navbar__signout-icon-btn--desktop-only"
+                    onClick={logout}
+                    aria-label="Sign Out"
+                    title="Sign Out"
+                  >
+                    <LogOut size={18} />
+                  </button>
                 </>
               ) : (
                 <>
@@ -327,6 +393,15 @@ export default function Navbar() {
                     {mounted && itemCount > 0 && (
                       <span className="navbar__badge">{itemCount}</span>
                     )}
+                  </button>
+                  <button 
+                    type="button" 
+                    className="navbar__signout-icon-btn navbar__signout-icon-btn--desktop-only"
+                    onClick={logout}
+                    aria-label="Sign Out"
+                    title="Sign Out"
+                  >
+                    <LogOut size={18} />
                   </button>
                 </>
               )}
@@ -477,22 +552,98 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Auth Action Buttons: Both Sign In & Join Us in Button Style with Black Font */}
+        {/* Auth Action Buttons in Mobile Drawer */}
         <div className="mobile-drawer__auth-actions">
-          <button 
-            type="button" 
-            className="mobile-drawer__auth-btn" 
-            onClick={() => { setMobileOpen(false); handleUserClick(); }}
-          >
-            {isLoggedIn ? 'My Account' : 'Sign In'}
-          </button>
-          <Link 
-            href="/artisan/login" 
-            className="mobile-drawer__auth-btn" 
-            onClick={() => setMobileOpen(false)}
-          >
-            Join Us
-          </Link>
+          {!isLoggedIn ? (
+            <>
+              <button 
+                type="button" 
+                className="mobile-drawer__auth-btn" 
+                onClick={() => { setMobileOpen(false); openLoginModal(); }}
+              >
+                Sign In
+              </button>
+              <Link 
+                href="/artisan/login" 
+                className="mobile-drawer__auth-btn" 
+                onClick={() => setMobileOpen(false)}
+              >
+                Join Us
+              </Link>
+            </>
+          ) : role === 'artisan' ? (
+            <>
+              <Link 
+                href="/artisan/dashboard" 
+                className="mobile-drawer__auth-btn" 
+                onClick={() => setMobileOpen(false)}
+              >
+                Artisan Portal
+              </Link>
+              <button 
+                type="button" 
+                className="mobile-drawer__auth-btn mobile-drawer__auth-btn--signout" 
+                onClick={async () => { setMobileOpen(false); await logout(); }}
+              >
+                <LogOut size={15} style={{ marginRight: 6, display: 'inline-block', verticalAlign: 'middle' }} />
+                Sign Out
+              </button>
+            </>
+          ) : role === 'super_admin' ? (
+            <>
+              <Link 
+                href="/super-admin/dashboard" 
+                className="mobile-drawer__auth-btn" 
+                onClick={() => setMobileOpen(false)}
+              >
+                SA Portal
+              </Link>
+              <button 
+                type="button" 
+                className="mobile-drawer__auth-btn mobile-drawer__auth-btn--signout" 
+                onClick={async () => { setMobileOpen(false); await logout(); }}
+              >
+                <LogOut size={15} style={{ marginRight: 6, display: 'inline-block', verticalAlign: 'middle' }} />
+                Sign Out
+              </button>
+            </>
+          ) : role === 'admin' ? (
+            <>
+              <Link 
+                href="/admin/dashboard" 
+                className="mobile-drawer__auth-btn" 
+                onClick={() => setMobileOpen(false)}
+              >
+                Admin Portal
+              </Link>
+              <button 
+                type="button" 
+                className="mobile-drawer__auth-btn mobile-drawer__auth-btn--signout" 
+                onClick={async () => { setMobileOpen(false); await logout(); }}
+              >
+                <LogOut size={15} style={{ marginRight: 6, display: 'inline-block', verticalAlign: 'middle' }} />
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <>
+              <button 
+                type="button" 
+                className="mobile-drawer__auth-btn" 
+                onClick={() => { setMobileOpen(false); handleUserClick(); }}
+              >
+                My Account
+              </button>
+              <button 
+                type="button" 
+                className="mobile-drawer__auth-btn mobile-drawer__auth-btn--signout" 
+                onClick={async () => { setMobileOpen(false); await logout(); }}
+              >
+                <LogOut size={15} style={{ marginRight: 6, display: 'inline-block', verticalAlign: 'middle' }} />
+                Sign Out
+              </button>
+            </>
+          )}
         </div>
 
         {/* Navigation Categories: Clean text only, no custom icons, no All Masterpieces */}
