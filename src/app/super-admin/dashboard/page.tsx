@@ -55,27 +55,47 @@ interface SuperAdminDashboardData {
   recentOrders: RecentOrder[];
 }
 
+import { usePortalRealtimeSync } from '@/lib/realtimeSync';
+
 export default function SuperAdminOverviewPage() {
   const [data, setData] = useState<SuperAdminDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchStats() {
-      try {
-        setLoading(true);
-        const res = await fetch('/api/super-admin/dashboard');
-        const json = await res.json();
-        if (json.success && json.data) {
-          setData(json.data);
-        }
-      } catch (err) {
-        console.error('Failed to load super admin stats:', err);
-      } finally {
-        setLoading(false);
+  const fetchStats = async () => {
+    try {
+      const res = await fetch('/api/super-admin/dashboard');
+      const json = await res.json();
+      if (json.success && json.data) {
+        setData(json.data);
       }
+    } catch (err) {
+      console.error('Failed to load super admin stats:', err);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    setLoading(true);
     fetchStats();
   }, []);
+
+  // Live WebSocket synchronization across Artisan & Admin actions
+  usePortalRealtimeSync(
+    [
+      'PRODUCT_CREATED',
+      'PRODUCT_UPDATED',
+      'PRODUCT_DELETED',
+      'PRODUCT_VISIBILITY_CHANGED',
+      'PRODUCT_STATUS_CHANGED',
+      'ARTISAN_APPLICATION_CHANGED',
+      'ORDER_STATUS_CHANGED',
+      'PORTAL_CATALOG_SYNC',
+    ],
+    () => {
+      fetchStats();
+    }
+  );
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>

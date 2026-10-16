@@ -1,6 +1,19 @@
+import { useEffect } from 'react';
 import { supabase } from './supabaseClient';
 
-export type RealtimeSyncEventType = 'WISHLIST_UPDATED' | 'CART_UPDATED' | 'AUTH_CHANGED';
+export type RealtimeSyncEventType =
+  | 'WISHLIST_UPDATED'
+  | 'CART_UPDATED'
+  | 'AUTH_CHANGED'
+  | 'PRODUCT_CREATED'
+  | 'PRODUCT_UPDATED'
+  | 'PRODUCT_DELETED'
+  | 'PRODUCT_VISIBILITY_CHANGED'
+  | 'PRODUCT_STATUS_CHANGED'
+  | 'ARTISAN_APPLICATION_CHANGED'
+  | 'ARTISAN_PROFILE_UPDATED'
+  | 'ORDER_STATUS_CHANGED'
+  | 'PORTAL_CATALOG_SYNC';
 
 export interface RealtimeSyncMessage<T = any> {
   type: RealtimeSyncEventType;
@@ -25,7 +38,7 @@ if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
   }
 }
 
-// Global Supabase Realtime WebSocket channel for cross-tab and cross-device sync
+// Global Supabase Realtime WebSocket channel for cross-portal and cross-device sync
 let supabaseRealtimeChannel: ReturnType<typeof supabase.channel> | null = null;
 const subscribers = new Set<(message: RealtimeSyncMessage) => void>();
 
@@ -33,7 +46,8 @@ function initRealtimeChannel() {
   if (typeof window === 'undefined' || supabaseRealtimeChannel) return;
 
   try {
-    supabaseRealtimeChannel = supabase.channel('house_of_gargi_patron_sync', {
+    // 1. Unified broadcast channel for immediate peer-to-peer event relay
+    supabaseRealtimeChannel = supabase.channel('house_of_gargi_portal_websocket_sync', {
       config: {
         broadcast: { self: false }
       }
@@ -46,9 +60,58 @@ function initRealtimeChannel() {
           notifySubscribers(msg);
         }
       })
-      .subscribe();
+      // 2. Listen to PostgreSQL Table Changes directly via Supabase Realtime WebSockets
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, (payload) => {
+        const eventType: RealtimeSyncEventType =
+          payload.eventType === 'INSERT'
+            ? 'PRODUCT_CREATED'
+            : payload.eventType === 'DELETE'
+            ? 'PRODUCT_DELETED'
+            : 'PRODUCT_UPDATED';
 
-    // Listen to local BroadcastChannel as well
+        notifySubscribers({
+          type: eventType,
+          payload: {
+            eventType: payload.eventType,
+            new: payload.new,
+            old: payload.old,
+            id: (payload.new as any)?.id || (payload.old as any)?.id,
+          },
+          timestamp: Date.now(),
+          tabId: 'supabase_postgres_realtime',
+        });
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'artisan_applications' }, (payload) => {
+        notifySubscribers({
+          type: 'ARTISAN_APPLICATION_CHANGED',
+          payload: {
+            eventType: payload.eventType,
+            new: payload.new,
+            old: payload.old,
+          },
+          timestamp: Date.now(),
+          tabId: 'supabase_postgres_realtime',
+        });
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, (payload) => {
+        notifySubscribers({
+          type: 'ORDER_STATUS_CHANGED',
+          payload: {
+            eventType: payload.eventType,
+            new: payload.new,
+            old: payload.old,
+          },
+          timestamp: Date.now(),
+          tabId: 'supabase_postgres_realtime',
+        });
+      })
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          console.log('[WebSocket Hub] Connected to House of Gargi Realtime synchronization channel');
+        }
+      });
+
+    // 3. Listen to local native BroadcastChannel (0ms latency across tabs on the same computer)
     if (localBroadcastChannel) {
       localBroadcastChannel.onmessage = (event) => {
         const msg = event.data as RealtimeSyncMessage;
@@ -58,7 +121,7 @@ function initRealtimeChannel() {
       };
     }
 
-    // Storage event fallback for older browsers or backgrounded tabs
+    // 4. Storage event fallback for backgrounded tabs
     window.addEventListener('storage', (e) => {
       if (e.key === 'gargi_tab_sync_event' && e.newValue) {
         try {
@@ -85,7 +148,8 @@ function notifySubscribers(message: RealtimeSyncMessage) {
 }
 
 /**
- * Broadcast an event across all open tabs and devices in real-time
+ * Broadcast an event across all open portals (Super Admin, Operations Admin, Artisan)
+ * and across devices in real-time via WebSockets & BroadcastChannel.
  */
 export function broadcastPortalSync<T = any>(
   type: RealtimeSyncEventType,
@@ -104,7 +168,7 @@ export function broadcastPortalSync<T = any>(
     tabId: currentTabId,
   };
 
-  // 1. Broadcast via local BroadcastChannel (instant)
+  // 1. Broadcast via local BroadcastChannel (instant 0ms cross-tab)
   if (localBroadcastChannel) {
     try {
       localBroadcastChannel.postMessage(message);
@@ -133,7 +197,7 @@ export function broadcastPortalSync<T = any>(
 }
 
 /**
- * Subscribe to real-time portal updates (Wishlist, Cart, Auth)
+ * Subscribe to real-time portal updates
  */
 export function subscribeToPortalSync(callback: (message: RealtimeSyncMessage) => void): () => void {
   if (typeof window === 'undefined') return () => {};
@@ -145,3 +209,62 @@ export function subscribeToPortalSync(callback: (message: RealtimeSyncMessage) =
     subscribers.delete(callback);
   };
 }
+
+/**
+ * React hook for real-time synchronization in portal components
+ */
+export function usePortalRealtimeSync(
+  eventTypes: RealtimeSyncEventType[],
+  onUpdate: (message: RealtimeSyncMessage) => void
+) {
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    initRealtimeChannel();
+
+    const unsubscribe = subscribeToPortalSync((msg) => {
+      if (
+        eventTypes.includes(msg.type) ||
+        eventTypes.includes('PORTAL_CATALOG_SYNC') ||
+        (msg.type === 'PORTAL_CATALOG_SYNC' && eventTypes.some(t => t.startsWith('PRODUCT_')))
+      ) {
+        onUpdate(msg);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [eventTypes, onUpdate]);
+}
+
+// Convenience Broadcast Helpers
+export function notifyProductCreated(product: any) {
+  broadcastPortalSync('PRODUCT_CREATED', product);
+  broadcastPortalSync('PORTAL_CATALOG_SYNC', { action: 'create', product });
+}
+
+export function notifyProductUpdated(product: any) {
+  broadcastPortalSync('PRODUCT_UPDATED', product);
+  broadcastPortalSync('PORTAL_CATALOG_SYNC', { action: 'update', product });
+}
+
+export function notifyProductDeleted(id: string, name?: string) {
+  broadcastPortalSync('PRODUCT_DELETED', { id, name });
+  broadcastPortalSync('PORTAL_CATALOG_SYNC', { action: 'delete', id, name });
+}
+
+export function notifyProductVisibilityChanged(id: string, isHidden: boolean) {
+  broadcastPortalSync('PRODUCT_VISIBILITY_CHANGED', { id, isHidden });
+  broadcastPortalSync('PORTAL_CATALOG_SYNC', { action: 'visibility', id, isHidden });
+}
+
+export function notifyProductStatusChanged(id: string, status: string) {
+  broadcastPortalSync('PRODUCT_STATUS_CHANGED', { id, status });
+  broadcastPortalSync('PORTAL_CATALOG_SYNC', { action: 'status', id, status });
+}
+
+export function notifyArtisanApplicationChanged(data: any) {
+  broadcastPortalSync('ARTISAN_APPLICATION_CHANGED', data);
+}
+

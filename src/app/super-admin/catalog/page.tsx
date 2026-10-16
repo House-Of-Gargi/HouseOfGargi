@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Grid, Eye, EyeOff, Search, Loader2, Sparkles, Check, CheckCircle2 } from 'lucide-react';
 import { AdminLoadingSpinner } from '@/components/admin/AdminLoadingSpinner';
+import { usePortalRealtimeSync, notifyProductVisibilityChanged } from '@/lib/realtimeSync';
 
 interface CatalogItem {
   id: string;
@@ -43,6 +44,30 @@ export default function MasterCatalogPage() {
     fetchCatalog();
   }, []);
 
+  // Live WebSocket synchronization across Artisan & Admin portals
+  usePortalRealtimeSync(
+    ['PRODUCT_CREATED', 'PRODUCT_UPDATED', 'PRODUCT_DELETED', 'PRODUCT_VISIBILITY_CHANGED', 'PORTAL_CATALOG_SYNC'],
+    (msg) => {
+      if (msg.type === 'PRODUCT_VISIBILITY_CHANGED') {
+        const { id, isHidden } = msg.payload || {};
+        if (id) {
+          setItems((prev) =>
+            prev.map((it) => (it.id === id ? { ...it, isVisible: !isHidden } : it))
+          );
+          return;
+        }
+      }
+      if (msg.type === 'PRODUCT_DELETED') {
+        const { id } = msg.payload || {};
+        if (id) {
+          setItems((prev) => prev.filter((it) => it.id !== id));
+          return;
+        }
+      }
+      fetchCatalog();
+    }
+  );
+
   const toggleVisibility = async (id: string, currentStatus: boolean) => {
     try {
       setTogglingId(id);
@@ -51,6 +76,8 @@ export default function MasterCatalogPage() {
       setItems((prev) =>
         prev.map((it) => (it.id === id ? { ...it, isVisible: newStatus } : it))
       );
+      // Broadcast to Artisan & Operations Admin portals immediately
+      notifyProductVisibilityChanged(id, !newStatus);
 
       const res = await fetch('/api/super-admin/catalog', {
         method: 'PATCH',
@@ -63,6 +90,7 @@ export default function MasterCatalogPage() {
         setItems((prev) =>
           prev.map((it) => (it.id === id ? { ...it, isVisible: currentStatus } : it))
         );
+        notifyProductVisibilityChanged(id, !currentStatus);
       }
     } catch (err) {
       console.error('Toggle visibility error:', err);
@@ -70,6 +98,7 @@ export default function MasterCatalogPage() {
       setItems((prev) =>
         prev.map((it) => (it.id === id ? { ...it, isVisible: currentStatus } : it))
       );
+      notifyProductVisibilityChanged(id, !currentStatus);
     } finally {
       setTogglingId(null);
     }
