@@ -93,14 +93,14 @@ export default function SuperAdminAdminsPage() {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
             <ShieldCheck style={{ width: 18, height: 18, color: 'var(--maharani-maroon)' }} />
-            <span style={{ fontSize: '0.82rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
+            <span style={{ fontSize: '0.82rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
               Team Access & Privileges
             </span>
           </div>
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0, lineHeight: 1.2 }}>
+          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.95rem', fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--ink-brown)', margin: 0, lineHeight: 1.25 }}>
             Admin & Staff Privilege <span style={{ color: 'var(--maharani-maroon)' }}>Management</span>
           </h1>
-          <p style={{ margin: '0.4rem 0 0', fontSize: '1.02rem', color: '#4A3E36', lineHeight: 1.55 }}>
+          <p style={{ margin: '0.4rem 0 0', fontSize: '0.98rem', color: '#4A3E36', lineHeight: 1.55 }}>
             Exclusive Super Admin function: control operations team access, invite curators, and assign permissions.
           </p>
         </div>
@@ -114,7 +114,7 @@ export default function SuperAdminAdminsPage() {
             border: 'none',
             backgroundColor: 'var(--maharani-maroon)',
             color: '#FFFFFF',
-            fontWeight: 700,
+            fontWeight: 600,
             fontSize: '0.88rem',
             cursor: 'pointer',
             display: 'flex',
@@ -143,10 +143,10 @@ export default function SuperAdminAdminsPage() {
             minHeight: '135px',
           }}
         >
-          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Total Governance Staff
           </div>
-          <div style={{ fontSize: '2.1rem', fontWeight: 800, lineHeight: 1.15, color: 'var(--ink-brown)', letterSpacing: '-0.025em' }}>
+          <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.15, color: 'var(--ink-brown)', letterSpacing: '-0.01em' }}>
             {loading ? <AdminLoadingSpinner size={26} /> : `${admins.length} Members`}
           </div>
           <div style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)' }}>
@@ -167,10 +167,10 @@ export default function SuperAdminAdminsPage() {
             minHeight: '135px',
           }}
         >
-          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Executive Super Admins
           </div>
-          <div style={{ fontSize: '2.1rem', fontWeight: 800, lineHeight: 1.15, color: 'var(--maharani-maroon)', letterSpacing: '-0.025em' }}>
+          <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.15, color: 'var(--maharani-maroon)', letterSpacing: '-0.01em' }}>
             {loading ? <AdminLoadingSpinner size={26} /> : `${superAdminsCount} Super Admins`}
           </div>
           <div style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)' }}>
@@ -191,10 +191,10 @@ export default function SuperAdminAdminsPage() {
             minHeight: '135px',
           }}
         >
-          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Operations & Curators
           </div>
-          <div style={{ fontSize: '2.1rem', fontWeight: 800, lineHeight: 1.15, color: 'var(--ink-brown)', letterSpacing: '-0.025em' }}>
+          <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.15, color: 'var(--ink-brown)', letterSpacing: '-0.01em' }}>
             {loading ? <AdminLoadingSpinner size={26} /> : `${curatorsCount} Staff`}
           </div>
           <div style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)' }}>

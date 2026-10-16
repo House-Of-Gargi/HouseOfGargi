@@ -299,25 +299,25 @@ export default function SuperAdminRevenuePage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F0E8DC', paddingBottom: '0.75rem' }}>
                 <span style={{ fontSize: '0.88rem', color: 'var(--stone-taupe)' }}>Verified Storefront Orders</span>
-                <span style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
+                <span style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--ink-brown)' }}>
                   {data?.totalOrders ?? 0} Orders
                 </span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F0E8DC', paddingBottom: '0.75rem' }}>
                 <span style={{ fontSize: '0.88rem', color: 'var(--stone-taupe)' }}>Average Order Value (AOV)</span>
-                <span style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--maharani-maroon)' }}>
+                <span style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--maharani-maroon)' }}>
                   ₹{(data?.averageOrderValue ?? 0).toLocaleString('en-IN')}
                 </span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F0E8DC', paddingBottom: '0.75rem' }}>
                 <span style={{ fontSize: '0.88rem', color: 'var(--stone-taupe)' }}>Contracted Weaver Take</span>
-                <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#1B5E20' }}>
+                <span style={{ fontSize: '1.05rem', fontWeight: 600, color: '#1B5E20' }}>
                   85.0% Guaranteed
                 </span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ fontSize: '0.88rem', color: 'var(--stone-taupe)' }}>Boutique Commission Margin</span>
-                <span style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--gargi-gold)' }}>
+                <span style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--gargi-gold)' }}>
                   15.0% Standard
                 </span>
               </div>

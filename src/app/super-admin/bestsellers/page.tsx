@@ -83,14 +83,14 @@ export default function SuperAdminBestsellersPage() {
       <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.5rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
           <Flame style={{ width: 18, height: 18, color: '#E65100' }} />
-          <span style={{ fontSize: '0.82rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#E65100' }}>
+          <span style={{ fontSize: '0.82rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#E65100' }}>
             Product Sales Velocity Intelligence
           </span>
         </div>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0, lineHeight: 1.2 }}>
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.95rem', fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--ink-brown)', margin: 0, lineHeight: 1.25 }}>
           Hot & Most Selling <span style={{ color: 'var(--maharani-maroon)' }}>Creations</span>
         </h1>
-        <p style={{ margin: '0.4rem 0 0', fontSize: '1.02rem', color: '#4A3E36', lineHeight: 1.55 }}>
+        <p style={{ margin: '0.4rem 0 0', fontSize: '0.98rem', color: '#4A3E36', lineHeight: 1.55 }}>
           Real-time catalog velocity ranked by live units sold and verified gross revenue. Super Admins can pin hot pieces to the public storefront hero showcase.
         </p>
       </div>
@@ -110,10 +110,10 @@ export default function SuperAdminBestsellersPage() {
             minHeight: '135px',
           }}
         >
-          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Tracked Catalog Pieces
           </div>
-          <div style={{ fontSize: '2.1rem', fontWeight: 800, lineHeight: 1.15, color: 'var(--ink-brown)', letterSpacing: '-0.025em' }}>
+          <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.15, color: 'var(--ink-brown)', letterSpacing: '-0.01em' }}>
             {loading ? <AdminLoadingSpinner size={26} /> : `${items.length} Creations`}
           </div>
           <div style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)' }}>
@@ -134,10 +134,10 @@ export default function SuperAdminBestsellersPage() {
             minHeight: '135px',
           }}
         >
-          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Pinned to Hero Carousel
           </div>
-          <div style={{ fontSize: '2.1rem', fontWeight: 800, lineHeight: 1.15, color: 'var(--maharani-maroon)', letterSpacing: '-0.025em' }}>
+          <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.15, color: 'var(--maharani-maroon)', letterSpacing: '-0.01em' }}>
             {loading ? <AdminLoadingSpinner size={26} /> : `${totalPinned} Featured`}
           </div>
           <div style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)' }}>
@@ -158,10 +158,10 @@ export default function SuperAdminBestsellersPage() {
             minHeight: '135px',
           }}
         >
-          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Total Sales Velocity Units
           </div>
-          <div style={{ fontSize: '2.1rem', fontWeight: 800, lineHeight: 1.15, color: '#1B5E20', letterSpacing: '-0.025em' }}>
+          <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.15, color: '#1B5E20', letterSpacing: '-0.01em' }}>
             {loading ? <AdminLoadingSpinner size={26} /> : `${totalUnits} Units`}
           </div>
           <div style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)' }}>
