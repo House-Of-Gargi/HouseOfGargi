@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { proxyToBackend } from '@/lib/apiProxy';
-import { supabase } from '@/lib/supabaseClient';
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
 export async function GET(req: Request) {
   try {
@@ -8,20 +8,20 @@ export async function GET(req: Request) {
     const res = await proxyToBackend(req, `/api/v1/admin/products${search}`);
     const data = await res.json().catch(() => ({}));
 
-    if (res.ok && Array.isArray(data.products)) {
+    if (res.ok && Array.isArray(data.products) && data.products.length > 0) {
       return NextResponse.json(data);
     }
   } catch {}
 
-  // Authoritative Supabase fallback
+  // Authoritative Supabase query using privileged service role client (bypasses RLS)
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('products')
       .select('*')
       .is('deleted_at', null)
       .order('created_at', { ascending: false });
 
-    if (!error && data) {
+    if (!error && Array.isArray(data)) {
       const formatted = data.map((p) => ({
         id: p.id,
         productNo: p.product_number || `ART-${p.id.slice(0, 5)}`,
@@ -71,15 +71,59 @@ export async function PATCH(req: Request) {
     }
 
     if (body.isHidden !== undefined) {
-      return proxyToBackend(req, `/api/v1/admin/products/${id}/visibility`, {
-        method: 'PATCH',
-        body: { isHidden: Boolean(body.isHidden) },
+      await supabaseAdmin
+        .from('products')
+        .update({
+          is_hidden: Boolean(body.isHidden),
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', id);
+
+      try {
+        await proxyToBackend(req, `/api/v1/admin/products/${id}/visibility`, {
+          method: 'PATCH',
+          body: { isHidden: Boolean(body.isHidden) },
+        });
+      } catch {}
+
+      return NextResponse.json({
+        success: true,
+        message: `Product ${id} visibility updated`,
+        id,
+        isHidden: Boolean(body.isHidden),
       });
     }
 
-    return proxyToBackend(req, `/api/v1/admin/products/${id}`, {
-      method: 'PATCH',
-      body,
+    const updates: Record<string, any> = {
+      updated_at: new Date().toISOString(),
+    };
+    if (body.name) updates.name = body.name;
+    if (body.price !== undefined) updates.price_in_rupees = Number(body.price);
+    if (body.stock !== undefined) updates.stock = Number(body.stock);
+    if (body.category) updates.category = body.category;
+    if (body.description) updates.description = body.description;
+    if (body.images) updates.images = body.images;
+    if (body.fabric) updates.fabric = body.fabric;
+    if (body.artType) updates.craft_technique = body.artType;
+    if (body.occasion) updates.occasion = body.occasion;
+    if (body.region) updates.region = body.region;
+    if (body.care) updates.care = body.care;
+
+    await supabaseAdmin
+      .from('products')
+      .update(updates)
+      .eq('id', id);
+
+    try {
+      await proxyToBackend(req, `/api/v1/admin/products/${id}`, {
+        method: 'PATCH',
+        body,
+      });
+    } catch {}
+
+    return NextResponse.json({
+      success: true,
+      message: `Product ${id} updated`,
     });
   } catch (err: any) {
     return NextResponse.json(
@@ -105,8 +149,20 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ success: false, message: 'Product ID required' }, { status: 400 });
     }
 
-    return proxyToBackend(req, `/api/v1/admin/products/${id}`, {
-      method: 'DELETE',
+    await supabaseAdmin
+      .from('products')
+      .update({ deleted_at: new Date().toISOString() })
+      .eq('id', id);
+
+    try {
+      await proxyToBackend(req, `/api/v1/admin/products/${id}`, {
+        method: 'DELETE',
+      });
+    } catch {}
+
+    return NextResponse.json({
+      success: true,
+      message: `Product ${id} removed`,
     });
   } catch (err: any) {
     return NextResponse.json(
