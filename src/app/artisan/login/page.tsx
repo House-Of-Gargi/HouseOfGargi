@@ -560,7 +560,7 @@ export default function SellerLoginPage() {
           height: 52px;
           text-align: center;
           font-size: 1.35rem;
-          font-weight: 700;
+          font-weight: 500;
           font-family: var(--font-sans);
           color: var(--ink-brown);
           border: 1.5px solid var(--soft-gold-line);
@@ -579,7 +579,7 @@ export default function SellerLoginPage() {
           color: #7A2331;
           font-family: var(--font-nav);
           font-size: 0.88rem;
-          font-weight: 700;
+          font-weight: 500;
           cursor: pointer;
           padding: 0;
           display: inline-flex;
