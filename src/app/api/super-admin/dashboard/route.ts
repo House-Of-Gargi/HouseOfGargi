@@ -51,14 +51,24 @@ export async function GET(req: Request) {
     const artisanPayouts = totalGmv - platformTakeRate;
     const completedOrders = orders.filter((o: any) => (o.status || '').toLowerCase() === 'delivered');
 
-    const recentOrders = orders.slice(0, 5).map((o: any) => ({
-      id: o.order_number || `#HG-${o.id.slice(0, 5)}`,
-      customer: o.customer_name || 'Valued Patron',
-      total: Number(o.total_rupees) || 0,
-      status: o.status || 'Processing',
-      createdAt: o.created_at ? o.created_at.split('T')[0] : 'Today',
-      itemCount: 1,
-    }));
+    const recentOrders = orders.slice(0, 5).map((o: any) => {
+      const totalAmount = Number(o.total_rupees || o.total || 0);
+      const cut = Math.round(totalAmount * 0.15);
+      const custName = o.customer_name || o.customerName || o.customer || 'Valued Patron';
+      const custEmail = o.customer_email || o.customerEmail || (o.customer_phone ? `+91 ${o.customer_phone}` : '') || 'patron@houseofgargi.com';
+      return {
+        id: o.order_number || (o.id ? `#HG-${o.id.slice(0, 5)}` : '#HG-ORD'),
+        customerName: custName,
+        customerEmail: custEmail,
+        customer: custName,
+        totalRupees: totalAmount,
+        total: totalAmount,
+        platformCut: cut,
+        status: o.status || 'Processing',
+        createdAt: o.created_at ? o.created_at.split('T')[0] : 'Today',
+        itemCount: Number(o.item_count || o.itemCount || 1),
+      };
+    });
 
     return NextResponse.json({
       success: true,

@@ -505,31 +505,39 @@ export default function SuperAdminOverviewPage() {
               </tr>
             </thead>
             <tbody>
-              {data.recentOrders.map((ord) => (
-                <tr key={ord.id} style={{ borderBottom: '1px solid #F0E8DC' }}>
-                  <td style={{ padding: '0.85rem 1.25rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--ink-brown)' }}>
-                    {ord.id.slice(0, 12)}
-                  </td>
-                  <td style={{ padding: '0.85rem 1.25rem' }}>
-                    <div style={{ fontWeight: 600, color: 'var(--ink-brown)' }}>{ord.customerName}</div>
-                    <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)' }}>{ord.customerEmail}</div>
-                  </td>
-                  <td style={{ padding: '0.85rem 1.25rem', color: 'var(--stone-taupe)' }}>
-                    {ord.itemCount} piece{ord.itemCount > 1 ? 's' : ''}
-                  </td>
-                  <td style={{ padding: '0.85rem 1.25rem', fontWeight: 700, color: 'var(--ink-brown)' }}>
-                    ₹{ord.totalRupees.toLocaleString('en-IN')}
-                  </td>
-                  <td style={{ padding: '0.85rem 1.25rem', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
-                    ₹{ord.platformCut.toLocaleString('en-IN')}
-                  </td>
-                  <td style={{ padding: '0.85rem 1.25rem' }}>
-                    <span style={{ fontSize: '0.75rem', fontWeight: 700, padding: '0.2rem 0.5rem', borderRadius: 4, background: '#E8F5E9', color: '#2E7D32', textTransform: 'uppercase' }}>
-                      {ord.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+              {data.recentOrders.map((ord) => {
+                const total = Number(ord.totalRupees ?? (ord as any).total ?? 0);
+                const platformCut = Number(ord.platformCut ?? (ord as any).platformTakeRate ?? Math.round(total * 0.15));
+                const custName = ord.customerName || (ord as any).customer || 'Valued Patron';
+                const custEmail = ord.customerEmail || (ord as any).email || '';
+                const items = Number(ord.itemCount || 1);
+
+                return (
+                  <tr key={ord.id} style={{ borderBottom: '1px solid #F0E8DC' }}>
+                    <td style={{ padding: '0.85rem 1.25rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--ink-brown)' }}>
+                      {(ord.id || '').slice(0, 12)}
+                    </td>
+                    <td style={{ padding: '0.85rem 1.25rem' }}>
+                      <div style={{ fontWeight: 600, color: 'var(--ink-brown)' }}>{custName}</div>
+                      {custEmail && <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)' }}>{custEmail}</div>}
+                    </td>
+                    <td style={{ padding: '0.85rem 1.25rem', color: 'var(--stone-taupe)' }}>
+                      {items} piece{items > 1 ? 's' : ''}
+                    </td>
+                    <td style={{ padding: '0.85rem 1.25rem', fontWeight: 700, color: 'var(--ink-brown)' }}>
+                      ₹{total.toLocaleString('en-IN')}
+                    </td>
+                    <td style={{ padding: '0.85rem 1.25rem', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
+                      ₹{platformCut.toLocaleString('en-IN')}
+                    </td>
+                    <td style={{ padding: '0.85rem 1.25rem' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 700, padding: '0.2rem 0.5rem', borderRadius: 4, background: '#E8F5E9', color: '#2E7D32', textTransform: 'uppercase' }}>
+                        {ord.status || 'Processing'}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         )}

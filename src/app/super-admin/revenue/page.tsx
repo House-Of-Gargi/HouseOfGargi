@@ -366,31 +366,39 @@ export default function SuperAdminRevenuePage() {
               </tr>
             </thead>
             <tbody>
-              {data.ordersLedger.map((row) => (
-                <tr key={row.id} style={{ borderBottom: '1px solid #F0E8DC' }}>
-                  <td style={{ padding: '0.85rem 1.25rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--ink-brown)' }}>
-                    {row.id.slice(0, 14)}
-                  </td>
-                  <td style={{ padding: '0.85rem 1.25rem' }}>
-                    <div style={{ fontWeight: 600, color: 'var(--ink-brown)' }}>{row.customerName}</div>
-                    <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)' }}>{row.customerEmail}</div>
-                  </td>
-                  <td style={{ padding: '0.85rem 1.25rem', fontWeight: 700, color: 'var(--ink-brown)' }}>
-                    ₹{row.totalRupees.toLocaleString('en-IN')}
-                  </td>
-                  <td style={{ padding: '0.85rem 1.25rem', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
-                    ₹{row.platformCommission.toLocaleString('en-IN')}
-                  </td>
-                  <td style={{ padding: '0.85rem 1.25rem', fontWeight: 700, color: '#1B5E20' }}>
-                    ₹{row.artisanSettlement.toLocaleString('en-IN')}
-                  </td>
-                  <td style={{ padding: '0.85rem 1.25rem' }}>
-                    <span style={{ fontSize: '0.75rem', fontWeight: 700, padding: '0.2rem 0.5rem', borderRadius: 4, background: '#E8F5E9', color: '#2E7D32', textTransform: 'uppercase' }}>
-                      {row.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+              {data.ordersLedger.map((row) => {
+                const total = Number(row.totalRupees ?? (row as any).total ?? 0);
+                const commission = Number(row.platformCommission ?? (row as any).platformCut ?? Math.round(total * 0.15));
+                const settlement = Number(row.artisanSettlement ?? (row as any).artisanPayout ?? (total - commission));
+                const custName = row.customerName || (row as any).customer || 'Valued Patron';
+                const custEmail = row.customerEmail || (row as any).email || '';
+
+                return (
+                  <tr key={row.id} style={{ borderBottom: '1px solid #F0E8DC' }}>
+                    <td style={{ padding: '0.85rem 1.25rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--ink-brown)' }}>
+                      {(row.id || '').slice(0, 14)}
+                    </td>
+                    <td style={{ padding: '0.85rem 1.25rem' }}>
+                      <div style={{ fontWeight: 600, color: 'var(--ink-brown)' }}>{custName}</div>
+                      {custEmail && <div style={{ fontSize: '0.78rem', color: 'var(--stone-taupe)' }}>{custEmail}</div>}
+                    </td>
+                    <td style={{ padding: '0.85rem 1.25rem', fontWeight: 700, color: 'var(--ink-brown)' }}>
+                      ₹{total.toLocaleString('en-IN')}
+                    </td>
+                    <td style={{ padding: '0.85rem 1.25rem', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
+                      ₹{commission.toLocaleString('en-IN')}
+                    </td>
+                    <td style={{ padding: '0.85rem 1.25rem', fontWeight: 700, color: '#1B5E20' }}>
+                      ₹{settlement.toLocaleString('en-IN')}
+                    </td>
+                    <td style={{ padding: '0.85rem 1.25rem' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 700, padding: '0.2rem 0.5rem', borderRadius: 4, background: '#E8F5E9', color: '#2E7D32', textTransform: 'uppercase' }}>
+                        {row.status || 'Processing'}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         )}
