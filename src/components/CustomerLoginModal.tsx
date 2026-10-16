@@ -91,7 +91,8 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
         throw new Error(data.message || 'Failed to send login code.');
       }
 
-      setVerificationToken(data.verificationToken || '');
+      const receivedToken = data.token || data.verificationToken || '';
+      setVerificationToken(receivedToken);
       setExpiresAt(data.expiresAt || Date.now() + 10 * 60 * 1000);
       setStep(2);
       setResendCountdown(30);
@@ -122,7 +123,8 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
         throw new Error(data.message || 'Failed to resend code.');
       }
 
-      setVerificationToken(data.verificationToken || '');
+      const receivedToken = data.token || data.verificationToken || '';
+      setVerificationToken(receivedToken);
       setExpiresAt(data.expiresAt || Date.now() + 10 * 60 * 1000);
       setResendCountdown(30);
     } catch (err: any) {
@@ -164,6 +166,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
         body: JSON.stringify({
           email: cleanEmail,
           otp: cleanOtp,
+          token: verificationToken,
           verificationToken,
           expiresAt,
         }),
@@ -226,7 +229,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
             'Enter your email to receive a 6-digit login code.'
           ) : (
             <span>
-              Code sent to <strong style={{ color: 'var(--ink-brown)', fontWeight: 600 }}>{email}</strong>
+              Code sent to <span style={{ color: 'var(--ink-brown)', fontWeight: 500 }}>{email}</span>
               <button 
                 type="button" 
                 onClick={() => { setStep(1); setError(''); }}
@@ -302,7 +305,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
               <div className="customer-modal-resend-wrap">
                 {resendCountdown > 0 ? (
                   <span className="customer-modal-resend-countdown">
-                    Resend code in <strong>{resendCountdown}s</strong>
+                    Resend code in <span style={{ fontWeight: 500, color: 'var(--ink-brown)' }}>{resendCountdown}s</span>
                   </span>
                 ) : (
                   <button
