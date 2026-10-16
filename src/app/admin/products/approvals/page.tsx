@@ -14,6 +14,7 @@ import {
   Package,
   Layers,
   ArrowRight,
+} from 'lucide-react';
 import { AdminPageLoadingBlock } from '@/components/admin/AdminLoadingSpinner';
 import { usePortalRealtimeSync, notifyProductStatusChanged } from '@/lib/realtimeSync';
 

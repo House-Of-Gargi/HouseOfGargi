@@ -209,7 +209,7 @@ export default function PersonalArtisanProfilePage() {
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontSize: '1.85rem',
-                fontWeight: 700,
+                fontWeight: 600,
                 color: 'var(--ink-brown)',
                 margin: 0,
                 lineHeight: 1.2,
@@ -315,8 +315,8 @@ export default function PersonalArtisanProfilePage() {
           {/* Section 1: Artisan Portrait & Identity */}
           <div>
             <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '0.6rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 800, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>01</span>
-              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>01</span>
+              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 600, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                 Master Artisan Portrait &amp; Identity
               </h3>
             </div>
@@ -483,8 +483,8 @@ export default function PersonalArtisanProfilePage() {
           {/* Section 2: Craft Style & Heritage Specs */}
           <div>
             <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '0.6rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 800, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>02</span>
-              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>02</span>
+              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 600, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                 Craft Style &amp; Heritage Specifications
               </h3>
             </div>
@@ -575,8 +575,8 @@ export default function PersonalArtisanProfilePage() {
           {/* Section 3: Description About the Artist */}
           <div>
             <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '0.6rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 800, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>03</span>
-              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>03</span>
+              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 600, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                 Description About the Artist
               </h3>
             </div>

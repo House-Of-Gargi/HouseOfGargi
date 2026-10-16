@@ -17,6 +17,7 @@ import {
   Loader2,
   Clock,
   CheckCircle2,
+} from 'lucide-react';
 import { AdminLoadingSpinner } from '@/components/admin/AdminLoadingSpinner';
 import { usePortalRealtimeSync } from '@/lib/realtimeSync';
 

@@ -23,6 +23,7 @@ import {
   ShoppingBag,
   Trash2,
   EyeOff,
+} from 'lucide-react';
 import { AdminPageLoadingBlock } from '@/components/admin/AdminLoadingSpinner';
 import {
   usePortalRealtimeSync,
