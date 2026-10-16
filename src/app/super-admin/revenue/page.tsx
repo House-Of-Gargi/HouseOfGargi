@@ -70,14 +70,14 @@ export default function SuperAdminRevenuePage() {
       {/* Page Header */}
       <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.5rem' }}>
         <div style={{ marginBottom: '0.4rem' }}>
-          <span style={{ fontSize: '0.82rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
+          <span style={{ fontSize: '0.82rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
             Authoritative Financial Accounting
           </span>
         </div>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0, lineHeight: 1.2 }}>
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.95rem', fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--ink-brown)', margin: 0, lineHeight: 1.25 }}>
           Revenue & Financial <span style={{ color: 'var(--maharani-maroon)' }}>Ledger</span>
         </h1>
-        <p style={{ margin: '0.4rem 0 0', fontSize: '1.02rem', color: '#4A3E36', lineHeight: 1.55 }}>
+        <p style={{ margin: '0.4rem 0 0', fontSize: '0.98rem', color: '#4A3E36', lineHeight: 1.55 }}>
           Real-time platform take-rate calculations, marketplace gross volume, and verified artisan guild disbursements.
         </p>
       </div>
@@ -128,10 +128,10 @@ export default function SuperAdminRevenuePage() {
             <DollarSign style={{ width: 20, height: 20, color: 'var(--ink-brown)' }} />
           </div>
           <div>
-            <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '0.45rem' }}>
+            <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '0.45rem' }}>
               Total GMV (Storefront Volume)
             </div>
-            <div style={{ fontSize: '2.1rem', fontWeight: 800, lineHeight: 1.15, color: 'var(--ink-brown)', letterSpacing: '-0.025em' }}>
+            <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.15, color: 'var(--ink-brown)', letterSpacing: '-0.01em' }}>
               {loading ? <AdminLoadingSpinner size={26} /> : `₹${(data?.gmvTotalRupees ?? 0).toLocaleString('en-IN')}`}
             </div>
           </div>
@@ -184,10 +184,10 @@ export default function SuperAdminRevenuePage() {
             <TrendingUp style={{ width: 20, height: 20, color: 'var(--maharani-maroon)' }} />
           </div>
           <div>
-            <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '0.45rem' }}>
+            <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '0.45rem' }}>
               House of Gargi Take-Rate (15%)
             </div>
-            <div style={{ fontSize: '2.1rem', fontWeight: 800, lineHeight: 1.15, color: 'var(--maharani-maroon)', letterSpacing: '-0.025em' }}>
+            <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.15, color: 'var(--maharani-maroon)', letterSpacing: '-0.01em' }}>
               {loading ? <AdminLoadingSpinner size={26} /> : `₹${(data?.platformCommissionRupees ?? 0).toLocaleString('en-IN')}`}
             </div>
           </div>
@@ -240,10 +240,10 @@ export default function SuperAdminRevenuePage() {
             <ShieldCheck style={{ width: 20, height: 20, color: '#1B5E20' }} />
           </div>
           <div>
-            <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '0.45rem' }}>
+            <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '0.45rem' }}>
               Artisan Weaver Share (85%)
             </div>
-            <div style={{ fontSize: '2.1rem', fontWeight: 800, lineHeight: 1.15, color: '#1B5E20', letterSpacing: '-0.025em' }}>
+            <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.15, color: '#1B5E20', letterSpacing: '-0.01em' }}>
               {loading ? <AdminLoadingSpinner size={26} /> : `₹${(data?.artisanSettlementsRupees ?? 0).toLocaleString('en-IN')}`}
             </div>
           </div>

@@ -95,14 +95,14 @@ export default function MasterCatalogPage() {
       <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '1.5rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
           <Grid style={{ width: 18, height: 18, color: 'var(--maharani-maroon)' }} />
-          <span style={{ fontSize: '0.82rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
+          <span style={{ fontSize: '0.82rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
             Catalog Governance & Visibility
           </span>
         </div>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.35rem', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink-brown)', margin: 0, lineHeight: 1.2 }}>
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.95rem', fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--ink-brown)', margin: 0, lineHeight: 1.25 }}>
           Master Catalog & Storefront <span style={{ color: 'var(--maharani-maroon)' }}>Display</span>
         </h1>
-        <p style={{ margin: '0.4rem 0 0', fontSize: '1.02rem', color: '#4A3E36', lineHeight: 1.55 }}>
+        <p style={{ margin: '0.4rem 0 0', fontSize: '0.98rem', color: '#4A3E36', lineHeight: 1.55 }}>
           Exclusive Super Admin control: toggle global creation visibility on the public storefront, inspect artisan attribution, and govern master pricing.
         </p>
       </div>
@@ -122,10 +122,10 @@ export default function MasterCatalogPage() {
             minHeight: '135px',
           }}
         >
-          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Total Master Creations
           </div>
-          <div style={{ fontSize: '2.1rem', fontWeight: 800, lineHeight: 1.15, color: 'var(--ink-brown)', letterSpacing: '-0.025em' }}>
+          <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.15, color: 'var(--ink-brown)', letterSpacing: '-0.01em' }}>
             {loading ? <AdminLoadingSpinner size={26} /> : `${items.length} Items`}
           </div>
           <div style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)' }}>
@@ -146,10 +146,10 @@ export default function MasterCatalogPage() {
             minHeight: '135px',
           }}
         >
-          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Storefront Active (Visible)
           </div>
-          <div style={{ fontSize: '2.1rem', fontWeight: 800, lineHeight: 1.15, color: '#1B5E20', letterSpacing: '-0.025em' }}>
+          <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.15, color: '#1B5E20', letterSpacing: '-0.01em' }}>
             {loading ? <AdminLoadingSpinner size={26} /> : `${totalVisible} Live`}
           </div>
           <div style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)' }}>
@@ -170,10 +170,10 @@ export default function MasterCatalogPage() {
             minHeight: '135px',
           }}
         >
-          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Unpublished (Hidden)
           </div>
-          <div style={{ fontSize: '2.1rem', fontWeight: 800, lineHeight: 1.15, color: totalHidden > 0 ? '#C62828' : 'var(--stone-taupe)', letterSpacing: '-0.025em' }}>
+          <div style={{ fontSize: '1.95rem', fontWeight: 600, lineHeight: 1.15, color: totalHidden > 0 ? '#C62828' : 'var(--stone-taupe)', letterSpacing: '-0.01em' }}>
             {loading ? <AdminLoadingSpinner size={26} /> : `${totalHidden} Hidden`}
           </div>
           <div style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)' }}>
