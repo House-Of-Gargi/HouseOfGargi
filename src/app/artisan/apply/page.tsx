@@ -382,7 +382,7 @@ export default function ArtisanApplyPage() {
               color: 'var(--ink-brown)',
               fontSize: '0.85rem',
               fontFamily: 'var(--font-nav)',
-              fontWeight: 700,
+              fontWeight: 500,
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
               textDecoration: 'none',
@@ -405,7 +405,7 @@ export default function ArtisanApplyPage() {
               background: 'rgba(255, 255, 255, 0.85)',
               border: '1.2px solid var(--soft-gold-line)',
               fontSize: '0.82rem',
-              fontWeight: 700,
+              fontWeight: 500,
               color: 'var(--ink-brown)',
               textDecoration: 'none',
               textTransform: 'uppercase',
@@ -481,7 +481,7 @@ export default function ArtisanApplyPage() {
               <div style={{
                 fontFamily: "'Courier New', monospace",
                 fontSize: '1.8rem',
-                fontWeight: 700,
+                fontWeight: 500,
                 color: '#7A2331',
                 marginTop: '0.35rem',
                 letterSpacing: '0.08em',
@@ -498,7 +498,7 @@ export default function ArtisanApplyPage() {
                   color: '#FFFFFF',
                   padding: '0.95rem 2rem',
                   borderRadius: '8px',
-                  fontWeight: 700,
+                  fontWeight: 500,
                   fontSize: '0.92rem',
                   textTransform: 'uppercase',
                   letterSpacing: '0.1em',
@@ -519,7 +519,7 @@ export default function ArtisanApplyPage() {
                   border: '1.5px solid var(--soft-gold-line)',
                   padding: '0.95rem 2rem',
                   borderRadius: '8px',
-                  fontWeight: 700,
+                  fontWeight: 500,
                   fontSize: '0.92rem',
                   textTransform: 'uppercase',
                   letterSpacing: '0.1em',
@@ -543,7 +543,7 @@ export default function ArtisanApplyPage() {
               <span style={{
                 fontSize: '0.88rem',
                 letterSpacing: '0.22em',
-                fontWeight: 700,
+                fontWeight: 500,
                 color: '#8C7B70',
                 textTransform: 'uppercase',
                 display: 'block',
@@ -608,7 +608,7 @@ export default function ArtisanApplyPage() {
                       background: currentStep === s.step ? '#7A2331' : currentStep > s.step ? '#2E6F40' : '#D5C7B3',
                       color: '#FFFFFF',
                       fontSize: '0.82rem',
-                      fontWeight: 700,
+                      fontWeight: 500,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -617,7 +617,7 @@ export default function ArtisanApplyPage() {
                   >
                     {currentStep > s.step ? <Check style={{ width: 14, height: 14 }} /> : s.step}
                   </div>
-                  <span className="stepper-label-text" style={{ fontSize: '0.72rem', fontWeight: 700, color: currentStep === s.step ? '#7A2331' : '#6A5A50', textAlign: 'center', whiteSpace: 'nowrap' }}>
+                  <span className="stepper-label-text" style={{ fontSize: '0.72rem', fontWeight: 500, color: currentStep === s.step ? '#7A2331' : '#6A5A50', textAlign: 'center', whiteSpace: 'nowrap' }}>
                     {s.labelEn}
                   </span>
                 </div>
@@ -633,7 +633,7 @@ export default function ArtisanApplyPage() {
               marginBottom: '1.25rem',
               textAlign: 'center',
             }}>
-              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#7A2331' }}>
+              <span style={{ fontSize: '0.82rem', fontWeight: 500, color: '#7A2331' }}>
                 Step {currentStep} of 5: {STEPS[currentStep - 1].titleEn}
               </span>
             </div>
@@ -683,7 +683,7 @@ export default function ArtisanApplyPage() {
             {currentStep === 1 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.35rem' }}>
                 <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem', marginBottom: '0.25rem' }}>
-                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 700 }}>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 500 }}>
                     1. Basic Profile &amp; Contact &bull;    
                   </h3>
                   <p style={{ margin: '0.25rem 0 0', fontSize: '0.84rem', color: '#8C7B70' }}>
@@ -693,7 +693,7 @@ export default function ArtisanApplyPage() {
 
                 {/* ARTIST NAME */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
                     • ARTIST NAME: /  : <span style={{ color: '#7A2331' }}>*</span>
                   </label>
                   <input
@@ -709,7 +709,7 @@ export default function ArtisanApplyPage() {
                 {/* DOB & AGE */}
                 <div className="artisan-form-grid-2">
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
                       • DATE OF BIRTH: /  :
                     </label>
                     <input
@@ -721,7 +721,7 @@ export default function ArtisanApplyPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
                       AGE / :
                     </label>
                     <input
@@ -737,7 +737,7 @@ export default function ArtisanApplyPage() {
                 {/* GENDER & STATE */}
                 <div className="artisan-form-grid-2">
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
                       GENDER / : <span style={{ color: '#7A2331' }}>*</span>
                     </label>
                     <select
@@ -754,7 +754,7 @@ export default function ArtisanApplyPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
                       STATE / : <span style={{ color: '#7A2331' }}>*</span>
                     </label>
                     <select
@@ -774,7 +774,7 @@ export default function ArtisanApplyPage() {
                 {/* PLACE OF BIRTH & TYPE OF ART */}
                 <div className="artisan-form-grid-2">
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
                       • PLACE OF BIRTH: / :
                     </label>
                     <input
@@ -787,7 +787,7 @@ export default function ArtisanApplyPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
                       • TYPE OF ART / CRAFT: /  : <span style={{ color: '#7A2331' }}>*</span>
                     </label>
                     <select
@@ -807,7 +807,7 @@ export default function ArtisanApplyPage() {
                 {/* PHONE & EMAIL */}
                 <div className="artisan-form-grid-2">
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
                       MOBILE NUMBER: /  : <span style={{ color: '#7A2331' }}>*</span>
                     </label>
                     <div style={{
@@ -825,7 +825,7 @@ export default function ArtisanApplyPage() {
                         background: '#FAF7F2',
                         borderRight: '1px solid var(--soft-gold-line)',
                         fontSize: '0.92rem',
-                        fontWeight: 700,
+                        fontWeight: 500,
                         color: '#7A2331',
                         flexShrink: 0,
                       }}>
@@ -854,7 +854,7 @@ export default function ArtisanApplyPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
                       EMAIL ADDRESS: /  : <span style={{ color: '#7A2331' }}>*</span>
                     </label>
                     <input
@@ -874,14 +874,14 @@ export default function ArtisanApplyPage() {
             {currentStep === 2 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
                 <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
-                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 700 }}>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 500 }}>
                     Part I: Personal Life &amp; Dreams &bull;  :    (Q1 - Q4)
                   </h3>
                 </div>
 
                 {/* Q1 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
                     1) If friends were to describe you, what 3 things would they say about you?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
@@ -898,7 +898,7 @@ export default function ArtisanApplyPage() {
 
                 {/* Q2 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
                     2) Have you ever experienced difficult moments in your life that you&apos;re proud to have overcome?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
@@ -915,7 +915,7 @@ export default function ArtisanApplyPage() {
 
                 {/* Q3 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
                     3) Have you experienced funny, embarrassing or silly moments in your life that have made you laugh - would you share them with us?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
@@ -932,7 +932,7 @@ export default function ArtisanApplyPage() {
 
                 {/* Q4 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
                     4) What are your hopes, plans and dreams for the future?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
@@ -953,14 +953,14 @@ export default function ArtisanApplyPage() {
             {currentStep === 3 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
                 <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
-                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 700 }}>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 500 }}>
                     Part II: Craft, Lineage &amp; Materials &bull;  : ,    (Q5 - Q8)
                   </h3>
                 </div>
 
                 {/* Q5 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
                     5) How did you get interested in this art / craft, and what is it about this art that attracts you to it?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
@@ -977,7 +977,7 @@ export default function ArtisanApplyPage() {
 
                 {/* Q6 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
                     6) Who taught you? Do you also now teach to others? (please specify who and where)
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
@@ -994,7 +994,7 @@ export default function ArtisanApplyPage() {
 
                 {/* Q7 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
                     7) What did you have to do to learn and master this art / craft?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
@@ -1011,7 +1011,7 @@ export default function ArtisanApplyPage() {
 
                 {/* Q8 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
                     8) What kind of materials do you use? Are they easy / difficult to work with? How do you obtain them? Do you make / prepare any of them? Are any of your materials recycled, reclaimed or reused?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
@@ -1032,14 +1032,14 @@ export default function ArtisanApplyPage() {
             {currentStep === 4 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
                 <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
-                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 700 }}>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 500 }}>
                     Part III: Community, Inspiration &amp; Design &bull;  :    (Q9 - Q14)
                   </h3>
                 </div>
 
                 {/* Q9 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
                     9) What is your favorite thing about your art / craft? What do you find the most challenging?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
@@ -1056,7 +1056,7 @@ export default function ArtisanApplyPage() {
 
                 {/* Q10 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
                     10) Where do you get your inspiration from?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
@@ -1073,7 +1073,7 @@ export default function ArtisanApplyPage() {
 
                 {/* Q11 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
                     11) Describe what it has been like to get started on your own?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
@@ -1090,7 +1090,7 @@ export default function ArtisanApplyPage() {
 
                 {/* Q12 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
                     12) If you work with family members, how do you organize the work? (Who does what?)
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
@@ -1107,7 +1107,7 @@ export default function ArtisanApplyPage() {
 
                 {/* Q13 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
                     13) If you only design, what qualities do you look for in artisans that would craft your designs?
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
@@ -1124,7 +1124,7 @@ export default function ArtisanApplyPage() {
 
                 {/* Q14 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
                     14) Describe any benefits your craft / workshop brings to your local community.
                   </label>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
@@ -1139,7 +1139,7 @@ export default function ArtisanApplyPage() {
                   />
                 </div>
 
-                <div style={{ textAlign: 'center', padding: '1rem', background: '#FAF7F2', borderRadius: '8px', color: '#7A2331', fontWeight: 700, letterSpacing: '0.1em' }}>
+                <div style={{ textAlign: 'center', padding: '1rem', background: '#FAF7F2', borderRadius: '8px', color: '#7A2331', fontWeight: 500, letterSpacing: '0.1em' }}>
                   THANK YOU! &bull; !
                 </div>
               </div>
@@ -1149,7 +1149,7 @@ export default function ArtisanApplyPage() {
             {currentStep === 5 && (
               <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
                 <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
-                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 700 }}>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 500 }}>
                     Step 5: Ethical Agreement &amp; Submission &bull;     
                   </h3>
                   <p style={{ margin: '0.25rem 0 0', fontSize: '0.85rem', color: '#8C7B70' }}>
@@ -1184,7 +1184,7 @@ export default function ArtisanApplyPage() {
                     All artisans and suppliers are required to sign this Agreement as an indication of their commitment to comply with the regulations herein established.
                   </p>
 
-                  <p style={{ fontWeight: 700, color: '#241A15' }}>I. &ldquo;No Child Labor&rdquo; Policy:</p>
+                  <p style={{ fontWeight: 500, color: '#241A15' }}>I. &ldquo;No Child Labor&rdquo; Policy:</p>
                   <p>
                     For the purposes of the Agreement, child labor is defined as the employment, whether paid or unpaid, of any child under the age of fifteen (15) or fourteen (14) where the local law of the country permits and in any position where:
                   </p>
@@ -1198,7 +1198,7 @@ export default function ArtisanApplyPage() {
                     <li>Children who perform developmental tasks or vocational apprenticeships at a family workshop are excluded; however, tasks must never interfere with the child&apos;s education, health, safety, or well-being.</li>
                   </ul>
 
-                  <p style={{ fontWeight: 700, color: '#241A15', marginTop: '1rem' }}>
+                  <p style={{ fontWeight: 500, color: '#241A15', marginTop: '1rem' }}>
                     II. Readiness for Workplace Inspection:
                   </p>
                   <p>
@@ -1285,7 +1285,7 @@ export default function ArtisanApplyPage() {
                 {/* SIGNATURE & DATE */}
                 <div className="artisan-form-grid-sig" style={{ borderTop: '1px solid #F0E6D2', paddingTop: '1.25rem' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
                       SIGNATURE OF ARTISAN /   : <span style={{ color: '#7A2331' }}>*</span>
                     </label>
                     <input
@@ -1297,13 +1297,13 @@ export default function ArtisanApplyPage() {
                       className="artisan-input-field"
                       style={{
                         fontFamily: "'Courier New', monospace",
-                        fontWeight: 700,
+                        fontWeight: 500,
                       }}
                     />
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
                       DATE / :
                     </label>
                     <input
@@ -1332,7 +1332,7 @@ export default function ArtisanApplyPage() {
                     padding: '1.15rem',
                     fontSize: '1rem',
                     fontFamily: 'var(--font-nav)',
-                    fontWeight: 700,
+                    fontWeight: 500,
                     textTransform: 'uppercase',
                     letterSpacing: '0.12em',
                     display: 'flex',
@@ -1378,7 +1378,7 @@ export default function ArtisanApplyPage() {
                       border: '1.5px solid var(--soft-gold-line)',
                       color: '#241A15',
                       fontSize: '0.88rem',
-                      fontWeight: 700,
+                      fontWeight: 500,
                       textTransform: 'uppercase',
                       letterSpacing: '0.08em',
                       cursor: 'pointer',
@@ -1405,7 +1405,7 @@ export default function ArtisanApplyPage() {
                     border: 'none',
                     color: '#FFFFFF',
                     fontSize: '0.92rem',
-                    fontWeight: 700,
+                    fontWeight: 500,
                     textTransform: 'uppercase',
                     letterSpacing: '0.1em',
                     cursor: 'pointer',

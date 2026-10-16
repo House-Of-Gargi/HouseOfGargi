@@ -234,7 +234,7 @@ export default function PersonalArtisanProfilePage() {
               padding: '0.65rem 1.15rem',
               fontSize: '0.84rem',
               fontFamily: 'var(--font-nav)',
-              fontWeight: 700,
+              fontWeight: 500,
               color: 'var(--ink-brown)',
               display: 'inline-flex',
               alignItems: 'center',
@@ -259,7 +259,7 @@ export default function PersonalArtisanProfilePage() {
               padding: '0.65rem 1.15rem',
               fontSize: '0.84rem',
               fontFamily: 'var(--font-nav)',
-              fontWeight: 700,
+              fontWeight: 500,
               color: 'var(--maharani-maroon)',
               display: 'inline-flex',
               alignItems: 'center',
@@ -286,7 +286,7 @@ export default function PersonalArtisanProfilePage() {
             display: 'flex',
             alignItems: 'center',
             gap: '0.65rem',
-            fontWeight: 700,
+            fontWeight: 500,
             fontSize: '0.94rem',
           }}
         >
@@ -348,7 +348,7 @@ export default function PersonalArtisanProfilePage() {
               </div>
 
               <div style={{ flex: 1, minWidth: '240px' }}>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                   Artisan Portrait Photo
                 </label>
                 
@@ -363,7 +363,7 @@ export default function PersonalArtisanProfilePage() {
                       border: '1.5px dashed var(--soft-gold-line)',
                       background: '#FAF7F2',
                       color: 'var(--ink-brown)',
-                      fontWeight: 700,
+                      fontWeight: 500,
                       fontSize: '0.84rem',
                       cursor: 'pointer',
                     }}
@@ -411,7 +411,7 @@ export default function PersonalArtisanProfilePage() {
                       border: 'none',
                       background: imageUrlInput.trim() ? 'var(--maharani-maroon)' : '#D8CBB6',
                       color: '#FFFFFF',
-                      fontWeight: 700,
+                      fontWeight: 500,
                       fontSize: '0.8rem',
                       cursor: imageUrlInput.trim() ? 'pointer' : 'not-allowed',
                       whiteSpace: 'nowrap',
@@ -426,7 +426,7 @@ export default function PersonalArtisanProfilePage() {
             {/* Name & ID Grid */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                   Master Artisan Full Name *
                 </label>
                 <input
@@ -452,7 +452,7 @@ export default function PersonalArtisanProfilePage() {
               </div>
 
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                   Artisan ID / Code
                 </label>
                 <input
@@ -468,7 +468,7 @@ export default function PersonalArtisanProfilePage() {
                     background: '#FAF7F2',
                     color: 'var(--maharani-maroon)',
                     fontFamily: 'monospace',
-                    fontWeight: 800,
+                    fontWeight: 500,
                     fontSize: '0.92rem',
                     outline: 'none',
                     boxSizing: 'border-box',
@@ -491,7 +491,7 @@ export default function PersonalArtisanProfilePage() {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                   Art Style / Craft Technique *
                 </label>
                 <input
@@ -518,7 +518,7 @@ export default function PersonalArtisanProfilePage() {
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
                 <div>
-                  <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                  <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                     Regional Belonging *
                   </label>
                   <input
@@ -544,7 +544,7 @@ export default function PersonalArtisanProfilePage() {
                 </div>
 
                 <div>
-                  <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                  <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                     Lineage Experience *
                   </label>
                   <input
@@ -582,7 +582,7 @@ export default function PersonalArtisanProfilePage() {
             </div>
 
             <div>
-              <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+              <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                 Artisan Story &amp; Lineage Bio *
               </label>
               <textarea
@@ -621,7 +621,7 @@ export default function PersonalArtisanProfilePage() {
                 border: 'none',
                 background: 'var(--maharani-maroon)',
                 color: '#FFF',
-                fontWeight: 700,
+                fontWeight: 500,
                 cursor: saving ? 'not-allowed' : 'pointer',
                 fontSize: '0.94rem',
                 fontFamily: 'var(--font-nav)',
@@ -648,7 +648,7 @@ export default function PersonalArtisanProfilePage() {
         {/* ── Right Column: Live Customer Portal Preview Card (EXACT SCREENSHOT LAYOUT) ── */}
         <div style={{ position: 'sticky', top: '90px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-            <span style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--maharani-maroon)' }}>
+            <span style={{ fontSize: '0.78rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--maharani-maroon)' }}>
               ✦ Live Customer Portal Preview
             </span>
             <span style={{ fontSize: '0.75rem', color: 'var(--stone-taupe)', fontWeight: 600 }}>
@@ -682,7 +682,7 @@ export default function PersonalArtisanProfilePage() {
                 <div
                   style={{
                     fontFamily: 'monospace',
-                    fontWeight: 800,
+                    fontWeight: 500,
                     fontSize: '0.85rem',
                     color: 'var(--maharani-maroon)',
                     letterSpacing: '0.04em',
@@ -695,7 +695,7 @@ export default function PersonalArtisanProfilePage() {
                   style={{
                     margin: 0,
                     fontSize: '1.22rem',
-                    fontWeight: 800,
+                    fontWeight: 500,
                     color: 'var(--ink-brown)',
                     lineHeight: 1.25,
                   }}
@@ -713,7 +713,7 @@ export default function PersonalArtisanProfilePage() {
                   justifyContent: 'center',
                   color: 'var(--stone-taupe)',
                   fontSize: '1rem',
-                  fontWeight: 700,
+                  fontWeight: 500,
                 }}
               >
                 &times;
@@ -770,7 +770,7 @@ export default function PersonalArtisanProfilePage() {
                       padding: '2px 9px',
                       borderRadius: '12px',
                       fontSize: '0.72rem',
-                      fontWeight: 800,
+                      fontWeight: 500,
                       textTransform: 'uppercase',
                       letterSpacing: '0.06em',
                       marginBottom: '4px',
@@ -783,7 +783,7 @@ export default function PersonalArtisanProfilePage() {
                     style={{
                       margin: '1px 0 2px',
                       fontSize: '1.2rem',
-                      fontWeight: 800,
+                      fontWeight: 500,
                       color: 'var(--ink-brown)',
                     }}
                   >
@@ -791,7 +791,7 @@ export default function PersonalArtisanProfilePage() {
                   </h3>
                   <div style={{ fontSize: '0.84rem', color: '#6E5D52' }}>
                     Artisan ID:{' '}
-                    <strong style={{ color: 'var(--maharani-maroon)', fontWeight: 800 }}>
+                    <strong style={{ color: 'var(--maharani-maroon)', fontWeight: 500 }}>
                       {artisanNo}
                     </strong>
                   </div>
@@ -815,7 +815,7 @@ export default function PersonalArtisanProfilePage() {
                       textTransform: 'uppercase',
                       letterSpacing: '0.08em',
                       color: '#8C7B70',
-                      fontWeight: 800,
+                      fontWeight: 500,
                       marginBottom: '3px',
                     }}
                   >
@@ -824,7 +824,7 @@ export default function PersonalArtisanProfilePage() {
                   <div
                     style={{
                       fontSize: '1.05rem',
-                      fontWeight: 800,
+                      fontWeight: 500,
                       color: 'var(--ink-brown)',
                     }}
                   >
@@ -840,13 +840,13 @@ export default function PersonalArtisanProfilePage() {
                         textTransform: 'uppercase',
                         letterSpacing: '0.08em',
                         color: '#8C7B70',
-                        fontWeight: 800,
+                        fontWeight: 500,
                         marginBottom: '3px',
                       }}
                     >
                       REGIONAL BELONGING
                     </div>
-                    <div style={{ fontSize: '0.94rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
+                    <div style={{ fontSize: '0.94rem', fontWeight: 500, color: 'var(--ink-brown)' }}>
                       {regionalBelonging}
                     </div>
                   </div>
@@ -858,13 +858,13 @@ export default function PersonalArtisanProfilePage() {
                         textTransform: 'uppercase',
                         letterSpacing: '0.08em',
                         color: '#8C7B70',
-                        fontWeight: 800,
+                        fontWeight: 500,
                         marginBottom: '3px',
                       }}
                     >
                       EXPERIENCE
                     </div>
-                    <div style={{ fontSize: '0.94rem', fontWeight: 800, color: 'var(--maharani-maroon)' }}>
+                    <div style={{ fontSize: '0.94rem', fontWeight: 500, color: 'var(--maharani-maroon)' }}>
                       {experience}
                     </div>
                   </div>
@@ -876,7 +876,7 @@ export default function PersonalArtisanProfilePage() {
                 <div
                   style={{
                     fontSize: '0.75rem',
-                    fontWeight: 800,
+                    fontWeight: 500,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
                     color: '#5C5043',

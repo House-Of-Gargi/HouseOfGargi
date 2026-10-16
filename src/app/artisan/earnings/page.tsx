@@ -88,7 +88,7 @@ export default function ArtisanEarningsPage() {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
             <Wallet style={{ width: 18, height: 18, color: 'var(--maharani-maroon)' }} />
-            <span style={{ fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
+            <span style={{ fontSize: '0.74rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
               Direct Artisan Workshop Payouts
             </span>
           </div>
@@ -110,7 +110,7 @@ export default function ArtisanEarningsPage() {
             padding: '0.65rem 1rem',
             fontSize: '0.85rem',
             fontFamily: 'var(--font-nav)',
-            fontWeight: 700,
+            fontWeight: 500,
             textTransform: 'uppercase',
             letterSpacing: '0.1em',
             color: 'var(--ink-brown)',
@@ -130,7 +130,7 @@ export default function ArtisanEarningsPage() {
         {/* Card 1: Cleared Balance */}
         <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', padding: '1.75rem 1.65rem', boxShadow: '0 2px 12px rgba(43,31,24,0.03)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-            <span style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
               Cleared Workshop Balance
             </span>
             <CheckCircle2 style={{ width: 18, height: 18, color: '#2E7D32' }} />
@@ -152,7 +152,7 @@ export default function ArtisanEarningsPage() {
               border: 'none',
               background: finances.cleared > 0 ? 'var(--maharani-maroon)' : '#D1C7BD',
               color: '#FFF',
-              fontWeight: 700,
+              fontWeight: 500,
               fontSize: '0.88rem',
               cursor: finances.cleared > 0 ? 'pointer' : 'not-allowed',
               display: 'flex',
@@ -169,7 +169,7 @@ export default function ArtisanEarningsPage() {
         {/* Card 2: In Escrow */}
         <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', padding: '1.75rem 1.65rem', boxShadow: '0 2px 12px rgba(43,31,24,0.03)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-            <span style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
               In Escrow (Transit / Fulfillment)
             </span>
             <Clock style={{ width: 18, height: 18, color: '#D97706' }} />
@@ -185,7 +185,7 @@ export default function ArtisanEarningsPage() {
         {/* Card 3: Lifetime Workshop Dispatched */}
         <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', padding: '1.75rem 1.65rem', boxShadow: '0 2px 12px rgba(43,31,24,0.03)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-            <span style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.82rem', color: '#5C5043', fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
               Lifetime Handloom Value (85%)
             </span>
             <TrendingUp style={{ width: 18, height: 18, color: 'var(--maharani-maroon)' }} />
@@ -203,7 +203,7 @@ export default function ArtisanEarningsPage() {
       <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '8px', overflow: 'hidden' }}>
         <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--soft-gold-line)', backgroundColor: '#FAF7F2', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
-            <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 700, color: 'var(--ink-brown)' }}>
+            <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 500, color: 'var(--ink-brown)' }}>
               Recent Order Settlements &amp; Workshop Share
             </h3>
             <p style={{ margin: '2px 0 0', fontSize: '0.85rem', color: '#6A5A50' }}>
@@ -214,7 +214,7 @@ export default function ArtisanEarningsPage() {
 
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
           <thead>
-            <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 500, fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               <th style={{ padding: '0.85rem 1rem' }}>Order Ref</th>
               <th style={{ padding: '0.85rem 1rem' }}>Client</th>
               <th style={{ padding: '0.85rem 1rem' }}>Destination</th>
@@ -232,7 +232,7 @@ export default function ArtisanEarningsPage() {
 
               return (
                 <tr key={o.id} style={{ borderBottom: '1px solid #F0E8DC' }}>
-                  <td style={{ padding: '0.85rem 1rem', fontFamily: 'monospace', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
+                  <td style={{ padding: '0.85rem 1rem', fontFamily: 'monospace', fontWeight: 500, color: 'var(--maharani-maroon)' }}>
                     {o.order_number || `#HG-${o.id}`}
                   </td>
                   <td style={{ padding: '0.85rem 1rem', fontWeight: 600, color: 'var(--ink-brown)' }}>
@@ -255,7 +255,7 @@ export default function ArtisanEarningsPage() {
                       padding: '3px 8px',
                       borderRadius: 12,
                       fontSize: '0.74rem',
-                      fontWeight: 700,
+                      fontWeight: 500,
                       background: isDelivered ? '#E8F5E9' : '#FFFBEB',
                       color: isDelivered ? '#2E7D32' : '#B45309',
                     }}>

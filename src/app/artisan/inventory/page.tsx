@@ -116,7 +116,7 @@ export default function ArtisanInventoryPage() {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
             <Boxes style={{ width: 18, height: 18, color: 'var(--maharani-maroon)' }} />
-            <span style={{ fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
+            <span style={{ fontSize: '0.74rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--maharani-maroon)' }}>
               Real-time Workshop Stock Manager
             </span>
           </div>
@@ -138,7 +138,7 @@ export default function ArtisanInventoryPage() {
             padding: '0.65rem 1rem',
             fontSize: '0.85rem',
             fontFamily: 'var(--font-nav)',
-            fontWeight: 700,
+            fontWeight: 500,
             textTransform: 'uppercase',
             letterSpacing: '0.1em',
             color: 'var(--ink-brown)',
@@ -177,7 +177,7 @@ export default function ArtisanInventoryPage() {
       <div style={{ background: '#FFFFFF', border: '1.5px solid var(--soft-gold-line)', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 2px 14px rgba(43,31,24,0.03)' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.92rem' }}>
           <thead>
-            <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 700, fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)', color: 'var(--stone-taupe)', fontWeight: 500, fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               <th style={{ padding: '0.85rem 1rem' }}>Product Creation</th>
               <th style={{ padding: '0.85rem 1rem' }}>Craft Technique</th>
               <th style={{ padding: '0.85rem 1rem' }}>Retail Price</th>
@@ -202,8 +202,8 @@ export default function ArtisanInventoryPage() {
                         style={{ width: 44, height: 44, objectFit: 'cover', borderRadius: 4, border: '1px solid var(--soft-gold-line)' }}
                       />
                       <div>
-                        <div style={{ fontWeight: 700, color: 'var(--ink-brown)' }}>{item.name}</div>
-                        <div style={{ fontSize: '0.74rem', color: 'var(--maharani-maroon)', fontFamily: 'monospace', fontWeight: 700 }}>
+                        <div style={{ fontWeight: 500, color: 'var(--ink-brown)' }}>{item.name}</div>
+                        <div style={{ fontSize: '0.74rem', color: 'var(--maharani-maroon)', fontFamily: 'monospace', fontWeight: 500 }}>
                           {item.productNo || 'ART-2605'} &bull; <span style={{ textTransform: 'capitalize', color: 'var(--stone-taupe)', fontFamily: 'sans-serif' }}>{item.category}</span>
                         </div>
                       </div>
@@ -212,7 +212,7 @@ export default function ArtisanInventoryPage() {
                   <td style={{ padding: '0.85rem 1rem', color: 'var(--stone-taupe)' }}>
                     {item.artType || 'Tangail Jamdani Pit Loom'}
                   </td>
-                  <td style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
+                  <td style={{ padding: '0.85rem 1rem', fontWeight: 500, color: 'var(--maharani-maroon)' }}>
                     ₹ {(Number(item.price) || 0).toLocaleString('en-IN')}
                   </td>
 
@@ -239,7 +239,7 @@ export default function ArtisanInventoryPage() {
                         <Minus style={{ width: 14, height: 14 }} />
                       </button>
 
-                      <span style={{ minWidth: 40, textAlign: 'center', fontWeight: 700, fontSize: '0.95rem', color: stock <= 2 ? '#C62828' : 'var(--ink-brown)' }}>
+                      <span style={{ minWidth: 40, textAlign: 'center', fontWeight: 500, fontSize: '0.95rem', color: stock <= 2 ? '#C62828' : 'var(--ink-brown)' }}>
                         {isUpdating ? <Loader2 style={{ width: 14, height: 14, animation: 'spin 1s linear infinite', margin: '0 auto' }} /> : stock}
                       </span>
 
@@ -265,7 +265,7 @@ export default function ArtisanInventoryPage() {
                     </div>
 
                     {stock <= 2 && (
-                      <div style={{ fontSize: '0.68rem', color: '#C62828', fontWeight: 700, marginTop: 4 }}>
+                      <div style={{ fontSize: '0.68rem', color: '#C62828', fontWeight: 500, marginTop: 4 }}>
                         {stock === 0 ? 'Out of Stock' : 'Low Stock Alert'}
                       </div>
                     )}
@@ -273,11 +273,11 @@ export default function ArtisanInventoryPage() {
 
                   <td style={{ padding: '0.85rem 1rem' }}>
                     {stock > 0 ? (
-                      <span style={{ color: '#2E7D32', fontWeight: 700, fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                      <span style={{ color: '#2E7D32', fontWeight: 500, fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                         <CheckCircle2 size={13} /> In Stock ({stock})
                       </span>
                     ) : (
-                      <span style={{ color: '#C62828', fontWeight: 700, fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                      <span style={{ color: '#C62828', fontWeight: 500, fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                         <AlertTriangle size={13} /> Depleted
                       </span>
                     )}
@@ -294,7 +294,7 @@ export default function ArtisanInventoryPage() {
                         border: '1px solid var(--soft-gold-line)',
                         background: isOut ? '#E8F5E9' : '#FFEBEE',
                         color: isOut ? '#2E7D32' : '#C62828',
-                        fontWeight: 700,
+                        fontWeight: 500,
                         fontSize: '0.76rem',
                         cursor: 'pointer',
                       }}

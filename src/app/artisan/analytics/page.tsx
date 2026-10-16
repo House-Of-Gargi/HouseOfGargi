@@ -55,7 +55,7 @@ export default function ArtisanAnalyticsPage() {
             style={{
               fontFamily: 'var(--font-serif)',
               fontSize: '2.35rem',
-              fontWeight: 800,
+              fontWeight: 500,
               letterSpacing: '-0.025em',
               color: 'var(--ink-brown)',
               margin: 0,
@@ -87,7 +87,7 @@ export default function ArtisanAnalyticsPage() {
             padding: '0.6rem 1rem',
             fontSize: '0.82rem',
             fontFamily: 'var(--font-nav)',
-            fontWeight: 700,
+            fontWeight: 500,
             textTransform: 'uppercase',
             letterSpacing: '0.08em',
             color: 'var(--ink-brown)',
@@ -151,7 +151,7 @@ export default function ArtisanAnalyticsPage() {
               style={{
                 fontSize: '0.88rem',
                 color: '#5C5043',
-                fontWeight: 700,
+                fontWeight: 500,
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
                 marginBottom: '0.5rem',
@@ -163,7 +163,7 @@ export default function ArtisanAnalyticsPage() {
             <div
               style={{
                 fontSize: '2.6rem',
-                fontWeight: 800,
+                fontWeight: 500,
                 lineHeight: 1.05,
                 color: 'var(--ink-brown)',
                 fontFamily: 'var(--font-serif)',
@@ -214,7 +214,7 @@ export default function ArtisanAnalyticsPage() {
               style={{
                 fontSize: '0.88rem',
                 color: '#5C5043',
-                fontWeight: 700,
+                fontWeight: 500,
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
                 marginBottom: '0.5rem',
@@ -226,7 +226,7 @@ export default function ArtisanAnalyticsPage() {
             <div
               style={{
                 fontSize: '2.6rem',
-                fontWeight: 800,
+                fontWeight: 500,
                 lineHeight: 1.05,
                 color: 'var(--maharani-maroon)',
                 fontFamily: 'var(--font-serif)',
@@ -277,7 +277,7 @@ export default function ArtisanAnalyticsPage() {
               style={{
                 fontSize: '0.88rem',
                 color: '#5C5043',
-                fontWeight: 700,
+                fontWeight: 500,
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
                 marginBottom: '0.5rem',
@@ -289,7 +289,7 @@ export default function ArtisanAnalyticsPage() {
             <div
               style={{
                 fontSize: '2.6rem',
-                fontWeight: 800,
+                fontWeight: 500,
                 lineHeight: 1.05,
                 color: 'var(--ink-brown)',
                 fontFamily: 'var(--font-serif)',
@@ -319,7 +319,7 @@ export default function ArtisanAnalyticsPage() {
                 background: '#FAF7F2',
                 borderBottom: '1px solid var(--soft-gold-line)',
                 color: 'var(--stone-taupe)',
-                fontWeight: 700,
+                fontWeight: 500,
                 fontSize: '0.74rem',
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
@@ -362,13 +362,13 @@ export default function ArtisanAnalyticsPage() {
                   <td style={{ padding: '0.85rem 1rem', fontWeight: 600, color: 'var(--ink-brown)' }}>
                     ₹ {price.toLocaleString('en-IN')}
                   </td>
-                  <td style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--ink-brown)' }}>
+                  <td style={{ padding: '0.85rem 1rem', fontWeight: 500, color: 'var(--ink-brown)' }}>
                     {units} Pieces
                   </td>
                   <td style={{ padding: '0.85rem 1rem', fontWeight: 600, color: 'var(--ink-brown)' }}>
                     ₹ {gross.toLocaleString('en-IN')}
                   </td>
-                  <td style={{ padding: '0.85rem 1rem', fontWeight: 800, color: '#2E7D32' }}>
+                  <td style={{ padding: '0.85rem 1rem', fontWeight: 500, color: '#2E7D32' }}>
                     ₹ {share.toLocaleString('en-IN')}
                   </td>
                   <td style={{ padding: '0.85rem 1rem' }}>

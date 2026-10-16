@@ -616,7 +616,7 @@ export default function SellerLoginPage() {
             <span style={{
               fontSize: '0.72rem',
               fontFamily: 'var(--font-nav)',
-              fontWeight: 700,
+              fontWeight: 500,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               padding: '0.26rem 0.65rem',
@@ -645,7 +645,7 @@ export default function SellerLoginPage() {
               color: 'var(--ink-brown)',
               fontSize: '0.85rem',
               fontFamily: 'var(--font-nav)',
-              fontWeight: 700,
+              fontWeight: 500,
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
               textDecoration: 'none',
@@ -716,7 +716,7 @@ export default function SellerLoginPage() {
                       <label style={{
                         fontSize: '0.82rem',
                         fontFamily: 'var(--font-nav)',
-                        fontWeight: 700,
+                        fontWeight: 500,
                         textTransform: 'uppercase',
                         letterSpacing: '0.12em',
                         color: 'var(--stone-taupe)',
@@ -756,7 +756,7 @@ export default function SellerLoginPage() {
                         <span style={{
                           fontSize: '0.95rem',
                           fontFamily: 'var(--font-nav)',
-                          fontWeight: 700,
+                          fontWeight: 500,
                           color: '#7A2331',
                         }}>
                           +91
@@ -792,7 +792,7 @@ export default function SellerLoginPage() {
                       <label style={{
                         fontSize: '0.82rem',
                         fontFamily: 'var(--font-nav)',
-                        fontWeight: 700,
+                        fontWeight: 500,
                         textTransform: 'uppercase',
                         letterSpacing: '0.12em',
                         color: 'var(--stone-taupe)',
@@ -886,7 +886,7 @@ export default function SellerLoginPage() {
                     padding: '1rem',
                     fontSize: '0.98rem',
                     fontFamily: 'var(--font-nav)',
-                    fontWeight: 700,
+                    fontWeight: 500,
                     textTransform: 'uppercase',
                     letterSpacing: '0.12em',
                     display: 'flex',
@@ -918,7 +918,7 @@ export default function SellerLoginPage() {
                     <label style={{
                       fontSize: '0.82rem',
                       fontFamily: 'var(--font-nav)',
-                      fontWeight: 700,
+                      fontWeight: 500,
                       textTransform: 'uppercase',
                       letterSpacing: '0.12em',
                       color: 'var(--stone-taupe)',
@@ -933,7 +933,7 @@ export default function SellerLoginPage() {
                         border: 'none',
                         fontSize: '0.85rem',
                         color: '#7A2331',
-                        fontWeight: 700,
+                        fontWeight: 500,
                         cursor: 'pointer',
                         textDecoration: 'underline',
                       }}
@@ -979,7 +979,7 @@ export default function SellerLoginPage() {
                     padding: '1rem',
                     fontSize: '0.98rem',
                     fontFamily: 'var(--font-nav)',
-                    fontWeight: 700,
+                    fontWeight: 500,
                     textTransform: 'uppercase',
                     letterSpacing: '0.12em',
                     display: 'flex',
@@ -1026,7 +1026,7 @@ export default function SellerLoginPage() {
                   color: '#7A2331',
                   fontFamily: 'var(--font-nav)',
                   fontSize: '0.92rem',
-                  fontWeight: 700,
+                  fontWeight: 500,
                   letterSpacing: '0.06em',
                   textTransform: 'uppercase',
                   textDecoration: 'none',
@@ -1060,7 +1060,7 @@ export default function SellerLoginPage() {
             <span style={{
               fontFamily: "'Caveat', 'Kalam', cursive, sans-serif",
               fontSize: '1.45rem',
-              fontWeight: 700,
+              fontWeight: 500,
               fontStyle: 'italic',
               color: 'var(--ink-brown)',
               lineHeight: 1.1,

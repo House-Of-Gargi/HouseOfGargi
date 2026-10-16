@@ -219,7 +219,7 @@ export default function ArtisanDashboardPage() {
           <h1
             style={{
               fontSize: '1.95rem',
-              fontWeight: 600,
+              fontWeight: 500,
               color: 'var(--ink-brown)',
               margin: 0,
               letterSpacing: '-0.01em',
@@ -255,7 +255,7 @@ export default function ArtisanDashboardPage() {
               padding: '0.6rem 1rem',
               fontSize: '0.82rem',
               fontFamily: 'var(--font-nav)',
-              fontWeight: 600,
+              fontWeight: 500,
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
               color: 'var(--ink-brown)',
@@ -282,7 +282,7 @@ export default function ArtisanDashboardPage() {
               padding: '0.6rem 1rem',
               fontSize: '0.82rem',
               fontFamily: 'var(--font-nav)',
-              fontWeight: 600,
+              fontWeight: 500,
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
               color: '#C62828',
@@ -349,7 +349,7 @@ export default function ArtisanDashboardPage() {
               style={{
                 fontSize: '0.82rem',
                 color: '#5C5043',
-                fontWeight: 600,
+                fontWeight: 500,
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
                 marginBottom: '0.45rem',
@@ -361,7 +361,7 @@ export default function ArtisanDashboardPage() {
             <div
               style={{
                 fontSize: '2rem',
-                fontWeight: 600,
+                fontWeight: 500,
                 color: 'var(--ink-brown)',
                 lineHeight: 1.15,
                 letterSpacing: '-0.01em',
@@ -413,7 +413,7 @@ export default function ArtisanDashboardPage() {
               style={{
                 fontSize: '0.82rem',
                 color: '#5C5043',
-                fontWeight: 600,
+                fontWeight: 500,
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
                 marginBottom: '0.45rem',
@@ -425,7 +425,7 @@ export default function ArtisanDashboardPage() {
             <div
               style={{
                 fontSize: '2rem',
-                fontWeight: 600,
+                fontWeight: 500,
                 color: 'var(--maharani-maroon)',
                 lineHeight: 1.15,
                 letterSpacing: '-0.01em',
@@ -477,7 +477,7 @@ export default function ArtisanDashboardPage() {
               style={{
                 fontSize: '0.82rem',
                 color: '#5C5043',
-                fontWeight: 600,
+                fontWeight: 500,
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
                 marginBottom: '0.45rem',
@@ -489,7 +489,7 @@ export default function ArtisanDashboardPage() {
             <div
               style={{
                 fontSize: '2rem',
-                fontWeight: 600,
+                fontWeight: 500,
                 color: 'var(--ink-brown)',
                 lineHeight: 1.15,
                 letterSpacing: '-0.01em',
@@ -541,7 +541,7 @@ export default function ArtisanDashboardPage() {
               style={{
                 fontSize: '0.82rem',
                 color: '#5C5043',
-                fontWeight: 600,
+                fontWeight: 500,
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
                 marginBottom: '0.45rem',
@@ -553,7 +553,7 @@ export default function ArtisanDashboardPage() {
             <div
               style={{
                 fontSize: '2rem',
-                fontWeight: 600,
+                fontWeight: 500,
                 color: 'var(--ink-brown)',
                 lineHeight: 1.15,
                 letterSpacing: '-0.01em',
@@ -602,7 +602,7 @@ export default function ArtisanDashboardPage() {
               <h2
                 style={{
                   fontSize: '1.35rem',
-                  fontWeight: 700,
+                  fontWeight: 500,
                   color: 'var(--ink-brown)',
                   margin: 0,
                   letterSpacing: '-0.015em',
@@ -636,7 +636,7 @@ export default function ArtisanDashboardPage() {
                   padding: '0.4rem 1rem',
                   borderRadius: '9999px',
                   fontSize: '0.82rem',
-                  fontWeight: 700,
+                  fontWeight: 500,
                   cursor: 'pointer',
                   transition: 'all 0.18s ease',
                   boxShadow: timeRange === '7' ? '0 2px 6px rgba(122, 35, 49, 0.25)' : 'none',
@@ -654,7 +654,7 @@ export default function ArtisanDashboardPage() {
                   padding: '0.4rem 1rem',
                   borderRadius: '9999px',
                   fontSize: '0.82rem',
-                  fontWeight: 700,
+                  fontWeight: 500,
                   cursor: 'pointer',
                   transition: 'all 0.18s ease',
                   boxShadow: timeRange === '30' ? '0 2px 6px rgba(122, 35, 49, 0.25)' : 'none',
@@ -681,21 +681,21 @@ export default function ArtisanDashboardPage() {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#6A5A50', width: '50px', marginLeft: '-55px', textAlign: 'right', paddingRight: '10px' }}>
+                <span style={{ fontSize: '0.82rem', fontWeight: 500, color: '#6A5A50', width: '50px', marginLeft: '-55px', textAlign: 'right', paddingRight: '10px' }}>
                   {maxSales > 1000 ? (`₹${Math.round(maxSales / 1000)}k`) : '₹1k'}
                 </span>
                 <div style={{ borderBottom: '1px dashed rgba(228, 211, 174, 0.75)', flex: 1 }} />
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#6A5A50', width: '50px', marginLeft: '-55px', textAlign: 'right', paddingRight: '10px' }}>
+                <span style={{ fontSize: '0.82rem', fontWeight: 500, color: '#6A5A50', width: '50px', marginLeft: '-55px', textAlign: 'right', paddingRight: '10px' }}>
                   {maxSales > 1000 ? (`₹${Math.round(maxSales / 2000)}k`) : '₹500'}
                 </span>
                 <div style={{ borderBottom: '1px dashed rgba(228, 211, 174, 0.75)', flex: 1 }} />
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#6A5A50', width: '50px', marginLeft: '-55px', textAlign: 'right', paddingRight: '10px' }}>
+                <span style={{ fontSize: '0.82rem', fontWeight: 500, color: '#6A5A50', width: '50px', marginLeft: '-55px', textAlign: 'right', paddingRight: '10px' }}>
                   ₹0
                 </span>
                 <div style={{ borderBottom: '1.5px solid var(--soft-gold-line)', flex: 1 }} />
@@ -754,7 +754,7 @@ export default function ArtisanDashboardPage() {
                           textAlign: 'center',
                         }}
                       >
-                        <div style={{ fontWeight: 800, color: 'var(--soft-gold-line)', fontSize: '0.92rem' }}>
+                        <div style={{ fontWeight: 500, color: 'var(--soft-gold-line)', fontSize: '0.92rem' }}>
                           ₹ {item.sales.toLocaleString('en-IN')}
                         </div>
                         <div style={{ fontSize: '0.74rem', opacity: 0.9, marginTop: '2px' }}>
@@ -810,7 +810,7 @@ export default function ArtisanDashboardPage() {
                       textAlign: 'center',
                       fontSize: '0.8rem',
                       color: '#5C5043',
-                      fontWeight: 600,
+                      fontWeight: 500,
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
@@ -840,7 +840,7 @@ export default function ArtisanDashboardPage() {
             <h2
               style={{
                 fontSize: '1.35rem',
-                fontWeight: 700,
+                fontWeight: 500,
                 color: 'var(--ink-brown)',
                 margin: 0,
                 letterSpacing: '-0.015em',
@@ -897,7 +897,7 @@ export default function ArtisanDashboardPage() {
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontSize: '0.78rem',
-                        fontWeight: 800,
+                        fontWeight: 500,
                         flexShrink: 0,
                       }}
                     >
@@ -922,7 +922,7 @@ export default function ArtisanDashboardPage() {
                     <div style={{ minWidth: 0, overflow: 'hidden' }}>
                       <div
                         style={{
-                          fontWeight: 700,
+                          fontWeight: 500,
                           fontSize: '0.92rem',
                           color: 'var(--ink-brown)',
                           whiteSpace: 'nowrap',
@@ -940,10 +940,10 @@ export default function ArtisanDashboardPage() {
 
                   {/* Units Sold & Artisan Share */}
                   <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                    <div style={{ fontSize: '0.96rem', fontWeight: 800, color: 'var(--maharani-maroon)' }}>
+                    <div style={{ fontSize: '0.96rem', fontWeight: 500, color: 'var(--maharani-maroon)' }}>
                       ₹ {product.artisanShare.toLocaleString('en-IN')}
                     </div>
-                    <div style={{ fontSize: '0.78rem', color: '#2E7D32', fontWeight: 700, marginTop: '1px' }}>
+                    <div style={{ fontSize: '0.78rem', color: '#2E7D32', fontWeight: 500, marginTop: '1px' }}>
                       {product.unitsSold} sold
                     </div>
                   </div>
@@ -968,7 +968,7 @@ export default function ArtisanDashboardPage() {
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
           <div>
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.35rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0 }}>
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.35rem', fontWeight: 500, color: 'var(--ink-brown)', margin: 0 }}>
               Collection Portfolio
             </h3>
             <p style={{ fontSize: '0.92rem', color: '#6A5A50', margin: '0.25rem 0 0 0' }}>
@@ -981,7 +981,7 @@ export default function ArtisanDashboardPage() {
             style={{
               fontFamily: 'var(--font-nav)',
               fontSize: '0.82rem',
-              fontWeight: 700,
+              fontWeight: 500,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               color: 'var(--maharani-maroon)',
@@ -1020,7 +1020,7 @@ export default function ArtisanDashboardPage() {
               <div
                 style={{
                   fontSize: '0.88rem',
-                  fontWeight: 700,
+                  fontWeight: 500,
                   textTransform: 'uppercase',
                   letterSpacing: '0.06em',
                   color: '#5C5043',
@@ -1031,7 +1031,7 @@ export default function ArtisanDashboardPage() {
               <div
                 style={{
                   fontSize: '1.75rem',
-                  fontWeight: 800,
+                  fontWeight: 500,
                   color: 'var(--ink-brown)',
                   fontFamily: 'var(--font-serif)',
                   lineHeight: 1.1,

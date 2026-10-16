@@ -245,7 +245,7 @@ export default function NewProductCreationPage() {
               padding: '0.65rem 1.15rem',
               fontSize: '0.85rem',
               fontFamily: 'var(--font-nav)',
-              fontWeight: 700,
+              fontWeight: 500,
               textTransform: 'uppercase',
               letterSpacing: '0.1em',
               color: 'var(--ink-brown)',
@@ -282,13 +282,13 @@ export default function NewProductCreationPage() {
             <CheckCircle2 style={{ width: 36, height: 36, color: '#2E7D32' }} />
           </div>
 
-          <h2 style={{ fontFamily: 'var(--font-serif)', color: 'var(--ink-brown)', margin: '0 0 0.5rem', fontSize: '1.65rem', fontWeight: 700 }}>
+          <h2 style={{ fontFamily: 'var(--font-serif)', color: 'var(--ink-brown)', margin: '0 0 0.5rem', fontSize: '1.65rem', fontWeight: 500 }}>
             Creation Registered Successfully!
           </h2>
 
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', padding: '0.35rem 0.85rem', borderRadius: 4, margin: '0.5rem 0 1rem' }}>
             <span style={{ fontSize: '0.82rem', color: 'var(--stone-taupe)', fontWeight: 600 }}>Assigned Piece Code:</span>
-            <span style={{ fontFamily: 'monospace', fontWeight: 800, color: 'var(--maharani-maroon)', fontSize: '0.92rem' }}>
+            <span style={{ fontFamily: 'monospace', fontWeight: 500, color: 'var(--maharani-maroon)', fontSize: '0.92rem' }}>
               {createdProductNo || 'ART-84920'}
             </span>
           </div>
@@ -306,7 +306,7 @@ export default function NewProductCreationPage() {
                 border: 'none', 
                 background: 'var(--maharani-maroon)', 
                 color: '#FFF', 
-                fontWeight: 700, 
+                fontWeight: 500, 
                 textDecoration: 'none', 
                 fontSize: '0.9rem',
                 fontFamily: 'var(--font-nav)',
@@ -339,7 +339,7 @@ export default function NewProductCreationPage() {
                 border: '1.5px solid var(--soft-gold-line)', 
                 background: '#FAF7F2', 
                 color: 'var(--ink-brown)', 
-                fontWeight: 700, 
+                fontWeight: 500, 
                 cursor: 'pointer', 
                 fontSize: '0.9rem',
                 fontFamily: 'var(--font-nav)',
@@ -376,7 +376,7 @@ export default function NewProductCreationPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               {/* Creation Title */}
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                   Creation Title *
                 </label>
                 <input
@@ -405,7 +405,7 @@ export default function NewProductCreationPage() {
               {/* Category & Craft Technique */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
                 <div>
-                  <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                  <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                     Category *
                   </label>
                   <CustomDropdown
@@ -418,7 +418,7 @@ export default function NewProductCreationPage() {
                 </div>
 
                 <div>
-                  <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                  <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                     Craft Technique
                   </label>
                   <input
@@ -456,7 +456,7 @@ export default function NewProductCreationPage() {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                   Retail Price (₹) *
                 </label>
                 <input
@@ -483,7 +483,7 @@ export default function NewProductCreationPage() {
               </div>
 
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                   Atelier Stock *
                 </label>
                 <input
@@ -522,7 +522,7 @@ export default function NewProductCreationPage() {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginBottom: '1.25rem' }}>
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                   Fabric
                 </label>
                 <input
@@ -547,7 +547,7 @@ export default function NewProductCreationPage() {
               </div>
 
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                   Occasion
                 </label>
                 <input
@@ -574,7 +574,7 @@ export default function NewProductCreationPage() {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                   Region of Origin
                 </label>
                 <input
@@ -599,7 +599,7 @@ export default function NewProductCreationPage() {
               </div>
 
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                   Care Guide
                 </label>
                 <input
@@ -625,7 +625,7 @@ export default function NewProductCreationPage() {
             </div>
 
             <div style={{ marginTop: '1.25rem' }}>
-              <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+              <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                 Sizes Available
               </label>
               <input
@@ -660,7 +660,7 @@ export default function NewProductCreationPage() {
             </div>
 
             <div>
-              <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+              <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                 Description
               </label>
               <textarea
@@ -733,7 +733,7 @@ export default function NewProductCreationPage() {
                 >
                   <ImagePlus style={{ width: 26, height: 26 }} />
                 </div>
-                <p style={{ margin: 0, fontWeight: 700, fontSize: '0.95rem', color: 'var(--ink-brown)' }}>
+                <p style={{ margin: 0, fontWeight: 500, fontSize: '0.95rem', color: 'var(--ink-brown)' }}>
                   No Creation Images Added Yet
                 </p>
                 <p style={{ margin: 0, fontSize: '0.82rem', color: 'var(--stone-taupe)', maxWidth: '380px', lineHeight: 1.5 }}>
@@ -775,7 +775,7 @@ export default function NewProductCreationPage() {
                             background: 'rgba(35, 24, 18, 0.85)',
                             color: '#FFFFFF',
                             fontSize: '0.68rem',
-                            fontWeight: 700,
+                            fontWeight: 500,
                             padding: '2px 5px',
                             borderRadius: 3,
                           }}
@@ -791,7 +791,7 @@ export default function NewProductCreationPage() {
                               background: 'var(--maharani-maroon)',
                               color: '#FFFFFF',
                               fontSize: '0.65rem',
-                              fontWeight: 800,
+                              fontWeight: 500,
                               padding: '2px 5px',
                               borderRadius: 3,
                               display: 'inline-flex',
@@ -846,7 +846,7 @@ export default function NewProductCreationPage() {
                             onClick={() => handleSetCover(idx)}
                             style={{
                               fontSize: '0.68rem',
-                              fontWeight: 700,
+                              fontWeight: 500,
                               color: 'var(--maharani-maroon)',
                               background: 'none',
                               border: 'none',
@@ -885,7 +885,7 @@ export default function NewProductCreationPage() {
             <div style={{ background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', borderRadius: 8, padding: '1.25rem' }}>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: 'var(--ink-brown)', marginBottom: '0.35rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 500, color: 'var(--ink-brown)', marginBottom: '0.35rem' }}>
                     Upload Photos from Device:
                   </label>
                   <label
@@ -899,7 +899,7 @@ export default function NewProductCreationPage() {
                       border: '1.5px dashed var(--soft-gold-line)',
                       background: '#FFFFFF',
                       color: 'var(--ink-brown)',
-                      fontWeight: 700,
+                      fontWeight: 500,
                       fontSize: '0.84rem',
                       cursor: 'pointer',
                       width: '100%',
@@ -921,7 +921,7 @@ export default function NewProductCreationPage() {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: 'var(--ink-brown)', marginBottom: '0.35rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 500, color: 'var(--ink-brown)', marginBottom: '0.35rem' }}>
                     Or Add Image URL:
                   </label>
                   <div style={{ display: 'flex', gap: '0.45rem' }}>
@@ -956,7 +956,7 @@ export default function NewProductCreationPage() {
                         border: 'none',
                         background: imageUrlInput.trim() ? 'var(--maharani-maroon)' : '#D8CBB6',
                         color: '#FFFFFF',
-                        fontWeight: 700,
+                        fontWeight: 500,
                         fontSize: '0.84rem',
                         cursor: imageUrlInput.trim() ? 'pointer' : 'not-allowed',
                         whiteSpace: 'nowrap',
@@ -980,7 +980,7 @@ export default function NewProductCreationPage() {
                 border: '1.5px solid var(--soft-gold-line)',
                 background: '#FAF7F2',
                 color: 'var(--ink-brown)',
-                fontWeight: 700,
+                fontWeight: 500,
                 fontSize: '0.88rem',
                 textDecoration: 'none',
                 fontFamily: 'var(--font-nav)',
@@ -998,7 +998,7 @@ export default function NewProductCreationPage() {
                 border: 'none',
                 background: 'var(--maharani-maroon)',
                 color: '#FFF',
-                fontWeight: 700,
+                fontWeight: 500,
                 cursor: submitting ? 'not-allowed' : 'pointer',
                 fontSize: '0.92rem',
                 fontFamily: 'var(--font-nav)',

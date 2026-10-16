@@ -587,7 +587,7 @@ export default function SellerProductsPage() {
               padding: '0.65rem 1rem',
               fontSize: '0.85rem',
               fontFamily: 'var(--font-nav)',
-              fontWeight: 700,
+              fontWeight: 500,
               textTransform: 'uppercase',
               letterSpacing: '0.1em',
               color: 'var(--ink-brown)',
@@ -611,7 +611,7 @@ export default function SellerProductsPage() {
               padding: '0.65rem 1.15rem',
               fontSize: '0.85rem',
               fontFamily: 'var(--font-nav)',
-              fontWeight: 700,
+              fontWeight: 500,
               textTransform: 'uppercase',
               letterSpacing: '0.14em',
               display: 'inline-flex',
@@ -647,7 +647,7 @@ export default function SellerProductsPage() {
                 padding: '0.45rem 0.85rem',
                 fontSize: '0.82rem',
                 fontFamily: 'var(--font-nav)',
-                fontWeight: 700,
+                fontWeight: 500,
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
                 cursor: 'pointer',
@@ -686,12 +686,12 @@ export default function SellerProductsPage() {
         <table className="seller-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
           <thead>
             <tr style={{ background: '#FAF7F2', borderBottom: '1px solid var(--soft-gold-line)' }}>
-              <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>Piece Code</th>
-              <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>Creation Title</th>
-              <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>Retail Price</th>
-              <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>Atelier Stock</th>
-              <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>Total Units Sold</th>
-              <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap', textAlign: 'right' }}>Actions</th>
+              <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>Piece Code</th>
+              <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>Creation Title</th>
+              <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>Retail Price</th>
+              <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>Atelier Stock</th>
+              <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap' }}>Total Units Sold</th>
+              <th style={{ padding: '0.85rem 1rem', fontSize: '0.82rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--stone-taupe)', whiteSpace: 'nowrap', textAlign: 'right' }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -713,7 +713,7 @@ export default function SellerProductsPage() {
                     style={{ borderBottom: '1px solid var(--soft-gold-line)', height: '56px', verticalAlign: 'middle' }}
                   >
                     {/* 1. Piece Code (Single Line) */}
-                    <td style={{ padding: '0.65rem 1rem', fontFamily: 'monospace', fontWeight: 700, color: 'var(--maharani-maroon)', whiteSpace: 'nowrap' }}>
+                    <td style={{ padding: '0.65rem 1rem', fontFamily: 'monospace', fontWeight: 500, color: 'var(--maharani-maroon)', whiteSpace: 'nowrap' }}>
                       {product.productNo || 'ART-2605'}
                     </td>
 
@@ -725,14 +725,14 @@ export default function SellerProductsPage() {
                           alt={product.name}
                           style={{ width: 36, height: 36, objectFit: 'cover', borderRadius: 4, border: '1px solid var(--soft-gold-line)', flexShrink: 0 }}
                         />
-                        <span style={{ color: 'var(--ink-brown)', fontWeight: 700, fontSize: '0.9rem' }}>
+                        <span style={{ color: 'var(--ink-brown)', fontWeight: 500, fontSize: '0.9rem' }}>
                           {product.name}
                         </span>
                         {product.isHidden && (
                           <span
                             style={{
                               fontSize: '0.72rem',
-                              fontWeight: 800,
+                              fontWeight: 500,
                               textTransform: 'uppercase',
                               letterSpacing: '0.04em',
                               padding: '2px 7px',
@@ -762,7 +762,7 @@ export default function SellerProductsPage() {
                         padding: '3px 8px',
                         borderRadius: 12,
                         fontSize: '0.78rem',
-                        fontWeight: 700,
+                        fontWeight: 500,
                         background: isOut ? '#FFEBEE' : '#E8F5E9',
                         color: isOut ? '#C62828' : '#2E7D32',
                       }}>
@@ -771,7 +771,7 @@ export default function SellerProductsPage() {
                     </td>
 
                     {/* Total Units Sold: Single Line */}
-                    <td style={{ padding: '0.65rem 1rem', fontWeight: 700, color: 'var(--ink-brown)', whiteSpace: 'nowrap' }}>
+                    <td style={{ padding: '0.65rem 1rem', fontWeight: 500, color: 'var(--ink-brown)', whiteSpace: 'nowrap' }}>
                       {product.totalSales || 0} Pieces
                     </td>
 
@@ -791,7 +791,7 @@ export default function SellerProductsPage() {
                             border: '1px solid var(--soft-gold-line)',
                             color: 'var(--maharani-maroon)',
                             fontSize: '0.8rem',
-                            fontWeight: 700,
+                            fontWeight: 500,
                             cursor: 'pointer',
                             transition: 'all 0.15s ease',
                           }}
@@ -816,7 +816,7 @@ export default function SellerProductsPage() {
                             border: '1px solid var(--maharani-maroon)',
                             color: '#FFFFFF',
                             fontSize: '0.8rem',
-                            fontWeight: 700,
+                            fontWeight: 500,
                             cursor: 'pointer',
                             transition: 'all 0.15s ease',
                             boxShadow: '0 1px 4px rgba(122, 35, 49, 0.15)',
@@ -839,7 +839,7 @@ export default function SellerProductsPage() {
                             border: '1px solid var(--soft-gold-line)',
                             color: 'var(--ink-brown)',
                             fontSize: '0.8rem',
-                            fontWeight: 700,
+                            fontWeight: 500,
                             cursor: 'pointer',
                           }}
                         >
@@ -895,11 +895,11 @@ export default function SellerProductsPage() {
             {/* Modal Header */}
             <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#FAF7F2' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <span style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--maharani-maroon)', fontSize: '0.88rem' }}>
+                <span style={{ fontFamily: 'monospace', fontWeight: 500, color: 'var(--maharani-maroon)', fontSize: '0.88rem' }}>
                   {editForm.productNo}
                 </span>
                 <span style={{ fontSize: '0.9rem', color: 'var(--stone-taupe)' }}>&bull;</span>
-                <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
+                <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 500, color: 'var(--ink-brown)' }}>
                   {isEditing ? 'Edit Creation Details' : 'Creation Specifications'}
                 </h3>
               </div>
@@ -916,7 +916,7 @@ export default function SellerProductsPage() {
                         borderRadius: 4,
                         padding: '0.35rem 0.65rem',
                         fontSize: '0.78rem',
-                        fontWeight: 700,
+                        fontWeight: 500,
                         color: selectedProduct?.isHidden ? '#D97706' : 'var(--ink-brown)',
                         cursor: 'pointer',
                         display: 'inline-flex',
@@ -943,7 +943,7 @@ export default function SellerProductsPage() {
                         borderRadius: 4,
                         padding: '0.35rem 0.65rem',
                         fontSize: '0.78rem',
-                        fontWeight: 700,
+                        fontWeight: 500,
                         color: '#C62828',
                         cursor: 'pointer',
                         display: 'inline-flex',
@@ -964,7 +964,7 @@ export default function SellerProductsPage() {
                         borderRadius: 4,
                         padding: '0.35rem 0.75rem',
                         fontSize: '0.78rem',
-                        fontWeight: 700,
+                        fontWeight: 500,
                         color: '#FFFFFF',
                         cursor: 'pointer',
                         display: 'inline-flex',
@@ -990,7 +990,7 @@ export default function SellerProductsPage() {
               /* ── EDIT FORM VIEW ── */
               <form onSubmit={handleSaveChanges} style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
                     Creation Title
                   </label>
                   <input
@@ -1004,7 +1004,7 @@ export default function SellerProductsPage() {
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
                       Retail Price (₹)
                     </label>
                     <input
@@ -1018,7 +1018,7 @@ export default function SellerProductsPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
                       Atelier Stock
                     </label>
                     <input
@@ -1034,7 +1034,7 @@ export default function SellerProductsPage() {
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
                       Category
                     </label>
                     <CustomDropdown
@@ -1045,7 +1045,7 @@ export default function SellerProductsPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
                       Craft Technique
                     </label>
                     <input
@@ -1059,7 +1059,7 @@ export default function SellerProductsPage() {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
                     Customer Storefront Description
                   </label>
                   <textarea
@@ -1074,7 +1074,7 @@ export default function SellerProductsPage() {
                 {/* Specs Box Fields */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
                       Fabric
                     </label>
                     <input
@@ -1087,7 +1087,7 @@ export default function SellerProductsPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
                       Occasion
                     </label>
                     <input
@@ -1102,7 +1102,7 @@ export default function SellerProductsPage() {
                 {/* Fabric Care & Craft Details */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
                       Fabric Care Instructions
                     </label>
                     <input
@@ -1115,7 +1115,7 @@ export default function SellerProductsPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
                       Heritage Craft Region
                     </label>
                     <input
@@ -1129,7 +1129,7 @@ export default function SellerProductsPage() {
                 </div>
 
                 {saveSuccess && (
-                  <div style={{ background: '#E8F5E9', color: '#2E7D32', padding: '0.65rem', borderRadius: 4, fontSize: '0.88rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div style={{ background: '#E8F5E9', color: '#2E7D32', padding: '0.65rem', borderRadius: 4, fontSize: '0.88rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 6 }}>
                     <Check size={16} /> {saveSuccess}
                   </div>
                 )}
@@ -1147,7 +1147,7 @@ export default function SellerProductsPage() {
                         border: selectedProduct?.isHidden ? '1px solid #D97706' : '1px solid var(--soft-gold-line)',
                         color: selectedProduct?.isHidden ? '#D97706' : 'var(--ink-brown)',
                         borderRadius: 4,
-                        fontWeight: 700,
+                        fontWeight: 500,
                         fontSize: '0.82rem',
                         cursor: 'pointer',
                         display: 'inline-flex',
@@ -1175,7 +1175,7 @@ export default function SellerProductsPage() {
                         border: '1px solid #FFCDD2',
                         color: '#C62828',
                         borderRadius: 4,
-                        fontWeight: 700,
+                        fontWeight: 500,
                         fontSize: '0.82rem',
                         cursor: 'pointer',
                         display: 'inline-flex',
@@ -1201,7 +1201,7 @@ export default function SellerProductsPage() {
                     <button
                       type="submit"
                       disabled={submittingEdit}
-                      style={{ padding: '0.55rem 1.25rem', background: 'var(--maharani-maroon)', color: '#FFFFFF', border: 'none', borderRadius: 4, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+                      style={{ padding: '0.55rem 1.25rem', background: 'var(--maharani-maroon)', color: '#FFFFFF', border: 'none', borderRadius: 4, fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
                     >
                       {submittingEdit ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />}
                       <span>Save Changes</span>
@@ -1214,17 +1214,17 @@ export default function SellerProductsPage() {
               <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 {/* Product Title & Price Header */}
                 <div>
-                  <h2 style={{ fontFamily: 'var(--font-display, Playfair Display, serif)', fontSize: '1.75rem', fontWeight: 700, color: 'var(--ink-brown)', margin: 0, lineHeight: 1.2 }}>
+                  <h2 style={{ fontFamily: 'var(--font-display, Playfair Display, serif)', fontSize: '1.75rem', fontWeight: 500, color: 'var(--ink-brown)', margin: 0, lineHeight: 1.2 }}>
                     {editForm.name}
                   </h2>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginTop: 8 }}>
-                    <span style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--maharani-maroon)' }}>
+                    <span style={{ fontSize: '1.6rem', fontWeight: 500, color: 'var(--maharani-maroon)' }}>
                       ₹ {(Number(editForm.price) || 0).toLocaleString('en-IN')}
                     </span>
                     <span style={{ fontSize: '0.9rem', color: '#6A5A50', fontWeight: 600 }}>
                       (${Math.round((Number(editForm.price) || 0) / 83).toLocaleString('en-US')} USD)
                     </span>
-                    <span style={{ marginLeft: 'auto', fontSize: '0.85rem', fontWeight: 700, color: '#2E7D32', background: '#E8F5E9', padding: '2px 8px', borderRadius: 10 }}>
+                    <span style={{ marginLeft: 'auto', fontSize: '0.85rem', fontWeight: 500, color: '#2E7D32', background: '#E8F5E9', padding: '2px 8px', borderRadius: 10 }}>
                       {editForm.stock} in Loom Stock
                     </span>
                   </div>
@@ -1247,28 +1247,28 @@ export default function SellerProductsPage() {
                   boxShadow: '0 2px 6px rgba(0,0,0,0.02)'
                 }}>
                   <div>
-                    <div style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#786C5E', marginBottom: 4 }}>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#786C5E', marginBottom: 4 }}>
                       FABRIC
                     </div>
-                    <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--ink-brown)' }}>
+                    <div style={{ fontSize: '0.92rem', fontWeight: 500, color: 'var(--ink-brown)' }}>
                       {editForm.fabric || 'Pure Silk'}
                     </div>
                   </div>
 
                   <div>
-                    <div style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#786C5E', marginBottom: 4 }}>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#786C5E', marginBottom: 4 }}>
                       TECHNIQUE
                     </div>
-                    <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--ink-brown)' }}>
+                    <div style={{ fontSize: '0.92rem', fontWeight: 500, color: 'var(--ink-brown)' }}>
                       {editForm.artType || 'Handloom Weave'}
                     </div>
                   </div>
 
                   <div>
-                    <div style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#786C5E', marginBottom: 4 }}>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#786C5E', marginBottom: 4 }}>
                       OCCASION
                     </div>
-                    <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--ink-brown)' }}>
+                    <div style={{ fontSize: '0.92rem', fontWeight: 500, color: 'var(--ink-brown)' }}>
                       {editForm.occasion || 'Festive'}
                     </div>
                   </div>
@@ -1304,7 +1304,7 @@ export default function SellerProductsPage() {
                   <button
                     type="button"
                     onClick={() => setIsEditing(true)}
-                    style={{ padding: '0.55rem 1.25rem', background: 'var(--maharani-maroon)', color: '#FFFFFF', border: 'none', borderRadius: 4, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.86rem' }}
+                    style={{ padding: '0.55rem 1.25rem', background: 'var(--maharani-maroon)', color: '#FFFFFF', border: 'none', borderRadius: 4, fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.86rem' }}
                   >
                     <Pencil size={14} />
                     <span>Edit Piece Details</span>
@@ -1346,7 +1346,7 @@ export default function SellerProductsPage() {
             onClick={e => e.stopPropagation()}
           >
             <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#FAF7F2' }}>
-              <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
+              <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 500, color: 'var(--ink-brown)' }}>
                 Register New Handcrafted Piece
               </h3>
               <button onClick={() => setIsAddModalOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-brown)' }}>
@@ -1356,7 +1356,7 @@ export default function SellerProductsPage() {
 
             <form onSubmit={handleCreateProduct} style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
                   Creation Title
                 </label>
                 <input
@@ -1371,7 +1371,7 @@ export default function SellerProductsPage() {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
                     Collection Category
                   </label>
                   <CustomDropdown
@@ -1382,7 +1382,7 @@ export default function SellerProductsPage() {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
                     Craft Technique
                   </label>
                   <input
@@ -1398,7 +1398,7 @@ export default function SellerProductsPage() {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
                     Retail Price (₹)
                   </label>
                   <input
@@ -1413,7 +1413,7 @@ export default function SellerProductsPage() {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
                     Available Loom Stock
                   </label>
                   <input
@@ -1429,7 +1429,7 @@ export default function SellerProductsPage() {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
+                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5C5043', marginBottom: '0.35rem' }}>
                   Fabric
                 </label>
                 <input
@@ -1442,7 +1442,7 @@ export default function SellerProductsPage() {
               </div>
 
               {newSuccess && (
-                <div style={{ background: '#E8F5E9', color: '#2E7D32', padding: '0.65rem', borderRadius: 4, fontSize: '0.88rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <div style={{ background: '#E8F5E9', color: '#2E7D32', padding: '0.65rem', borderRadius: 4, fontSize: '0.88rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 6 }}>
                   <Check size={16} /> {newSuccess}
                 </div>
               )}
@@ -1458,7 +1458,7 @@ export default function SellerProductsPage() {
                 <button
                   type="submit"
                   disabled={submittingNew}
-                  style={{ padding: '0.55rem 1.25rem', background: 'var(--maharani-maroon)', color: '#FFFFFF', border: 'none', borderRadius: 4, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+                  style={{ padding: '0.55rem 1.25rem', background: 'var(--maharani-maroon)', color: '#FFFFFF', border: 'none', borderRadius: 4, fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
                 >
                   {submittingNew ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />}
                   <span>Save Piece</span>
@@ -1506,10 +1506,10 @@ export default function SellerProductsPage() {
             <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--soft-gold-line)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#FAF7F2' }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-                  <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 800, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)' }}>
+                  <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 500, color: 'var(--ink-brown)', fontFamily: 'var(--font-serif)' }}>
                     Edit Creation Images
                   </h3>
-                  <span style={{ fontSize: '0.75rem', fontFamily: 'monospace', fontWeight: 700, background: '#F5EBE1', color: 'var(--maharani-maroon)', padding: '2px 8px', borderRadius: 4 }}>
+                  <span style={{ fontSize: '0.75rem', fontFamily: 'monospace', fontWeight: 500, background: '#F5EBE1', color: 'var(--maharani-maroon)', padding: '2px 8px', borderRadius: 4 }}>
                     {imageEditorProduct.productNo || 'ART-2605'}
                   </span>
                 </div>
@@ -1541,7 +1541,7 @@ export default function SellerProductsPage() {
 
               {/* Gallery Grid of Current Images */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.75rem' }}>
+                <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.75rem' }}>
                   Current Gallery Images ({editingImages.length})
                 </label>
 
@@ -1586,7 +1586,7 @@ export default function SellerProductsPage() {
                                 background: 'rgba(35, 24, 18, 0.82)',
                                 color: '#FFFFFF',
                                 fontSize: '0.72rem',
-                                fontWeight: 700,
+                                fontWeight: 500,
                                 padding: '2px 6px',
                                 borderRadius: 3,
                               }}
@@ -1604,7 +1604,7 @@ export default function SellerProductsPage() {
                                   background: 'var(--maharani-maroon)',
                                   color: '#FFFFFF',
                                   fontSize: '0.7rem',
-                                  fontWeight: 800,
+                                  fontWeight: 500,
                                   padding: '2px 6px',
                                   borderRadius: 3,
                                   display: 'inline-flex',
@@ -1671,7 +1671,7 @@ export default function SellerProductsPage() {
                                 title="Set as primary cover image"
                                 style={{
                                   fontSize: '0.72rem',
-                                  fontWeight: 700,
+                                  fontWeight: 500,
                                   color: 'var(--maharani-maroon)',
                                   background: 'none',
                                   border: 'none',
@@ -1713,7 +1713,7 @@ export default function SellerProductsPage() {
 
               {/* Add New Images Section */}
               <div style={{ background: '#FAF7F2', border: '1px solid var(--soft-gold-line)', borderRadius: 8, padding: '1.25rem' }}>
-                <h4 style={{ margin: '0 0 0.75rem', fontSize: '0.92rem', fontWeight: 700, color: 'var(--ink-brown)' }}>
+                <h4 style={{ margin: '0 0 0.75rem', fontSize: '0.92rem', fontWeight: 500, color: 'var(--ink-brown)' }}>
                   Add More Images to this Piece
                 </h4>
 
@@ -1734,7 +1734,7 @@ export default function SellerProductsPage() {
                         border: '1.5px dashed var(--soft-gold-line)',
                         background: '#FFFFFF',
                         color: 'var(--ink-brown)',
-                        fontWeight: 700,
+                        fontWeight: 500,
                         fontSize: '0.85rem',
                         cursor: 'pointer',
                         width: '100%',
@@ -1791,7 +1791,7 @@ export default function SellerProductsPage() {
                           border: 'none',
                           background: newImageUrl.trim() ? 'var(--maharani-maroon)' : '#D8CBB6',
                           color: '#FFFFFF',
-                          fontWeight: 700,
+                          fontWeight: 500,
                           fontSize: '0.85rem',
                           cursor: newImageUrl.trim() ? 'pointer' : 'not-allowed',
                           whiteSpace: 'nowrap',
@@ -1843,7 +1843,7 @@ export default function SellerProductsPage() {
                   border: 'none',
                   background: 'var(--maharani-maroon)',
                   color: '#FFFFFF',
-                  fontWeight: 700,
+                  fontWeight: 500,
                   fontSize: '0.86rem',
                   cursor: savingImages ? 'not-allowed' : 'pointer',
                   display: 'inline-flex',
@@ -1912,7 +1912,7 @@ export default function SellerProductsPage() {
                 <Trash2 size={22} color="#C62828" />
               </div>
               <div>
-                <h3 style={{ margin: 0, fontSize: '1.22rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
+                <h3 style={{ margin: 0, fontSize: '1.22rem', fontWeight: 500, color: 'var(--ink-brown)' }}>
                   Delete Creation from Existence?
                 </h3>
                 <span
@@ -1920,7 +1920,7 @@ export default function SellerProductsPage() {
                     fontSize: '0.82rem',
                     color: 'var(--maharani-maroon)',
                     fontFamily: 'monospace',
-                    fontWeight: 800,
+                    fontWeight: 500,
                   }}
                 >
                   {deleteConfirmProduct.productNo || 'ART-CREATION'}
@@ -1960,7 +1960,7 @@ export default function SellerProductsPage() {
                   color: '#FFFFFF',
                   border: 'none',
                   borderRadius: '4px',
-                  fontWeight: 700,
+                  fontWeight: 500,
                   fontSize: '0.9rem',
                   cursor: isDeleting ? 'not-allowed' : 'pointer',
                   display: 'inline-flex',

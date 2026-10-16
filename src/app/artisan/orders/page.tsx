@@ -103,7 +103,7 @@ export default function SellerOrdersPage() {
             padding: '0.65rem 1rem',
             fontSize: '0.85rem',
             fontFamily: 'var(--font-nav)',
-            fontWeight: 700,
+            fontWeight: 500,
             textTransform: 'uppercase',
             letterSpacing: '0.1em',
             color: 'var(--ink-brown)',
@@ -140,7 +140,7 @@ export default function SellerOrdersPage() {
                 padding: '0.45rem 0.85rem',
                 fontSize: '0.82rem',
                 fontFamily: 'var(--font-nav)',
-                fontWeight: 700,
+                fontWeight: 500,
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
                 cursor: 'pointer',
@@ -197,7 +197,7 @@ export default function SellerOrdersPage() {
 
                 return (
                   <tr key={order.id}>
-                    <td style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--maharani-maroon)' }}>
+                    <td style={{ fontFamily: 'monospace', fontWeight: 500, color: 'var(--maharani-maroon)' }}>
                       {order.order_number || `#HG-${order.id}`}
                     </td>
                     <td style={{ fontWeight: 600 }}>
@@ -209,7 +209,7 @@ export default function SellerOrdersPage() {
                     <td style={{ fontWeight: 600 }}>
                       ₹ {gross.toLocaleString('en-IN')}
                     </td>
-                    <td style={{ fontWeight: 700, color: '#2E7D32' }}>
+                    <td style={{ fontWeight: 500, color: '#2E7D32' }}>
                       ₹ {share.toLocaleString('en-IN')}
                     </td>
                     <td>
