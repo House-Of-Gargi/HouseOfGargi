@@ -75,7 +75,7 @@ export function SellerShell({
             href="/artisan/dashboard"
             style={{
               fontFamily: 'var(--font-serif)',
-              fontWeight: 700,
+              fontWeight: 500,
               fontSize: '1.15rem',
               color: 'var(--ink-brown)',
               textDecoration: 'none',
@@ -96,7 +96,7 @@ export function SellerShell({
               justifyContent: 'center',
               fontSize: '0.82rem',
               fontFamily: 'var(--font-nav)',
-              fontWeight: 700,
+              fontWeight: 500,
             }}>
               HG
             </span>
@@ -107,7 +107,7 @@ export function SellerShell({
             style={{
               fontSize: '0.78rem',
               fontFamily: 'var(--font-nav)',
-              fontWeight: 700,
+              fontWeight: 500,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
               padding: '0.3rem 0.65rem',

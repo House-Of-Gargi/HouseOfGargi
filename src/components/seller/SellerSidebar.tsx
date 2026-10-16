@@ -147,7 +147,7 @@ export function SellerSidebar({
             padding: '0 0.85rem',
             marginBottom: '0.4rem',
             fontSize: '0.66rem',
-            fontWeight: 700,
+            fontWeight: 500,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
             color: 'var(--stone-taupe)',
@@ -225,7 +225,7 @@ export function SellerSidebar({
                         style={{
                           fontFamily: 'var(--font-nav)',
                           fontSize: '0.84rem',
-                          fontWeight: isActive ? 600 : 500,
+                          fontWeight: isActive ? 500 : 400,
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
@@ -307,7 +307,7 @@ export function SellerSidebar({
                   alignSelf: 'flex-start',
                 }}
               />
-              <div style={{ fontSize: '0.62rem', letterSpacing: '0.08em', color: 'var(--stone-taupe)', textTransform: 'uppercase', fontWeight: 700, fontFamily: 'var(--font-nav)' }}>
+              <div style={{ fontSize: '0.62rem', letterSpacing: '0.08em', color: 'var(--stone-taupe)', textTransform: 'uppercase', fontWeight: 500, fontFamily: 'var(--font-nav)' }}>
                 Artisan Atelier
               </div>
             </div>
@@ -331,7 +331,7 @@ export function SellerSidebar({
         >
           {isExpanded && (
             <div style={{ minWidth: 0, marginBottom: '0.25rem' }}>
-              <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--ink-brown)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: 500, color: 'var(--ink-brown)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {sellerName}
               </div>
               <div style={{ fontSize: '0.68rem', color: 'var(--stone-taupe)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -356,7 +356,7 @@ export function SellerSidebar({
               color: 'var(--maharani-maroon)',
               cursor: 'pointer',
               fontSize: '0.78rem',
-              fontWeight: 600,
+              fontWeight: 500,
             }}
             title="Sign Out"
           >
@@ -402,7 +402,7 @@ export function SellerSidebar({
                 backgroundColor: '#FAF7F2',
               }}
             >
-              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, color: 'var(--maharani-maroon)', fontSize: '0.95rem' }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, color: 'var(--maharani-maroon)', fontSize: '0.95rem' }}>
                 ARTISAN ATELIER
               </span>
               <button onClick={onMobileClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-brown)' }}>
@@ -429,7 +429,7 @@ export function SellerSidebar({
                   background: 'transparent',
                   color: 'var(--maharani-maroon)',
                   cursor: 'pointer',
-                  fontWeight: 600,
+                  fontWeight: 500,
                   fontSize: '0.85rem',
                   justifyContent: 'center',
                 }}
