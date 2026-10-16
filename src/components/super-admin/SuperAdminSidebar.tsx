@@ -68,7 +68,7 @@ const superAdminNavGroups: SuperAdminNavGroup[] = [
 ];
 
 export function SuperAdminSidebar({
-  userEmail = 'tanmaysaaagr@gmail.com',
+  userEmail = 'superadmin@houseofgargi.com',
   userName = 'Executive Super Admin',
   isMobileOpen = false,
   onMobileClose,

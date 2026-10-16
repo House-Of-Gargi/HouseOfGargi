@@ -11,7 +11,7 @@ export interface SuperAdminShellProps {
 
 export function SuperAdminShell({
   children,
-  userEmail = 'tanmaysaaagr@gmail.com',
+  userEmail = 'superadmin@houseofgargi.com',
   userName = 'Executive Super Admin',
 }: SuperAdminShellProps) {
   return (

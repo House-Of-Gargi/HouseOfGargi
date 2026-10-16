@@ -605,7 +605,7 @@ export default function AdminLoginPage() {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="e.g. tanmaysaaagr@gmail.com"
+                      placeholder="Enter your administrative email"
                       required
                       autoFocus
                       style={{
