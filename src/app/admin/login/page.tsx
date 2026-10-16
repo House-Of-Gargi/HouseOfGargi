@@ -46,12 +46,16 @@ export default function AdminLoginPage() {
       if (typeof window !== 'undefined') {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('logout') === 'true' || urlParams.get('switch') === 'true') {
+          localStorage.removeItem('auth_session');
+          localStorage.removeItem('super_admin_session');
+          localStorage.removeItem('admin_session');
+          sessionStorage.clear();
           return;
         }
       }
 
       const stored = typeof window !== 'undefined'
-        ? (localStorage.getItem('auth_session') || localStorage.getItem('super_admin_session') || localStorage.getItem('admin_session'))
+        ? (localStorage.getItem('super_admin_session') || localStorage.getItem('admin_session'))
         : null;
 
       if (stored) {

@@ -60,16 +60,18 @@ export default function SellerLoginPage() {
 
   useEffect(() => {
     const checkCurrentSession = async () => {
-      // If user came specifically to re-authenticate or log out, do not auto-redirect
       if (typeof window !== 'undefined') {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('logout') === 'true' || urlParams.get('switch') === 'true') {
+          localStorage.removeItem('artisan_session');
+          localStorage.removeItem('auth_session');
+          sessionStorage.clear();
           return;
         }
       }
 
       const stored = typeof window !== 'undefined'
-        ? (localStorage.getItem('auth_session') || localStorage.getItem('super_admin_session') || localStorage.getItem('admin_session') || localStorage.getItem('artisan_session'))
+        ? (localStorage.getItem('artisan_session') || localStorage.getItem('auth_session'))
         : null;
 
       if (stored) {
