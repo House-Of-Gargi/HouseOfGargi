@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 const FALLBACK_BACKEND =
-  process.env.NEXT_PUBLIC_API_URL || 'https://houseofgargi-backend.onrender.com';
+  process.env.NEXT_PUBLIC_API_URL || 'https://houseofgargi-backend-4gso.onrender.com';
 
 const PRIMARY_BACKEND =
   process.env.BACKEND_INTERNAL_URL ||

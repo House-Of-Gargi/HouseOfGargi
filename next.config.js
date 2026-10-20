@@ -45,7 +45,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://wlivgkosmbfgjtecvznj.supabase.co https://images.unsplash.com; font-src 'self' data:; connect-src 'self' https://wlivgkosmbfgjtecvznj.supabase.co wss://wlivgkosmbfgjtecvznj.supabase.co https://houseofgargi-backend.onrender.com wss://houseofgargi-backend.onrender.com http://localhost:5000 http://127.0.0.1:5000 ws: wss:; frame-ancestors 'none';",
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://wlivgkosmbfgjtecvznj.supabase.co https://images.unsplash.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://wlivgkosmbfgjtecvznj.supabase.co wss://wlivgkosmbfgjtecvznj.supabase.co https://houseofgargi-backend-4gso.onrender.com wss://houseofgargi-backend-4gso.onrender.com https://houseofgargi-backend.onrender.com wss://houseofgargi-backend.onrender.com http://localhost:5000 http://127.0.0.1:5000 ws: wss:; frame-ancestors 'none';",
           },
         ],
       },
