@@ -13,12 +13,12 @@ import { useCustomerAuth } from '@/context/CustomerAuthContext';
 import { LogOut } from 'lucide-react';
 
 const CATEGORY_STRIP_ITEMS = [
-  { name: 'Explore All', href: '/explore' },
-  { name: 'Sarees', href: '/category/sarees' },
-  { name: 'Lehengas', href: '/category/lehengas' },
-  { name: 'Kurta Sets', href: '/category/kurta-sets' },
-  { name: 'Accessories', href: '/category/accessories' },
-  { name: 'Bespoke', href: '/bespoke' },
+  { name: 'Explore All', mobileName: 'All Collections', href: '/explore' },
+  { name: 'Sarees', mobileName: 'Sarees', href: '/category/sarees' },
+  { name: 'Lehengas', mobileName: 'Lehengas', href: '/category/lehengas' },
+  { name: 'Kurta Sets', mobileName: 'Kurta Sets', href: '/category/kurta-sets' },
+  { name: 'Accessories', mobileName: 'Accessories', href: '/category/accessories' },
+  { name: 'Bespoke', mobileName: 'Bespoke Atelier', href: '/bespoke' },
 ];
 
 export default function Navbar() {
@@ -693,26 +693,34 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Navigation Categories: Clean text only, no custom icons, no All Masterpieces */}
+        {/* Navigation Categories: Clean text with click loading indicator */}
         <div className="mobile-drawer__links">
-          <Link href="/explore" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>
-            All Collections
-          </Link>
-          <Link href="/category/sarees" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>
-            Sarees
-          </Link>
-          <Link href="/category/lehengas" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>
-            Lehengas
-          </Link>
-          <Link href="/category/kurta-sets" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>
-            Kurta Sets
-          </Link>
-          <Link href="/category/accessories" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>
-            Accessories
-          </Link>
-          <Link href="/bespoke" className="mobile-drawer__link" onClick={() => setMobileOpen(false)}>
-            Bespoke Atelier
-          </Link>
+          {CATEGORY_STRIP_ITEMS.map((cat) => {
+            const isLoading = loadingCategory === cat.href;
+            return (
+              <Link
+                key={cat.href}
+                href={cat.href}
+                className={`mobile-drawer__link ${isLoading ? 'is-loading' : ''}`}
+                onClick={() => {
+                  handleCategoryClick(cat.href);
+                  setMobileOpen(false);
+                }}
+              >
+                <span className="navbar__category-item">
+                  {isLoading && (
+                    <span className="navbar__category-spinner-wrap" aria-hidden="true">
+                      <svg className="navbar__category-spinner" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2.5" opacity="0.25" />
+                        <path d="M12 3a9 9 0 0 1 9 9" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+                      </svg>
+                    </span>
+                  )}
+                  <span className={isLoading ? 'navbar__category-text--hidden' : ''}>{cat.mobileName || cat.name}</span>
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </>
