@@ -1164,8 +1164,7 @@ export default function SellerLoginPage() {
         </div>
 
         {/* Bottom Made in India Badge */}
-        <div style={{
-          display: 'flex',
+        <div className="auth-bottom-badge" style={{
           alignItems: 'center',
           justifyContent: 'flex-start',
           padding: '0.25rem 0.25rem 0',
