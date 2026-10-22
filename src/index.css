@@ -7581,7 +7581,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 
 /* Specifically weighted for Storefront Homepage Curated Headings ("Shop by Collection", "Featured Curations", "New Arrivals") */
 .royal-header-title--curated {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .royal-header-desc {
@@ -7629,7 +7629,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     font-weight: 400;
   }
   .royal-header-title--curated {
-    font-weight: 500 !important;
+    font-weight: 600 !important;
   }
 }
 

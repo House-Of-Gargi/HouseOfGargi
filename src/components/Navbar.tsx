@@ -12,6 +12,15 @@ import { useWishlist } from '@/context/WishlistContext';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
 import { LogOut } from 'lucide-react';
 
+const CATEGORY_STRIP_ITEMS = [
+  { name: 'Explore All', href: '/explore' },
+  { name: 'Sarees', href: '/category/sarees' },
+  { name: 'Lehengas', href: '/category/lehengas' },
+  { name: 'Kurta Sets', href: '/category/kurta-sets' },
+  { name: 'Accessories', href: '/category/accessories' },
+  { name: 'Bespoke', href: '/bespoke' },
+];
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -20,6 +29,7 @@ export default function Navbar() {
   const [isListening, setIsListening] = useState(false);
   const [searchDropdownOpen, setSearchDropdownOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [loadingCategory, setLoadingCategory] = useState<string | null>(null);
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const mobileSearchContainerRef = useRef<HTMLDivElement>(null);
@@ -32,6 +42,25 @@ export default function Navbar() {
   const { itemCount } = useCart();
   const { wishlistCount } = useWishlist();
   const { isLoggedIn, role, openLoginModal, logout } = useCustomerAuth();
+
+  // Reset loading category on route change
+  useEffect(() => {
+    setLoadingCategory(null);
+  }, [pathname]);
+
+  // Fallback safety timeout if navigation is interrupted
+  useEffect(() => {
+    if (loadingCategory) {
+      const timer = setTimeout(() => setLoadingCategory(null), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [loadingCategory]);
+
+  const handleCategoryClick = (href: string) => {
+    if (pathname !== href) {
+      setLoadingCategory(href);
+    }
+  };
 
   const checkSubRowScroll = () => {
     if (subRowRef.current) {
@@ -503,12 +532,30 @@ export default function Navbar() {
             <div className="navbar__sub-row-wrapper">
               <div className="navbar__sub-row" ref={subRowRef}>
                 <div className="navbar__links">
-                  <Link href="/explore" className={pathname === '/explore' ? 'is-active' : ''}>Explore All</Link>
-                  <Link href="/category/sarees" className={pathname === '/category/sarees' ? 'is-active' : ''}>Sarees</Link>
-                  <Link href="/category/lehengas" className={pathname === '/category/lehengas' ? 'is-active' : ''}>Lehengas</Link>
-                  <Link href="/category/kurta-sets" className={pathname === '/category/kurta-sets' ? 'is-active' : ''}>Kurta Sets</Link>
-                  <Link href="/category/accessories" className={pathname === '/category/accessories' ? 'is-active' : ''}>Accessories</Link>
-                  <Link href="/bespoke" className={pathname === '/bespoke' ? 'is-active' : ''}>Bespoke</Link>
+                  {CATEGORY_STRIP_ITEMS.map((cat) => {
+                    const isLoading = loadingCategory === cat.href;
+                    const isActive = pathname === cat.href;
+                    return (
+                      <Link
+                        key={cat.href}
+                        href={cat.href}
+                        className={`${isActive ? 'is-active' : ''} ${isLoading ? 'is-loading' : ''}`}
+                        onClick={() => handleCategoryClick(cat.href)}
+                      >
+                        <span className="navbar__category-item">
+                          {isLoading && (
+                            <span className="navbar__category-spinner-wrap" aria-hidden="true">
+                              <svg className="navbar__category-spinner" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2.5" opacity="0.25" />
+                                <path d="M12 3a9 9 0 0 1 9 9" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+                              </svg>
+                            </span>
+                          )}
+                          <span className={isLoading ? 'navbar__category-text--hidden' : ''}>{cat.name}</span>
+                        </span>
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
               {/* Mobile Right Arrow Indicator & Click-to-scroll */}
