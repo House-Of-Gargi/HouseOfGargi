@@ -7623,8 +7623,16 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 }
 
 /* Specifically weighted for Storefront Homepage Curated Headings ("Shop by Collection", "Featured Curations", "New Arrivals") */
+h2.royal-header-title.royal-header-title--curated,
 .royal-header-title--curated {
-  font-weight: 600;
+  font-weight: 600 !important;
+}
+
+@media (max-width: 1024px) {
+  h2.royal-header-title.royal-header-title--curated,
+  .royal-header-title--curated {
+    font-weight: 600 !important;
+  }
 }
 
 .royal-header-desc {
@@ -7671,6 +7679,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     font-size: clamp(26px, 6vw, 34px);
     font-weight: 400;
   }
+  h2.royal-header-title.royal-header-title--curated,
   .royal-header-title--curated {
     font-weight: 600 !important;
   }
@@ -9499,6 +9508,11 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
     white-space: normal !important;
     flex-shrink: 1 !important;
     font-weight: 400 !important;
+  }
+
+  h2.royal-header-title.royal-header-title--curated,
+  .royal-header-title--curated {
+    font-weight: 600 !important;
   }
 
   /* ── Horizontally Scrollable Category Filter Row on Mobile (SS3) ── */

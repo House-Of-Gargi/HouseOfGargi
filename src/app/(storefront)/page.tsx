@@ -187,8 +187,8 @@ export default async function HomePage() {
                 <div className="royal-header-line royal-header-line--left">
                   <span className="royal-header-diamond" />
                 </div>
-                <h2 className="royal-header-title royal-header-title--curated">
-                  <span style={{ color: 'var(--ink-brown)' }}>Shop </span>by Collection
+                <h2 className="royal-header-title royal-header-title--curated" style={{ fontWeight: 600 }}>
+                  <span style={{ color: 'var(--ink-brown)', fontWeight: 600 }}>Shop </span>by Collection
                 </h2>
                 <div className="royal-header-line royal-header-line--right">
                   <span className="royal-header-diamond" />
@@ -212,8 +212,8 @@ export default async function HomePage() {
                 <div className="royal-header-line royal-header-line--left">
                   <span className="royal-header-diamond" />
                 </div>
-                <h2 className="royal-header-title royal-header-title--curated">
-                  <span style={{ color: 'var(--ink-brown)' }}>Featured </span>Curations
+                <h2 className="royal-header-title royal-header-title--curated" style={{ fontWeight: 600 }}>
+                  <span style={{ color: 'var(--ink-brown)', fontWeight: 600 }}>Featured </span>Curations
                 </h2>
                 <div className="royal-header-line royal-header-line--right">
                   <span className="royal-header-diamond" />
@@ -243,8 +243,8 @@ export default async function HomePage() {
                 <div className="royal-header-line royal-header-line--left">
                   <span className="royal-header-diamond" />
                 </div>
-                <h2 className="royal-header-title royal-header-title--curated">
-                  <span style={{ color: 'var(--ink-brown)' }}>New </span>Arrivals
+                <h2 className="royal-header-title royal-header-title--curated" style={{ fontWeight: 600 }}>
+                  <span style={{ color: 'var(--ink-brown)', fontWeight: 600 }}>New </span>Arrivals
                 </h2>
                 <div className="royal-header-line royal-header-line--right">
                   <span className="royal-header-diamond" />
