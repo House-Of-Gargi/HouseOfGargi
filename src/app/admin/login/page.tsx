@@ -277,7 +277,7 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div style={{
+    <div className="auth-page-root" style={{
       minHeight: '100vh',
       width: '100%',
       position: 'relative',
@@ -291,8 +291,8 @@ export default function AdminLoginPage() {
       backgroundColor: '#FBF6EE',
       fontFamily: 'var(--font-sans)',
       color: 'var(--ink-brown)',
-      padding: '2.5rem 1rem',
       overflowX: 'hidden',
+      boxSizing: 'border-box',
     }}>
       {/* Background Soft Ivory Overlay (Line art remains clearly visible) */}
       <div style={{
@@ -304,6 +304,14 @@ export default function AdminLoginPage() {
       }} />
 
       <style>{`
+        .auth-page-root {
+          padding: 1.25rem 0.85rem;
+        }
+        @media (min-width: 640px) {
+          .auth-page-root {
+            padding: 2.5rem 1.5rem;
+          }
+        }
         .admin-center-hub {
           position: relative;
           z-index: 10;
@@ -311,15 +319,110 @@ export default function AdminLoginPage() {
           max-width: 960px;
           display: flex;
           flex-direction: column;
-          gap: 1rem;
+          gap: 0.85rem;
           margin: auto;
+          box-sizing: border-box;
+        }
+        .auth-top-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 0.15rem;
+          width: 100%;
+          gap: 0.5rem;
+          box-sizing: border-box;
+        }
+        .auth-logo-badge-wrap {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          min-width: 0;
+          flex-shrink: 1;
+        }
+        .auth-logo-img {
+          height: 46px;
+          width: auto;
+          display: block;
+          max-width: 130px;
+          object-fit: contain;
+        }
+        .auth-portal-badge {
+          font-size: 0.68rem;
+          font-family: var(--font-nav);
+          font-weight: 500;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          padding: 0.22rem 0.5rem;
+          border-radius: 9999px;
+          background: #FFFFFF;
+          color: #7A2331;
+          border: 1px solid var(--soft-gold-line);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+          line-height: 1;
+          white-space: nowrap;
+          flex-shrink: 0;
+        }
+        .auth-back-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          padding: 0.42rem 0.75rem;
+          border-radius: 8px;
+          background: #FFFFFF;
+          border: 1.2px solid var(--soft-gold-line);
+          color: var(--ink-brown);
+          font-size: 0.78rem;
+          font-family: var(--font-nav);
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          text-decoration: none;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+          transition: all 200ms ease;
+          white-space: nowrap;
+          flex-shrink: 0;
+        }
+        .auth-back-text-full {
+          display: none;
+        }
+        .auth-back-text-short {
+          display: inline;
+        }
+        @media (min-width: 480px) {
+          .auth-back-text-full {
+            display: inline;
+          }
+          .auth-back-text-short {
+            display: none;
+          }
+          .auth-logo-img {
+            height: 56px;
+          }
+          .auth-logo-badge-wrap {
+            gap: 0.75rem;
+          }
+          .auth-portal-badge {
+            font-size: 0.72rem;
+            padding: 0.26rem 0.65rem;
+          }
+          .auth-back-link {
+            padding: 0.5rem 0.95rem;
+            font-size: 0.84rem;
+          }
+        }
+        @media (min-width: 768px) {
+          .auth-logo-img {
+            height: 64px;
+          }
         }
         .admin-card-container {
           background: #FFFFFF;
           border-radius: 12px;
           border: 1px solid var(--soft-gold-line);
-          box-shadow: 0 20px 48px -10px rgba(43, 31, 24, 0.12);
+          box-shadow: 0 16px 40px -10px rgba(43, 31, 24, 0.12);
           width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
           display: grid;
           grid-template-columns: 1fr;
           overflow: hidden;
@@ -333,16 +436,17 @@ export default function AdminLoginPage() {
         .admin-image-panel {
           width: 100%;
           height: 100%;
-          min-height: 400px;
+          min-height: 180px;
+          max-height: 220px;
           background: #231812;
           display: block;
           position: relative;
           overflow: hidden;
         }
-        @media (max-width: 767px) {
+        @media (min-width: 768px) {
           .admin-image-panel {
-            min-height: 220px;
-            max-height: 260px;
+            min-height: 400px;
+            max-height: none;
           }
         }
         .admin-image-panel img {
@@ -355,42 +459,133 @@ export default function AdminLoginPage() {
         .admin-image-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(180deg, rgba(35, 24, 18, 0.4) 0%, rgba(35, 24, 18, 0.85) 100%);
+          background: linear-gradient(180deg, rgba(35, 24, 18, 0.35) 0%, rgba(35, 24, 18, 0.88) 100%);
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
-          padding: 2.25rem 2rem;
+          padding: 1.15rem 1rem;
           color: #FAF7F2;
+          box-sizing: border-box;
+        }
+        @media (min-width: 768px) {
+          .admin-image-overlay {
+            padding: 2.25rem 2rem;
+          }
         }
         .admin-form-panel {
-          padding: 2.5rem 2rem;
+          padding: 1.5rem 1.15rem;
+          width: 100%;
+          box-sizing: border-box;
           display: flex;
           flex-direction: column;
           justify-content: center;
+        }
+        @media (min-width: 480px) {
+          .admin-form-panel {
+            padding: 2rem 1.75rem;
+          }
         }
         @media (min-width: 768px) {
           .admin-form-panel {
             padding: 3rem 2.5rem;
           }
         }
+        .auth-heading-title {
+          font-family: var(--font-serif);
+          font-size: clamp(1.6rem, 5.5vw, 2.1rem);
+          font-weight: 600;
+          color: var(--ink-brown);
+          letter-spacing: 0.01em;
+          line-height: 1.2;
+          margin: 0;
+        }
+        .auth-heading-desc {
+          font-size: clamp(0.86rem, 2.8vw, 0.96rem);
+          color: var(--stone-taupe);
+          margin: 0.35rem 0 1.25rem 0;
+          line-height: 1.45;
+        }
+        .auth-input-container {
+          display: flex;
+          align-items: center;
+          border: 1.5px solid var(--soft-gold-line);
+          border-radius: 9px;
+          background: #FFFFFF;
+          overflow: hidden;
+          width: 100%;
+          box-sizing: border-box;
+          transition: border-color 150ms ease;
+        }
+        .auth-input-container:focus-within {
+          border-color: var(--maharani-maroon);
+          box-shadow: 0 0 0 3px rgba(122, 35, 49, 0.12);
+        }
+        .auth-input-prefix {
+          padding: 0.75rem 0.75rem;
+          background: var(--ivory-silk);
+          border-right: 1.5px solid var(--soft-gold-line);
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+          flex-shrink: 0;
+        }
+        @media (min-width: 480px) {
+          .auth-input-prefix {
+            padding: 0.85rem 0.95rem;
+            gap: 0.45rem;
+          }
+        }
+        .auth-input-field {
+          flex: 1;
+          min-width: 0;
+          width: 100%;
+          padding: 0.75rem 0.75rem;
+          border: none;
+          outline: none;
+          font-size: 0.98rem;
+          color: var(--ink-brown);
+          box-sizing: border-box;
+          background: transparent;
+        }
+        @media (min-width: 480px) {
+          .auth-input-field {
+            padding: 0.85rem 1rem;
+            font-size: 1.05rem;
+          }
+        }
         .otp-boxes-grid {
           display: grid;
           grid-template-columns: repeat(6, 1fr);
-          gap: 0.5rem;
+          gap: 0.35rem;
+          width: 100%;
+          box-sizing: border-box;
+        }
+        @media (min-width: 480px) {
+          .otp-boxes-grid {
+            gap: 0.5rem;
+          }
         }
         .otp-digit-box {
           width: 100%;
-          height: 52px;
+          height: 46px;
           text-align: center;
-          font-size: 1.35rem;
-          font-weight: 700;
+          font-size: 1.2rem;
+          font-weight: 500;
           font-family: var(--font-sans);
           color: var(--ink-brown);
           border: 1.5px solid var(--soft-gold-line);
           border-radius: 8px;
           background: #FFFFFF;
           outline: none;
+          padding: 0;
+          box-sizing: border-box;
           transition: border-color 150ms ease, box-shadow 150ms ease;
+        }
+        @media (min-width: 480px) {
+          .otp-digit-box {
+            height: 52px;
+            font-size: 1.35rem;
+          }
         }
         .otp-digit-box:focus {
           border-color: var(--maharani-maroon);
@@ -402,64 +597,30 @@ export default function AdminLoginPage() {
       <div className="admin-center-hub">
         
         {/* Top Header Bar */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 0.25rem',
-        }}>
+        <div className="auth-top-header">
           {/* Logo + Administrative Portal Badge */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+          <div className="auth-logo-badge-wrap">
             <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }} aria-label="House of Gargi">
               <img
                 src="/logo-images/new-logo.png"
                 alt="House of Gargi"
-                style={{ height: '66px', width: 'auto', display: 'block' }}
+                className="auth-logo-img"
               />
             </Link>
 
-            <span style={{
-              fontSize: '0.72rem',
-              fontFamily: 'var(--font-nav)',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              padding: '0.26rem 0.65rem',
-              borderRadius: '9999px',
-              background: '#FFFFFF',
-              color: '#7A2331',
-              border: '1px solid var(--soft-gold-line)',
-              boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
-              lineHeight: 1,
-            }}>
-              Administration Console
+            <span className="auth-portal-badge">
+              Admin Console
             </span>
           </div>
 
           {/* Back to Storefront */}
           <Link
             href="/"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.45rem',
-              padding: '0.5rem 1rem',
-              borderRadius: '8px',
-              background: '#FFFFFF',
-              border: '1.2px solid var(--soft-gold-line)',
-              color: 'var(--ink-brown)',
-              fontSize: '0.85rem',
-              fontFamily: 'var(--font-nav)',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-              textDecoration: 'none',
-              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
-              transition: 'all 200ms ease',
-            }}
+            className="auth-back-link"
           >
-            <ArrowLeft style={{ width: 14, height: 14 }} />
-            Back to Store
+            <ArrowLeft style={{ width: 13, height: 13 }} />
+            <span className="auth-back-text-full">Back to Store</span>
+            <span className="auth-back-text-short">Store</span>
           </Link>
         </div>
 
@@ -477,20 +638,20 @@ export default function AdminLoginPage() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.45rem',
-                fontSize: '0.75rem',
+                fontSize: '0.72rem',
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
                 color: '#E4D3AE',
-                marginBottom: '0.5rem',
-                fontWeight: 700,
+                marginBottom: '0.35rem',
+                fontWeight: 500,
               }}>
-                <ShieldCheck style={{ width: 16, height: 16 }} />
+                <ShieldCheck style={{ width: 15, height: 15 }} />
                 Administrative Privilege
               </span>
               <h2 style={{
                 fontFamily: 'var(--font-serif)',
-                fontSize: '1.65rem',
-                margin: '0 0 0.5rem 0',
+                fontSize: 'clamp(1.15rem, 3.5vw, 1.65rem)',
+                margin: '0 0 0.35rem 0',
                 color: '#FFFFFF',
                 fontWeight: 600,
                 lineHeight: 1.25,
@@ -498,9 +659,9 @@ export default function AdminLoginPage() {
                 Executive & Operations Command
               </h2>
               <p style={{
-                fontSize: '0.86rem',
+                fontSize: '0.82rem',
                 color: '#D8C9B8',
-                lineHeight: 1.5,
+                lineHeight: 1.4,
                 margin: 0,
               }}>
                 Dedicated gateway for catalog curation, revenue supervision, artisan onboarding, and platform governance.
@@ -520,33 +681,20 @@ export default function AdminLoginPage() {
                 background: '#FAF7F2',
                 border: '1px solid #E4D3AE',
                 color: '#7A2331',
-                fontSize: '0.75rem',
-                fontWeight: 700,
+                fontSize: '0.72rem',
+                fontWeight: 500,
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
-                marginBottom: '0.75rem',
+                marginBottom: '0.65rem',
               }}>
                 <Lock style={{ width: 12, height: 12 }} />
                 Strict Access Portal
               </div>
 
-              <h1 style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: '2.1rem',
-                fontWeight: 600,
-                color: 'var(--ink-brown)',
-                letterSpacing: '0.01em',
-                lineHeight: 1.15,
-                margin: 0,
-              }}>
+              <h1 className="auth-heading-title">
                 Admin Sign In
               </h1>
-              <p style={{
-                fontSize: '0.96rem',
-                color: 'var(--stone-taupe)',
-                margin: '0.45rem 0 1.25rem 0',
-                lineHeight: 1.5,
-              }}>
+              <p className="auth-heading-desc">
                 Sign in with OTP. Access codes are strictly dispatched to registered Admin and Super Admin accounts.
               </p>
             </div>
@@ -577,7 +725,7 @@ export default function AdminLoginPage() {
                     display: 'block',
                     fontSize: '0.82rem',
                     fontFamily: 'var(--font-nav)',
-                    fontWeight: 700,
+                    fontWeight: 500,
                     textTransform: 'uppercase',
                     letterSpacing: '0.12em',
                     color: 'var(--stone-taupe)',
@@ -586,22 +734,8 @@ export default function AdminLoginPage() {
                     Administrator Email Address
                   </label>
 
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    border: '1.5px solid var(--soft-gold-line)',
-                    borderRadius: '9px',
-                    background: '#FFFFFF',
-                    overflow: 'hidden',
-                  }}>
-                    <div style={{
-                      padding: '0.85rem 0.95rem',
-                      background: 'var(--ivory-silk)',
-                      borderRight: '1.5px solid var(--soft-gold-line)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      color: '#7A2331',
-                    }}>
+                  <div className="auth-input-container">
+                    <div className="auth-input-prefix" style={{ color: '#7A2331' }}>
                       <Mail style={{ width: 18, height: 18 }} />
                     </div>
                     <input
@@ -612,14 +746,8 @@ export default function AdminLoginPage() {
                       placeholder="Enter your administrative email"
                       required
                       autoFocus
+                      className="auth-input-field"
                       style={{
-                        flex: 1,
-                        padding: '0.85rem 1rem',
-                        fontSize: '0.98rem',
-                        border: 'none',
-                        outline: 'none',
-                        color: 'var(--ink-brown)',
-                        background: 'transparent',
                         fontFamily: 'var(--font-sans)',
                       }}
                     />
