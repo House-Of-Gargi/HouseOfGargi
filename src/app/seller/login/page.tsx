@@ -503,12 +503,18 @@ export default function SellerLoginPage() {
           position: relative;
           z-index: 10;
           width: 100%;
-          max-width: 960px;
+          max-width: 480px;
           display: flex;
           flex-direction: column;
-          gap: 0.85rem;
+          gap: 1rem;
           margin: auto;
           box-sizing: border-box;
+        }
+        @media (min-width: 768px) {
+          .seller-center-hub {
+            max-width: 960px;
+            gap: 1.25rem;
+          }
         }
         .auth-top-header {
           display: flex;
@@ -527,37 +533,24 @@ export default function SellerLoginPage() {
           flex-shrink: 1;
         }
         .auth-logo-img {
-          height: 46px;
+          height: 56px;
           width: auto;
           display: block;
-          max-width: 130px;
+          max-width: 200px;
           object-fit: contain;
         }
         .auth-portal-badge {
-          font-size: 0.68rem;
-          font-family: var(--font-nav);
-          font-weight: 500;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-          padding: 0.22rem 0.5rem;
-          border-radius: 9999px;
-          background: #FFFFFF;
-          color: #7A2331;
-          border: 1px solid var(--soft-gold-line);
-          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-          line-height: 1;
-          white-space: nowrap;
-          flex-shrink: 0;
+          display: none;
         }
         .auth-back-link {
           display: inline-flex;
           align-items: center;
           gap: 0.35rem;
-          padding: 0.42rem 0.75rem;
+          padding: 0.45rem 0.8rem;
           border-radius: 8px;
           background: #FFFFFF;
           border: 1.2px solid var(--soft-gold-line);
-          color: 'var(--ink-brown)';
+          color: var(--ink-brown);
           font-size: 0.78rem;
           font-family: var(--font-nav);
           font-weight: 500;
@@ -583,14 +576,8 @@ export default function SellerLoginPage() {
             display: none;
           }
           .auth-logo-img {
-            height: 56px;
-          }
-          .auth-logo-badge-wrap {
-            gap: 0.75rem;
-          }
-          .auth-portal-badge {
-            font-size: 0.72rem;
-            padding: 0.26rem 0.65rem;
+            height: 64px;
+            max-width: 230px;
           }
           .auth-back-link {
             padding: 0.5rem 0.95rem;
@@ -599,7 +586,28 @@ export default function SellerLoginPage() {
         }
         @media (min-width: 768px) {
           .auth-logo-img {
-            height: 64px;
+            height: 70px;
+            max-width: 250px;
+          }
+          .auth-logo-badge-wrap {
+            gap: 0.75rem;
+          }
+          .auth-portal-badge {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-family: var(--font-nav);
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.26rem 0.65rem;
+            border-radius: 9999px;
+            background: #FFFFFF;
+            color: #7A2331;
+            border: 1px solid var(--soft-gold-line);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+            line-height: 1;
+            white-space: nowrap;
+            flex-shrink: 0;
           }
         }
         .seller-card-container {
@@ -621,19 +629,18 @@ export default function SellerLoginPage() {
           }
         }
         .artisan-image-panel {
-          width: 100%;
-          height: 100%;
-          min-height: 180px;
-          max-height: 220px;
-          background: #FBF6EE;
-          display: block;
-          position: relative;
-          overflow: hidden;
+          display: none;
         }
         @media (min-width: 768px) {
           .artisan-image-panel {
+            display: block;
+            width: 100%;
+            height: 100%;
             min-height: 380px;
             max-height: none;
+            background: #FBF6EE;
+            position: relative;
+            overflow: hidden;
           }
         }
         .artisan-image-panel img {
@@ -643,7 +650,7 @@ export default function SellerLoginPage() {
           display: block;
         }
         .seller-form-panel {
-          padding: 1.5rem 1.15rem;
+          padding: 1.75rem 1.25rem;
           width: 100%;
           box-sizing: border-box;
           display: flex;
@@ -652,12 +659,20 @@ export default function SellerLoginPage() {
         }
         @media (min-width: 480px) {
           .seller-form-panel {
-            padding: 2rem 1.75rem;
+            padding: 2.25rem 1.85rem;
           }
         }
         @media (min-width: 768px) {
           .seller-form-panel {
             padding: 3rem 2.5rem;
+          }
+        }
+        .auth-bottom-badge {
+          display: none;
+        }
+        @media (min-width: 768px) {
+          .auth-bottom-badge {
+            display: flex;
           }
         }
         .auth-heading-title {
