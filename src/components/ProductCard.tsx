@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { CSSProperties, MouseEvent, useState, useEffect } from 'react';
 import { Product } from '@/types';
 import { getProduct } from '@/data/products';
@@ -8,6 +9,7 @@ import { WishlistIcon, HeartFilledIcon } from './Icons';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
+import { usePageTransition } from '@/context/PageTransitionContext';
 
 interface ProductCardProps {
   product: Product;
@@ -19,6 +21,8 @@ export default function ProductCard({ product, style }: ProductCardProps) {
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { formatPrice } = useCurrency();
   const { isLoggedIn, openLoginModal } = useCustomerAuth();
+  const { startTransition } = usePageTransition();
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -37,8 +41,11 @@ export default function ProductCard({ product, style }: ProductCardProps) {
     toggleWishlist(currentProduct);
   };
 
-  // Prefetch gallery images into browser cache on hover for instant PDP load
+  // Prefetch route & gallery images into browser cache on hover/touch for instant PDP load
   const handlePrefetch = () => {
+    try {
+      router.prefetch(`/product/${currentProduct.id}`);
+    } catch {}
     if (typeof window === 'undefined' || !currentProduct.images) return;
     currentProduct.images.forEach((imgUrl) => {
       const img = new Image();
@@ -46,9 +53,19 @@ export default function ProductCard({ product, style }: ProductCardProps) {
     });
   };
 
+  const handleCardClick = (e: MouseEvent<HTMLDivElement>) => {
+    // If the click is on or inside the wishlist button, do not navigate
+    if ((e.target as HTMLElement).closest('.product-card__wishlist')) {
+      return;
+    }
+    startTransition('product');
+    router.push(`/product/${currentProduct.id}`);
+  };
+
   return (
     <div 
       className="product-card" 
+      onClick={handleCardClick}
       onMouseEnter={handlePrefetch}
       onTouchStart={handlePrefetch}
       style={{ 
@@ -61,6 +78,7 @@ export default function ProductCard({ product, style }: ProductCardProps) {
         minWidth: 0,
         maxWidth: '100%',
         boxSizing: 'border-box',
+        cursor: 'pointer',
         ...style 
       }}
     >
@@ -73,7 +91,11 @@ export default function ProductCard({ product, style }: ProductCardProps) {
       >
         {isSaved ? <HeartFilledIcon size={20} color="var(--maharani-maroon)" /> : <WishlistIcon size={20} />}
       </button>
-      <Link href={`/product/${currentProduct.id}`} style={{ 
+      <Link 
+        href={`/product/${currentProduct.id}`} 
+        prefetch={true}
+        onClick={() => startTransition('product')}
+        style={{ 
           textDecoration: 'none', 
           display: 'flex', 
           flexDirection: 'column', 
@@ -81,8 +103,10 @@ export default function ProductCard({ product, style }: ProductCardProps) {
           width: '100%',
           minWidth: 0,
           maxWidth: '100%',
-          boxSizing: 'border-box'
-        }}>
+          boxSizing: 'border-box',
+          cursor: 'pointer',
+        }}
+      >
         <div className="product-card__image-wrap">
           <img 
             src={(currentProduct.images && currentProduct.images[0]) || (currentProduct as any).image_url || (currentProduct as any).image || '/images/category-sarees.png'} 
