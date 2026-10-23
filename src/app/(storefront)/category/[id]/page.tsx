@@ -304,7 +304,7 @@ export default function CategoryPage({ params }: { params: Promise<{ id: string 
                       {cat.tagline}
                     </p>
                   )}
-                  <span style={{ 
+                  <span className="category-tile__explore" style={{ 
                     display: 'inline-flex', 
                     alignItems: 'center', 
                     gap: '8px',

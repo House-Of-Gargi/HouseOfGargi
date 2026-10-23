@@ -77,7 +77,7 @@ export default function CategoryCollectionRail({ categories }: CategoryCollectio
               <div className="category-tile__border" />
               <div className="category-tile__label">
                 <h3>{cat.name}</h3>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span className="category-tile__explore">
                   Explore <ArrowRightIcon size={14} />
                 </span>
               </div>
