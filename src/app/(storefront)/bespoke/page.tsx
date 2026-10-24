@@ -2,16 +2,8 @@
 
 import { useState, useEffect, FormEvent } from 'react';
 import ScrollReveal from '@/components/ScrollReveal';
-import CustomDropdown from '@/components/CustomDropdown';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
 import { User, CheckCircle2, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
-
-const GARMENT_OPTIONS = [
-  { value: 'Sarees', label: 'Bespoke Saree (Banarasi / Kanchipuram)' },
-  { value: 'Lehengas', label: 'Bridal / Festive Lehenga' },
-  { value: 'Kurta Sets', label: 'Handcrafted Kurta Ensemble' },
-  { value: 'Accessories', label: 'Custom Heritage Jewellery' },
-];
 
 const FABRIC_CHIPS = ['Pure Silk', 'Banarasi Katan', 'Chanderi', 'Raw Silk', 'Organza', 'Velvet'];
 const SIZE_CHIPS = ['XS', 'S', 'M', 'L', 'XL', 'Custom Fit'];
@@ -24,7 +16,7 @@ export default function BespokePage() {
     name: '',
     email: '',
     phone: '',
-    category: 'Sarees',
+    category: '',
     material: '',
     size: '',
     details: ''
@@ -289,13 +281,25 @@ export default function BespokePage() {
                 </div>
 
                 <div className="form-group">
-                  <label>Garment Type</label>
-                  <CustomDropdown 
-                    options={GARMENT_OPTIONS}
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                    <span>Garment Type</span>
+                    <span style={{ 
+                      textTransform: 'none', 
+                      fontWeight: 400, 
+                      letterSpacing: '0.01em', 
+                      color: 'var(--stone-taupe)', 
+                      fontSize: '0.82rem',
+                      fontStyle: 'italic'
+                    }}>
+                      (We would love to know your vision)
+                    </span>
+                  </label>
+                  <input 
+                    type="text" 
+                    required 
                     value={formData.category} 
-                    onChange={val => setFormData({ ...formData, category: val })}
-                    placeholder="Select Garment Type"
-                    fullWidth
+                    onChange={e => setFormData({ ...formData, category: e.target.value })}
+                    placeholder="e.g. Bespoke Saree, Bridal Lehenga, Kurta Set, Anarkali..."
                   />
                 </div>
 
