@@ -4,41 +4,28 @@ import { useState, FormEvent, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabaseClient';
-import { 
-  ArrowRight, 
-  ArrowLeft, 
-  Mail, 
-  Loader2, 
-  ShieldCheck, 
-  ShieldAlert, 
-  Check, 
-  RotateCcw,
-  Sparkles,
-  Lock
+import {
+  ArrowRight,
+  ArrowLeft,
+  Mail,
+  Loader2,
+  ShieldCheck,
+  ShieldAlert,
+  Lock,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import '@/seller.css';
 
-function sanitizeOtpError(msg?: string): string {
-  if (!msg) return 'The OTP code is invalid or has expired. Please request a new OTP.';
-  return msg
-    .replace(/token has expired or is invalid/gi, 'OTP has expired or is invalid')
-    .replace(/token/gi, 'OTP');
-}
-
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
-  const [otpValues, setOtpValues] = useState<string[]>(['', '', '', '', '', '']);
-  const [step, setStep] = useState<1 | 2>(1);
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [verifiedEmail, setVerifiedEmail] = useState('');
-  const [verificationToken, setVerificationToken] = useState<string>('');
-  const [expiresAt, setExpiresAt] = useState<number>(0);
-  const [resendCooldown, setResendCooldown] = useState<number>(0);
   const router = useRouter();
 
   const emailInputRef = useRef<HTMLInputElement | null>(null);
-  const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Auto-route existing active admin/super_admin sessions (unless explicitly logging out)
   useEffect(() => {
@@ -88,17 +75,8 @@ export default function AdminLoginPage() {
     checkCurrentSession();
   }, [router]);
 
-  // Cooldown countdown for resend button
-  useEffect(() => {
-    if (resendCooldown <= 0) return;
-    const timer = setInterval(() => {
-      setResendCooldown((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [resendCooldown]);
-
-  // 1. Send OTP (Strictly for registered Admin or Super Admin emails)
-  const handleSendOtp = async (e: FormEvent) => {
+  // Handle email + password login
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -108,139 +86,24 @@ export default function AdminLoginPage() {
       return;
     }
 
-    setLoading(true);
-
-    try {
-      const res = await fetch('/api/auth/send-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: cleanEmail, portal: 'admin' }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Access restricted. This email is not registered as an Admin or Super Admin.');
-      }
-
-      setVerifiedEmail(cleanEmail);
-      setVerificationToken(data.verificationToken || '');
-      setExpiresAt(data.expiresAt || 0);
-      setResendCooldown(60); // 60s cooldown
-      setStep(2);
-
-      if (typeof window !== 'undefined') {
-        sessionStorage.setItem('admin_active_otp', JSON.stringify({
-          email: cleanEmail,
-          token: data.verificationToken,
-          expiresAt: data.expiresAt,
-        }));
-      }
-
-      setTimeout(() => {
-        otpInputRefs.current[0]?.focus();
-      }, 100);
-    } catch (err: any) {
-      setError(err?.message || 'Access restricted. This email is not authorized for Administrative access.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleResendOtp = async () => {
-    if (resendCooldown > 0 || loading || !verifiedEmail) return;
-    setError('');
-    setLoading(true);
-
-    try {
-      const res = await fetch('/api/auth/send-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: verifiedEmail, portal: 'admin' }),
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Failed to resend code.');
-      }
-
-      setVerificationToken(data.verificationToken || '');
-      setExpiresAt(data.expiresAt || 0);
-      setResendCooldown(60);
-      setOtpValues(['', '', '', '', '', '']);
-      otpInputRefs.current[0]?.focus();
-    } catch (err: any) {
-      setError(err?.message || 'Failed to resend access code.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Handle OTP 6-box input
-  const handleOtpChange = (index: number, value: string) => {
-    const sanitized = value.replace(/\D/g, '').slice(-1);
-    const newOtpValues = [...otpValues];
-    newOtpValues[index] = sanitized;
-    setOtpValues(newOtpValues);
-
-    if (sanitized && index < 5) {
-      otpInputRefs.current[index + 1]?.focus();
-    }
-  };
-
-  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && !otpValues[index] && index > 0) {
-      otpInputRefs.current[index - 1]?.focus();
-    }
-  };
-
-  const handleOtpPaste = (e: React.ClipboardEvent) => {
-    e.preventDefault();
-    const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
-    if (!pasted) return;
-    const newValues = ['', '', '', '', '', ''];
-    for (let i = 0; i < pasted.length; i++) {
-      newValues[i] = pasted[i];
-    }
-    setOtpValues(newValues);
-    const focusIndex = Math.min(pasted.length, 5);
-    otpInputRefs.current[focusIndex]?.focus();
-  };
-
-  // 2. Verify OTP and route directly to right dashboard
-  const handleVerifyOtp = async (e: FormEvent) => {
-    e.preventDefault();
-    setError('');
-    const fullOtp = otpValues.join('');
-
-    if (fullOtp.length < 6) {
-      setError('Please enter all 6 digits of the access code.');
+    if (!password) {
+      setError('Please enter your administrative password.');
       return;
     }
 
     setLoading(true);
 
     try {
-      const cleanEmail = verifiedEmail.trim().toLowerCase();
-      const activeToken = verificationToken || (typeof window !== 'undefined' ? JSON.parse(sessionStorage.getItem('admin_active_otp') || '{}').token : '');
-      const activeExpires = expiresAt || (typeof window !== 'undefined' ? JSON.parse(sessionStorage.getItem('admin_active_otp') || '{}').expiresAt : 0);
-
-      const res = await fetch('/api/auth/verify-otp', {
+      const res = await fetch('/api/auth/admin-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: cleanEmail,
-          otp: fullOtp,
-          verificationToken: activeToken,
-          expiresAt: activeExpires,
-          portal: 'admin',
-        }),
+        body: JSON.stringify({ email: cleanEmail, password }),
       });
 
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        throw new Error(data.message || 'The access code is invalid or has expired.');
+        throw new Error(data.message || 'Invalid administrator email or password.');
       }
 
       const userRole = data.user?.role;
@@ -252,7 +115,7 @@ export default function AdminLoginPage() {
         email: cleanEmail,
         name: data.user?.name || cleanEmail.split('@')[0],
         role: userRole,
-        token: activeToken,
+        token: data.token || '',
         timestamp: Date.now(),
       };
 
@@ -270,7 +133,7 @@ export default function AdminLoginPage() {
         router.push('/admin/dashboard');
       }
     } catch (err: any) {
-      setError(sanitizeOtpError(err?.message));
+      setError(err?.message || 'Authentication error. Please check your administrative credentials.');
     } finally {
       setLoading(false);
     }
@@ -294,7 +157,7 @@ export default function AdminLoginPage() {
       overflowX: 'hidden',
       boxSizing: 'border-box',
     }}>
-      {/* Background Soft Ivory Overlay (Line art remains clearly visible) */}
+      {/* Background Soft Ivory Overlay */}
       <div style={{
         position: 'absolute',
         inset: 0,
@@ -449,7 +312,7 @@ export default function AdminLoginPage() {
             display: block;
             width: 100%;
             height: 100%;
-            min-height: 400px;
+            min-height: 440px;
             max-height: none;
             background: #231812;
             position: relative;
@@ -560,49 +423,25 @@ export default function AdminLoginPage() {
             font-size: 1.05rem;
           }
         }
-        .otp-boxes-grid {
-          display: grid;
-          grid-template-columns: repeat(6, 1fr);
-          gap: 0.35rem;
-          width: 100%;
-          box-sizing: border-box;
+        .auth-pw-toggle-btn {
+          background: none;
+          border: none;
+          padding: 0 0.85rem;
+          cursor: pointer;
+          color: var(--stone-taupe);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: color 150ms ease;
         }
-        @media (min-width: 480px) {
-          .otp-boxes-grid {
-            gap: 0.5rem;
-          }
-        }
-        .otp-digit-box {
-          width: 100%;
-          height: 46px;
-          text-align: center;
-          font-size: 1.2rem;
-          font-weight: 500;
-          font-family: var(--font-sans);
+        .auth-pw-toggle-btn:hover {
           color: var(--ink-brown);
-          border: 1.5px solid var(--soft-gold-line);
-          border-radius: 8px;
-          background: #FFFFFF;
-          outline: none;
-          padding: 0;
-          box-sizing: border-box;
-          transition: border-color 150ms ease, box-shadow 150ms ease;
-        }
-        @media (min-width: 480px) {
-          .otp-digit-box {
-            height: 52px;
-            font-size: 1.35rem;
-          }
-        }
-        .otp-digit-box:focus {
-          border-color: var(--maharani-maroon);
-          box-shadow: 0 0 0 3px rgba(122, 35, 49, 0.12);
         }
       `}</style>
 
       {/* CENTER HUB */}
       <div className="admin-center-hub">
-        
+
         {/* Top Header Bar */}
         <div className="auth-top-header">
           {/* Logo + Administrative Portal Badge */}
@@ -633,7 +472,7 @@ export default function AdminLoginPage() {
 
         {/* Main Card */}
         <div className="admin-card-container">
-          
+
           {/* Left Column: Image with Royal Overlay */}
           <div className="admin-image-panel">
             <img
@@ -695,14 +534,14 @@ export default function AdminLoginPage() {
                 marginBottom: '0.65rem',
               }}>
                 <Lock style={{ width: 12, height: 12 }} />
-                Strict Access Portal
+                Administrator Access
               </div>
 
               <h1 className="auth-heading-title">
                 Admin Sign In
               </h1>
               <p className="auth-heading-desc">
-                Sign in with OTP. Access codes are strictly dispatched to registered Admin and Super Admin accounts.
+                Sign in with your administrative email and password to enter the command center.
               </p>
             </div>
 
@@ -725,238 +564,131 @@ export default function AdminLoginPage() {
               </div>
             )}
 
-            {step === 1 ? (
-              <form onSubmit={handleSendOtp} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
-                <div>
-                  <label style={{
-                    display: 'block',
-                    fontSize: '0.82rem',
-                    fontFamily: 'var(--font-nav)',
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                    color: 'var(--stone-taupe)',
-                    marginBottom: '0.5rem',
-                  }}>
-                    Administrator Email Address
-                  </label>
-
-                  <div className="auth-input-container">
-                    <div className="auth-input-prefix" style={{ color: '#7A2331' }}>
-                      <Mail style={{ width: 18, height: 18 }} />
-                    </div>
-                    <input
-                      ref={emailInputRef}
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter your administrative email"
-                      required
-                      autoFocus
-                      className="auth-input-field"
-                      style={{
-                        fontFamily: 'var(--font-sans)',
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div style={{
-                  padding: '0.75rem 0.95rem',
-                  borderRadius: '6px',
-                  background: '#FAF7F2',
-                  border: '1px solid #E4D3AE',
+            <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
+              <div>
+                <label style={{
+                  display: 'block',
                   fontSize: '0.82rem',
-                  color: '#6B584E',
-                  lineHeight: 1.5,
+                  fontFamily: 'var(--font-nav)',
+                  fontWeight: 500,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.12em',
+                  color: 'var(--stone-taupe)',
+                  marginBottom: '0.5rem',
                 }}>
-                  <strong style={{ color: '#7A2331' }}>Security Verification:</strong> If this email address is not actively registered with Admin or Super Admin privileges, an access code will <em>not</em> be dispatched.
-                </div>
+                  Administrator Email Address
+                </label>
 
-                <button
-                  type="submit"
-                  disabled={loading || !email.trim() || !email.includes('@')}
-                  style={{
-                    width: '100%',
-                    padding: '0.95rem 1.5rem',
-                    borderRadius: '9px',
-                    border: 'none',
-                    background: (!loading && email.trim() && email.includes('@')) ? '#7A2331' : '#D6D3D1',
-                    color: '#FFFFFF',
-                    fontFamily: 'var(--font-nav)',
-                    fontSize: '0.95rem',
-                    fontWeight: 700,
-                    letterSpacing: '0.06em',
-                    textTransform: 'uppercase',
-                    cursor: (!loading && email.trim() && email.includes('@')) ? 'pointer' : 'not-allowed',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.55rem',
-                    boxShadow: (!loading && email.trim() && email.includes('@')) ? '0 4px 14px rgba(122, 35, 49, 0.28)' : 'none',
-                    transition: 'all 150ms ease',
-                    marginTop: '0.5rem',
-                  }}
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 style={{ width: 18, height: 18, animation: 'spin 1s linear infinite' }} />
-                      Verifying Privilege...
-                    </>
-                  ) : (
-                    <>
-                      <span>Send Administrator Code</span>
-                      <ArrowRight style={{ width: 16, height: 16 }} />
-                    </>
-                  )}
-                </button>
-              </form>
-            ) : (
-              <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                <div style={{
-                  background: 'var(--ivory-silk)',
-                  border: '1px solid var(--soft-gold-line)',
-                  borderRadius: '8px',
-                  padding: '0.75rem 1rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  flexWrap: 'wrap',
-                  gap: '0.5rem',
-                }}>
-                  <div>
-                    <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--stone-taupe)' }}>
-                      Access Code Sent To:
-                    </span>
-                    <div style={{ fontWeight: 700, color: '#7A2331', fontSize: '0.95rem' }}>
-                      {verifiedEmail}
-                    </div>
+                <div className="auth-input-container">
+                  <div className="auth-input-prefix" style={{ color: '#7A2331' }}>
+                    <Mail style={{ width: 18, height: 18 }} />
                   </div>
+                  <input
+                    ref={emailInputRef}
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="admin@gargisaha.com"
+                    required
+                    autoFocus
+                    className="auth-input-field"
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label style={{
+                  display: 'block',
+                  fontSize: '0.82rem',
+                  fontFamily: 'var(--font-nav)',
+                  fontWeight: 500,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.12em',
+                  color: 'var(--stone-taupe)',
+                  marginBottom: '0.5rem',
+                }}>
+                  Administrative Password
+                </label>
+
+                <div className="auth-input-container">
+                  <div className="auth-input-prefix" style={{ color: '#7A2331' }}>
+                    <Lock style={{ width: 18, height: 18 }} />
+                  </div>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password"
+                    required
+                    className="auth-input-field"
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                    }}
+                  />
                   <button
                     type="button"
-                    onClick={() => {
-                      setStep(1);
-                      setError('');
-                      setOtpValues(['', '', '', '', '', '']);
-                    }}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: 'var(--stone-taupe)',
-                      fontSize: '0.82rem',
-                      cursor: 'pointer',
-                      textDecoration: 'underline',
-                      padding: 0,
-                    }}
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="auth-pw-toggle-btn"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
-                    Change Email
+                    {showPassword ? <EyeOff style={{ width: 18, height: 18 }} /> : <Eye style={{ width: 18, height: 18 }} />}
                   </button>
                 </div>
+              </div>
 
-                <div>
-                  <label style={{
-                    display: 'block',
-                    fontSize: '0.82rem',
-                    fontFamily: 'var(--font-nav)',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                    color: 'var(--stone-taupe)',
-                    marginBottom: '0.65rem',
-                  }}>
-                    Enter 6-Digit Code
-                  </label>
+              <div style={{
+                padding: '0.75rem 0.95rem',
+                borderRadius: '6px',
+                background: '#FAF7F2',
+                border: '1px solid #E4D3AE',
+                fontSize: '0.82rem',
+                color: '#6B584E',
+                lineHeight: 1.5,
+              }}>
+                <strong style={{ color: '#7A2331' }}>Access Notice:</strong> Only authorized House of Gargi administrators may sign in. Newly assigned accounts use default password <code>12345678</code>.
+              </div>
 
-                  <div className="otp-boxes-grid" onPaste={handleOtpPaste}>
-                    {otpValues.map((val, idx) => (
-                      <input
-                        key={idx}
-                        ref={(el) => { otpInputRefs.current[idx] = el; }}
-                        type="text"
-                        inputMode="numeric"
-                        autoComplete={idx === 0 ? 'one-time-code' : 'off'}
-                        maxLength={6}
-                        value={val}
-                        onChange={(e) => handleOtpChange(idx, e.target.value)}
-                        onKeyDown={(e) => handleOtpKeyDown(idx, e)}
-                        onPaste={handleOtpPaste}
-                        onFocus={(e) => e.target.select()}
-                        className="otp-digit-box"
-                        autoFocus={idx === 0}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                <div style={{
+              <button
+                type="submit"
+                disabled={loading || !email.trim() || !password}
+                style={{
+                  width: '100%',
+                  padding: '0.95rem 1.5rem',
+                  borderRadius: '9px',
+                  border: 'none',
+                  background: (!loading && email.trim() && password) ? '#7A2331' : '#D6D3D1',
+                  color: '#FFFFFF',
+                  fontFamily: 'var(--font-nav)',
+                  fontSize: '0.95rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  cursor: (!loading && email.trim() && password) ? 'pointer' : 'not-allowed',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'space-between',
-                  fontSize: '0.85rem',
-                }}>
-                  <span style={{ color: 'var(--stone-taupe)' }}>
-                    Didn't receive code?
-                  </span>
-                  <button
-                    type="button"
-                    onClick={handleResendOtp}
-                    disabled={resendCooldown > 0 || loading}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: resendCooldown > 0 ? 'var(--stone-taupe)' : '#7A2331',
-                      fontWeight: 700,
-                      cursor: resendCooldown > 0 ? 'not-allowed' : 'pointer',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.35rem',
-                      padding: 0,
-                    }}
-                  >
-                    <RotateCcw style={{ width: 14, height: 14 }} />
-                    {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend Code'}
-                  </button>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={loading || otpValues.join('').length < 6}
-                  style={{
-                    width: '100%',
-                    padding: '0.95rem 1.5rem',
-                    borderRadius: '9px',
-                    border: 'none',
-                    background: otpValues.join('').length === 6 ? '#7A2331' : '#D6D3D1',
-                    color: '#FFFFFF',
-                    fontFamily: 'var(--font-nav)',
-                    fontSize: '0.95rem',
-                    fontWeight: 700,
-                    letterSpacing: '0.06em',
-                    textTransform: 'uppercase',
-                    cursor: otpValues.join('').length === 6 && !loading ? 'pointer' : 'not-allowed',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.55rem',
-                    boxShadow: otpValues.join('').length === 6 ? '0 4px 14px rgba(122, 35, 49, 0.28)' : 'none',
-                    transition: 'all 150ms ease',
-                    marginTop: '0.5rem',
-                  }}
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 style={{ width: 18, height: 18, animation: 'spin 1s linear infinite' }} />
-                      Verifying Credentials...
-                    </>
-                  ) : (
-                    <>
-                      <span>Enter Admin Console</span>
-                      <ArrowRight style={{ width: 16, height: 16 }} />
-                    </>
-                  )}
-                </button>
-              </form>
-            )}
+                  justifyContent: 'center',
+                  gap: '0.55rem',
+                  boxShadow: (!loading && email.trim() && password) ? '0 4px 14px rgba(122, 35, 49, 0.28)' : 'none',
+                  transition: 'all 150ms ease',
+                  marginTop: '0.5rem',
+                }}
+              >
+                {loading ? (
+                  <>
+                    <Loader2 style={{ width: 18, height: 18, animation: 'spin 1s linear infinite' }} />
+                    Authenticating Credentials...
+                  </>
+                ) : (
+                  <>
+                    <span>Sign In to Command Center</span>
+                    <ArrowRight style={{ width: 16, height: 16 }} />
+                  </>
+                )}
+              </button>
+            </form>
 
             {/* Quick Switch Link to Artisan Portal */}
             <div style={{
