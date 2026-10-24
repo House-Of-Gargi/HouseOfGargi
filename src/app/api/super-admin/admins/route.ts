@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { proxyToBackend } from '@/lib/apiProxy';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import bcrypt from 'bcryptjs';
 
 function formatStaffName(email: string): string {
   const clean = email.toLowerCase().trim();
@@ -114,14 +115,28 @@ export async function POST(req: Request) {
     }
 
     // Upsert into Supabase user_roles using service role
-    await supabaseAdmin
-      .from('user_roles')
-      .upsert({
-        user_email: email,
-        role,
-        assigned_by: 'super_admin_console',
-        updated_at: new Date().toISOString(),
-      }, { onConflict: 'user_email' });
+    const defaultPasswordHash = await bcrypt.hash('12345678', 12);
+    try {
+      await supabaseAdmin
+        .from('user_roles')
+        .upsert({
+          user_email: email,
+          role,
+          assigned_by: 'super_admin_console',
+          updated_at: new Date().toISOString(),
+          password_hash: defaultPasswordHash,
+        }, { onConflict: 'user_email' });
+    } catch {
+      // Fallback if password_hash column not yet migrated
+      await supabaseAdmin
+        .from('user_roles')
+        .upsert({
+          user_email: email,
+          role,
+          assigned_by: 'super_admin_console',
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'user_email' });
+    }
 
     // Also forward to backend if available
     try {
