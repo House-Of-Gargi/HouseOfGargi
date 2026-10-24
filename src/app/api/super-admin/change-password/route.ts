@@ -38,7 +38,7 @@ export async function POST(req: Request) {
         body: { currentPassword, newPassword },
       });
 
-      if (res.status !== 502) {
+      if (res.status !== 502 && res.status !== 404) {
         return res;
       }
     } catch {
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
       .eq('user_email', email)
       .maybeSingle();
 
-    if (fetchErr) {
+    if (fetchErr && fetchErr.code !== '42703') {
       return NextResponse.json(
         { success: false, message: fetchErr.message || 'Error fetching administrator record' },
         { status: 500 }
@@ -83,6 +83,12 @@ export async function POST(req: Request) {
       .eq('user_email', email);
 
     if (updateErr) {
+      if (updateErr.code === '42703') {
+        return NextResponse.json(
+          { success: false, message: 'Database column pending: Please run migration 0018_admin_password_auth.sql in Supabase SQL Editor.' },
+          { status: 400 }
+        );
+      }
       return NextResponse.json(
         { success: false, message: updateErr.message || 'Database update error' },
         { status: 500 }

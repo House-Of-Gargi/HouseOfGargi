@@ -34,7 +34,7 @@ export async function POST(req: Request) {
         }
       );
 
-      if (res.status !== 502) {
+      if (res.status !== 502 && res.status !== 404) {
         return res;
       }
     } catch {
@@ -52,6 +52,12 @@ export async function POST(req: Request) {
       .eq('user_email', email);
 
     if (error) {
+      if (error.code === '42703') {
+        return NextResponse.json(
+          { success: false, message: 'Database column pending: Please run migration 0018_admin_password_auth.sql in Supabase SQL Editor.' },
+          { status: 400 }
+        );
+      }
       return NextResponse.json(
         { success: false, message: error.message || 'Database update error' },
         { status: 500 }

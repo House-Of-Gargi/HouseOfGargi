@@ -38,8 +38,9 @@ export async function POST(req: Request) {
         body: { email, password },
       });
 
-      // If backend responded (even 401 or 403), return that response
-      if (res.status !== 502) {
+      // If backend responded with valid auth response (200, 401, 403, 400), return it.
+      // If 502 (offline) or 404 (endpoint not yet deployed to remote Render), use local fallback.
+      if (res.status !== 502 && res.status !== 404) {
         return res;
       }
     } catch {
