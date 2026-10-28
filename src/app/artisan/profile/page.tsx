@@ -11,15 +11,32 @@ import {
   Sparkles, 
   Camera, 
   Image as ImageIcon,
-  CheckCircle2
+  CheckCircle2,
+  FileText,
+  ArrowRight,
+  BookOpen
 } from 'lucide-react';
 import ArtisanProfileModal from '@/components/ArtisanProfileModal';
+import ArtisanQuestionnaireDossier from '@/components/ArtisanQuestionnaireDossier';
 
 export default function PersonalArtisanProfilePage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState('');
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'public_profile' | 'questionnaire'>('public_profile');
+  const [application, setApplication] = useState<any>(null);
+
+  // Check URL tab parameter on client mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get('tab');
+      if (tab === 'questionnaire' || tab === 'dossier' || tab === 'answers') {
+        setActiveTab('questionnaire');
+      }
+    }
+  }, []);
 
   // Profile Form Fields
   const [id, setId] = useState('HG-ART-260501');
@@ -35,7 +52,7 @@ export default function PersonalArtisanProfilePage() {
   const [imageUrlInput, setImageUrlInput] = useState('');
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
-  // Load existing profile on mount
+  // Load existing profile and onboarding application on mount
   useEffect(() => {
     let isMounted = true;
     const loadProfile = async () => {
@@ -52,23 +69,29 @@ export default function PersonalArtisanProfilePage() {
           }
         } catch {}
 
-        const res = await fetch('/api/artisan/profile');
+        const res = await fetch('/api/artisan/profile' + (queryEmail ? `?email=${encodeURIComponent(queryEmail)}` : ''));
         const data = await res.json();
 
-        if (isMounted && data.success && data.profile) {
-          const p = data.profile;
-          setId(p.id || 'HG-ART-260501');
-          setArtisanNo(p.artisanNo || 'HG-84192');
-          setName(p.name || 'Gopal Chandra Dey');
-          setArtStyle(p.artStyle || p.role || 'Maharaja Embroidary Design');
-          setRegionalBelonging(p.regionalBelonging || p.region || 'Kolkata, West Bengal');
-          setExperience(p.experience || (p.experienceYears ? `${p.experienceYears} Years` : '32 Years'));
-          setDescription(
-            p.description ||
-            p.bio ||
-            'Master weaver preserving 4 generations of royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to handcraft heirloom drapes.'
-          );
-          setProfileImage(p.profileImage || p.image || '/images/artisans_split.png');
+        if (isMounted && data.success) {
+          if (data.profile) {
+            const p = data.profile;
+            setId(p.id || 'HG-ART-260501');
+            setArtisanNo(p.artisanNo || 'HG-84192');
+            setName(p.name || 'Gopal Chandra Dey');
+            setArtStyle(p.artStyle || p.role || 'Maharaja Embroidary Design');
+            setRegionalBelonging(p.regionalBelonging || p.region || 'Kolkata, West Bengal');
+            setExperience(p.experience || (p.experienceYears ? `${p.experienceYears} Years` : '32 Years'));
+            setDescription(
+              p.description ||
+              p.bio ||
+              'Master weaver preserving 4 generations of royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to handcraft heirloom drapes.'
+            );
+            setProfileImage(p.profileImage || p.image || '/images/artisans_split.png');
+          }
+
+          if (data.application) {
+            setApplication(data.application);
+          }
         }
       } catch (err) {
         console.error('Error fetching artisan profile:', err);
@@ -274,7 +297,143 @@ export default function PersonalArtisanProfilePage() {
         </div>
       </div>
 
-      {saveSuccess && (
+      {/* ── Segmented Navigation Tabs ── */}
+      <div
+        className="no-print"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.75rem',
+          marginBottom: '2rem',
+          borderBottom: '1.5px solid var(--soft-gold-line, #E4D3AE)',
+          paddingBottom: '0.75rem',
+        }}
+      >
+        <button
+          type="button"
+          onClick={() => setActiveTab('public_profile')}
+          style={{
+            background: activeTab === 'public_profile' ? 'var(--maharani-maroon, #7A2331)' : '#FFFFFF',
+            color: activeTab === 'public_profile' ? '#FFFFFF' : 'var(--ink-brown, #2B1F18)',
+            border: activeTab === 'public_profile' ? '1px solid var(--maharani-maroon, #7A2331)' : '1.5px solid var(--soft-gold-line, #E4D3AE)',
+            borderRadius: '8px',
+            padding: '0.75rem 1.35rem',
+            fontSize: '0.88rem',
+            fontFamily: 'var(--font-nav)',
+            fontWeight: activeTab === 'public_profile' ? 700 : 500,
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.55rem',
+            boxShadow: activeTab === 'public_profile' ? '0 4px 12px rgba(122, 35, 49, 0.2)' : '0 2px 6px rgba(43, 31, 24, 0.03)',
+            transition: 'all 0.15s ease',
+          }}
+        >
+          <UserCheck style={{ width: 17, height: 17 }} />
+          <span>Public Boutique Profile</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab('questionnaire')}
+          style={{
+            background: activeTab === 'questionnaire' ? 'var(--maharani-maroon, #7A2331)' : '#FFFFFF',
+            color: activeTab === 'questionnaire' ? '#FFFFFF' : 'var(--ink-brown, #2B1F18)',
+            border: activeTab === 'questionnaire' ? '1px solid var(--maharani-maroon, #7A2331)' : '1.5px solid var(--soft-gold-line, #E4D3AE)',
+            borderRadius: '8px',
+            padding: '0.75rem 1.35rem',
+            fontSize: '0.88rem',
+            fontFamily: 'var(--font-nav)',
+            fontWeight: activeTab === 'questionnaire' ? 700 : 500,
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.55rem',
+            boxShadow: activeTab === 'questionnaire' ? '0 4px 12px rgba(122, 35, 49, 0.2)' : '0 2px 6px rgba(43, 31, 24, 0.03)',
+            transition: 'all 0.15s ease',
+          }}
+        >
+          <FileText style={{ width: 17, height: 17 }} />
+          <span>Heritage Questionnaire &amp; Dossier</span>
+          <span
+            style={{
+              fontSize: '0.72rem',
+              background: activeTab === 'questionnaire' ? 'rgba(255, 255, 255, 0.25)' : 'rgba(122, 35, 49, 0.08)',
+              color: activeTab === 'questionnaire' ? '#FFFFFF' : 'var(--maharani-maroon, #7A2331)',
+              padding: '2px 7px',
+              borderRadius: '10px',
+              fontWeight: 700,
+              marginLeft: '0.25rem',
+            }}
+          >
+            14 Q&amp;As
+          </span>
+        </button>
+      </div>
+
+      {/* ── Tab Content Switcher ── */}
+      {activeTab === 'questionnaire' ? (
+        <ArtisanQuestionnaireDossier
+          application={application}
+          artisanName={name}
+          artisanCode={artisanNo || id}
+          onSwitchToProfileTab={() => setActiveTab('public_profile')}
+        />
+      ) : (
+        <>
+          {/* Helpful callout card to Questionnaire */}
+          <div
+            className="no-print"
+            style={{
+              background: 'linear-gradient(135deg, #FAF7F2 0%, #FFFFFF 100%)',
+              border: '1.5px solid var(--soft-gold-line, #E4D3AE)',
+              borderLeft: '4px solid var(--maharani-maroon, #7A2331)',
+              borderRadius: '8px',
+              padding: '1rem 1.35rem',
+              marginBottom: '1.75rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '1rem',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+              <BookOpen style={{ width: 22, height: 22, color: 'var(--maharani-maroon, #7A2331)', flexShrink: 0 }} />
+              <div>
+                <div style={{ fontSize: '0.92rem', fontWeight: 600, color: 'var(--ink-brown, #2B1F18)' }}>
+                  Looking for your 14 Onboarding Heritage Questionnaire Answers?
+                </div>
+                <div style={{ fontSize: '0.82rem', color: '#6E5D53', marginTop: '2px' }}>
+                  Your craft lineage, fiber sourcing, personal memories, and signed child labor agreements are available to view.
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab('questionnaire')}
+              style={{
+                background: '#FAF7F2',
+                border: '1px solid var(--soft-gold-line, #E4D3AE)',
+                color: 'var(--maharani-maroon, #7A2331)',
+                borderRadius: '6px',
+                padding: '0.5rem 1rem',
+                fontSize: '0.82rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <span>View 14 Questions &amp; Answers</span>
+              <ArrowRight style={{ width: 14, height: 14 }} />
+            </button>
+          </div>
+
+          {saveSuccess && (
         <div
           style={{
             backgroundColor: '#E8F5E9',
@@ -910,6 +1069,8 @@ export default function PersonalArtisanProfilePage() {
           </div>
         </div>
       </div>
+        </>
+      )}
 
       {/* ── Patron Modal Preview ── */}
       <ArtisanProfileModal

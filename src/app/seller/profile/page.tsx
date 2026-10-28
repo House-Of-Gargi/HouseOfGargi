@@ -11,15 +11,32 @@ import {
   Sparkles, 
   Camera, 
   Image as ImageIcon,
-  CheckCircle2
+  CheckCircle2,
+  FileText,
+  ArrowRight,
+  BookOpen
 } from 'lucide-react';
 import ArtisanProfileModal from '@/components/ArtisanProfileModal';
+import ArtisanQuestionnaireDossier from '@/components/ArtisanQuestionnaireDossier';
 
 export default function PersonalArtisanProfilePage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState('');
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'public_profile' | 'questionnaire'>('public_profile');
+  const [application, setApplication] = useState<any>(null);
+
+  // Check URL tab parameter on client mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get('tab');
+      if (tab === 'questionnaire' || tab === 'dossier' || tab === 'answers') {
+        setActiveTab('questionnaire');
+      }
+    }
+  }, []);
 
   // Profile Form Fields
   const [id, setId] = useState('HG-ART-260501');
@@ -35,7 +52,7 @@ export default function PersonalArtisanProfilePage() {
   const [imageUrlInput, setImageUrlInput] = useState('');
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
-  // Load existing profile on mount
+  // Load existing profile and onboarding application on mount
   useEffect(() => {
     let isMounted = true;
     const loadProfile = async () => {
@@ -52,23 +69,29 @@ export default function PersonalArtisanProfilePage() {
           }
         } catch {}
 
-        const res = await fetch('/api/artisan/profile');
+        const res = await fetch('/api/artisan/profile' + (queryEmail ? `?email=${encodeURIComponent(queryEmail)}` : ''));
         const data = await res.json();
 
-        if (isMounted && data.success && data.profile) {
-          const p = data.profile;
-          setId(p.id || 'HG-ART-260501');
-          setArtisanNo(p.artisanNo || 'HG-84192');
-          setName(p.name || 'Gopal Chandra Dey');
-          setArtStyle(p.artStyle || p.role || 'Maharaja Embroidary Design');
-          setRegionalBelonging(p.regionalBelonging || p.region || 'Kolkata, West Bengal');
-          setExperience(p.experience || (p.experienceYears ? `${p.experienceYears} Years` : '32 Years'));
-          setDescription(
-            p.description ||
-            p.bio ||
-            'Master weaver preserving 4 generations of royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to handcraft heirloom drapes.'
-          );
-          setProfileImage(p.profileImage || p.image || '/images/artisans_split.png');
+        if (isMounted && data.success) {
+          if (data.profile) {
+            const p = data.profile;
+            setId(p.id || 'HG-ART-260501');
+            setArtisanNo(p.artisanNo || 'HG-84192');
+            setName(p.name || 'Gopal Chandra Dey');
+            setArtStyle(p.artStyle || p.role || 'Maharaja Embroidary Design');
+            setRegionalBelonging(p.regionalBelonging || p.region || 'Kolkata, West Bengal');
+            setExperience(p.experience || (p.experienceYears ? `${p.experienceYears} Years` : '32 Years'));
+            setDescription(
+              p.description ||
+              p.bio ||
+              'Master weaver preserving 4 generations of royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to handcraft heirloom drapes.'
+            );
+            setProfileImage(p.profileImage || p.image || '/images/artisans_split.png');
+          }
+
+          if (data.application) {
+            setApplication(data.application);
+          }
         }
       } catch (err) {
         console.error('Error fetching artisan profile:', err);
@@ -209,7 +232,7 @@ export default function PersonalArtisanProfilePage() {
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontSize: '1.85rem',
-                fontWeight: 700,
+                fontWeight: 600,
                 color: 'var(--ink-brown)',
                 margin: 0,
                 lineHeight: 1.2,
@@ -234,7 +257,7 @@ export default function PersonalArtisanProfilePage() {
               padding: '0.65rem 1.15rem',
               fontSize: '0.84rem',
               fontFamily: 'var(--font-nav)',
-              fontWeight: 700,
+              fontWeight: 500,
               color: 'var(--ink-brown)',
               display: 'inline-flex',
               alignItems: 'center',
@@ -259,7 +282,7 @@ export default function PersonalArtisanProfilePage() {
               padding: '0.65rem 1.15rem',
               fontSize: '0.84rem',
               fontFamily: 'var(--font-nav)',
-              fontWeight: 700,
+              fontWeight: 500,
               color: 'var(--maharani-maroon)',
               display: 'inline-flex',
               alignItems: 'center',
@@ -274,7 +297,143 @@ export default function PersonalArtisanProfilePage() {
         </div>
       </div>
 
-      {saveSuccess && (
+      {/* ── Segmented Navigation Tabs ── */}
+      <div
+        className="no-print"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.75rem',
+          marginBottom: '2rem',
+          borderBottom: '1.5px solid var(--soft-gold-line, #E4D3AE)',
+          paddingBottom: '0.75rem',
+        }}
+      >
+        <button
+          type="button"
+          onClick={() => setActiveTab('public_profile')}
+          style={{
+            background: activeTab === 'public_profile' ? 'var(--maharani-maroon, #7A2331)' : '#FFFFFF',
+            color: activeTab === 'public_profile' ? '#FFFFFF' : 'var(--ink-brown, #2B1F18)',
+            border: activeTab === 'public_profile' ? '1px solid var(--maharani-maroon, #7A2331)' : '1.5px solid var(--soft-gold-line, #E4D3AE)',
+            borderRadius: '8px',
+            padding: '0.75rem 1.35rem',
+            fontSize: '0.88rem',
+            fontFamily: 'var(--font-nav)',
+            fontWeight: activeTab === 'public_profile' ? 700 : 500,
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.55rem',
+            boxShadow: activeTab === 'public_profile' ? '0 4px 12px rgba(122, 35, 49, 0.2)' : '0 2px 6px rgba(43, 31, 24, 0.03)',
+            transition: 'all 0.15s ease',
+          }}
+        >
+          <UserCheck style={{ width: 17, height: 17 }} />
+          <span>Public Boutique Profile</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab('questionnaire')}
+          style={{
+            background: activeTab === 'questionnaire' ? 'var(--maharani-maroon, #7A2331)' : '#FFFFFF',
+            color: activeTab === 'questionnaire' ? '#FFFFFF' : 'var(--ink-brown, #2B1F18)',
+            border: activeTab === 'questionnaire' ? '1px solid var(--maharani-maroon, #7A2331)' : '1.5px solid var(--soft-gold-line, #E4D3AE)',
+            borderRadius: '8px',
+            padding: '0.75rem 1.35rem',
+            fontSize: '0.88rem',
+            fontFamily: 'var(--font-nav)',
+            fontWeight: activeTab === 'questionnaire' ? 700 : 500,
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.55rem',
+            boxShadow: activeTab === 'questionnaire' ? '0 4px 12px rgba(122, 35, 49, 0.2)' : '0 2px 6px rgba(43, 31, 24, 0.03)',
+            transition: 'all 0.15s ease',
+          }}
+        >
+          <FileText style={{ width: 17, height: 17 }} />
+          <span>Heritage Questionnaire &amp; Dossier</span>
+          <span
+            style={{
+              fontSize: '0.72rem',
+              background: activeTab === 'questionnaire' ? 'rgba(255, 255, 255, 0.25)' : 'rgba(122, 35, 49, 0.08)',
+              color: activeTab === 'questionnaire' ? '#FFFFFF' : 'var(--maharani-maroon, #7A2331)',
+              padding: '2px 7px',
+              borderRadius: '10px',
+              fontWeight: 700,
+              marginLeft: '0.25rem',
+            }}
+          >
+            14 Q&amp;As
+          </span>
+        </button>
+      </div>
+
+      {/* ── Tab Content Switcher ── */}
+      {activeTab === 'questionnaire' ? (
+        <ArtisanQuestionnaireDossier
+          application={application}
+          artisanName={name}
+          artisanCode={artisanNo || id}
+          onSwitchToProfileTab={() => setActiveTab('public_profile')}
+        />
+      ) : (
+        <>
+          {/* Helpful callout card to Questionnaire */}
+          <div
+            className="no-print"
+            style={{
+              background: 'linear-gradient(135deg, #FAF7F2 0%, #FFFFFF 100%)',
+              border: '1.5px solid var(--soft-gold-line, #E4D3AE)',
+              borderLeft: '4px solid var(--maharani-maroon, #7A2331)',
+              borderRadius: '8px',
+              padding: '1rem 1.35rem',
+              marginBottom: '1.75rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '1rem',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+              <BookOpen style={{ width: 22, height: 22, color: 'var(--maharani-maroon, #7A2331)', flexShrink: 0 }} />
+              <div>
+                <div style={{ fontSize: '0.92rem', fontWeight: 600, color: 'var(--ink-brown, #2B1F18)' }}>
+                  Looking for your 14 Onboarding Heritage Questionnaire Answers?
+                </div>
+                <div style={{ fontSize: '0.82rem', color: '#6E5D53', marginTop: '2px' }}>
+                  Your craft lineage, fiber sourcing, personal memories, and signed child labor agreements are available to view.
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab('questionnaire')}
+              style={{
+                background: '#FAF7F2',
+                border: '1px solid var(--soft-gold-line, #E4D3AE)',
+                color: 'var(--maharani-maroon, #7A2331)',
+                borderRadius: '6px',
+                padding: '0.5rem 1rem',
+                fontSize: '0.82rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <span>View 14 Questions &amp; Answers</span>
+              <ArrowRight style={{ width: 14, height: 14 }} />
+            </button>
+          </div>
+
+          {saveSuccess && (
         <div
           style={{
             backgroundColor: '#E8F5E9',
@@ -286,7 +445,7 @@ export default function PersonalArtisanProfilePage() {
             display: 'flex',
             alignItems: 'center',
             gap: '0.65rem',
-            fontWeight: 700,
+            fontWeight: 500,
             fontSize: '0.94rem',
           }}
         >
@@ -315,8 +474,8 @@ export default function PersonalArtisanProfilePage() {
           {/* Section 1: Artisan Portrait & Identity */}
           <div>
             <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '0.6rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 800, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>01</span>
-              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>01</span>
+              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 600, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                 Master Artisan Portrait &amp; Identity
               </h3>
             </div>
@@ -348,7 +507,7 @@ export default function PersonalArtisanProfilePage() {
               </div>
 
               <div style={{ flex: 1, minWidth: '240px' }}>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                   Artisan Portrait Photo
                 </label>
                 
@@ -363,7 +522,7 @@ export default function PersonalArtisanProfilePage() {
                       border: '1.5px dashed var(--soft-gold-line)',
                       background: '#FAF7F2',
                       color: 'var(--ink-brown)',
-                      fontWeight: 700,
+                      fontWeight: 500,
                       fontSize: '0.84rem',
                       cursor: 'pointer',
                     }}
@@ -411,7 +570,7 @@ export default function PersonalArtisanProfilePage() {
                       border: 'none',
                       background: imageUrlInput.trim() ? 'var(--maharani-maroon)' : '#D8CBB6',
                       color: '#FFFFFF',
-                      fontWeight: 700,
+                      fontWeight: 500,
                       fontSize: '0.8rem',
                       cursor: imageUrlInput.trim() ? 'pointer' : 'not-allowed',
                       whiteSpace: 'nowrap',
@@ -426,7 +585,7 @@ export default function PersonalArtisanProfilePage() {
             {/* Name & ID Grid */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                   Master Artisan Full Name *
                 </label>
                 <input
@@ -452,7 +611,7 @@ export default function PersonalArtisanProfilePage() {
               </div>
 
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                   Artisan ID / Code
                 </label>
                 <input
@@ -468,7 +627,7 @@ export default function PersonalArtisanProfilePage() {
                     background: '#FAF7F2',
                     color: 'var(--maharani-maroon)',
                     fontFamily: 'monospace',
-                    fontWeight: 800,
+                    fontWeight: 500,
                     fontSize: '0.92rem',
                     outline: 'none',
                     boxSizing: 'border-box',
@@ -483,15 +642,15 @@ export default function PersonalArtisanProfilePage() {
           {/* Section 2: Craft Style & Heritage Specs */}
           <div>
             <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '0.6rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 800, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>02</span>
-              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>02</span>
+              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 600, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                 Craft Style &amp; Heritage Specifications
               </h3>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                   Art Style / Craft Technique *
                 </label>
                 <input
@@ -518,7 +677,7 @@ export default function PersonalArtisanProfilePage() {
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
                 <div>
-                  <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                  <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                     Regional Belonging *
                   </label>
                   <input
@@ -544,7 +703,7 @@ export default function PersonalArtisanProfilePage() {
                 </div>
 
                 <div>
-                  <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+                  <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                     Lineage Experience *
                   </label>
                   <input
@@ -575,14 +734,14 @@ export default function PersonalArtisanProfilePage() {
           {/* Section 3: Description About the Artist */}
           <div>
             <div style={{ borderBottom: '1px solid var(--soft-gold-line)', paddingBottom: '0.6rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 800, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>03</span>
-              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', fontWeight: 600, color: 'var(--maharani-maroon)', background: '#FAF7F2', padding: '2px 8px', borderRadius: 3 }}>03</span>
+              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 600, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                 Description About the Artist
               </h3>
             </div>
 
             <div>
-              <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
+              <label style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink-brown)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.45rem' }}>
                 Artisan Story &amp; Lineage Bio *
               </label>
               <textarea
@@ -621,7 +780,7 @@ export default function PersonalArtisanProfilePage() {
                 border: 'none',
                 background: 'var(--maharani-maroon)',
                 color: '#FFF',
-                fontWeight: 700,
+                fontWeight: 500,
                 cursor: saving ? 'not-allowed' : 'pointer',
                 fontSize: '0.94rem',
                 fontFamily: 'var(--font-nav)',
@@ -648,7 +807,7 @@ export default function PersonalArtisanProfilePage() {
         {/* ── Right Column: Live Customer Portal Preview Card (EXACT SCREENSHOT LAYOUT) ── */}
         <div style={{ position: 'sticky', top: '90px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-            <span style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--maharani-maroon)' }}>
+            <span style={{ fontSize: '0.78rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--maharani-maroon)' }}>
               ✦ Live Customer Portal Preview
             </span>
             <span style={{ fontSize: '0.75rem', color: 'var(--stone-taupe)', fontWeight: 600 }}>
@@ -682,7 +841,7 @@ export default function PersonalArtisanProfilePage() {
                 <div
                   style={{
                     fontFamily: 'monospace',
-                    fontWeight: 800,
+                    fontWeight: 500,
                     fontSize: '0.85rem',
                     color: 'var(--maharani-maroon)',
                     letterSpacing: '0.04em',
@@ -695,7 +854,7 @@ export default function PersonalArtisanProfilePage() {
                   style={{
                     margin: 0,
                     fontSize: '1.22rem',
-                    fontWeight: 800,
+                    fontWeight: 500,
                     color: 'var(--ink-brown)',
                     lineHeight: 1.25,
                   }}
@@ -713,7 +872,7 @@ export default function PersonalArtisanProfilePage() {
                   justifyContent: 'center',
                   color: 'var(--stone-taupe)',
                   fontSize: '1rem',
-                  fontWeight: 700,
+                  fontWeight: 500,
                 }}
               >
                 &times;
@@ -770,7 +929,7 @@ export default function PersonalArtisanProfilePage() {
                       padding: '2px 9px',
                       borderRadius: '12px',
                       fontSize: '0.72rem',
-                      fontWeight: 800,
+                      fontWeight: 500,
                       textTransform: 'uppercase',
                       letterSpacing: '0.06em',
                       marginBottom: '4px',
@@ -783,7 +942,7 @@ export default function PersonalArtisanProfilePage() {
                     style={{
                       margin: '1px 0 2px',
                       fontSize: '1.2rem',
-                      fontWeight: 800,
+                      fontWeight: 500,
                       color: 'var(--ink-brown)',
                     }}
                   >
@@ -791,7 +950,7 @@ export default function PersonalArtisanProfilePage() {
                   </h3>
                   <div style={{ fontSize: '0.84rem', color: '#6E5D52' }}>
                     Artisan ID:{' '}
-                    <strong style={{ color: 'var(--maharani-maroon)', fontWeight: 800 }}>
+                    <strong style={{ color: 'var(--maharani-maroon)', fontWeight: 500 }}>
                       {artisanNo}
                     </strong>
                   </div>
@@ -815,7 +974,7 @@ export default function PersonalArtisanProfilePage() {
                       textTransform: 'uppercase',
                       letterSpacing: '0.08em',
                       color: '#8C7B70',
-                      fontWeight: 800,
+                      fontWeight: 500,
                       marginBottom: '3px',
                     }}
                   >
@@ -824,7 +983,7 @@ export default function PersonalArtisanProfilePage() {
                   <div
                     style={{
                       fontSize: '1.05rem',
-                      fontWeight: 800,
+                      fontWeight: 500,
                       color: 'var(--ink-brown)',
                     }}
                   >
@@ -840,13 +999,13 @@ export default function PersonalArtisanProfilePage() {
                         textTransform: 'uppercase',
                         letterSpacing: '0.08em',
                         color: '#8C7B70',
-                        fontWeight: 800,
+                        fontWeight: 500,
                         marginBottom: '3px',
                       }}
                     >
                       REGIONAL BELONGING
                     </div>
-                    <div style={{ fontSize: '0.94rem', fontWeight: 800, color: 'var(--ink-brown)' }}>
+                    <div style={{ fontSize: '0.94rem', fontWeight: 500, color: 'var(--ink-brown)' }}>
                       {regionalBelonging}
                     </div>
                   </div>
@@ -858,13 +1017,13 @@ export default function PersonalArtisanProfilePage() {
                         textTransform: 'uppercase',
                         letterSpacing: '0.08em',
                         color: '#8C7B70',
-                        fontWeight: 800,
+                        fontWeight: 500,
                         marginBottom: '3px',
                       }}
                     >
                       EXPERIENCE
                     </div>
-                    <div style={{ fontSize: '0.94rem', fontWeight: 800, color: 'var(--maharani-maroon)' }}>
+                    <div style={{ fontSize: '0.94rem', fontWeight: 500, color: 'var(--maharani-maroon)' }}>
                       {experience}
                     </div>
                   </div>
@@ -876,7 +1035,7 @@ export default function PersonalArtisanProfilePage() {
                 <div
                   style={{
                     fontSize: '0.75rem',
-                    fontWeight: 800,
+                    fontWeight: 500,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
                     color: '#5C5043',
@@ -910,6 +1069,8 @@ export default function PersonalArtisanProfilePage() {
           </div>
         </div>
       </div>
+        </>
+      )}
 
       {/* ── Patron Modal Preview ── */}
       <ArtisanProfileModal
