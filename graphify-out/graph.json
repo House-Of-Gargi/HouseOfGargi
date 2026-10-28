@@ -1,9 +1,9 @@
 {
   "meta": {
     "project": "House of Gargi",
-    "generatedAt": "2026-10-24T14:10:50.160Z",
-    "totalNodes": 188,
-    "totalEdges": 226,
+    "generatedAt": "2026-10-28T11:02:51.133Z",
+    "totalNodes": 189,
+    "totalEdges": 229,
     "communityCount": 19
   },
   "metrics": {
@@ -140,7 +140,7 @@
       },
       {
         "name": "Storefront UI Components",
-        "count": 19
+        "count": 20
       },
       {
         "name": "Seller Components",
@@ -1365,16 +1365,17 @@
       "path": "src/app/api/artisan/profile/route.ts",
       "type": "api",
       "community": "API Handlers",
-      "lines": 53,
+      "lines": 98,
       "size": 14,
       "exports": [],
       "imports": [
-        "src/lib/apiProxy.ts"
+        "src/lib/apiProxy.ts",
+        "src/lib/supabaseAdmin.ts"
       ],
       "inDegree": 0,
-      "outDegree": 1,
+      "outDegree": 2,
       "description": "Module route.ts in API Handlers",
-      "degree": 1
+      "degree": 2
     },
     {
       "id": "src/app/api/auth/admin-login/route.ts",
@@ -1940,18 +1941,19 @@
       "path": "src/app/artisan/profile/page.tsx",
       "type": "page",
       "community": "Configuration & Manifests",
-      "lines": 924,
+      "lines": 1085,
       "size": 14,
       "exports": [
         "PersonalArtisanProfilePage"
       ],
       "imports": [
-        "src/components/ArtisanProfileModal.tsx"
+        "src/components/ArtisanProfileModal.tsx",
+        "src/components/ArtisanQuestionnaireDossier.tsx"
       ],
       "inDegree": 0,
-      "outDegree": 1,
+      "outDegree": 2,
       "description": "Route page for profile",
-      "degree": 1
+      "degree": 2
     },
     {
       "id": "src/app/layout.tsx",
@@ -2238,18 +2240,19 @@
       "path": "src/app/seller/profile/page.tsx",
       "type": "page",
       "community": "Artisan / Seller Portal",
-      "lines": 924,
+      "lines": 1085,
       "size": 14,
       "exports": [
         "PersonalArtisanProfilePage"
       ],
       "imports": [
-        "src/components/ArtisanProfileModal.tsx"
+        "src/components/ArtisanProfileModal.tsx",
+        "src/components/ArtisanQuestionnaireDossier.tsx"
       ],
       "inDegree": 0,
-      "outDegree": 1,
+      "outDegree": 2,
       "description": "Route page for profile",
-      "degree": 1
+      "degree": 2
     },
     {
       "id": "src/app/sitemap.ts",
@@ -2539,6 +2542,26 @@
       "inDegree": 2,
       "outDegree": 0,
       "description": "Module ArtisanProfileModal.tsx in Storefront UI Components",
+      "degree": 2
+    },
+    {
+      "id": "src/components/ArtisanQuestionnaireDossier.tsx",
+      "label": "ArtisanQuestionnaireDossier.tsx",
+      "path": "src/components/ArtisanQuestionnaireDossier.tsx",
+      "type": "component",
+      "community": "Storefront UI Components",
+      "lines": 1157,
+      "size": 21,
+      "exports": [
+        "QuestionnaireQuestion",
+        "QUESTIONNAIRE_QUESTIONS",
+        "getAnswerForQuestion",
+        "ArtisanQuestionnaireDossier"
+      ],
+      "imports": [],
+      "inDegree": 2,
+      "outDegree": 0,
+      "description": "Module ArtisanQuestionnaireDossier.tsx in Storefront UI Components",
       "degree": 2
     },
     {
@@ -3461,15 +3484,15 @@
       "type": "lib",
       "community": "Infrastructure & Realtime Mesh",
       "lines": 27,
-      "size": 38.5,
+      "size": 42,
       "exports": [
         "supabaseAdmin"
       ],
       "imports": [],
-      "inDegree": 7,
+      "inDegree": 8,
       "outDegree": 0,
       "description": "Module supabaseAdmin.ts in Infrastructure & Realtime Mesh",
-      "degree": 7
+      "degree": 8
     },
     {
       "id": "src/lib/supabaseClient.ts",
@@ -4167,6 +4190,11 @@
       "type": "imports"
     },
     {
+      "source": "src/app/api/artisan/profile/route.ts",
+      "target": "src/lib/supabaseAdmin.ts",
+      "type": "imports"
+    },
+    {
       "source": "src/app/api/auth/admin-login/route.ts",
       "target": "src/lib/apiProxy.ts",
       "type": "imports"
@@ -4382,6 +4410,11 @@
       "type": "imports"
     },
     {
+      "source": "src/app/artisan/profile/page.tsx",
+      "target": "src/components/ArtisanQuestionnaireDossier.tsx",
+      "type": "imports"
+    },
+    {
       "source": "src/app/layout.tsx",
       "target": "src/context/CurrencyContext.tsx",
       "type": "imports"
@@ -4459,6 +4492,11 @@
     {
       "source": "src/app/seller/profile/page.tsx",
       "target": "src/components/ArtisanProfileModal.tsx",
+      "type": "imports"
+    },
+    {
+      "source": "src/app/seller/profile/page.tsx",
+      "target": "src/components/ArtisanQuestionnaireDossier.tsx",
       "type": "imports"
     },
     {

@@ -1,9 +1,9 @@
 # House of Gargi — Knowledge Graph Architecture Report
 
-**Generated on:** Sat, 24 Oct 2026 14:10:50 GMT  
+**Generated on:** Wed, 28 Oct 2026 11:02:51 GMT  
 **Repository:** `House-Of-Gargi/HouseOfGargi`  
-**Total Entities (Nodes):** 188  
-**Total Relationships (Edges):** 226  
+**Total Entities (Nodes):** 189  
+**Total Relationships (Edges):** 229  
 **Detected Communities:** 19
 
 ---
@@ -14,10 +14,10 @@ House of Gargi is a Next.js 16 (React 19) digital atelier for luxury handcrafted
 
 | Metric | Count | Description |
 | :--- | :--- | :--- |
-| **Total Nodes** | **188** | Source files, components, contexts, routes, and configs |
-| **Total Directed Edges** | **226** | Import, composition, and event dependencies |
+| **Total Nodes** | **189** | Source files, components, contexts, routes, and configs |
+| **Total Directed Edges** | **229** | Import, composition, and event dependencies |
 | **Architectural Communities** | **19** | Functional subsystems |
-| **Average Degree** | **2.40** | Inter-module connectivity density |
+| **Average Degree** | **2.42** | Inter-module connectivity density |
 
 ---
 
@@ -61,7 +61,7 @@ God nodes represent the foundational modules of the application that the majorit
 - **`src/app/artisan/page.tsx`** (19 lines) — *Route page for artisan* [In: 0, Out: 0]
 - **`src/app/artisan/products/new/page.tsx`** (1028 lines) — *Route page for new* [In: 0, Out: 2]
 - **`src/app/artisan/products/page.tsx`** (1982 lines) — *Route page for products* [In: 0, Out: 2]
-- **`src/app/artisan/profile/page.tsx`** (924 lines) — *Route page for profile* [In: 0, Out: 1]
+- **`src/app/artisan/profile/page.tsx`** (1085 lines) — *Route page for profile* [In: 0, Out: 2]
 - **`src/app/layout.tsx`** (169 lines) — *Module layout.tsx in Configuration & Manifests* [In: 0, Out: 5]
 - **`src/app/loading.tsx`** (6 lines) — *Module loading.tsx in Configuration & Manifests* [In: 0, Out: 1]
 - **`src/app/not-found.tsx`** (225 lines) — *Module not-found.tsx in Configuration & Manifests* [In: 0, Out: 0]
@@ -159,7 +159,7 @@ God nodes represent the foundational modules of the application that the majorit
 - **`src/app/api/artisan/apply/route.ts`** (6 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
 - **`src/app/api/artisan/inventory/route.ts`** (10 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
 - **`src/app/api/artisan/me/route.ts`** (34 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
-- **`src/app/api/artisan/profile/route.ts`** (53 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
+- **`src/app/api/artisan/profile/route.ts`** (98 lines) — *Module route.ts in API Handlers* [In: 0, Out: 2]
 - **`src/app/api/auth/admin-login/route.ts`** (117 lines) — *Module route.ts in API Handlers* [In: 0, Out: 2]
 - **`src/app/api/auth/logout/route.ts`** (36 lines) — *Module route.ts in API Handlers* [In: 0, Out: 1]
 - **`src/app/api/auth/role/route.ts`** (53 lines) — *Module route.ts in API Handlers* [In: 0, Out: 2]
@@ -196,7 +196,7 @@ God nodes represent the foundational modules of the application that the majorit
 - **`src/app/seller/page.tsx`** (41 lines) — *Route page for seller* [In: 0, Out: 0]
 - **`src/app/seller/products/new/page.tsx`** (1024 lines) — *Route page for new* [In: 0, Out: 1]
 - **`src/app/seller/products/page.tsx`** (1932 lines) — *Route page for products* [In: 0, Out: 1]
-- **`src/app/seller/profile/page.tsx`** (924 lines) — *Route page for profile* [In: 0, Out: 1]
+- **`src/app/seller/profile/page.tsx`** (1085 lines) — *Route page for profile* [In: 0, Out: 2]
 
 
 ### Super Admin Portal (10 files)
@@ -218,8 +218,9 @@ God nodes represent the foundational modules of the application that the majorit
 - **`src/components/admin/AdminSidebar.tsx`** (457 lines) — *Module AdminSidebar.tsx in Admin Components* [In: 1, Out: 1]
 
 
-### Storefront UI Components (19 files)
+### Storefront UI Components (20 files)
 - **`src/components/ArtisanProfileModal.tsx`** (344 lines) — *Module ArtisanProfileModal.tsx in Storefront UI Components* [In: 2, Out: 0]
+- **`src/components/ArtisanQuestionnaireDossier.tsx`** (1157 lines) — *Module ArtisanQuestionnaireDossier.tsx in Storefront UI Components* [In: 2, Out: 0]
 - **`src/components/AtelierNewsletter.tsx`** (93 lines) — *Module AtelierNewsletter.tsx in Storefront UI Components* [In: 0, Out: 0]
 - **`src/components/CategoryCollectionRail.tsx`** (91 lines) — *Module CategoryCollectionRail.tsx in Storefront UI Components* [In: 1, Out: 3]
 - **`src/components/common/NetworkStatusBanner.tsx`** (104 lines) — *Module NetworkStatusBanner.tsx in Storefront UI Components* [In: 1, Out: 0]
@@ -280,7 +281,7 @@ God nodes represent the foundational modules of the application that the majorit
 - **`src/lib/rbac.ts`** (117 lines) — *Module rbac.ts in Infrastructure & Realtime Mesh* [In: 4, Out: 1]
 - **`src/lib/realtimeSync.ts`** (271 lines) — *Cross-tab WebSocket and BroadcastChannel synchronization mesh* [In: 14, Out: 1]
 - **`src/lib/resend.ts`** (8 lines) — *Resend email client integration for noreply@gargisaha.com* [In: 0, Out: 0]
-- **`src/lib/supabaseAdmin.ts`** (27 lines) — *Module supabaseAdmin.ts in Infrastructure & Realtime Mesh* [In: 7, Out: 0]
+- **`src/lib/supabaseAdmin.ts`** (27 lines) — *Module supabaseAdmin.ts in Infrastructure & Realtime Mesh* [In: 8, Out: 0]
 - **`src/lib/supabaseClient.ts`** (20 lines) — *Supabase client instance for database and auth* [In: 20, Out: 0]
 
 
