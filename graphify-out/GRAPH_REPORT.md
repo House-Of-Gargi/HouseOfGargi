@@ -1,6 +1,6 @@
 # House of Gargi — Knowledge Graph Architecture Report
 
-**Generated on:** Thu, 29 Oct 2026 09:09:12 GMT  
+**Generated on:** Thu, 29 Oct 2026 09:17:25 GMT  
 **Repository:** `House-Of-Gargi/HouseOfGargi`  
 **Total Entities (Nodes):** 189  
 **Total Relationships (Edges):** 229  
