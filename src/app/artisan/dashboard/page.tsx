@@ -141,14 +141,7 @@ export default function ArtisanDashboardPage() {
     } catch {}
     if (typeof window !== 'undefined') {
       localStorage.removeItem('artisan_session');
-      localStorage.removeItem('admin_session');
-      localStorage.removeItem('super_admin_session');
       localStorage.removeItem('auth_session');
-      localStorage.removeItem('gargi_customer_email');
-      localStorage.removeItem('gargi_customer_name');
-      localStorage.removeItem('gargi_customer_id');
-      localStorage.removeItem('gargi_customer_role');
-      localStorage.removeItem('customer_auth_demo');
     }
     window.location.href = '/artisan/login?logout=true';
   };
@@ -242,8 +235,32 @@ export default function ArtisanDashboardPage() {
           </p>
         </div>
 
-        {/* Action Controls: ONLY Sync Data & Sign Out */}
+        {/* Action Controls: Browse Customer Storefront, Sync Data & Sign Out */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
+          <Link
+            href="/"
+            title="Browse Customer Storefront as Patron"
+            style={{
+              background: '#FAF7F2',
+              border: '1.5px solid var(--soft-gold-line)',
+              borderRadius: '4px',
+              padding: '0.6rem 1rem',
+              fontSize: '0.82rem',
+              fontFamily: 'var(--font-nav)',
+              fontWeight: 600,
+              color: 'var(--maharani-maroon)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              textDecoration: 'none',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+              transition: 'all 0.15s ease',
+            }}
+          >
+            <ShoppingBag style={{ width: 14, height: 14 }} />
+            Browse Storefront as Customer
+          </Link>
+
           <button
             type="button"
             onClick={fetchLiveBackendData}

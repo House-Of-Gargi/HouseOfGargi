@@ -33,83 +33,40 @@ export function CustomerAuthProvider({ children }: { children: ReactNode }) {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [redirectAfterLogin, setRedirectAfterLogin] = useState<string | null>(null);
 
-  // Initialize and synchronize session across all 3 portals
+  // Initialize and synchronize session for customer portal
   useEffect(() => {
     try {
       // 1. Check direct customer login
       const storedCustomerEmail = localStorage.getItem('gargi_customer_email');
-      const storedCustomerRole = localStorage.getItem('gargi_customer_role') as AppRole | null;
       const isDemo = localStorage.getItem('customer_auth_demo') === 'true';
 
-      // 2. Check admin / super admin / artisan sessions in localStorage
-      let detectedEmail: string | null = null;
-      let detectedRole: AppRole | null = null;
-      let detectedName: string | null = null;
-      let detectedId: string | null = null;
-
-      const superAdminStored = localStorage.getItem('super_admin_session');
-      if (superAdminStored) {
-        try {
-          const parsed = JSON.parse(superAdminStored);
-          if (parsed.email) {
-            detectedEmail = parsed.email;
-            detectedRole = 'super_admin';
-            detectedName = parsed.name || 'Super Admin';
-          }
-        } catch {}
-      }
-
-      if (!detectedEmail) {
-        const adminStored = localStorage.getItem('admin_session');
-        if (adminStored) {
-          try {
-            const parsed = JSON.parse(adminStored);
-            if (parsed.email) {
-              detectedEmail = parsed.email;
-              detectedRole = (parsed.role as AppRole) || 'admin';
-              detectedName = parsed.name || 'Administrator';
-            }
-          } catch {}
-        }
-      }
-
-      if (!detectedEmail) {
+      if (storedCustomerEmail) {
+        const storedName = localStorage.getItem('gargi_customer_name') || 'Valued Patron';
+        const storedId = localStorage.getItem('gargi_customer_id') || undefined;
+        setCustomer({ email: storedCustomerEmail, name: storedName, id: storedId, role: 'patron' });
+        setRole('patron');
+        setIsLoggedIn(true);
+      } else {
+        // 2. If no direct customer session exists, check if an artisan is logged in.
+        // Artisans can browse the customer portal as a customer without overlapping or mutating their artisan profile.
         const artisanStored = localStorage.getItem('artisan_session');
         if (artisanStored) {
           try {
             const parsed = JSON.parse(artisanStored);
             if (parsed.email) {
-              detectedEmail = parsed.email;
-              detectedRole = 'artisan';
-              detectedName = parsed.name || 'Master Artisan';
+              setCustomer({ email: parsed.email, name: parsed.name || 'Master Artisan', role: 'patron' });
+              setRole('patron');
+              setIsLoggedIn(true);
             }
           } catch {}
+        } else if (isDemo) {
+          const demoEmail = 'patron@gargisaha.com';
+          localStorage.setItem('gargi_customer_email', demoEmail);
+          localStorage.setItem('gargi_customer_role', 'patron');
+          setCustomer({ email: demoEmail, name: 'Valued Patron', role: 'patron' });
+          setRole('patron');
+          setIsLoggedIn(true);
         }
-      }
-
-      if (detectedEmail && detectedRole) {
-        setCustomer({ email: detectedEmail, name: detectedName || 'Team Member', role: detectedRole });
-        setRole(detectedRole);
-        setIsLoggedIn(true);
-      } else if (storedCustomerEmail) {
-        const storedName = localStorage.getItem('gargi_customer_name') || 'Valued Patron';
-        const storedId = localStorage.getItem('gargi_customer_id') || undefined;
-        setCustomer({ email: storedCustomerEmail, name: storedName, id: storedId, role: storedCustomerRole || 'patron' });
-        setRole(storedCustomerRole || 'patron');
-        setIsLoggedIn(true);
-
-        getUserRole(storedCustomerEmail).then((r) => {
-          setRole(r);
-          localStorage.setItem('gargi_customer_role', r);
-          setCustomer((prev) => (prev ? { ...prev, role: r } : null));
-        });
-      } else if (isDemo) {
-        const demoEmail = 'patron@gargisaha.com';
-        localStorage.setItem('gargi_customer_email', demoEmail);
-        localStorage.setItem('gargi_customer_role', 'patron');
-        setCustomer({ email: demoEmail, name: 'Valued Patron', role: 'patron' });
-        setRole('patron');
-        setIsLoggedIn(true);
       }
 
       // Check active Supabase Auth session
@@ -118,15 +75,13 @@ export function CustomerAuthProvider({ children }: { children: ReactNode }) {
           const userEmail = session.user.email.toLowerCase().trim();
           const userName = session.user.user_metadata?.name || session.user.user_metadata?.full_name || 'Valued Patron';
           
-          getUserRole(userEmail).then((resolvedRole) => {
-            setRole(resolvedRole);
-            setCustomer({ email: userEmail, name: userName, id: session.user.id, role: resolvedRole });
-            setIsLoggedIn(true);
-            localStorage.setItem('gargi_customer_email', userEmail);
-            localStorage.setItem('gargi_customer_name', userName);
-            localStorage.setItem('gargi_customer_id', session.user.id);
-            localStorage.setItem('gargi_customer_role', resolvedRole);
-          });
+          setRole('patron');
+          setCustomer({ email: userEmail, name: userName, id: session.user.id, role: 'patron' });
+          setIsLoggedIn(true);
+          localStorage.setItem('gargi_customer_email', userEmail);
+          localStorage.setItem('gargi_customer_name', userName);
+          localStorage.setItem('gargi_customer_id', session.user.id);
+          localStorage.setItem('gargi_customer_role', 'patron');
         }
       });
 
@@ -135,15 +90,13 @@ export function CustomerAuthProvider({ children }: { children: ReactNode }) {
         if (event === 'SIGNED_IN' && session?.user?.email) {
           const userEmail = session.user.email.toLowerCase().trim();
           const userName = session.user.user_metadata?.name || 'Valued Patron';
-          getUserRole(userEmail).then((resolvedRole) => {
-            setRole(resolvedRole);
-            setCustomer({ email: userEmail, name: userName, id: session.user.id, role: resolvedRole });
-            setIsLoggedIn(true);
-            localStorage.setItem('gargi_customer_email', userEmail);
-            localStorage.setItem('gargi_customer_name', userName);
-            localStorage.setItem('gargi_customer_id', session.user.id);
-            localStorage.setItem('gargi_customer_role', resolvedRole);
-          });
+          setRole('patron');
+          setCustomer({ email: userEmail, name: userName, id: session.user.id, role: 'patron' });
+          setIsLoggedIn(true);
+          localStorage.setItem('gargi_customer_email', userEmail);
+          localStorage.setItem('gargi_customer_name', userName);
+          localStorage.setItem('gargi_customer_id', session.user.id);
+          localStorage.setItem('gargi_customer_role', 'patron');
         } else if (event === 'SIGNED_OUT') {
           localStorage.removeItem('gargi_customer_email');
           localStorage.removeItem('gargi_customer_name');
@@ -168,16 +121,18 @@ export function CustomerAuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const unsubscribe = subscribeToPortalSync((message) => {
       if (message.type === 'AUTH_CHANGED') {
-        const { action, email, name, id, role: syncRole } = message.payload || {};
-        if (action === 'login' && email) {
-          const activeRole = syncRole || 'patron';
-          setCustomer({ email, name: name || 'Valued Patron', id, role: activeRole });
-          setRole(activeRole);
-          setIsLoggedIn(true);
-        } else if (action === 'logout') {
-          setCustomer(null);
-          setRole(null);
-          setIsLoggedIn(false);
+        const { action, email, name, id, portal: syncPortal } = message.payload || {};
+        // Only react to customer portal actions so artisan or admin sessions are never disturbed
+        if (syncPortal === 'customer' || !syncPortal) {
+          if (action === 'login' && email) {
+            setCustomer({ email, name: name || 'Valued Patron', id, role: 'patron' });
+            setRole('patron');
+            setIsLoggedIn(true);
+          } else if (action === 'logout') {
+            setCustomer(null);
+            setRole(null);
+            setIsLoggedIn(false);
+          }
         }
       }
     });
@@ -204,23 +159,14 @@ export function CustomerAuthProvider({ children }: { children: ReactNode }) {
     if (id) localStorage.setItem('gargi_customer_id', id);
     localStorage.setItem('customer_auth_demo', 'true');
 
-    if (explicitRole) {
-      localStorage.setItem('gargi_customer_role', explicitRole);
-      setRole(explicitRole);
-      setCustomer({ email: cleanEmail, name, id, role: explicitRole });
-      setIsLoggedIn(true);
-      closeLoginModal();
-      broadcastPortalSync('AUTH_CHANGED', { action: 'login', email: cleanEmail, name, id, role: explicitRole }, cleanEmail);
-    } else {
-      getUserRole(cleanEmail).then((resRole) => {
-        localStorage.setItem('gargi_customer_role', resRole);
-        setRole(resRole);
-        setCustomer({ email: cleanEmail, name, id, role: resRole });
-        setIsLoggedIn(true);
-        closeLoginModal();
-        broadcastPortalSync('AUTH_CHANGED', { action: 'login', email: cleanEmail, name, id, role: resRole }, cleanEmail);
-      });
-    }
+    // Customer portal login is strictly as a patron/customer
+    const customerRole: AppRole = 'patron';
+    localStorage.setItem('gargi_customer_role', customerRole);
+    setRole(customerRole);
+    setCustomer({ email: cleanEmail, name, id, role: customerRole });
+    setIsLoggedIn(true);
+    closeLoginModal();
+    broadcastPortalSync('AUTH_CHANGED', { action: 'login', email: cleanEmail, name, id, role: customerRole, portal: 'customer' }, cleanEmail);
   };
 
   const logout = async () => {
@@ -228,21 +174,18 @@ export function CustomerAuthProvider({ children }: { children: ReactNode }) {
       const currentEmail = customer?.email;
       await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
 
+      // Strictly clear customer storage. NEVER delete artisan_session or admin_session!
       localStorage.removeItem('gargi_customer_email');
       localStorage.removeItem('gargi_customer_name');
       localStorage.removeItem('gargi_customer_id');
       localStorage.removeItem('gargi_customer_role');
       localStorage.removeItem('customer_auth_demo');
-      localStorage.removeItem('artisan_session');
-      localStorage.removeItem('admin_session');
-      localStorage.removeItem('super_admin_session');
-      localStorage.removeItem('auth_session');
 
       setCustomer(null);
       setRole(null);
       setIsLoggedIn(false);
 
-      broadcastPortalSync('AUTH_CHANGED', { action: 'logout' }, currentEmail);
+      broadcastPortalSync('AUTH_CHANGED', { action: 'logout', portal: 'customer' }, currentEmail);
 
       await supabase.auth.signOut().catch(() => {});
     } catch (e) {

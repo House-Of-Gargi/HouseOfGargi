@@ -42,6 +42,19 @@ export default function Navbar() {
   const { itemCount } = useCart();
   const { wishlistCount } = useWishlist();
   const { isLoggedIn, role, openLoginModal, logout } = useCustomerAuth();
+  const [hasArtisanSession, setHasArtisanSession] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const art = localStorage.getItem('artisan_session');
+        if (art) {
+          const parsed = JSON.parse(art);
+          if (parsed.email) setHasArtisanSession(true);
+        }
+      } catch {}
+    }
+  }, [isLoggedIn]);
 
   // Reset loading category on route change
   useEffect(() => {
@@ -322,32 +335,24 @@ export default function Navbar() {
                   >
                     Login
                   </button>
-                  <Link 
-                    href="/artisan/login" 
-                    className="navbar__join-pill-btn navbar__join-pill-btn--desktop-only"
-                    aria-label="Join Us - Artisan Portal"
-                  >
-                    Join Us
-                  </Link>
-                </>
-              ) : role === 'artisan' ? (
-                <>
-                  <Link 
-                    href="/artisan/dashboard" 
-                    className="navbar__login-pill-btn navbar__login-pill-btn--desktop-only"
-                    aria-label="Artisan Portal"
-                  >
-                    Artisan Portal
-                  </Link>
-                  <button 
-                    type="button" 
-                    className="navbar__signout-icon-btn navbar__signout-icon-btn--desktop-only"
-                    onClick={logout}
-                    aria-label="Sign Out"
-                    title="Sign Out"
-                  >
-                    <LogOut size={18} />
-                  </button>
+
+                  {hasArtisanSession ? (
+                    <Link 
+                      href="/artisan/dashboard" 
+                      className="navbar__join-pill-btn navbar__join-pill-btn--desktop-only"
+                      aria-label="Artisan Portal"
+                    >
+                      Artisan Atelier &rarr;
+                    </Link>
+                  ) : (
+                    <Link 
+                      href="/artisan/login" 
+                      className="navbar__join-pill-btn navbar__join-pill-btn--desktop-only"
+                      aria-label="Join Us - Artisan Portal"
+                    >
+                      Join Us
+                    </Link>
+                  )}
                 </>
               ) : role === 'super_admin' ? (
                 <>
@@ -358,6 +363,32 @@ export default function Navbar() {
                   >
                     SA Portal
                   </Link>
+                  <button 
+                    type="button" 
+                    className="navbar__wishlist-pill-btn navbar__wishlist-pill-btn--desktop-only"
+                    onClick={() => router.push('/wishlist')}
+                    aria-label="Wishlist"
+                    title="Wishlist"
+                  >
+                    <WishlistIcon size={18} />
+                    <span>Wishlist</span>
+                    {mounted && wishlistCount > 0 && (
+                      <span className="navbar__badge">{wishlistCount}</span>
+                    )}
+                  </button>
+                  <button 
+                    type="button" 
+                    className="navbar__icon-btn"
+                    aria-label="Cart" 
+                    title="Cart" 
+                    onClick={() => router.push('/cart')}
+                    style={{ position: 'relative' }}
+                  >
+                    <CartIcon size={23} />
+                    {mounted && itemCount > 0 && (
+                      <span className="navbar__badge">{itemCount}</span>
+                    )}
+                  </button>
                   <button 
                     type="button" 
                     className="navbar__signout-icon-btn navbar__signout-icon-btn--desktop-only"
@@ -379,6 +410,32 @@ export default function Navbar() {
                   </Link>
                   <button 
                     type="button" 
+                    className="navbar__wishlist-pill-btn navbar__wishlist-pill-btn--desktop-only"
+                    onClick={() => router.push('/wishlist')}
+                    aria-label="Wishlist"
+                    title="Wishlist"
+                  >
+                    <WishlistIcon size={18} />
+                    <span>Wishlist</span>
+                    {mounted && wishlistCount > 0 && (
+                      <span className="navbar__badge">{wishlistCount}</span>
+                    )}
+                  </button>
+                  <button 
+                    type="button" 
+                    className="navbar__icon-btn"
+                    aria-label="Cart" 
+                    title="Cart" 
+                    onClick={() => router.push('/cart')}
+                    style={{ position: 'relative' }}
+                  >
+                    <CartIcon size={23} />
+                    {mounted && itemCount > 0 && (
+                      <span className="navbar__badge">{itemCount}</span>
+                    )}
+                  </button>
+                  <button 
+                    type="button" 
                     className="navbar__signout-icon-btn navbar__signout-icon-btn--desktop-only"
                     onClick={logout}
                     aria-label="Sign Out"
@@ -389,6 +446,7 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
+                  {/* Customer browsing navigation (artisans can browse freely as customer) */}
                   <button 
                     type="button" 
                     className="navbar__wishlist-pill-btn navbar__wishlist-pill-btn--desktop-only"
@@ -423,6 +481,18 @@ export default function Navbar() {
                       <span className="navbar__badge">{itemCount}</span>
                     )}
                   </button>
+
+                  {(hasArtisanSession || role === 'artisan') && (
+                    <Link 
+                      href="/artisan/dashboard" 
+                      className="navbar__join-pill-btn navbar__join-pill-btn--desktop-only"
+                      aria-label="Artisan Portal"
+                      title="Return to your Artisan Atelier Dashboard"
+                    >
+                      Artisan Atelier &rarr;
+                    </Link>
+                  )}
+
                   <button 
                     type="button" 
                     className="navbar__signout-icon-btn navbar__signout-icon-btn--desktop-only"

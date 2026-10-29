@@ -123,13 +123,6 @@ export function SellerSidebar({
       if (typeof window !== 'undefined') {
         localStorage.removeItem('artisan_session');
         localStorage.removeItem('auth_session');
-        localStorage.removeItem('admin_session');
-        localStorage.removeItem('super_admin_session');
-        localStorage.removeItem('gargi_customer_email');
-        localStorage.removeItem('gargi_customer_name');
-        localStorage.removeItem('gargi_customer_id');
-        localStorage.removeItem('gargi_customer_role');
-        localStorage.removeItem('customer_auth_demo');
       }
       window.location.href = '/artisan/login?logout=true';
     } catch {
