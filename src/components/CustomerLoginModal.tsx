@@ -82,7 +82,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
       const res = await fetch('/api/auth/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: cleanEmail }),
+        body: JSON.stringify({ email: cleanEmail, portal: 'customer' }),
       });
 
       const data = await res.json();
@@ -114,7 +114,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
       const res = await fetch('/api/auth/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: cleanEmail }),
+        body: JSON.stringify({ email: cleanEmail, portal: 'customer' }),
       });
 
       const data = await res.json();
@@ -150,7 +150,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
 
     // Fast bypass for demo code if typed
     if (cleanOtp === '123456' || cleanEmail === 'patron@gargisaha.com') {
-      login(cleanEmail, 'Customer');
+      login(cleanEmail, 'Customer', undefined, 'patron');
       handleClose();
       if (redirectAfterLogin) {
         router.push(redirectAfterLogin);
@@ -169,6 +169,7 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
           token: verificationToken,
           verificationToken,
           expiresAt,
+          portal: 'customer',
         }),
       });
 
@@ -179,7 +180,8 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
       }
 
       const userName = data.user?.name || cleanEmail.split('@')[0] || 'Customer';
-      login(cleanEmail, userName, data.user?.id, data.user?.role);
+      // Customer portal login always establishes a patron profile without overlapping artisan/admin
+      login(cleanEmail, userName, data.user?.id, 'patron');
       handleClose();
       if (redirectAfterLogin) router.push(redirectAfterLogin);
     } catch (err: any) {
