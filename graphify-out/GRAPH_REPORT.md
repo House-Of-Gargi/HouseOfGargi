@@ -1,6 +1,6 @@
 # House of Gargi — Knowledge Graph Architecture Report
 
-**Generated on:** Wed, 28 Oct 2026 11:02:51 GMT  
+**Generated on:** Thu, 29 Oct 2026 09:09:12 GMT  
 **Repository:** `House-Of-Gargi/HouseOfGargi`  
 **Total Entities (Nodes):** 189  
 **Total Relationships (Edges):** 229  
@@ -51,7 +51,7 @@ God nodes represent the foundational modules of the application that the majorit
 - **`package.json`** (37 lines) — *Module package.json in Configuration & Manifests* [In: 0, Out: 0]
 - **`src/app/artisan/analytics/page.tsx`** (394 lines) — *Route page for analytics* [In: 0, Out: 0]
 - **`src/app/artisan/apply/page.tsx`** (1429 lines) — *Route page for apply* [In: 0, Out: 0]
-- **`src/app/artisan/dashboard/page.tsx`** (1079 lines) — *Route page for dashboard* [In: 0, Out: 2]
+- **`src/app/artisan/dashboard/page.tsx`** (1096 lines) — *Route page for dashboard* [In: 0, Out: 2]
 - **`src/app/artisan/earnings/page.tsx`** (278 lines) — *Route page for earnings* [In: 0, Out: 1]
 - **`src/app/artisan/inventory/page.tsx`** (314 lines) — *Route page for inventory* [In: 0, Out: 1]
 - **`src/app/artisan/layout.tsx`** (156 lines) — *Module layout.tsx in Configuration & Manifests* [In: 0, Out: 4]
@@ -215,7 +215,7 @@ God nodes represent the foundational modules of the application that the majorit
 ### Admin Components (3 files)
 - **`src/components/admin/AdminLoadingSpinner.tsx`** (101 lines) — *Module AdminLoadingSpinner.tsx in Admin Components* [In: 13, Out: 0]
 - **`src/components/admin/AdminShell.tsx`** (85 lines) — *Module AdminShell.tsx in Admin Components* [In: 1, Out: 1]
-- **`src/components/admin/AdminSidebar.tsx`** (457 lines) — *Module AdminSidebar.tsx in Admin Components* [In: 1, Out: 1]
+- **`src/components/admin/AdminSidebar.tsx`** (451 lines) — *Module AdminSidebar.tsx in Admin Components* [In: 1, Out: 1]
 
 
 ### Storefront UI Components (20 files)
@@ -227,11 +227,11 @@ God nodes represent the foundational modules of the application that the majorit
 - **`src/components/common/PortalLoadingScreen.tsx`** (70 lines) — *Module PortalLoadingScreen.tsx in Storefront UI Components* [In: 9, Out: 0]
 - **`src/components/common/UnauthorizedSessionScreen.tsx`** (242 lines) — *Module UnauthorizedSessionScreen.tsx in Storefront UI Components* [In: 4, Out: 1]
 - **`src/components/CustomDropdown.tsx`** (212 lines) — *Module CustomDropdown.tsx in Storefront UI Components* [In: 9, Out: 0]
-- **`src/components/CustomerLoginModal.tsx`** (337 lines) — *Module CustomerLoginModal.tsx in Storefront UI Components* [In: 1, Out: 1]
+- **`src/components/CustomerLoginModal.tsx`** (339 lines) — *Module CustomerLoginModal.tsx in Storefront UI Components* [In: 1, Out: 1]
 - **`src/components/Footer.tsx`** (151 lines) — *Module Footer.tsx in Storefront UI Components* [In: 1, Out: 0]
 - **`src/components/HeroBanner.tsx`** (244 lines) — *Interactive 3-concept hero carousel with responsive WebP picture sources* [In: 1, Out: 0]
 - **`src/components/Icons.tsx`** (209 lines) — *Module Icons.tsx in Storefront UI Components* [In: 7, Out: 0]
-- **`src/components/Navbar.tsx`** (729 lines) — *Module Navbar.tsx in Storefront UI Components* [In: 1, Out: 7]
+- **`src/components/Navbar.tsx`** (799 lines) — *Module Navbar.tsx in Storefront UI Components* [In: 1, Out: 7]
 - **`src/components/ProductCard.tsx`** (141 lines) — *Module ProductCard.tsx in Storefront UI Components* [In: 7, Out: 7]
 - **`src/components/ScrollReveal.tsx`** (48 lines) — *Module ScrollReveal.tsx in Storefront UI Components* [In: 12, Out: 0]
 - **`src/components/SearchDropdown.tsx`** (331 lines) — *Module SearchDropdown.tsx in Storefront UI Components* [In: 2, Out: 3]
@@ -243,18 +243,18 @@ God nodes represent the foundational modules of the application that the majorit
 
 ### Seller Components (2 files)
 - **`src/components/seller/SellerShell.tsx`** (132 lines) — *Module SellerShell.tsx in Seller Components* [In: 2, Out: 1]
-- **`src/components/seller/SellerSidebar.tsx`** (447 lines) — *Module SellerSidebar.tsx in Seller Components* [In: 1, Out: 1]
+- **`src/components/seller/SellerSidebar.tsx`** (440 lines) — *Module SellerSidebar.tsx in Seller Components* [In: 1, Out: 1]
 
 
 ### Super Admin Components (2 files)
 - **`src/components/super-admin/SuperAdminShell.tsx`** (55 lines) — *Executive layout shell with zero-header permanent luxury side nav rail* [In: 1, Out: 1]
-- **`src/components/super-admin/SuperAdminSidebar.tsx`** (415 lines) — *Hover-collapsible 72px to 264px floating luxury side navigation rail* [In: 1, Out: 1]
+- **`src/components/super-admin/SuperAdminSidebar.tsx`** (409 lines) — *Hover-collapsible 72px to 264px floating luxury side navigation rail* [In: 1, Out: 1]
 
 
 ### State & Context Providers (5 files)
 - **`src/context/CartContext.tsx`** (231 lines) — *Email-keyed shopping bag with real-time cross-tab sync* [In: 6, Out: 4]
 - **`src/context/CurrencyContext.tsx`** (154 lines) — *Module CurrencyContext.tsx in State & Context Providers* [In: 5, Out: 0]
-- **`src/context/CustomerAuthContext.tsx`** (278 lines) — *Strict Email OTP customer authentication and multi-tab session state* [In: 11, Out: 3]
+- **`src/context/CustomerAuthContext.tsx`** (221 lines) — *Strict Email OTP customer authentication and multi-tab session state* [In: 11, Out: 3]
 - **`src/context/PageTransitionContext.tsx`** (125 lines) — *Module PageTransitionContext.tsx in State & Context Providers* [In: 2, Out: 3]
 - **`src/context/WishlistContext.tsx`** (170 lines) — *Email-keyed wishlist state with real-time cross-tab sync* [In: 6, Out: 4]
 

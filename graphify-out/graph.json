@@ -1,7 +1,7 @@
 {
   "meta": {
     "project": "House of Gargi",
-    "generatedAt": "2026-10-28T11:02:51.133Z",
+    "generatedAt": "2026-10-29T09:09:11.998Z",
     "totalNodes": 189,
     "totalEdges": 229,
     "communityCount": 19
@@ -1747,7 +1747,7 @@
       "path": "src/app/artisan/dashboard/page.tsx",
       "type": "page",
       "community": "Configuration & Manifests",
-      "lines": 1079,
+      "lines": 1096,
       "size": 14,
       "exports": [
         "ArtisanDashboardPage"
@@ -2511,7 +2511,7 @@
       "path": "src/components/admin/AdminSidebar.tsx",
       "type": "component",
       "community": "Admin Components",
-      "lines": 457,
+      "lines": 451,
       "size": 17.5,
       "exports": [
         "AdminSidebarProps",
@@ -2680,7 +2680,7 @@
       "path": "src/components/CustomerLoginModal.tsx",
       "type": "component",
       "community": "Storefront UI Components",
-      "lines": 337,
+      "lines": 339,
       "size": 17.5,
       "exports": [
         "CustomerLoginModal"
@@ -2774,7 +2774,7 @@
       "path": "src/components/Navbar.tsx",
       "type": "component",
       "community": "Storefront UI Components",
-      "lines": 729,
+      "lines": 799,
       "size": 17.5,
       "exports": [
         "Navbar"
@@ -2889,7 +2889,7 @@
       "path": "src/components/seller/SellerSidebar.tsx",
       "type": "component",
       "community": "Seller Components",
-      "lines": 447,
+      "lines": 440,
       "size": 17.5,
       "exports": [
         "SellerSidebarProps",
@@ -2997,7 +2997,7 @@
       "path": "src/components/super-admin/SuperAdminSidebar.tsx",
       "type": "component",
       "community": "Super Admin Components",
-      "lines": 415,
+      "lines": 409,
       "size": 17.5,
       "exports": [
         "SuperAdminSidebarProps",
@@ -3063,7 +3063,7 @@
       "path": "src/context/CustomerAuthContext.tsx",
       "type": "context",
       "community": "State & Context Providers",
-      "lines": 278,
+      "lines": 221,
       "size": 52,
       "exports": [
         "Customer",
