@@ -13,7 +13,7 @@ A digital commerce platform and atelier management system for luxury handcrafted
    - Multi-Currency Commerce Engine
    - Bespoke Commissions and Concierge Pipeline
    - Customer Portal (Patron Suite)
-   - Seller Atelier Management Portal
+   - Artisan Portal
    - Provenance, Certifications, and Trust
 3. Infrastructure and Technical Architecture
    - Technology Stack
@@ -33,7 +33,7 @@ A digital commerce platform and atelier management system for luxury handcrafted
 
 House of Gargi is an enterprise-grade digital flagship combining two integrated environments:
 - Storefront Atelier: A customer-facing digital salon designed for high-net-worth connoisseurs seeking pure silk handloom sarees (Banarasi, Kanchipuram, Paithani, Chanderi, Tussar), bridal lehengas, hand-embroidered kurta ensembles, and antique temple jewellery.
-- Seller Atelier Portal: A dedicated vendor administration interface for artisan clusters and atelier managers to oversee product catalogs, monitor inventory levels, track order fulfillment, and inspect revenue analytics.
+- Artisan Portal: A dedicated vendor administration interface for artisan clusters and atelier managers to oversee product catalogs, monitor inventory levels, track order fulfillment, and inspect revenue analytics.
 
 The application is built on Next.js 16 (App Router) using React 19, TypeScript, Vanilla CSS design tokens, and Supabase for cloud persistence and authentication.
 
@@ -78,8 +78,8 @@ Located at `/account`, authenticated patrons receive:
 - White-glove logistics documentation and shipping policies.
 - Clean session management backed by phone-based OTP verification.
 
-### Seller Atelier Management Portal
-Located at `/seller`, the merchant interface provides:
+### Artisan Portal
+Located at `/seller` (and `/artisan`), the merchant interface provides:
 - Catalog Management: Create, edit, and audit product inventory, fabric compositions, and pricing.
 - Image Asset Ingestion: Cloud asset synchronization with Supabase storage.
 - Order Fulfillment: Real-time order dispatch statuses (Pending, Packed, Shipped, Delivered).
