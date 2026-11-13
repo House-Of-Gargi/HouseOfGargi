@@ -14,7 +14,8 @@ import {
   CheckCircle2,
   FileText,
   ArrowRight,
-  BookOpen
+  BookOpen,
+  AlertCircle
 } from 'lucide-react';
 import ArtisanProfileModal from '@/components/ArtisanProfileModal';
 import ArtisanQuestionnaireDossier from '@/components/ArtisanQuestionnaireDossier';
@@ -23,6 +24,7 @@ export default function PersonalArtisanProfilePage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState('');
+  const [saveError, setSaveError] = useState('');
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'public_profile' | 'questionnaire'>('public_profile');
   const [application, setApplication] = useState<any>(null);
@@ -137,11 +139,22 @@ export default function PersonalArtisanProfilePage() {
     e.preventDefault();
     setSaving(true);
     setSaveSuccess('');
+    setSaveError('');
 
     try {
+      let activeEmail = 'team.anga9@gmail.com';
+      try {
+        const sess = localStorage.getItem('artisan_session') || localStorage.getItem('auth_session');
+        if (sess) {
+          const parsed = JSON.parse(sess);
+          if (parsed.email) activeEmail = parsed.email;
+        }
+      } catch {}
+
       const payload = {
         id,
         artisanNo,
+        email: activeEmail,
         name: name.trim(),
         artStyle: artStyle.trim(),
         role: artStyle.trim(),
@@ -164,7 +177,7 @@ export default function PersonalArtisanProfilePage() {
       if (data.success) {
         setSaveSuccess('Artisan profile updated and published 100% live on customer portal!');
         
-        // Update local session if needed so top bar/sidebar relects new name
+        // Update local sessions so top bar/sidebar immediately reflects new name
         try {
           const sess = localStorage.getItem('artisan_session');
           if (sess) {
@@ -172,13 +185,19 @@ export default function PersonalArtisanProfilePage() {
             parsed.name = name.trim();
             localStorage.setItem('artisan_session', JSON.stringify(parsed));
           }
+          const authSess = localStorage.getItem('auth_session');
+          if (authSess) {
+            const parsedAuth = JSON.parse(authSess);
+            parsedAuth.name = name.trim();
+            localStorage.setItem('auth_session', JSON.stringify(parsedAuth));
+          }
         } catch {}
       } else {
-        setSaveSuccess('Failed to update: ' + (data.message || 'Unknown error'));
+        setSaveError('Failed to update: ' + (data.message || 'Unknown error'));
       }
     } catch (err: any) {
       console.error('Error saving artisan profile:', err);
-      setSaveSuccess('Error saving profile. Please try again.');
+      setSaveError('Error saving profile. Please check connection and try again.');
     } finally {
       setSaving(false);
     }
@@ -434,25 +453,46 @@ export default function PersonalArtisanProfilePage() {
           </div>
 
           {saveSuccess && (
-        <div
-          style={{
-            backgroundColor: '#E8F5E9',
-            border: '1px solid #A5D6A7',
-            color: '#1B5E20',
-            padding: '1rem 1.25rem',
-            borderRadius: '8px',
-            marginBottom: '1.75rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.65rem',
-            fontWeight: 500,
-            fontSize: '0.94rem',
-          }}
-        >
-          <CheckCircle2 size={20} color="#2E7D32" />
-          <span>{saveSuccess}</span>
-        </div>
-      )}
+            <div
+              style={{
+                backgroundColor: '#E8F5E9',
+                border: '1px solid #A5D6A7',
+                color: '#1B5E20',
+                padding: '1rem 1.25rem',
+                borderRadius: '8px',
+                marginBottom: '1.75rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.65rem',
+                fontWeight: 500,
+                fontSize: '0.94rem',
+              }}
+            >
+              <CheckCircle2 size={20} color="#2E7D32" />
+              <span>{saveSuccess}</span>
+            </div>
+          )}
+
+          {saveError && (
+            <div
+              style={{
+                backgroundColor: '#FEF2F2',
+                border: '1px solid #FECDD3',
+                color: '#991B1B',
+                padding: '1rem 1.25rem',
+                borderRadius: '8px',
+                marginBottom: '1.75rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.65rem',
+                fontWeight: 500,
+                fontSize: '0.94rem',
+              }}
+            >
+              <AlertCircle size={20} color="#DC2626" />
+              <span>{saveError}</span>
+            </div>
+          )}
 
       {/* ── Two-Column Layout: Form on Left, Live Customer Portal Preview on Right ── */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(460px, 1fr))', gap: '2rem', alignItems: 'start' }}>
