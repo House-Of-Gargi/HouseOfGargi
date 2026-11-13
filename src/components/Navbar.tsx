@@ -342,7 +342,7 @@ export default function Navbar() {
                       className="navbar__join-pill-btn navbar__join-pill-btn--desktop-only"
                       aria-label="Artisan Portal"
                     >
-                      Artisan Atelier &rarr;
+                      Artisan Portal &rarr;
                     </Link>
                   ) : (
                     <Link 
@@ -487,9 +487,9 @@ export default function Navbar() {
                       href="/artisan/dashboard" 
                       className="navbar__join-pill-btn navbar__join-pill-btn--desktop-only"
                       aria-label="Artisan Portal"
-                      title="Return to your Artisan Atelier Dashboard"
+                      title="Return to your Artisan Portal"
                     >
-                      Artisan Atelier &rarr;
+                      Artisan Portal &rarr;
                     </Link>
                   )}
 
