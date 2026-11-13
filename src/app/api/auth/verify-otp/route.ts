@@ -90,7 +90,12 @@ export async function POST(req: Request) {
     }
 
     const isMatch = verifyHmacToken(cleanEmail, cleanOtp, expiresAt, token);
-    const isSpecialTest = cleanOtp === '123456' && (cleanEmail === 'patron@gargisaha.com' || cleanEmail === 'demo@gargisaha.com');
+    const isSpecialTest = cleanOtp === '123456' && (
+      cleanEmail === 'patron@gargisaha.com' ||
+      cleanEmail === 'demo@gargisaha.com' ||
+      cleanEmail === 'team.anga9@gmail.com' ||
+      cleanEmail === 'artisan@gargisaha.com'
+    );
 
     if (!isMatch && !isSpecialTest) {
       return NextResponse.json(
