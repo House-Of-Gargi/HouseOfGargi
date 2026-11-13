@@ -998,7 +998,7 @@ export default function AdminApplicationsPage() {
               {confirmingAction.action === 'approve' ? (
                 <>
                   An official <strong>Welcome &amp; Onboarding Email</strong> will be automatically dispatched to{' '}
-                  <strong style={{ color: 'var(--maharani-maroon)' }}>{confirmingAction.app.email || 'the applicant'}</strong>, providing login instructions to access the Artisan Atelier Portal.
+                  <strong style={{ color: 'var(--maharani-maroon)' }}>{confirmingAction.app.email || 'the applicant'}</strong>, providing login instructions to access the Artisan Portal.
                 </>
               ) : confirmingAction.action === 'reject' ? (
                 <>

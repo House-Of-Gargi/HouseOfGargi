@@ -196,7 +196,7 @@ export default function ProductQCApprovalsPage() {
           </h3>
           <p style={{ margin: '0 0 1.25rem', fontSize: '0.95rem', color: '#5C5043' }}>
             {activeTab === 'pending'
-              ? 'The QC queue is clear. When artisans upload new creations via their atelier portal, they will appear here for quality review.'
+              ? 'The QC queue is clear. When artisans upload new creations via the Artisan Portal, they will appear here for quality review.'
               : 'All catalog items have been reviewed.'}
           </p>
           <Link

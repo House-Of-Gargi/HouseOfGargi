@@ -612,7 +612,7 @@ export default function VerifiedArtisansPage() {
                     No Products Registered Yet
                   </h4>
                   <p style={{ margin: 0, fontSize: '0.92rem', color: '#6A5A50', maxWidth: '420px', marginLeft: 'auto', marginRight: 'auto' }}>
-                    No products have been listed under {selectedArtisanForProducts.name} ({selectedArtisanForProducts.artisanNo}). Products submitted via the Artisan Atelier Portal will automatically populate here.
+                    No products have been listed under {selectedArtisanForProducts.name} ({selectedArtisanForProducts.artisanNo}). Products submitted via the Artisan Portal will automatically populate here.
                   </p>
                 </div>
               ) : (
