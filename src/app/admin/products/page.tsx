@@ -1609,7 +1609,7 @@ export default function ProductApprovalsPage() {
 
             <p style={{ fontSize: '0.94rem', color: '#4A3E36', lineHeight: 1.55, margin: '0 0 1.5rem 0' }}>
               Are you sure you want to permanently delete <strong>{deleteConfirmProduct.name}</strong>?
-              This will remove the creation completely from the <strong>Admin Catalog</strong>, the <strong>Artisan Atelier</strong>, and the <strong>customer storefront</strong>. This cannot be undone.
+              This will remove the creation completely from the <strong>Admin Catalog</strong>, the <strong>Artisan Portal</strong>, and the <strong>customer storefront</strong>. This cannot be undone.
             </p>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
