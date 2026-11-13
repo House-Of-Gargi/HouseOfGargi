@@ -45,30 +45,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // 1. Try local Fastify backend first (if running on port 5000)
-    try {
-      const localBackendRes = await fetch('http://localhost:5000/api/v1/auth/otp/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: cleanEmail,
-          otp: cleanOtp,
-          token,
-          expiresAt,
-          portal,
-        }),
-        cache: 'no-store',
-      });
-
-      if (localBackendRes.ok) {
-        const localData = await localBackendRes.json();
-        return NextResponse.json(localData, { status: localBackendRes.status });
-      }
-    } catch {
-      // Local backend is offline. Verify directly.
-    }
-
-    // 2. Direct HMAC Verification & Replay Protection
+    // 1. Direct HMAC Verification & Replay Protection
     const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
 
     // Check if token already used

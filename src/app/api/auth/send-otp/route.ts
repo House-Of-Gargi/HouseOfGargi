@@ -33,24 +33,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // 1. Try local Fastify backend first (if running on port 5000)
-    try {
-      const localBackendRes = await fetch('http://localhost:5000/api/v1/auth/otp/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: cleanEmail, portal }),
-        cache: 'no-store',
-      });
-
-      if (localBackendRes.ok) {
-        const localData = await localBackendRes.json();
-        return NextResponse.json(localData, { status: localBackendRes.status });
-      }
-    } catch {
-      // Local backend is offline. We dispatch directly to avoid old cloud deployment overrides.
-    }
-
-    // 2. Direct Resend Dispatch (Strictly Customer or Artisan Template Only)
+    // 1. Direct Resend Dispatch (Strictly Customer or Artisan Template Only)
     // There is NO administrative template in this system.
     const otp = crypto.randomInt(100000, 1000000).toString();
     const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes

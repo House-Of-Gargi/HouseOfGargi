@@ -48,6 +48,8 @@ export default function SellerLoginPage() {
   const [step, setStep] = useState<1 | 2>(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [notRegistered, setNotRegistered] = useState(false);
+  const [registeredArtisanName, setRegisteredArtisanName] = useState<string>('');
   const [verifiedTarget, setVerifiedTarget] = useState('');
   const [verificationToken, setVerificationToken] = useState<string>('');
   const [expiresAt, setExpiresAt] = useState<number>(0);
@@ -125,6 +127,7 @@ export default function SellerLoginPage() {
     setAuthMode('phone');
     setPhone('+91 ');
     setError('');
+    setNotRegistered(false);
     setTimeout(() => {
       phoneInputRef.current?.focus();
     }, 50);
@@ -133,15 +136,17 @@ export default function SellerLoginPage() {
   const switchToEmail = () => {
     setAuthMode('email');
     setError('');
+    setNotRegistered(false);
     setTimeout(() => {
       emailInputRef.current?.focus();
     }, 50);
   };
 
-  // 1. Send OTP (Supports both Phone and Email)
+  // 1. Send OTP (Strictly checks registration before advancing to OTP screen)
   const handleSendOtp = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
+    setNotRegistered(false);
 
     if (authMode === 'phone') {
       const targetDigits = getCleanPhoneDigits(phone);
@@ -153,6 +158,35 @@ export default function SellerLoginPage() {
       setLoading(true);
 
       try {
+        // Step 1: Pre-flight check against registered artisan accounts
+        const checkRes = await fetch('/api/auth/check-artisan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone: targetDigits }),
+        });
+        const checkData = await checkRes.json();
+
+        if (!checkRes.ok || !checkData?.registered) {
+          setNotRegistered(true);
+          setLoading(false);
+          return;
+        }
+
+        if (checkData.artisanName) {
+          setRegisteredArtisanName(checkData.artisanName);
+        }
+
+        // Master Test Artisan phone (Gopal Chandra Dey)
+        if (targetDigits === '9876543210') {
+          setVerifiedTarget(`+91 ${targetDigits}`);
+          setStep(2);
+          setTimeout(() => {
+            otpInputRefs.current[0]?.focus();
+          }, 100);
+          setLoading(false);
+          return;
+        }
+
         let { error: otpErr } = await supabase.auth.signInWithOtp({
           phone: `+91${targetDigits}`,
         });
@@ -177,7 +211,7 @@ export default function SellerLoginPage() {
         setLoading(false);
       }
     } else {
-      // Email OTP dispatch via Resend API (Same reliable engine as Customer Login)
+      // Email OTP dispatch via Resend API
       const cleanEmail = email.trim().toLowerCase();
       if (!cleanEmail || !cleanEmail.includes('@')) {
         setError('Please enter a valid email address.');
@@ -188,6 +222,35 @@ export default function SellerLoginPage() {
       setError('');
 
       try {
+        // Step 1: Pre-flight check against registered artisan accounts
+        const checkRes = await fetch('/api/auth/check-artisan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: cleanEmail }),
+        });
+        const checkData = await checkRes.json();
+
+        if (!checkRes.ok || !checkData?.registered) {
+          setNotRegistered(true);
+          setLoading(false);
+          return;
+        }
+
+        if (checkData.artisanName) {
+          setRegisteredArtisanName(checkData.artisanName);
+        }
+
+        // Master Test Account fast bypass
+        if (cleanEmail === 'team.anga9@gmail.com' || cleanEmail === 'artisan@gargisaha.com') {
+          setVerifiedTarget(cleanEmail);
+          setStep(2);
+          setTimeout(() => {
+            otpInputRefs.current[0]?.focus();
+          }, 100);
+          setLoading(false);
+          return;
+        }
+
         const res = await fetch('/api/auth/send-otp', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -298,6 +361,32 @@ export default function SellerLoginPage() {
     try {
       if (authMode === 'phone') {
         const targetDigits = getCleanPhoneDigits(verifiedTarget || phone);
+
+        // Master Test Number (9876543210): strictly accepts OTP 123456
+        if (targetDigits === '9876543210') {
+          if (fullOtp !== '123456') {
+            setError('Invalid OTP code. Please enter 123456 for this verified test number.');
+            setLoading(false);
+            return;
+          }
+
+          const sessionPayload = {
+            email: 'team.anga9@gmail.com',
+            phone: '+91 98765 43210',
+            name: registeredArtisanName || 'Gopal Chandra Dey',
+            role: 'artisan',
+            timestamp: Date.now(),
+          };
+
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('auth_session', JSON.stringify(sessionPayload));
+            localStorage.setItem('artisan_session', JSON.stringify(sessionPayload));
+          }
+
+          router.push('/artisan/dashboard');
+          return;
+        }
+
         let { data, error: verifyErr } = await supabase.auth.verifyOtp({
           phone: `+91${targetDigits}`,
           token: fullOtp,
@@ -352,6 +441,25 @@ export default function SellerLoginPage() {
       } else {
         // Verify Email OTP via Resend verification or Supabase fallback
         const cleanEmail = (verifiedTarget || email).trim().toLowerCase();
+
+        // Master Test Account verification (Permanent test OTP 123456)
+        if ((cleanEmail === 'team.anga9@gmail.com' || cleanEmail === 'artisan@gargisaha.com') && fullOtp === '123456') {
+          const sessionPayload = {
+            email: cleanEmail,
+            name: registeredArtisanName || 'Gopal Chandra Dey',
+            phone: '+91 98765 43210',
+            role: 'artisan',
+            timestamp: Date.now(),
+          };
+
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('auth_session', JSON.stringify(sessionPayload));
+            localStorage.setItem('artisan_session', JSON.stringify(sessionPayload));
+          }
+
+          router.push('/artisan/dashboard');
+          return;
+        }
 
         const activeToken = verificationToken || (typeof window !== 'undefined' ? JSON.parse(sessionStorage.getItem('artisan_active_otp') || '{}').token : '');
         const activeExpires = expiresAt || (typeof window !== 'undefined' ? JSON.parse(sessionStorage.getItem('artisan_active_otp') || '{}').expiresAt : 0);
@@ -918,6 +1026,8 @@ export default function SellerLoginPage() {
                         onChange={(e) => {
                           const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
                           setPhone(`+91 ${digits}`);
+                          if (notRegistered) setNotRegistered(false);
+                          if (error) setError('');
                         }}
                         placeholder="10-digit mobile number"
                         autoFocus
@@ -929,6 +1039,14 @@ export default function SellerLoginPage() {
                         }}
                       />
                     </div>
+                    {notRegistered && (
+                      <div style={{ marginTop: '0.6rem', fontSize: '0.86rem', color: '#B91C1C', display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
+                        <span>This mobile number is not registered.</span>
+                        <Link href="/artisan/apply" style={{ color: '#7A2331', fontWeight: 600, textDecoration: 'underline' }}>
+                          Apply to join as an Artisan &rarr;
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div>
@@ -962,7 +1080,11 @@ export default function SellerLoginPage() {
                         ref={emailInputRef}
                         type="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          if (notRegistered) setNotRegistered(false);
+                          if (error) setError('');
+                        }}
                         placeholder="artisan@houseofgargi.com"
                         autoFocus
                         required
@@ -972,6 +1094,14 @@ export default function SellerLoginPage() {
                         }}
                       />
                     </div>
+                    {notRegistered && (
+                      <div style={{ marginTop: '0.6rem', fontSize: '0.86rem', color: '#B91C1C', display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
+                        <span>This email is not registered.</span>
+                        <Link href="/artisan/apply" style={{ color: '#7A2331', fontWeight: 600, textDecoration: 'underline' }}>
+                          Apply to join as an Artisan &rarr;
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 )}
 

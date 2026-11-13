@@ -133,11 +133,11 @@ export async function POST(req: Request) {
           .eq('user_email', rawEmail)
           .maybeSingle();
 
-        if (roleData && (roleData.role === 'artisan' || roleData.role === 'admin' || roleData.role === 'super_admin')) {
+        if (roleData && roleData.role === 'artisan') {
           return NextResponse.json({
             registered: true,
             email: rawEmail,
-            role: roleData.role,
+            role: 'artisan',
           });
         }
       } catch {}
