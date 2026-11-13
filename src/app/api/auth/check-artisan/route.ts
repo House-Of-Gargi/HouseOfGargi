@@ -56,6 +56,25 @@ export async function POST(req: Request) {
         });
       }
 
+      // Check local registered artisan applications file
+      try {
+        const matchedLocal = (localApplications as any[]).find(app => {
+          const appPhone = extractPhoneDigits(app.phone || '');
+          return appPhone === cleanDigits;
+        });
+
+        if (matchedLocal) {
+          return NextResponse.json({
+            registered: true,
+            isMasterArtisan: matchedLocal.email === 'team.anga9@gmail.com',
+            artisanName: matchedLocal.name,
+            email: matchedLocal.email,
+            applicationNumber: matchedLocal.applicationId || matchedLocal.applicationNumber,
+            phone: matchedLocal.phone,
+          });
+        }
+      } catch {}
+
       // Query Supabase artisan_applications
       try {
         const { data: matchedApp, error } = await supabaseAdmin
@@ -129,6 +148,23 @@ export async function POST(req: Request) {
           applicationNumber: 'HG-ART-260501',
         });
       }
+
+      // Check local registered artisan applications file
+      try {
+        const matchedLocal = (localApplications as any[]).find(app => {
+          return (app.email || '').toLowerCase().trim() === rawEmail;
+        });
+
+        if (matchedLocal) {
+          return NextResponse.json({
+            registered: true,
+            isMasterArtisan: matchedLocal.email === 'team.anga9@gmail.com',
+            artisanName: matchedLocal.name,
+            email: matchedLocal.email,
+            applicationNumber: matchedLocal.applicationId || matchedLocal.applicationNumber,
+          });
+        }
+      } catch {}
 
       // Query Supabase user_roles for artisan privilege
       try {

@@ -114,13 +114,14 @@ export default function SellerLoginPage() {
     checkCurrentSession();
   }, [router]);
 
-  // Extract raw 10 digits
+  // Extract raw 10 digits entered by user (stripping any +91 country prefix)
   const getCleanPhoneDigits = (raw: string) => {
-    const numbersOnly = raw.replace(/\D/g, '');
-    if (numbersOnly.length === 10) return numbersOnly;
-    if (numbersOnly.length >= 12 && numbersOnly.startsWith('91')) return numbersOnly.slice(2, 12);
-    if (numbersOnly.length > 10) return numbersOnly.slice(-10);
-    return numbersOnly;
+    const withoutPrefix = raw.replace(/^\+91\s*/, '').trim();
+    let digits = withoutPrefix.replace(/\D/g, '');
+    if (digits.startsWith('91') && digits.length > 10) {
+      digits = digits.slice(2);
+    }
+    return digits.slice(0, 10);
   };
 
   const switchToPhone = () => {
@@ -150,7 +151,7 @@ export default function SellerLoginPage() {
 
     if (authMode === 'phone') {
       const targetDigits = getCleanPhoneDigits(phone);
-      if (targetDigits.length < 10) {
+      if (targetDigits.length !== 10) {
         setError('Please enter your 10-digit mobile number.');
         return;
       }
@@ -570,7 +571,7 @@ export default function SellerLoginPage() {
 
   const phoneDigits = getCleanPhoneDigits(phone);
   const isSendButtonDisabled = authMode === 'phone' 
-    ? phoneDigits.length < 10 || loading 
+    ? phoneDigits.length !== 10 || loading 
     : !email.trim() || !email.includes('@') || loading;
 
   return (
@@ -1024,7 +1025,11 @@ export default function SellerLoginPage() {
                         type="tel"
                         value={phone.replace(/^\+91\s*/, '')}
                         onChange={(e) => {
-                          const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+                          let val = e.target.value.replace(/^\+91\s*/, '').replace(/\D/g, '');
+                          if (val.startsWith('91') && val.length > 10) {
+                            val = val.slice(2);
+                          }
+                          const digits = val.slice(0, 10);
                           setPhone(`+91 ${digits}`);
                           if (notRegistered) setNotRegistered(false);
                           if (error) setError('');
@@ -1154,7 +1159,7 @@ export default function SellerLoginPage() {
                 >
                   {loading ? (
                     <>
-                      <Loader2 style={{ width: 16, height: 16, animation: 'spin 1s linear infinite' }} />
+                      <Loader2 className="animate-spin" style={{ width: 16, height: 16 }} />
                       Sending OTP...
                     </>
                   ) : (
@@ -1247,7 +1252,7 @@ export default function SellerLoginPage() {
                 >
                   {loading ? (
                     <>
-                      <Loader2 style={{ width: 16, height: 16, animation: 'spin 1s linear infinite' }} />
+                      <Loader2 className="animate-spin" style={{ width: 16, height: 16 }} />
                       Verifying...
                     </>
                   ) : (
