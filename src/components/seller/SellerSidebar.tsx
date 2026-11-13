@@ -275,7 +275,7 @@ export function SellerSidebar({
               boxShadow: '0 2px 8px rgba(122, 35, 49, 0.22)',
               flexShrink: 0,
             }}
-            title="House of Gargi — Artisan Atelier"
+            title="House of Gargi — Artisan Portal"
           >
             <img
               src="/logo-images/small-logo.png"
@@ -301,7 +301,7 @@ export function SellerSidebar({
                 }}
               />
               <div style={{ fontSize: '0.62rem', letterSpacing: '0.08em', color: 'var(--stone-taupe)', textTransform: 'uppercase', fontWeight: 500, fontFamily: 'var(--font-nav)' }}>
-                Artisan Atelier
+                Artisan Portal
               </div>
             </div>
           )}
@@ -396,7 +396,7 @@ export function SellerSidebar({
               }}
             >
               <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, color: 'var(--maharani-maroon)', fontSize: '0.95rem' }}>
-                ARTISAN ATELIER
+                ARTISAN PORTAL
               </span>
               <button onClick={onMobileClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-brown)' }}>
                 <X style={{ width: 20, height: 20 }} />

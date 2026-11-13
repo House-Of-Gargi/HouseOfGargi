@@ -134,13 +134,13 @@ export default function ArtisanLayout({ children }: { children: ReactNode }) {
   }
 
   if (checking) {
-    return <PortalLoadingScreen portalName="Artisan Atelier" theme="light" message="Authorizing Artisan Atelier session..." />;
+    return <PortalLoadingScreen portalName="Artisan Portal" theme="light" message="Authorizing Artisan Portal session..." />;
   }
 
   if (!authorized) {
     return (
       <UnauthorizedSessionScreen
-        portalTitle="Artisan Atelier Portal"
+        portalTitle="Artisan Portal"
         loginPath="/artisan/login"
         currentEmail={currentEmail || undefined}
       />
