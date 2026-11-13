@@ -14,7 +14,8 @@ import {
   CheckCircle2,
   FileText,
   ArrowRight,
-  BookOpen
+  BookOpen,
+  AlertCircle
 } from 'lucide-react';
 import ArtisanProfileModal from '@/components/ArtisanProfileModal';
 import ArtisanQuestionnaireDossier from '@/components/ArtisanQuestionnaireDossier';
@@ -23,6 +24,7 @@ export default function PersonalArtisanProfilePage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState('');
+  const [saveError, setSaveError] = useState('');
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'public_profile' | 'questionnaire'>('public_profile');
   const [application, setApplication] = useState<any>(null);

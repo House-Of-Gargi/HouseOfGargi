@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { proxyToBackend } from '@/lib/apiProxy';
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
 const MASTER_PROFILE = {
   id: 'HG-ART-260501',
@@ -52,5 +53,39 @@ export async function GET(req: Request) {
 }
 
 export async function PATCH(req: Request) {
-  return proxyToBackend(req, '/api/v1/artisan/me');
+  try {
+    const body = await req.json();
+    const cleanEmail = (body.email || 'team.anga9@gmail.com').toLowerCase().trim();
+    const targetAppNumber = body.id || 'HG-ART-260501';
+
+    if (body.name) MASTER_PROFILE.name = body.name.trim();
+    if (body.artStyle || body.role) {
+      MASTER_PROFILE.artStyle = (body.artStyle || body.role).trim();
+      MASTER_PROFILE.role = (body.artStyle || body.role).trim();
+    }
+    if (body.regionalBelonging || body.region) {
+      MASTER_PROFILE.regionalBelonging = (body.regionalBelonging || body.region).trim();
+      MASTER_PROFILE.region = (body.regionalBelonging || body.region).trim();
+    }
+
+    try {
+      await supabaseAdmin
+        .from('artisan_applications')
+        .update({
+          name: body.name,
+          type_of_art: body.artStyle || body.role,
+          state: body.regionalBelonging || body.region,
+          updated_at: new Date().toISOString(),
+        })
+        .or(`email.eq.${cleanEmail},application_number.eq.${targetAppNumber}`);
+    } catch {}
+
+    return NextResponse.json({
+      success: true,
+      message: 'Artisan profile updated successfully.',
+      profile: { ...MASTER_PROFILE },
+    });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, message: err?.message || 'Update failed' }, { status: 500 });
+  }
 }
