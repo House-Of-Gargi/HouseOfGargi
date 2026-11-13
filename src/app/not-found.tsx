@@ -195,7 +195,7 @@ export default function NotFound() {
             }}
           >
             <Store style={{ width: 16, height: 16, color: '#7A2331' }} />
-            <span>Artisan Atelier Portal</span>
+            <span>Artisan Portal</span>
           </Link>
 
           {/* 3. Admin Console */}
