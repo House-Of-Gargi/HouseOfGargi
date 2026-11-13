@@ -2,7 +2,7 @@
 
 import { useState, FormEvent, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Mail, RefreshCw, X } from 'lucide-react';
+import { Mail, RefreshCw, X, Loader2 } from 'lucide-react';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
 
 interface CustomerLoginModalProps {
@@ -277,8 +277,16 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
               type="submit" 
               className="customer-modal-btn" 
               disabled={loading || !email.includes('@')}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
             >
-              {loading ? 'Sending Code...' : 'Send Code'}
+              {loading ? (
+                <>
+                  <Loader2 size={16} className="animate-spin" />
+                  Sending Code...
+                </>
+              ) : (
+                'Send Code'
+              )}
             </button>
           </form>
         ) : (
@@ -327,8 +335,16 @@ export default function CustomerLoginModal({ isOpen: propsIsOpen, onClose: props
               type="submit" 
               className="customer-modal-btn" 
               disabled={loading || otp.length < 6}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
             >
-              {loading ? 'Verifying...' : 'Verify & Sign In'}
+              {loading ? (
+                <>
+                  <Loader2 size={16} className="animate-spin" />
+                  Verifying...
+                </>
+              ) : (
+                'Verify & Sign In'
+              )}
             </button>
           </form>
         )}

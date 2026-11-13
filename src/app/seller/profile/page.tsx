@@ -187,7 +187,7 @@ export default function PersonalArtisanProfilePage() {
   if (loading) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '50vh', gap: '1rem' }}>
-        <Loader2 style={{ width: 36, height: 36, animation: 'spin 1s linear infinite', color: 'var(--maharani-maroon)' }} />
+        <Loader2 className="animate-spin" style={{ width: 36, height: 36, color: 'var(--maharani-maroon)' }} />
         <span style={{ fontSize: '0.95rem', color: 'var(--ink-brown)', fontWeight: 600 }}>Loading Master Artisan Profile...</span>
       </div>
     );
@@ -794,7 +794,7 @@ export default function PersonalArtisanProfilePage() {
             >
               {saving ? (
                 <>
-                  <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} />
+                  <Loader2 size={16} className="animate-spin" />
                   <span>Publishing Changes...</span>
                 </>
               ) : (

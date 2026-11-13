@@ -1348,7 +1348,7 @@ export default function ArtisanApplyPage() {
                 >
                   {loading ? (
                     <>
-                      <Loader2 style={{ width: 18, height: 18, animation: 'spin 1s linear infinite' }} />
+                      <Loader2 className="animate-spin" style={{ width: 18, height: 18 }} />
                       Submitting Application...
                     </>
                   ) : (
