@@ -1,6 +1,23 @@
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes gargiSpin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.animate-spin,
+svg.animate-spin,
+[class*="animate-spin"],
+.spin-loader {
+  animation: spin 1s linear infinite !important;
+  transform-origin: center center;
 }
 
 /* ═══════════════════════════════════════════════════════════════

@@ -7,6 +7,23 @@
    Typography: Cormorant Garamond (display), Marcellus (nav/caps), Lato (body/numbers)
    ========================================================================== */
 
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin,
+svg.animate-spin,
+[class*="animate-spin"],
+.spin-loader {
+  animation: spin 1s linear infinite !important;
+  transform-origin: center center;
+}
+
 :root {
   --ivory-silk: #FBF6EE;
   --warm-sand: #F2E8D8;

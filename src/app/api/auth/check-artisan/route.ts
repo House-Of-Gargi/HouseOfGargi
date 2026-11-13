@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import localApplications from '@/data/artisan_applications.json';
 
 // Primary Master Artisan partner seeds
 const MASTER_ARTISAN_PHONES = new Set([
@@ -14,11 +15,15 @@ const MASTER_ARTISAN_EMAILS = new Set([
 ]);
 
 function extractPhoneDigits(raw: string): string {
-  const digits = raw.replace(/\D/g, '');
-  if (digits.length === 10) return digits;
-  if (digits.length >= 12 && digits.startsWith('91')) return digits.slice(2, 12);
-  if (digits.length > 10) return digits.slice(-10);
-  return digits;
+  let cleaned = raw.trim();
+  if (cleaned.startsWith('+91')) {
+    cleaned = cleaned.slice(3).trim();
+  }
+  let digits = cleaned.replace(/\D/g, '');
+  if (digits.startsWith('91') && digits.length > 10) {
+    digits = digits.slice(2);
+  }
+  return digits.slice(0, 10);
 }
 
 export async function POST(req: Request) {
