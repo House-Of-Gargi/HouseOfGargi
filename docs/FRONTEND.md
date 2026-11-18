@@ -14,8 +14,8 @@ What makes the Anita Dongre site feel premium, and what we're borrowing:
 - **Quiet luxury typography** — a characterful serif for headlines paired with a clean, light-weight sans for body copy, so the page stays legible and "bright" rather than ornate.
 - **Simple, shallow navigation** — a handful of clear top-level links, large clickable category tiles, generous image-led category entry points.
 
-### 1.2 Structure Inspiration — Novica (Navigation & Category Logic)
-What we're borrowing from Novica's UX, adapted to a much smaller catalog:
+### 1.2 Structure & Category Logic (Curated Luxury Provenance)
+UX architecture adapted for a focused, high-craft catalog:
 - **Top nav = Categories**, each with a dedicated landing page (hero banner + short story blurb + product grid) rather than a generic "Shop" dump.
 - **Category landing page anatomy:** banner image → 1-2 line craft/region story → filter/sort bar → product grid → "explore more" cross-links to other categories.
 - **Lightweight filtering** (by fabric, occasion, price, color) sitting on the left or top of the grid — even with only 5–8 products per category, 2–3 filters keep it feeling like a "real" store.
@@ -23,7 +23,7 @@ What we're borrowing from Novica's UX, adapted to a much smaller catalog:
 - **Trust & origin storytelling** embedded directly in product listings (who made it, what technique, what region) — this becomes our "artisan note" on each product card/detail page.
 
 ### 1.3 Synthesis for House of Gargi
-Bright/airy Anita-Dongre visual language + Novica's clear category-first navigation, applied to a deliberately small, curated catalog (3–4 categories × 5–8 products). The smallness is a feature: every category page should feel like a curated boutique rack, not an empty warehouse aisle — achieved through generous imagery, storytelling blocks, and confident whitespace rather than dense grids.
+Bright/airy Anita-Dongre visual language + clear category-first navigation, applied to a deliberately small, curated catalog (3–4 categories × 5–8 products). The smallness is a feature: every category page should feel like a curated boutique rack, not an empty warehouse aisle — achieved through generous imagery, storytelling blocks, and confident whitespace rather than dense grids.
 
 ---
 
@@ -126,7 +126,7 @@ A bright, premium palette inspired by Indian textile traditions (Banarasi gold, 
 
 ---
 
-## 7. Site Structure & Navigation (Novica-inspired, simplified)
+## 7. Site Structure & Navigation (Curated Heritage Model)
 
 ```
 Logo (left) | Sarees | Lehengas | Kurta Sets | Accessories | (search icon) | Wishlist | Cart
@@ -164,10 +164,10 @@ Logo (left) | Sarees | Lehengas | Kurta Sets | Accessories | (search icon) | Wis
    - Split layout: artisan image (Asset 6.2 or 6.12) on one side, short brand story copy on the other ("About House of Gargi" — 2-3 short paragraphs + "Read our story" link to About page).
 
 5. **Featured Products**
-   - A curated row of 4–6 best pieces pulled across categories, each card with image, name, price, and a one-line "artisan note" (Novica-style provenance line, e.g. "Hand block-printed in Jaipur").
+   - A curated row of 4–6 best pieces pulled across categories, each card with image, name, price, and a one-line "artisan note" (provenance line, e.g. "Hand block-printed in Jaipur").
 
 6. **Craftsmanship / Why House of Gargi**
-   - Banner image (6.12) + 2–3 trust points (handmade guarantee, ethical sourcing, limited-edition pieces) styled like Novica's "impact" messaging but luxury-toned.
+   - Banner image (6.12) + 2–3 trust points (handmade guarantee, ethical sourcing, limited-edition pieces) with refined luxury impact messaging.
 
 7. **Newsletter / Closing CTA**
    - Simple email capture on a maroon or sand background block with gold diya divider, "Join the House of Gargi family."
@@ -177,7 +177,7 @@ Logo (left) | Sarees | Lehengas | Kurta Sets | Accessories | (search icon) | Wis
 
 ---
 
-## 9. Category Page Plan (Novica-style)
+## 9. Category Page Plan (Curated Boutique Grid)
 
 1. Banner image specific to category (reuse tile asset, larger crop) + 1-line story ("Sarees, handwoven across the looms of Banaras and Kanchipuram.")
 2. Thin filter/sort bar: Fabric | Occasion | Price | Sort by (New/Price) — even with 5–8 products, this preserves the "real store" feel.

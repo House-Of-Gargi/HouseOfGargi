@@ -1172,13 +1172,13 @@ export default function ArtisanApplyPage() {
                 }}>
                   <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
                     <strong style={{ display: 'block', fontSize: '0.96rem', color: '#7A2331' }}>
-                      HOUSE OF GARGI &amp; NOVICA COMPULSORY CHILD LABOR AGREEMENT
+                      HOUSE OF GARGI COMPULSORY CHILD LABOR AGREEMENT
                     </strong>
                     <span style={{ fontSize: '0.8rem', color: '#8C7B70' }}>FOR ARTISANS AND SUPPLIERS</span>
                   </div>
 
                   <p>
-                    <strong>Commitment:</strong> House of Gargi &amp; NOVICA&apos;s commitment to the respect and promotion of human rights is an essential part of its business practices and mission. The Child Labor Agreement is based on the rights set forth in the UN Convention of the Rights of the Child and in the conventions of the International Labor Organization.
+                    <strong>Commitment:</strong> House of Gargi&apos;s commitment to the respect and promotion of human rights is an essential part of its business practices and mission. The Child Labor Agreement is based on the rights set forth in the UN Convention of the Rights of the Child and in the conventions of the International Labor Organization.
                   </p>
                   <p>
                     All artisans and suppliers are required to sign this Agreement as an indication of their commitment to comply with the regulations herein established.
@@ -1202,7 +1202,7 @@ export default function ArtisanApplyPage() {
                     II. Readiness for Workplace Inspection:
                   </p>
                   <p>
-                    In order to enforce its No Child Labor policy and reassure both customers and the public that no children are exploited, House of Gargi &amp; NOVICA requires all artisans to consent to periodic inspections of their workshops or homes by authorized representatives and independent human rights monitors. Advance notice will not always be provided prior to inspection to preserve the integrity of the process.
+                    In order to enforce its No Child Labor policy and reassure both customers and the public that no children are exploited, House of Gargi requires all artisans to consent to periodic inspections of their workshops or homes by authorized representatives and independent human rights monitors. Advance notice will not always be provided prior to inspection to preserve the integrity of the process.
                   </p>
                 </div>
 
@@ -1237,7 +1237,7 @@ export default function ArtisanApplyPage() {
                     />
                     <div>
                       <strong style={{ display: 'block', fontSize: '0.92rem', color: '#241A15', lineHeight: 1.45 }}>
-                        1. I hereby agree to abide by the House of Gargi &amp; NOVICA Child Labor Agreement.
+                        1. I hereby agree to abide by the House of Gargi Child Labor Agreement.
                       </strong>
                       <span style={{ display: 'block', fontSize: '0.84rem', color: '#6E5D53', fontStyle: 'italic', marginTop: '0.25rem', lineHeight: 1.4 }}>
                                   ।
