@@ -869,15 +869,17 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   left: 0;
   bottom: 0;
   width: 320px;
-  max-width: 85vw;
+  max-width: 88vw;
   background: var(--ivory-silk);
   z-index: 200;
   display: flex;
   flex-direction: column;
-  padding: 24px;
+  padding: 20px 16px;
+  box-sizing: border-box;
   transform: translateX(-100%);
   transition: transform 300ms ease;
   box-shadow: 8px 0 24px rgba(0,0,0,0.1);
+  overflow-y: auto;
 }
 .mobile-drawer--open {
   transform: translateX(0);
@@ -886,7 +888,7 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 .mobile-drawer__logo {
   display: flex;
@@ -899,8 +901,8 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   border: none;
   color: var(--ink-brown);
   padding: 4px;
-  min-width: 40px;
-  min-height: 40px;
+  min-width: 38px;
+  min-height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -911,26 +913,28 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 /* Auth Buttons in Drawer: Button Style with Black Font */
 .mobile-drawer__auth-actions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 22px;
-  padding-bottom: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
   border-bottom: 1px solid rgba(184, 142, 24, 0.3);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .mobile-drawer__auth-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 42px;
-  padding: 0 12px;
+  height: 38px;
+  padding: 0 8px;
   background: transparent;
   border: 1.5px solid #231812;
   border-radius: 6px;
   font-family: var(--font-nav);
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #1A1512 !important; /* Black font only */
   text-decoration: none;
@@ -939,6 +943,11 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   line-height: 1;
   text-align: center;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
 }
 
 .mobile-drawer__auth-btn:hover,
@@ -960,6 +969,10 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
 .mobile-drawer__auth-btn--signout:active {
   background: var(--maharani-maroon) !important;
   color: #FFFFFF !important;
+}
+
+.mobile-drawer__auth-btn--full {
+  grid-column: 1 / -1;
 }
 
 .mobile-drawer__links {
@@ -4966,12 +4979,6 @@ h3 { font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.3; }
   display: none !important;
 }
 
-@media (max-width: 900px) {
-  .navbar__mobile-cart-btn {
-    display: inline-flex !important;
-  }
-}
-
 /* Sticky Floating Artisan Portal Button in Bottom Right Corner */
 .floating-artisan-portal-btn {
   position: fixed;
@@ -8346,8 +8353,23 @@ h2.royal-header-title.royal-header-title--curated,
   }
 
   .navbar__wishlist-pill-btn,
-  .navbar__wishlist-pill-btn--desktop-only {
+  .navbar__wishlist-pill-btn--desktop-only,
+  .navbar__profile-icon-btn,
+  .navbar__profile-icon-btn--desktop-only,
+  .navbar__icon-btn,
+  .navbar__icon-btn--desktop-only,
+  .navbar__signout-icon-btn,
+  .navbar__signout-icon-btn--desktop-only,
+  .navbar__mobile-cart-btn {
     display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    position: absolute !important;
+    pointer-events: none !important;
   }
 
   /* 2. Second Nav Bar: Categories Horizontally Scrollable & Spacious Separation */

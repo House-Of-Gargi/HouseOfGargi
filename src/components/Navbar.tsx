@@ -422,7 +422,7 @@ export default function Navbar() {
                   </button>
                   <button 
                     type="button" 
-                    className="navbar__icon-btn"
+                    className="navbar__icon-btn navbar__icon-btn--desktop-only"
                     aria-label="Cart" 
                     title="Cart" 
                     onClick={() => router.push('/cart')}
@@ -467,7 +467,7 @@ export default function Navbar() {
                   </button>
                   <button 
                     type="button" 
-                    className="navbar__icon-btn"
+                    className="navbar__icon-btn navbar__icon-btn--desktop-only"
                     aria-label="Cart" 
                     title="Cart" 
                     onClick={() => router.push('/cart')}
@@ -526,19 +526,6 @@ export default function Navbar() {
                     onClick={handleUserClick}
                   >
                     <UserIcon size={21} />
-                  </button>
-                  <button 
-                    type="button" 
-                    className="navbar__icon-btn navbar__mobile-cart-btn"
-                    aria-label="Cart" 
-                    title="Cart" 
-                    onClick={() => router.push('/cart')}
-                    style={{ position: 'relative' }}
-                  >
-                    <CartIcon size={23} />
-                    {mounted && itemCount > 0 && (
-                      <span className="navbar__badge">{itemCount}</span>
-                    )}
                   </button>
                 </>
               )}
@@ -726,7 +713,7 @@ export default function Navbar() {
                 Join Us
               </Link>
             </>
-          ) : role === 'artisan' ? (
+          ) : role === 'artisan' || hasArtisanSession ? (
             <>
               <Link 
                 href="/artisan/dashboard" 
@@ -737,10 +724,31 @@ export default function Navbar() {
               </Link>
               <button 
                 type="button" 
-                className="mobile-drawer__auth-btn mobile-drawer__auth-btn--signout" 
+                className="mobile-drawer__auth-btn" 
+                onClick={() => { setMobileOpen(false); handleUserClick(); }}
+              >
+                Account
+              </button>
+              <button 
+                type="button" 
+                className="mobile-drawer__auth-btn" 
+                onClick={() => { setMobileOpen(false); router.push('/cart'); }}
+              >
+                Cart {mounted && itemCount > 0 ? `(${itemCount})` : ''}
+              </button>
+              <button 
+                type="button" 
+                className="mobile-drawer__auth-btn" 
+                onClick={() => { setMobileOpen(false); router.push('/wishlist'); }}
+              >
+                Wishlist {mounted && wishlistCount > 0 ? `(${wishlistCount})` : ''}
+              </button>
+              <button 
+                type="button" 
+                className="mobile-drawer__auth-btn mobile-drawer__auth-btn--signout mobile-drawer__auth-btn--full" 
                 onClick={async () => { setMobileOpen(false); await logout(); }}
               >
-                <LogOut size={15} style={{ marginRight: 6, display: 'inline-block', verticalAlign: 'middle' }} />
+                <LogOut size={14} style={{ marginRight: 6, display: 'inline-block', verticalAlign: 'middle' }} />
                 Sign Out
               </button>
             </>
@@ -787,14 +795,28 @@ export default function Navbar() {
                 className="mobile-drawer__auth-btn" 
                 onClick={() => { setMobileOpen(false); handleUserClick(); }}
               >
-                My Account
+                Account
+              </button>
+              <button 
+                type="button" 
+                className="mobile-drawer__auth-btn" 
+                onClick={() => { setMobileOpen(false); router.push('/cart'); }}
+              >
+                Cart {mounted && itemCount > 0 ? `(${itemCount})` : ''}
+              </button>
+              <button 
+                type="button" 
+                className="mobile-drawer__auth-btn" 
+                onClick={() => { setMobileOpen(false); router.push('/wishlist'); }}
+              >
+                Wishlist {mounted && wishlistCount > 0 ? `(${wishlistCount})` : ''}
               </button>
               <button 
                 type="button" 
                 className="mobile-drawer__auth-btn mobile-drawer__auth-btn--signout" 
                 onClick={async () => { setMobileOpen(false); await logout(); }}
               >
-                <LogOut size={15} style={{ marginRight: 6, display: 'inline-block', verticalAlign: 'middle' }} />
+                <LogOut size={14} style={{ marginRight: 6, display: 'inline-block', verticalAlign: 'middle' }} />
                 Sign Out
               </button>
             </>
