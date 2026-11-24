@@ -165,7 +165,7 @@ export default function NewProductCreationPage() {
       };
 
       await fetch('/api/admin/products', {
-        method: 'PATCH',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });

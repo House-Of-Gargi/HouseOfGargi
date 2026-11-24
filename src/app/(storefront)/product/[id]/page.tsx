@@ -18,10 +18,29 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const { id } = resolvedParams;
   const router = useRouter();
 
-  const product = getProduct(id);
-  if (!product) {
-    notFound();
-  }
+  const [product, setProduct] = useState<any>(() => getProduct(id) || null);
+  const [loading, setLoading] = useState(!product);
+
+  useEffect(() => {
+    if (!product) {
+      let isMounted = true;
+      fetch(`/api/products/${encodeURIComponent(id)}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (!isMounted) return;
+          if (data.success && data.product) {
+            setProduct(data.product);
+          }
+        })
+        .catch(() => {})
+        .finally(() => {
+          if (isMounted) setLoading(false);
+        });
+      return () => {
+        isMounted = false;
+      };
+    }
+  }, [id, product]);
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState('');
@@ -34,13 +53,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const { isLoggedIn, openLoginModal } = useCustomerAuth();
 
   const related = getRelatedProducts(id, 4);
-  const categoryName = categories.find(c => c.id === product.category)?.name || 'Collection';
-  const saved = isLoggedIn && isInWishlist(product.id);
+  const categoryName = categories.find(c => c.id === product?.category)?.name || 'Collection';
+  const saved = isLoggedIn && product ? isInWishlist(product.id) : false;
   const artisan = product ? (product.artisanId ? getArtisan(product.artisanId) : getArtisanByProductId(product.id)) : undefined;
   const [artisanName, setArtisanName] = useState(artisan?.name || 'Gopal Chandra Dey');
-  const [artisanCode, setArtisanCode] = useState(product.artisanId || artisan?.id || 'HG-84192');
+  const [artisanCode, setArtisanCode] = useState(product?.artisanId || artisan?.id || 'HG-84192');
 
   useEffect(() => {
+    if (!product) return;
     let isMounted = true;
     fetch('/api/admin/artisans/profile')
       .then((res) => res.json())
@@ -66,7 +86,21 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     return () => {
       isMounted = false;
     };
-  }, [product.artisanId, artisan?.name]);
+  }, [product, artisan?.name]);
+
+  if (loading) {
+    return (
+      <div style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p style={{ fontFamily: 'var(--font-nav)', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--stone-taupe)' }}>
+          Loading Handcrafted Creation...
+        </p>
+      </div>
+    );
+  }
+
+  if (!product) {
+    notFound();
+  }
   
   const sizeToCart = product.sizes.length > 1 ? selectedSize : product.sizes[0];
   const cartItem = cart.find(item => item.id === product.id && item.size === sizeToCart);

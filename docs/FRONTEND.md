@@ -242,4 +242,4 @@ Logo (left) | Sarees | Lehengas | Kurta Sets | Accessories | (search icon) | Wis
 - `Home.jsx`: Hero banner, vision strip, category tiles, brand story, featured products, newsletter.
 - `Category.jsx`: Filter/sort bar, dynamic product grid, cross-category discovery strip.
 - `ProductDetail.jsx`: Gallery, info panel, size selector, care accordion, "You May Also Like" section.
-- `OurStory.jsx`: Deep dive into brand narrative and artisan focus.
+- `OurStory.jsx`: Deep dive into brand narrative and artisan focus.

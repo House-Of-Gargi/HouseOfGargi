@@ -704,7 +704,7 @@ export default function AdminLoginPage() {
               <div>
                 <span style={{ color: 'var(--stone-taupe)' }}>Looking for the artisan workshop portal? </span>
                 <Link
-                  href="/seller/login"
+                  href="/artisan/login"
                   style={{
                     color: '#7A2331',
                     fontWeight: 700,

@@ -88,17 +88,34 @@ export async function POST(request: Request) {
 
     // Attempt insertion into Supabase PostgreSQL orders table
     try {
-      const { data, error } = await supabase.from('orders').insert([{
+      const orderPayload: Record<string, any> = {
         order_number: orderNumber,
         customer_name,
         customer_phone: customer_phone || null,
         total_rupees: calculatedTotal,
         status: 'Processing',
         created_at: new Date().toISOString()
-      }]).select().single();
+      };
+      if (customer_email) {
+        orderPayload.customer_email = customer_email;
+      }
+
+      const { data, error } = await supabase.from('orders').insert([orderPayload]).select().single();
 
       if (!error && data) {
         newOrder.id = data.id;
+        try {
+          const itemsPayload = validatedItems.map(item => ({
+            order_id: data.id,
+            product_id: item.id,
+            product_name: item.name,
+            unit_price: item.price,
+            quantity: item.quantity,
+            size: item.size || 'Free Size',
+            total_price: item.price * item.quantity
+          }));
+          await supabase.from('order_items').insert(itemsPayload);
+        } catch {}
       }
     } catch (dbErr) {
       console.warn('Supabase insertion fallback to internal backend store:', dbErr);
