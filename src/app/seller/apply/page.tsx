@@ -152,7 +152,7 @@ export default function ArtisanApplyPage() {
         setIsAlreadyRegistered(true);
         setRegisteredArtisanInfo({ name: checkData.artisanName });
         setPhoneVerificationError(
-          `This mobile number (+91 ${digits}) is already registered with an existing artisan account${checkData.artisanName ? ` (${checkData.artisanName})` : ''}. Please log in to your artisan portal instead.`
+          `Already registered to ${checkData.artisanName || 'an existing artisan'}.`
         );
         setIsPhoneChecking(false);
         return;
@@ -1012,17 +1012,20 @@ export default function ArtisanApplyPage() {
                     <label className="artisan-label">
                       CRAFT / ART TECHNIQUE <span style={{ color: '#7A2331' }}>*</span>
                     </label>
-                    <select
+                    <input
+                      type="text"
+                      list="craft-types-list"
                       value={formData.typeOfArt}
                       onChange={(e) => handleInputChange('typeOfArt', e.target.value)}
+                      placeholder="Enter your craft or art technique"
                       required
                       className="artisan-input-field"
-                    >
-                      <option value="">Select your craft or art form</option>
+                    />
+                    <datalist id="craft-types-list">
                       {CRAFT_TYPES.map((c) => (
-                        <option key={c} value={c}>{c}</option>
+                        <option key={c} value={c} />
                       ))}
-                    </select>
+                    </datalist>
                   </div>
                 </div>
 
@@ -1169,40 +1172,44 @@ export default function ArtisanApplyPage() {
                     {isAlreadyRegistered && (
                       <div style={{
                         marginTop: '0.65rem',
-                        padding: '0.85rem 1rem',
+                        padding: '0.75rem 0.95rem',
                         background: '#FEF2F2',
                         border: '1.5px solid #FCA5A5',
                         borderRadius: '8px',
                         fontSize: '0.82rem',
                         color: '#991B1B',
-                        lineHeight: 1.45,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flexWrap: 'wrap',
+                        gap: '0.65rem',
                       }}>
-                        <div style={{ fontWeight: 700, marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <AlertCircle size={16} color="#DC2626" />
-                          Mobile Number Already Registered
-                        </div>
-                        <div style={{ marginBottom: '8px' }}>
-                          This number (+91 {getRawPhoneDigits(formData.phone)}) is already associated with{' '}
-                          <strong>{registeredArtisanInfo?.name || 'an existing registered artisan'}</strong>. Duplicate artisan applications are not allowed.
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <AlertCircle size={15} color="#DC2626" style={{ flexShrink: 0 }} />
+                          <span>
+                            Already registered to{' '}
+                            <strong>{registeredArtisanInfo?.name || 'an existing artisan'}</strong>.
+                          </span>
                         </div>
                         <Link
                           href="/artisan/login"
                           style={{
                             display: 'inline-flex',
                             alignItems: 'center',
-                            gap: '6px',
-                            padding: '0.45rem 0.85rem',
+                            gap: '4px',
+                            padding: '0.4rem 0.85rem',
                             background: '#7A2331',
                             color: '#FFFFFF',
                             borderRadius: '5px',
                             textDecoration: 'none',
-                            fontSize: '0.76rem',
+                            fontSize: '0.75rem',
                             fontWeight: 700,
                             letterSpacing: '0.04em',
                             textTransform: 'uppercase',
+                            whiteSpace: 'nowrap',
                           }}
                         >
-                          Sign In to Artisan Portal &rarr;
+                          Sign In &rarr;
                         </Link>
                       </div>
                     )}
@@ -1280,9 +1287,6 @@ export default function ArtisanApplyPage() {
                             <AlertCircle size={13} /> {phoneVerificationError}
                           </div>
                         )}
-                        <div style={{ marginTop: '0.45rem', fontSize: '0.74rem', color: '#8C7B70' }}>
-                          Test verification code: <strong>123456</strong>
-                        </div>
                       </div>
                     )}
 
