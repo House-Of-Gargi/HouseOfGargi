@@ -1,7 +1,7 @@
 {
   "id": "HG-ART-260501",
   "artisanNo": "HG-84192",
-  "name": "Gopal Chandra De",
+  "name": "Gopal Chandra D",
   "role": "Maharaja Embroidary Design",
   "artStyle": "Maharaja Embroidary Design",
   "region": "Kolkata, West Bengal",
@@ -12,8 +12,8 @@
   "loomHoursTotal": "15,000+ Loom Hours Preserved",
   "profileImage": "/images/artisans_split.png",
   "philosophy": "In Shantipur, every Jamdani motif is a sacred prayer of rhythm, breath, and patience. When the shuttle moves across mulberry silk on our pit loom, time stands still.",
-  "bio": "Master weaver preserving 4 generations of royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to handcraft heirloom drapes.",
-  "description": "Master weaver preserving 4 generations of royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to handcraft heirloom drapes.",
+  "bio": "Master weaver preserving 4 generations of royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to handcraft.",
+  "description": "Master weaver preserving 4 generations of royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to handcraft.",
   "specialties": [
     "Tangail Jamdani Pit Loom Weave",
     "100% Murshidabad Mulberry Silk",
@@ -22,7 +22,9 @@
     "Terracotta & Geometric Peacock Motifs"
   ],
   "communityImpact": "Regular fair-wage employment for 14 rural weaver families and flexible home-spinning shifts for women artisans in Nadia district.",
-  "updatedAt": "2026-10-14T22:52:33.054Z",
+  "updatedAt": "2026-11-24T14:10:19.841Z",
   "image": "/images/artisans_split.png",
-  "status": "active"
+  "status": "active",
+  "email": "team.anga9@gmail.com",
+  "phone": "+91 98765 43210"
 }
