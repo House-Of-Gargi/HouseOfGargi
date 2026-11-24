@@ -30,6 +30,7 @@ function getDynamicDefaultProfile() {
 }
 
 export async function GET(req: Request) {
+  const dynamicProfile = getDynamicDefaultProfile();
   const url = new URL(req.url);
   const email = (url.searchParams.get('email') || '').toLowerCase().trim();
   const phone = (url.searchParams.get('phone') || '').replace(/\D/g, '').slice(-10);
@@ -48,12 +49,12 @@ export async function GET(req: Request) {
         return NextResponse.json({
           success: true,
           artisan: {
-            ...DEFAULT_PROFILE,
+            ...dynamicProfile,
             id: appData.application_number || appData.id,
             artisanNo: appData.artisanNo || appData.application_number,
             name: appData.name,
-            artStyle: appData.type_of_art || DEFAULT_PROFILE.artStyle,
-            regionalBelonging: appData.state || DEFAULT_PROFILE.regionalBelonging,
+            artStyle: appData.type_of_art || dynamicProfile.artStyle,
+            regionalBelonging: appData.state || dynamicProfile.regionalBelonging,
             email: appData.email,
           },
         });
@@ -67,13 +68,13 @@ export async function GET(req: Request) {
     if (res.ok && data?.artisan) {
       return NextResponse.json({
         success: true,
-        artisan: { ...DEFAULT_PROFILE, ...data.artisan },
+        artisan: { ...dynamicProfile, ...data.artisan },
       });
     }
   } catch {}
 
   return NextResponse.json({
     success: true,
-    artisan: DEFAULT_PROFILE,
+    artisan: dynamicProfile,
   });
 }

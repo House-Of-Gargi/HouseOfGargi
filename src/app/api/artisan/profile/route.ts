@@ -268,6 +268,14 @@ export async function PATCH(req: Request) {
           list.push({ id: targetAppNumber, artisanNo: 'HG-84192', ...body, updatedAt: new Date().toISOString() });
         }
         fs.writeFileSync(filePath, JSON.stringify(list, null, 2), 'utf8');
+
+        // Also sync single artisan_profile.json fallback
+        const singleFilePath = path.join(process.cwd(), 'src/data/artisan_profile.json');
+        if (fs.existsSync(singleFilePath)) {
+          const rawSingle = fs.readFileSync(singleFilePath, 'utf8');
+          const single = JSON.parse(rawSingle);
+          fs.writeFileSync(singleFilePath, JSON.stringify({ ...single, ...body, updatedAt: new Date().toISOString() }, null, 2), 'utf8');
+        }
       }
     } catch (fsErr) {
       console.warn('[Artisan Profile PATCH] JSON file sync note:', fsErr);

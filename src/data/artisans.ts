@@ -4,7 +4,7 @@ import { Artisan } from '@/types';
 export const artisans: Artisan[] = [
   {
     id: 'gopal-chandra-dey',
-    name: 'Gopal Chandraa',
+    name: 'Gopal Chandra De',
     role: 'Master Tangail Jamdani Pit Loom Weaver',
     region: 'Shantipur, Nadia, West Bengal, India',
     lineage: '4th Generation Pit Loom Lineage (Trained by Late Narayan Chandra Dey)',
@@ -203,19 +203,30 @@ export const artisans: Artisan[] = [
 export function getArtisan(id: string): Artisan | undefined {
   const norm = (id || '').toLowerCase();
   let baseArtisan = artisans.find(a => a.id.toLowerCase() === norm);
-  if (!baseArtisan && (norm === 'hg-84192' || norm === 'gopal-chandra-dey')) {
+  if (!baseArtisan && (norm === 'hg-84192' || norm === 'gopal-chandra-dey' || norm === 'gopal-chandra-de')) {
     baseArtisan = artisans.find(a => a.id === 'gopal-chandra-dey');
   }
   if (!baseArtisan) return undefined;
 
   // Merge saved edits from artisan_profiles_list.json if present
   try {
-    const list = Array.isArray(artisanProfilesList) ? artisanProfilesList : [];
+    let list = Array.isArray(artisanProfilesList) ? artisanProfilesList : [];
+    if (typeof window === 'undefined') {
+      try {
+        const fs = require('fs');
+        const path = require('path');
+        const fp = path.join(process.cwd(), 'src/data/artisan_profiles_list.json');
+        if (fs.existsSync(fp)) {
+          list = JSON.parse(fs.readFileSync(fp, 'utf8'));
+        }
+      } catch {}
+    }
+
     const override = list.find(
       (p: any) =>
         p.artisanNo?.toLowerCase() === norm ||
         p.id?.toLowerCase() === norm ||
-        ((norm === 'gopal-chandra-dey' || norm === 'hg-84192') &&
+        ((norm === 'gopal-chandra-dey' || norm === 'gopal-chandra-de' || norm === 'hg-84192') &&
           (p.artisanNo?.toLowerCase() === 'hg-84192' || p.id === 'HG-ART-260501')) ||
         p.name?.toLowerCase() === baseArtisan?.name?.toLowerCase()
     );
@@ -250,12 +261,24 @@ export function getArtisanByProductId(productId: string): Artisan | undefined {
 
 export function getAllArtisans(): Artisan[] {
   try {
-    const list = Array.isArray(artisanProfilesList) ? artisanProfilesList : [];
+    let list = Array.isArray(artisanProfilesList) ? artisanProfilesList : [];
+    if (typeof window === 'undefined') {
+      try {
+        const fs = require('fs');
+        const path = require('path');
+        const fp = path.join(process.cwd(), 'src/data/artisan_profiles_list.json');
+        if (fs.existsSync(fp)) {
+          list = JSON.parse(fs.readFileSync(fp, 'utf8'));
+        }
+      } catch {}
+    }
     return artisans.map((art) => {
       const override = list.find(
         (p: any) =>
           p.artisanNo?.toLowerCase() === art.id.toLowerCase() ||
           p.id?.toLowerCase() === art.id.toLowerCase() ||
+          ((art.id.toLowerCase() === 'gopal-chandra-dey' || art.id.toLowerCase() === 'hg-84192') &&
+            (p.artisanNo?.toLowerCase() === 'hg-84192' || p.id === 'HG-ART-260501')) ||
           p.name?.toLowerCase() === art.name.toLowerCase()
       );
       if (override) {
