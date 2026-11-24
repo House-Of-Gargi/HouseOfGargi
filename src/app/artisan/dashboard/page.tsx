@@ -46,10 +46,10 @@ export default function ArtisanDashboardPage() {
     artStyle?: string;
     regionalBelonging?: string;
   }>({
-    name: 'Gopal Chandra Dey',
-    artisanNo: 'HG-84192',
-    artStyle: 'Tangail Jamdani Pit Loom Weave',
-    regionalBelonging: 'Shantipur, Nadia, West Bengal',
+    name: 'Artisan Partner',
+    artisanNo: 'HG-ARTISAN',
+    artStyle: 'Traditional Handloom Craft',
+    regionalBelonging: 'West Bengal, India',
   });
 
   // Analytics states
@@ -71,19 +71,26 @@ export default function ArtisanDashboardPage() {
         : null;
 
       let email = '';
+      let phone = '';
       if (sessionStr) {
         try {
           const parsed = JSON.parse(sessionStr);
           if (parsed.email) email = parsed.email;
+          if (parsed.phone) phone = parsed.phone;
           if (parsed.name) setArtisan(prev => ({ ...prev, name: parsed.name }));
         } catch {}
       }
+
+      const artisanQueryParams = new URLSearchParams();
+      if (email) artisanQueryParams.set('email', email);
+      if (phone) artisanQueryParams.set('phone', phone);
+      const artisanQueryStr = artisanQueryParams.toString() ? `?${artisanQueryParams.toString()}` : '';
 
       // Parallel fetch from unified backend APIs
       const [ordersRes, prodsRes, artisanRes, analyticsRes] = await Promise.all([
         fetch('/api/orders').then(r => r.json()).catch(() => ({ orders: [] })),
         fetch('/api/admin/products').then(r => r.json()).catch(() => ({ products: [] })),
-        fetch(`/api/artisan/me${email ? `?email=${encodeURIComponent(email)}` : ''}`).then(r => r.json()).catch(() => ({})),
+        fetch(`/api/artisan/me${artisanQueryStr}`).then(r => r.json()).catch(() => ({})),
         fetch('/api/artisan/analytics').then(r => r.json()).catch(() => ({})),
       ]);
 
@@ -95,10 +102,10 @@ export default function ArtisanDashboardPage() {
       }
       if (artisanRes.success && artisanRes.artisan) {
         setArtisan({
-          name: artisanRes.artisan.name || 'Gopal Chandra Dey',
-          artisanNo: artisanRes.artisan.artisanNo || 'HG-84192',
-          artStyle: artisanRes.artisan.artStyle || 'Tangail Jamdani Pit Loom Weave',
-          regionalBelonging: artisanRes.artisan.regionalBelonging || 'Shantipur, Nadia, West Bengal',
+          name: artisanRes.artisan.name || 'Artisan Partner',
+          artisanNo: artisanRes.artisan.artisanNo || 'HG-ARTISAN',
+          artStyle: artisanRes.artisan.artStyle || 'Traditional Handloom Craft',
+          regionalBelonging: artisanRes.artisan.regionalBelonging || 'West Bengal, India',
         });
       }
       if (analyticsRes.success) {
