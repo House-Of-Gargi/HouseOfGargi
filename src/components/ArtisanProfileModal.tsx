@@ -14,7 +14,7 @@ interface ArtisanProfileModalProps {
 export default function ArtisanProfileModal({
   isOpen,
   onClose,
-  artisanName = 'Gopal Chandraa',
+  artisanName = 'Gopal Chandra De',
   artisanCode = 'HG-84192',
 }: ArtisanProfileModalProps) {
   const [profile, setProfile] = useState<any>(null);
@@ -44,7 +44,7 @@ export default function ArtisanProfileModal({
 
   const data = profile || {};
 
-  const displayName = data.name || artisanName || 'Gopal Chandraa';
+  const displayName = data.name || artisanName || 'Gopal Chandra De';
   const displayCode = data.artisanNo || artisanCode || 'HG-84192';
   const displayArtStyle = data.artStyle || data.role || 'Maharaja Embroidary Design';
   const displayRegion = data.regionalBelonging || data.region || 'Kolkata, West Bengal';

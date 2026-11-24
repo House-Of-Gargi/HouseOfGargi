@@ -56,7 +56,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const categoryName = categories.find(c => c.id === product?.category)?.name || 'Collection';
   const saved = isLoggedIn && product ? isInWishlist(product.id) : false;
   const artisan = product ? (product.artisanId ? getArtisan(product.artisanId) : getArtisanByProductId(product.id)) : undefined;
-  const [artisanName, setArtisanName] = useState(artisan?.name || product?.artisanName || 'Gopal Chandraa');
+  const [artisanName, setArtisanName] = useState(artisan?.name || product?.artisanName || 'Gopal Chandra De');
   const [artisanCode, setArtisanCode] = useState(product?.artisanId || artisan?.id || 'HG-84192');
 
   useEffect(() => {

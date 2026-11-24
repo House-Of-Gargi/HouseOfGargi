@@ -12,7 +12,7 @@ export const artisans: Artisan[] = [
     loomHoursTotal: '15,000+ Loom Hours Preserved',
     image: '/images/artisans_split.png',
     coverImage: '/images/banner-sarees-wide.png',
-    bio: 'Rooted in the historic weaving cluster of Shantipur, Nadia, Master Gopal Chandraa preserves the centuries-old royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to hand-craft timeless heirloom drapes originally celebrated in Royal Bengal courts.',
+    bio: 'Rooted in the historic weaving cluster of Shantipur, Nadia, Master Gopal Chandra De preserves the centuries-old royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to hand-craft timeless heirloom drapes originally celebrated in Royal Bengal courts.',
     philosophy: '"In Shantipur, every Jamdani motif is a sacred prayer of rhythm, breath, and patience. When the shuttle moves across mulberry silk on our pit loom, time stands still."',
     specialties: ['Tangail Jamdani Pit Loom Weave', '100% Murshidabad Mulberry Silk', 'Tested Real Silver & Gold Zari', 'Natural AZO-Free Vegetable Dyes', 'Terracotta & Geometric Peacock Motifs'],
     awards: ['Heritage Guild Certified Master Artisan (2026)', 'Silk Mark Certified Handloom Weaver', 'Preserver of Shantipur Pit Loom Weaving Heritage'],
