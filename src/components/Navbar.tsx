@@ -10,7 +10,7 @@ import SearchDropdown, { saveSearchHistory } from './SearchDropdown';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCustomerAuth } from '@/context/CustomerAuthContext';
-import { LogOut } from 'lucide-react';
+import { LogOut, Sparkles } from 'lucide-react';
 
 const CATEGORY_STRIP_ITEMS = [
   { name: 'Explore All', mobileName: 'All Collections', href: '/explore' },
@@ -33,6 +33,7 @@ export default function Navbar() {
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const mobileSearchContainerRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<any>(null);
   const subRowRef = useRef<HTMLDivElement>(null);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [isAtEnd, setIsAtEnd] = useState(false);
@@ -139,48 +140,99 @@ export default function Navbar() {
   useEffect(() => {
     setSearchDropdownOpen(false);
     setMobileSearchOpen(false);
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.abort();
+      } catch {}
+    }
   }, [pathname]);
+
+  useEffect(() => {
+    return () => {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.abort();
+        } catch {}
+      }
+    };
+  }, []);
 
   const handleVoiceSearch = () => {
     if (typeof window === 'undefined') return;
+
+    // Use native Google Speech Recognition (WebKit / Chromium speech service)
     const SpeechRecognition =
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      alert('Voice search is not supported on this browser. Please try Chrome or Edge.');
+      alert('Voice search is powered by Google Web Speech and requires Google Chrome, Microsoft Edge, or a Web Speech supported browser.');
       return;
     }
 
+    // Toggle off if currently active
     if (isListening) {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch {}
+      }
       setIsListening(false);
       return;
     }
 
     try {
       const recognition = new SpeechRecognition();
-      recognition.lang = 'en-IN';
-      recognition.interimResults = false;
+      recognitionRef.current = recognition;
+
+      // Google Speech-to-Text configuration
+      recognition.lang = typeof navigator !== 'undefined' ? (navigator.language || 'en-IN') : 'en-IN';
+      recognition.continuous = false;
+      recognition.interimResults = true;
       recognition.maxAlternatives = 1;
 
       recognition.onstart = () => {
         setIsListening(true);
+        setSearchDropdownOpen(true);
       };
 
       recognition.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript;
-        if (transcript) {
-          const trimmed = transcript.trim();
-          setSearchQuery(trimmed);
+        let interimTranscript = '';
+        let finalTranscript = '';
+
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          const item = event.results[i];
+          if (item.isFinal) {
+            finalTranscript += item[0].transcript;
+          } else {
+            interimTranscript += item[0].transcript;
+          }
+        }
+
+        const currentStream = (finalTranscript || interimTranscript).trim();
+        if (currentStream) {
+          setSearchQuery(currentStream);
+        }
+
+        if (finalTranscript) {
+          const query = finalTranscript.trim();
           setIsListening(false);
-          saveSearchHistory(trimmed);
+          saveSearchHistory(query);
           setSearchDropdownOpen(false);
           setMobileSearchOpen(false);
-          router.push(`/explore?q=${encodeURIComponent(trimmed)}`);
+          router.push(`/explore?q=${encodeURIComponent(query)}`);
         }
       };
 
-      recognition.onerror = () => {
+      recognition.onerror = (event: any) => {
+        console.warn('Google Speech recognition error:', event?.error);
         setIsListening(false);
+        if (event?.error === 'not-allowed' || event?.error === 'service-not-allowed') {
+          alert('Microphone access is blocked. Please click the lock or microphone icon in your browser address bar and select "Allow" to enable Google Voice Search.');
+        } else if (event?.error === 'audio-capture') {
+          alert('No microphone was detected on your device. Please connect an audio input device.');
+        } else if (event?.error === 'network') {
+          alert('Google voice recognition requires an active internet connection.');
+        }
       };
 
       recognition.onend = () => {
@@ -188,7 +240,7 @@ export default function Navbar() {
       };
 
       recognition.start();
-    } catch (err) {
+    } catch (err: any) {
       console.error('Speech recognition error:', err);
       setIsListening(false);
     }
@@ -222,15 +274,7 @@ export default function Navbar() {
 
   const handleUserClick = () => {
     if (isLoggedIn) {
-      if (role === 'artisan') {
-        router.push('/artisan/dashboard');
-      } else if (role === 'super_admin') {
-        router.push('/super-admin/dashboard');
-      } else if (role === 'admin') {
-        router.push('/admin/dashboard');
-      } else {
-        router.push('/account');
-      }
+      router.push('/account');
     } else {
       openLoginModal('/account');
     }
@@ -391,12 +435,12 @@ export default function Navbar() {
                   </button>
                   <button 
                     type="button" 
-                    className="navbar__signout-icon-btn navbar__signout-icon-btn--desktop-only"
-                    onClick={logout}
-                    aria-label="Sign Out"
-                    title="Sign Out"
+                    className="navbar__profile-icon-btn navbar__profile-icon-btn--desktop-only"
+                    aria-label="Account" 
+                    title="Account Profile & Settings" 
+                    onClick={handleUserClick}
                   >
-                    <LogOut size={18} />
+                    <UserIcon size={21} />
                   </button>
                 </>
               ) : role === 'admin' ? (
@@ -436,17 +480,17 @@ export default function Navbar() {
                   </button>
                   <button 
                     type="button" 
-                    className="navbar__signout-icon-btn navbar__signout-icon-btn--desktop-only"
-                    onClick={logout}
-                    aria-label="Sign Out"
-                    title="Sign Out"
+                    className="navbar__profile-icon-btn navbar__profile-icon-btn--desktop-only"
+                    aria-label="Account" 
+                    title="Account Profile & Settings" 
+                    onClick={handleUserClick}
                   >
-                    <LogOut size={18} />
+                    <UserIcon size={21} />
                   </button>
                 </>
               ) : (
                 <>
-                  {/* Customer browsing navigation (artisans can browse freely as customer) */}
+                  {/* Customer browsing navigation */}
                   <button 
                     type="button" 
                     className="navbar__wishlist-pill-btn navbar__wishlist-pill-btn--desktop-only"
@@ -476,12 +520,12 @@ export default function Navbar() {
                   </button>
                   <button 
                     type="button" 
-                    className="navbar__icon-btn navbar__icon-btn--desktop-only"
+                    className="navbar__profile-icon-btn navbar__profile-icon-btn--desktop-only"
                     aria-label="Account" 
-                    title="Account Profile" 
+                    title="Account Profile & Settings" 
                     onClick={handleUserClick}
                   >
-                    <UserIcon size={23} />
+                    <UserIcon size={21} />
                   </button>
                   <button 
                     type="button" 
@@ -495,27 +539,6 @@ export default function Navbar() {
                     {mounted && itemCount > 0 && (
                       <span className="navbar__badge">{itemCount}</span>
                     )}
-                  </button>
-
-                  {(hasArtisanSession || role === 'artisan') && (
-                    <Link 
-                      href="/artisan/dashboard" 
-                      className="navbar__join-pill-btn navbar__join-pill-btn--desktop-only"
-                      aria-label="Artisan Portal"
-                      title="Return to your Artisan Portal"
-                    >
-                      Artisan Portal &rarr;
-                    </Link>
-                  )}
-
-                  <button 
-                    type="button" 
-                    className="navbar__signout-icon-btn navbar__signout-icon-btn--desktop-only"
-                    onClick={logout}
-                    aria-label="Sign Out"
-                    title="Sign Out"
-                  >
-                    <LogOut size={18} />
                   </button>
                 </>
               )}
@@ -808,6 +831,19 @@ export default function Navbar() {
           })}
         </div>
       </div>
+
+      {/* Sticky Floating Artisan Portal Button in Bottom Right Corner */}
+      {mounted && (hasArtisanSession || role === 'artisan') && !pathname?.startsWith('/artisan') && !pathname?.startsWith('/admin') && !pathname?.startsWith('/super-admin') && (
+        <Link
+          href="/artisan/dashboard"
+          className="floating-artisan-portal-btn"
+          aria-label="Artisan Portal"
+          title="Return to your Artisan Portal"
+        >
+          <span>Artisan Portal</span>
+          <span className="floating-artisan-portal-arrow">&rarr;</span>
+        </Link>
+      )}
     </>
   );
 }
