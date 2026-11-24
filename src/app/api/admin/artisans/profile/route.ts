@@ -29,6 +29,22 @@ const MASTER_PROFILE = {
 };
 
 export async function GET(req: Request) {
+  let profile = { ...MASTER_PROFILE };
+
+  try {
+    const fs = await import('fs');
+    const path = await import('path');
+    const filePath = path.join(process.cwd(), 'src/data/artisan_profiles_list.json');
+    if (fs.existsSync(filePath)) {
+      const raw = fs.readFileSync(filePath, 'utf8');
+      const list = JSON.parse(raw);
+      const match = list.find((item: any) => item.artisanNo?.toLowerCase() === 'hg-84192');
+      if (match) {
+        profile = { ...profile, ...match, name: match.name || profile.name };
+      }
+    }
+  } catch {}
+
   try {
     const { searchParams } = new URL(req.url);
     const email = searchParams.get('email');
@@ -36,19 +52,15 @@ export async function GET(req: Request) {
       const res = await proxyToBackend(req, `/api/v1/admin/artisans/${encodeURIComponent(email)}`);
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.profile) {
-        return NextResponse.json({
-          success: true,
-          profile: { ...MASTER_PROFILE, ...data.profile },
-          profiles: [{ ...MASTER_PROFILE, ...data.profile }],
-        });
+        profile = { ...profile, ...data.profile, name: data.profile.name || profile.name };
       }
     }
   } catch {}
 
   return NextResponse.json({
     success: true,
-    profile: MASTER_PROFILE,
-    profiles: [MASTER_PROFILE],
+    profile,
+    profiles: [profile],
   });
 }
 
