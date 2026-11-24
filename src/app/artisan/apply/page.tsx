@@ -64,11 +64,11 @@ const CRAFT_TYPES = [
 ];
 
 const STEPS = [
-  { step: 1, labelEn: '1. Basic Info', titleEn: 'Basic Profile & Contact' },
-  { step: 2, labelEn: '2. Journey', titleEn: 'Part I: Personal Life & Dreams' },
-  { step: 3, labelEn: '3. Craft & Materials', titleEn: 'Part II: Craft, Lineage & Materials' },
-  { step: 4, labelEn: '4. Atelier', titleEn: 'Part III: Community, Inspiration & Design' },
-  { step: 5, labelEn: '5. Agreement', titleEn: 'Ethical Agreement & Submission' },
+  { step: 1, labelEn: 'Basic Info', titleEn: 'Basic Profile & Contact' },
+  { step: 2, labelEn: 'Journey', titleEn: 'Part I: Personal Life & Dreams' },
+  { step: 3, labelEn: 'Craft & Materials', titleEn: 'Part II: Craft, Lineage & Materials' },
+  { step: 4, labelEn: 'Atelier', titleEn: 'Part III: Community, Inspiration & Design' },
+  { step: 5, labelEn: 'Agreement', titleEn: 'Ethical Agreement & Submission' },
 ];
 
 export default function ArtisanApplyPage() {
@@ -461,27 +461,11 @@ export default function ArtisanApplyPage() {
           gap: 1rem;
         }
 
-        .artisan-progress-track {
-          width: 100%;
-          height: 5px;
-          background: #EFE8DC;
-          border-radius: 999px;
-          overflow: hidden;
-          margin: 1.25rem 0 1rem;
-        }
-
-        .artisan-progress-fill {
-          height: 100%;
-          background: linear-gradient(90deg, #7A2331 0%, #B88E18 100%);
-          border-radius: 999px;
-          transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
         .artisan-stepper-track {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          margin: 0.75rem 0 1.5rem;
+          margin: 0.5rem 0 1.5rem;
           padding: 0.85rem 1rem;
           background: #FAF7F2;
           border-radius: 10px;
@@ -538,10 +522,6 @@ export default function ArtisanApplyPage() {
             letter-spacing: 0.02em !important;
           }
 
-          .artisan-header-sub {
-            font-size: 1rem !important;
-          }
-
           .artisan-stepper-track {
             padding: 0.5rem 0.4rem;
             gap: 0.25rem;
@@ -556,23 +536,6 @@ export default function ArtisanApplyPage() {
             width: 28px !important;
             height: 28px !important;
             font-size: 0.8rem !important;
-          }
-
-          .mobile-step-banner {
-            display: flex !important;
-            align-items: center;
-            justify-content: space-between;
-            background: #FAF7F2;
-            border: 1px solid #EAE2D5;
-            border-radius: 8px;
-            padding: 0.6rem 0.85rem;
-            margin-bottom: 1.25rem;
-          }
-        }
-
-        @media (min-width: 681px) {
-          .mobile-step-banner {
-            display: none !important;
           }
         }
       `}</style>
@@ -757,56 +720,22 @@ export default function ArtisanApplyPage() {
           /* ════════════ MAIN FORM CARD ════════════ */
           <div className="artisan-apply-card">
             
-            {/* Header Crest */}
-            <div style={{ textAlign: 'center', paddingBottom: '1.25rem', borderBottom: '1px solid #F0E6D2' }}>
-              <span style={{
-                fontSize: '0.82rem',
-                letterSpacing: '0.22em',
-                fontWeight: 600,
-                color: '#8C7B70',
-                textTransform: 'uppercase',
-                display: 'block',
-                marginBottom: '0.25rem',
-              }}>
-                HOUSE OF GARGI
-              </span>
-              <p style={{
-                margin: 0,
-                fontSize: '0.78rem',
-                color: '#B88E18',
-                letterSpacing: '0.12em',
-                fontStyle: 'italic',
-              }}>
-                TRADITION &middot; CRAFT &middot; HERITAGE
-              </p>
-
+            {/* Minimal Header */}
+            <div style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
               <h1 className="artisan-header-title" style={{
                 fontFamily: 'var(--font-serif)',
-                fontSize: '2rem',
+                fontSize: '1.85rem',
                 fontWeight: 600,
                 color: '#7A2331',
-                margin: '0.75rem 0 0.2rem',
+                margin: 0,
                 letterSpacing: '0.04em',
                 lineHeight: 1.2,
               }}>
                 ARTISAN APPLICATION
               </h1>
-              <h2 className="artisan-header-sub" style={{
-                fontSize: '1.15rem',
-                fontWeight: 500,
-                color: '#4A3C33',
-                margin: '0.2rem 0 0',
-              }}>
-                Heritage Artisan Registry
-              </h2>
-
-              {/* Top Progress Line */}
-              <div className="artisan-progress-track">
-                <div className="artisan-progress-fill" style={{ width: `${(currentStep / 5) * 100}%` }} />
-              </div>
             </div>
 
-            {/* Stepper Progress Track */}
+            {/* Minimal Stepper Track */}
             <div className="artisan-stepper-track">
               {STEPS.map((s) => (
                 <div
@@ -820,43 +749,33 @@ export default function ArtisanApplyPage() {
                     cursor: s.step < currentStep ? 'pointer' : 'default',
                     opacity: currentStep === s.step ? 1 : currentStep > s.step ? 0.95 : 0.45,
                     flex: 1,
-                    minWidth: '40px',
+                    minWidth: '36px',
                   }}
                 >
                   <div
                     className="stepper-circle"
                     style={{
-                      width: '30px',
-                      height: '30px',
+                      width: '28px',
+                      height: '28px',
                       borderRadius: '50%',
                       background: currentStep === s.step ? '#7A2331' : currentStep > s.step ? '#2E6F40' : '#E8E0D2',
                       color: currentStep >= s.step ? '#FFFFFF' : '#7D6F65',
-                      fontSize: '0.82rem',
+                      fontSize: '0.8rem',
                       fontWeight: 600,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       transition: 'all 200ms ease',
-                      boxShadow: currentStep === s.step ? '0 0 0 3px rgba(122, 35, 49, 0.18)' : 'none',
+                      boxShadow: currentStep === s.step ? '0 0 0 3px rgba(122, 35, 49, 0.15)' : 'none',
                     }}
                   >
-                    {currentStep > s.step ? <Check style={{ width: 14, height: 14 }} /> : s.step}
+                    {currentStep > s.step ? <Check style={{ width: 13, height: 13 }} /> : s.step}
                   </div>
                   <span className="stepper-label-text" style={{ fontSize: '0.72rem', fontWeight: 600, color: currentStep === s.step ? '#7A2331' : '#6A5A50', textAlign: 'center', whiteSpace: 'nowrap' }}>
                     {s.labelEn}
                   </span>
                 </div>
               ))}
-            </div>
-
-            {/* Mobile Active Step Sub-Banner */}
-            <div className="mobile-step-banner">
-              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#7A2331', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Step {currentStep} of 5 &bull; {STEPS[currentStep - 1].labelEn}
-              </span>
-              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#B88E18' }}>
-                {Math.round((currentStep / 5) * 100)}% Complete
-              </span>
             </div>
 
             {/* Error Notification */}
