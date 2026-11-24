@@ -1389,75 +1389,63 @@ export default function ArtisanApplyPage() {
             {currentStep === 3 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
                 <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
-                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 500 }}>
-                    Part II: Craft, Lineage &amp; Materials &bull;  : ,    (Q5 - Q8)
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 600 }}>
+                    Step 3: Craft, Lineage &amp; Materials (Questions 5 - 8)
                   </h3>
                 </div>
 
                 {/* Q5 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
-                    5) How did you get interested in this art / craft, and what is it about this art that attracts you to it?
+                  <label className="artisan-question-label">
+                    5) How did you get interested in this craft, and what attracts you to it?
                   </label>
-                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                        /    ,             ?
-                  </p>
                   <textarea
                     rows={3}
                     value={formData.answers.q5 || ''}
                     onChange={(e) => handleAnswerChange('q5', e.target.value)}
-                    placeholder="Your passion and beginnings..."
+                    placeholder="Enter how you began and what attracts you to this craft..."
                     className="artisan-input-field"
                   />
                 </div>
 
                 {/* Q6 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
-                    6) Who taught you? Do you also now teach to others? (please specify who and where)
+                  <label className="artisan-question-label">
+                    6) Who taught you? Do you currently teach others? (Specify who and where)
                   </label>
-                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                      ?     ? ( ,    ,   )
-                  </p>
                   <textarea
                     rows={3}
                     value={formData.answers.q6 || ''}
                     onChange={(e) => handleAnswerChange('q6', e.target.value)}
-                    placeholder="Master weavers, teachers, apprentices..."
+                    placeholder="Enter details of your teachers, master weavers, and any apprentices or family members you teach..."
                     className="artisan-input-field"
                   />
                 </div>
 
                 {/* Q7 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
-                    7) What did you have to do to learn and master this art / craft?
+                  <label className="artisan-question-label">
+                    7) What did you have to do to learn and master this craft?
                   </label>
-                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                      /          ?
-                  </p>
                   <textarea
                     rows={3}
                     value={formData.answers.q7 || ''}
                     onChange={(e) => handleAnswerChange('q7', e.target.value)}
-                    placeholder="Years of practice, dedication, master techniques..."
+                    placeholder="Enter the years of practice, discipline, and master techniques you acquired..."
                     className="artisan-input-field"
                   />
                 </div>
 
                 {/* Q8 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
-                    8) What kind of materials do you use? Are they easy / difficult to work with? How do you obtain them? Do you make / prepare any of them? Are any of your materials recycled, reclaimed or reused?
+                  <label className="artisan-question-label">
+                    8) What kind of materials do you use, and how do you obtain or prepare them? Are any materials recycled or reclaimed?
                   </label>
-                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                         ?      / ?      ?      /  ?        /   (recycled / reclaimed or reused) ?
-                  </p>
                   <textarea
                     rows={3}
                     value={formData.answers.q8 || ''}
                     onChange={(e) => handleAnswerChange('q8', e.target.value)}
-                    placeholder="Mulberry silk, metallic zari, natural indigo dyes, teak wood..."
+                    placeholder="Enter the materials you work with (e.g., pure mulberry silk, zari, azo-free dyes) and your sourcing methods..."
                     className="artisan-input-field"
                   />
                 </div>
@@ -1468,115 +1456,97 @@ export default function ArtisanApplyPage() {
             {currentStep === 4 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
                 <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
-                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 500 }}>
-                    Part III: Community, Inspiration &amp; Design &bull;  :    (Q9 - Q14)
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 600 }}>
+                    Step 4: Community, Inspiration &amp; Design (Questions 9 - 14)
                   </h3>
                 </div>
 
                 {/* Q9 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
-                    9) What is your favorite thing about your art / craft? What do you find the most challenging?
+                  <label className="artisan-question-label">
+                    9) What is your favorite thing about your craft? What do you find the most challenging?
                   </label>
-                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                      /      ?         ?
-                  </p>
                   <textarea
                     rows={3}
                     value={formData.answers.q9 || ''}
                     onChange={(e) => handleAnswerChange('q9', e.target.value)}
-                    placeholder="Your joy and challenges..."
+                    placeholder="Enter what gives you the greatest joy and the intricate challenges you overcome..."
                     className="artisan-input-field"
                   />
                 </div>
 
                 {/* Q10 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
+                  <label className="artisan-question-label">
                     10) Where do you get your inspiration from?
                   </label>
-                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                          ?
-                  </p>
                   <textarea
                     rows={3}
                     value={formData.answers.q10 || ''}
                     onChange={(e) => handleAnswerChange('q10', e.target.value)}
-                    placeholder="Temple architecture, nature, royal heritage..."
+                    placeholder="Enter your inspirations (e.g., temple motifs, nature, regional folklore, royal traditions)..."
                     className="artisan-input-field"
                   />
                 </div>
 
                 {/* Q11 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
-                    11) Describe what it has been like to get started on your own?
+                  <label className="artisan-question-label">
+                    11) Describe what it has been like to establish your craft and work independently.
                   </label>
-                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                             ,   ।
-                  </p>
                   <textarea
                     rows={3}
                     value={formData.answers.q11 || ''}
                     onChange={(e) => handleAnswerChange('q11', e.target.value)}
-                    placeholder="Setting up your own loom or workshop..."
+                    placeholder="Enter your experience founding your workshop and establishing your craft..."
                     className="artisan-input-field"
                   />
                 </div>
 
                 {/* Q12 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
-                    12) If you work with family members, how do you organize the work? (Who does what?)
+                  <label className="artisan-question-label">
+                    12) If you work with family members or team members, how do you organize the work?
                   </label>
-                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                          ,      ? (  ?)
-                  </p>
                   <textarea
                     rows={3}
                     value={formData.answers.q12 || ''}
                     onChange={(e) => handleAnswerChange('q12', e.target.value)}
-                    placeholder="Family roles in spinning, warping, embroidery..."
+                    placeholder="Enter how workshop roles and processes are shared..."
                     className="artisan-input-field"
                   />
                 </div>
 
                 {/* Q13 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
-                    13) If you only design, what qualities do you look for in artisans that would craft your designs?
+                  <label className="artisan-question-label">
+                    13) If you work with designers or other artisans, what qualities do you look for in your collaborators?
                   </label>
-                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                        ,             ?
-                  </p>
                   <textarea
                     rows={3}
                     value={formData.answers.q13 || ''}
                     onChange={(e) => handleAnswerChange('q13', e.target.value)}
-                    placeholder="Patience, precision, heritage fidelity..."
+                    placeholder="Enter the precision, dedication, and heritage values you seek..."
                     className="artisan-input-field"
                   />
                 </div>
 
                 {/* Q14 */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.95rem', fontWeight: 500, color: '#241A15', lineHeight: 1.45, marginBottom: '0.2rem' }}>
-                    14) Describe any benefits your craft / workshop brings to your local community.
+                  <label className="artisan-question-label">
+                    14) Describe any benefits your craft or workshop brings to your local community.
                   </label>
-                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.86rem', color: '#6A564C', fontStyle: 'italic' }}>
-                      /             ।
-                  </p>
                   <textarea
                     rows={3}
                     value={formData.answers.q14 || ''}
                     onChange={(e) => handleAnswerChange('q14', e.target.value)}
-                    placeholder="Livelihoods, women empowerment, preservation..."
+                    placeholder="Enter the livelihoods, community support, or artisan empowerment your workshop fosters..."
                     className="artisan-input-field"
                   />
                 </div>
 
-                <div style={{ textAlign: 'center', padding: '1rem', background: '#FAF7F2', borderRadius: '8px', color: '#7A2331', fontWeight: 500, letterSpacing: '0.1em' }}>
-                  THANK YOU! &bull; !
+                <div style={{ textAlign: 'center', padding: '1rem', background: '#FAF7F2', borderRadius: '8px', color: '#7A2331', fontWeight: 600, letterSpacing: '0.08em' }}>
+                  THANK YOU FOR SHARING YOUR HERITAGE &amp; JOURNEY
                 </div>
               </div>
             )}
@@ -1585,8 +1555,8 @@ export default function ArtisanApplyPage() {
             {currentStep === 5 && (
               <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
                 <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
-                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 500 }}>
-                    Step 5: Ethical Agreement &amp; Submission &bull;     
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 600 }}>
+                    Step 5: Ethical Agreement &amp; Submission
                   </h3>
                   <p style={{ margin: '0.25rem 0 0', fontSize: '0.85rem', color: '#8C7B70' }}>
                     All master artisans and atelier suppliers must commit to international child labor standards.
@@ -1675,9 +1645,6 @@ export default function ArtisanApplyPage() {
                       <strong style={{ display: 'block', fontSize: '0.92rem', color: '#241A15', lineHeight: 1.45 }}>
                         1. I hereby agree to abide by the House of Gargi Child Labor Agreement.
                       </strong>
-                      <span style={{ display: 'block', fontSize: '0.84rem', color: '#6E5D53', fontStyle: 'italic', marginTop: '0.25rem', lineHeight: 1.4 }}>
-                                  ।
-                      </span>
                     </div>
                   </label>
 
@@ -1711,9 +1678,6 @@ export default function ArtisanApplyPage() {
                       <strong style={{ display: 'block', fontSize: '0.92rem', color: '#241A15', lineHeight: 1.45 }}>
                         2. I agree to make my workshop readily available for inspection and confirm all answers provided are true.
                       </strong>
-                      <span style={{ display: 'block', fontSize: '0.84rem', color: '#6E5D53', fontStyle: 'italic', marginTop: '0.25rem', lineHeight: 1.4 }}>
-                                       ।
-                      </span>
                     </div>
                   </label>
                 </div>
@@ -1721,14 +1685,14 @@ export default function ArtisanApplyPage() {
                 {/* SIGNATURE & DATE */}
                 <div className="artisan-form-grid-sig" style={{ borderTop: '1px solid #F0E6D2', paddingTop: '1.25rem' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
-                      SIGNATURE OF ARTISAN /   : <span style={{ color: '#7A2331' }}>*</span>
+                    <label className="artisan-label">
+                      SIGNATURE OF ARTISAN <span style={{ color: '#7A2331' }}>*</span>
                     </label>
                     <input
                       type="text"
                       value={formData.signature}
                       onChange={(e) => handleInputChange('signature', e.target.value)}
-                      placeholder="Type your full legal name as signature"
+                      placeholder="Enter your full legal name as signature"
                       required
                       className="artisan-input-field"
                       style={{
@@ -1739,8 +1703,8 @@ export default function ArtisanApplyPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
-                      DATE / :
+                    <label className="artisan-label">
+                      DATE OF SUBMISSION
                     </label>
                     <input
                       type="text"
