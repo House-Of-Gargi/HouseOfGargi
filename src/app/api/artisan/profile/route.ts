@@ -132,6 +132,10 @@ export async function GET(req: Request) {
           profile.description = profRecord.lineage_story;
           profile.bio = profRecord.lineage_story;
         }
+        if (profRecord.experience_years) {
+          profile.experienceYears = profRecord.experience_years;
+          profile.experience = `${profRecord.experience_years} Years`;
+        }
         if (profRecord.avatar_url) {
           profile.profileImage = profRecord.avatar_url;
         }
@@ -191,7 +195,11 @@ export async function PATCH(req: Request) {
         DEFAULT_PROFILE.regionalBelonging = (body.regionalBelonging || body.region).trim();
         DEFAULT_PROFILE.region = (body.regionalBelonging || body.region).trim();
       }
-      if (body.experience) DEFAULT_PROFILE.experience = body.experience.trim();
+      if (body.experience) {
+        DEFAULT_PROFILE.experience = body.experience.trim();
+        const expNum = parseInt(body.experience.replace(/\D/g, ''), 10);
+        if (!isNaN(expNum) && expNum > 0) DEFAULT_PROFILE.experienceYears = expNum;
+      }
       if (body.description || body.bio) {
         DEFAULT_PROFILE.description = (body.description || body.bio).trim();
         DEFAULT_PROFILE.bio = (body.description || body.bio).trim();
@@ -209,6 +217,10 @@ export async function PATCH(req: Request) {
       if (body.name) updatePayload.name = body.name.trim();
       if (body.artStyle || body.role) updatePayload.type_of_art = (body.artStyle || body.role).trim();
       if (body.regionalBelonging || body.region) updatePayload.state = (body.regionalBelonging || body.region).trim();
+      if (body.age) {
+        const parsedAge = parseInt(String(body.age), 10);
+        if (!isNaN(parsedAge) && parsedAge > 0) updatePayload.age = parsedAge;
+      }
 
       const updateQuery = supabaseAdmin.from('artisan_applications').update(updatePayload);
       if (cleanEmail && targetAppNumber) {
@@ -231,6 +243,8 @@ export async function PATCH(req: Request) {
       if (body.artStyle || body.role) profUpdate.craft_specialty = (body.artStyle || body.role).trim();
       if (body.regionalBelonging || body.region) profUpdate.region = (body.regionalBelonging || body.region).trim();
       if (body.description || body.bio) profUpdate.lineage_story = (body.description || body.bio).trim();
+      const expNum = parseInt(String(body.experience || body.experienceYears || '').replace(/\D/g, ''), 10);
+      if (!isNaN(expNum) && expNum > 0) profUpdate.experience_years = expNum;
 
       await supabaseAdmin
         .from('artisan_profiles')

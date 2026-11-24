@@ -58,6 +58,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const artisan = product ? (product.artisanId ? getArtisan(product.artisanId) : getArtisanByProductId(product.id)) : undefined;
   const [artisanName, setArtisanName] = useState(artisan?.name || product?.artisanName || 'Gopal Chandra De');
   const [artisanCode, setArtisanCode] = useState(product?.artisanId || artisan?.id || 'HG-84192');
+  const [artisanRegion, setArtisanRegion] = useState(artisan?.regionalBelonging || artisan?.region || 'Kolkata, West Bengal');
 
   useEffect(() => {
     // 1. Check local storage override immediately
@@ -68,9 +69,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         localStorage.getItem('artisan_profile_gopal-chandra-dey');
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (parsed?.name) {
-          setArtisanName(parsed.name);
+        if (parsed) {
+          if (parsed.name) setArtisanName(parsed.name);
           if (parsed.artisanNo || parsed.id) setArtisanCode(parsed.artisanNo || parsed.id);
+          if (parsed.regionalBelonging || parsed.region) setArtisanRegion(parsed.regionalBelonging || parsed.region);
         }
       }
     } catch {}
@@ -95,6 +97,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           if (match) {
             if (match.name) setArtisanName(match.name);
             if (match.artisanNo || match.id) setArtisanCode(match.artisanNo || match.id);
+            if (match.regionalBelonging || match.region) setArtisanRegion(match.regionalBelonging || match.region);
           }
         }
       })
@@ -368,8 +371,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   <p style={{ marginTop: '8px' }}>
                     <strong>Master Craftsman:</strong>{' '}
                     {artisan ? (
-                      <Link href={`/artisan/${artisan.id}`} style={{ color: 'var(--maharani-maroon)', fontWeight: 400, textDecoration: 'underline' }}>
-                        {artisan.name} ({artisan.region}) &rarr;
+                      <Link href={`/artisan/${artisanCode || artisan.id}`} style={{ color: 'var(--maharani-maroon)', fontWeight: 400, textDecoration: 'underline' }}>
+                        {artisanName} ({artisanRegion || artisan.region}) &rarr;
                       </Link>
                     ) : (
                       `Handwoven in ${product.region}.`
