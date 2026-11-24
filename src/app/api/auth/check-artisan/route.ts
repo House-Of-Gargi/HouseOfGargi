@@ -48,7 +48,7 @@ export async function POST(req: Request) {
         return NextResponse.json({
           registered: true,
           isMasterArtisan: true,
-          artisanName: 'Gopal Chandra Dey',
+          artisanName: 'Gopal Chandraa',
           email: 'team.anga9@gmail.com',
           artisanNo: 'HG-84192',
           applicationNumber: 'HG-ART-260501',
@@ -142,7 +142,7 @@ export async function POST(req: Request) {
         return NextResponse.json({
           registered: true,
           isMasterArtisan: true,
-          artisanName: 'Gopal Chandra Dey',
+          artisanName: 'Gopal Chandraa',
           email: rawEmail,
           artisanNo: 'HG-84192',
           applicationNumber: 'HG-ART-260501',

@@ -50,6 +50,8 @@ export default function SellerLoginPage() {
   const [error, setError] = useState('');
   const [notRegistered, setNotRegistered] = useState(false);
   const [registeredArtisanName, setRegisteredArtisanName] = useState<string>('');
+  const [registeredEmail, setRegisteredEmail] = useState<string>('');
+  const [registeredAppNo, setRegisteredAppNo] = useState<string>('');
   const [verifiedTarget, setVerifiedTarget] = useState('');
   const [verificationToken, setVerificationToken] = useState<string>('');
   const [expiresAt, setExpiresAt] = useState<number>(0);
@@ -176,6 +178,12 @@ export default function SellerLoginPage() {
         if (checkData.artisanName) {
           setRegisteredArtisanName(checkData.artisanName);
         }
+        if (checkData.email) {
+          setRegisteredEmail(checkData.email);
+        }
+        if (checkData.applicationNumber) {
+          setRegisteredAppNo(checkData.applicationNumber);
+        }
 
         // Master Test Artisan phone (Gopal Chandra Dey)
         if (targetDigits === '9876543210') {
@@ -239,6 +247,12 @@ export default function SellerLoginPage() {
 
         if (checkData.artisanName) {
           setRegisteredArtisanName(checkData.artisanName);
+        }
+        if (checkData.email) {
+          setRegisteredEmail(checkData.email);
+        }
+        if (checkData.applicationNumber) {
+          setRegisteredAppNo(checkData.applicationNumber);
         }
 
         // Master Test Account fast bypass
@@ -418,8 +432,10 @@ export default function SellerLoginPage() {
           } catch {}
 
           const sessionPayload = {
-            email: data.session.user?.email || '',
-            phone: phoneIdentifier,
+            email: registeredEmail || data.session.user?.email || '',
+            phone: targetDigits,
+            name: registeredArtisanName || data.session.user?.user_metadata?.full_name || 'Artisan',
+            applicationNumber: registeredAppNo || '',
             role,
             timestamp: Date.now(),
           };

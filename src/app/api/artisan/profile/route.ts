@@ -34,6 +34,7 @@ export async function GET(req: Request) {
 
   const url = new URL(req.url);
   const queryEmail = (url.searchParams.get('email') || '').toLowerCase().trim();
+  const queryPhone = (url.searchParams.get('phone') || '').replace(/\D/g, '').slice(-10);
 
   // 1. Try Backend Gateway proxy
   try {
@@ -51,17 +52,30 @@ export async function GET(req: Request) {
 
   // 2. Direct Supabase Query for Application & Questionnaire Answers
   try {
-    let query = supabaseAdmin.from('artisan_applications').select('*');
-
     if (queryEmail) {
-      const { data: matchedApp } = await query.eq('email', queryEmail).maybeSingle();
+      const { data: matchedApp } = await supabaseAdmin
+        .from('artisan_applications')
+        .select('*')
+        .eq('email', queryEmail)
+        .maybeSingle();
       if (matchedApp) {
         application = matchedApp;
       }
     }
 
-    // Fallback to primary application if none matched or no email passed
-    if (!application) {
+    if (!application && queryPhone) {
+      const { data: matchedByPhone } = await supabaseAdmin
+        .from('artisan_applications')
+        .select('*')
+        .ilike('phone', `%${queryPhone}%`)
+        .maybeSingle();
+      if (matchedByPhone) {
+        application = matchedByPhone;
+      }
+    }
+
+    // Fallback to primary application ONLY if neither email nor phone matched
+    if (!application && !queryEmail && !queryPhone) {
       const { data: defaultApp } = await supabaseAdmin
         .from('artisan_applications')
         .select('*')
@@ -81,6 +95,8 @@ export async function GET(req: Request) {
       }
     }
     if (application) {
+      profile.id = application.application_number || application.id;
+      profile.artisanNo = application.artisanNo || application.application_number || profile.artisanNo;
       if (application.name) profile.name = application.name;
       if (application.type_of_art) {
         profile.artStyle = application.type_of_art;
@@ -90,6 +106,7 @@ export async function GET(req: Request) {
         profile.regionalBelonging = application.state;
         profile.region = application.state;
       }
+      if (application.email) profile.email = application.email;
     }
 
     // Direct check of artisan_profiles in Supabase
@@ -121,7 +138,7 @@ export async function GET(req: Request) {
       }
     } catch {}
 
-    // Check saved local JSON database
+    // Check saved local JSON database for this artisan
     try {
       const fs = await import('fs');
       const path = await import('path');
@@ -131,7 +148,9 @@ export async function GET(req: Request) {
         const list = JSON.parse(raw);
         const match = list.find(
           (item: any) =>
-            item.artisanNo?.toLowerCase() === 'hg-84192' || item.id === 'HG-ART-260501'
+            (queryEmail && item.email?.toLowerCase() === queryEmail) ||
+            (queryPhone && item.phone?.includes(queryPhone)) ||
+            (!queryEmail && !queryPhone && (item.artisanNo?.toLowerCase() === 'hg-84192' || item.id === 'HG-ART-260501'))
         );
         if (match) {
           profile = { ...profile, ...match, name: match.name || profile.name };
@@ -153,26 +172,33 @@ export async function GET(req: Request) {
 export async function PATCH(req: Request) {
   try {
     const body = await req.json();
-    const cleanEmail = (body.email || 'team.anga9@gmail.com').toLowerCase().trim();
-    const targetAppNumber = body.id || 'HG-ART-260501';
+    const cleanEmail = (body.email || '').toLowerCase().trim();
+    const targetAppNumber = body.id || (cleanEmail === 'team.anga9@gmail.com' ? 'HG-ART-260501' : '');
+    const isMasterArtisan =
+      !cleanEmail ||
+      cleanEmail === 'team.anga9@gmail.com' ||
+      targetAppNumber === 'HG-ART-260501' ||
+      body.artisanNo === 'HG-84192';
 
-    // 1. Update in-memory DEFAULT_PROFILE
-    if (body.name) DEFAULT_PROFILE.name = body.name.trim();
-    if (body.artStyle || body.role) {
-      DEFAULT_PROFILE.artStyle = (body.artStyle || body.role).trim();
-      DEFAULT_PROFILE.role = (body.artStyle || body.role).trim();
-    }
-    if (body.regionalBelonging || body.region) {
-      DEFAULT_PROFILE.regionalBelonging = (body.regionalBelonging || body.region).trim();
-      DEFAULT_PROFILE.region = (body.regionalBelonging || body.region).trim();
-    }
-    if (body.experience) DEFAULT_PROFILE.experience = body.experience.trim();
-    if (body.description || body.bio) {
-      DEFAULT_PROFILE.description = (body.description || body.bio).trim();
-      DEFAULT_PROFILE.bio = (body.description || body.bio).trim();
-    }
-    if (body.profileImage || body.image) {
-      DEFAULT_PROFILE.profileImage = body.profileImage || body.image;
+    // 1. Update in-memory DEFAULT_PROFILE only for master artisan
+    if (isMasterArtisan) {
+      if (body.name) DEFAULT_PROFILE.name = body.name.trim();
+      if (body.artStyle || body.role) {
+        DEFAULT_PROFILE.artStyle = (body.artStyle || body.role).trim();
+        DEFAULT_PROFILE.role = (body.artStyle || body.role).trim();
+      }
+      if (body.regionalBelonging || body.region) {
+        DEFAULT_PROFILE.regionalBelonging = (body.regionalBelonging || body.region).trim();
+        DEFAULT_PROFILE.region = (body.regionalBelonging || body.region).trim();
+      }
+      if (body.experience) DEFAULT_PROFILE.experience = body.experience.trim();
+      if (body.description || body.bio) {
+        DEFAULT_PROFILE.description = (body.description || body.bio).trim();
+        DEFAULT_PROFILE.bio = (body.description || body.bio).trim();
+      }
+      if (body.profileImage || body.image) {
+        DEFAULT_PROFILE.profileImage = body.profileImage || body.image;
+      }
     }
 
     // 2. Direct Update to Supabase artisan_applications
@@ -184,10 +210,14 @@ export async function PATCH(req: Request) {
       if (body.artStyle || body.role) updatePayload.type_of_art = (body.artStyle || body.role).trim();
       if (body.regionalBelonging || body.region) updatePayload.state = (body.regionalBelonging || body.region).trim();
 
-      await supabaseAdmin
-        .from('artisan_applications')
-        .update(updatePayload)
-        .or(`email.eq.${cleanEmail},application_number.eq.${targetAppNumber}`);
+      const updateQuery = supabaseAdmin.from('artisan_applications').update(updatePayload);
+      if (cleanEmail && targetAppNumber) {
+        await updateQuery.or(`email.eq.${cleanEmail},application_number.eq.${targetAppNumber}`);
+      } else if (cleanEmail) {
+        await updateQuery.eq('email', cleanEmail);
+      } else if (targetAppNumber) {
+        await updateQuery.eq('application_number', targetAppNumber);
+      }
     } catch (dbErr) {
       console.warn('[Artisan Profile PATCH] Supabase artisan_applications update warning:', dbErr);
     }

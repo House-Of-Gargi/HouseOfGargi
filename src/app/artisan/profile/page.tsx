@@ -61,17 +61,22 @@ export default function PersonalArtisanProfilePage() {
       try {
         setLoading(true);
 
-        // Check if user has an email in local storage
+        // Check if user has an email or phone in local storage
         let queryEmail = '';
+        let queryPhone = '';
         try {
           const sess = localStorage.getItem('artisan_session') || localStorage.getItem('auth_session');
           if (sess) {
             const parsed = JSON.parse(sess);
             if (parsed.email) queryEmail = parsed.email;
+            if (parsed.phone) queryPhone = parsed.phone;
           }
         } catch {}
 
-        const res = await fetch('/api/artisan/profile' + (queryEmail ? `?email=${encodeURIComponent(queryEmail)}` : ''));
+        const queryParams = new URLSearchParams();
+        if (queryEmail) queryParams.set('email', queryEmail);
+        if (queryPhone) queryParams.set('phone', queryPhone);
+        const res = await fetch('/api/artisan/profile' + (queryParams.toString() ? `?${queryParams.toString()}` : ''));
         const data = await res.json();
 
         if (isMounted && data.success) {
@@ -142,19 +147,26 @@ export default function PersonalArtisanProfilePage() {
     setSaveError('');
 
     try {
-      let activeEmail = 'team.anga9@gmail.com';
+      let activeEmail = '';
+      let activePhone = '';
       try {
         const sess = localStorage.getItem('artisan_session') || localStorage.getItem('auth_session');
         if (sess) {
           const parsed = JSON.parse(sess);
           if (parsed.email) activeEmail = parsed.email;
+          if (parsed.phone) activePhone = parsed.phone;
         }
       } catch {}
+
+      if (!activeEmail && (!activePhone || activePhone.includes('9876543210'))) {
+        activeEmail = 'team.anga9@gmail.com';
+      }
 
       const payload = {
         id,
         artisanNo,
         email: activeEmail,
+        phone: activePhone,
         name: name.trim(),
         artStyle: artStyle.trim(),
         role: artStyle.trim(),
