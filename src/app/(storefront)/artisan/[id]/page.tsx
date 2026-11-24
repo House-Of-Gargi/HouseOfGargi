@@ -32,12 +32,18 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
 
     // 1. Check local storage for immediate sync in current browser
     try {
+      const isMasterPage =
+        id.toLowerCase() === 'hg-84192' ||
+        id.toLowerCase() === 'gopal-chandra-dey' ||
+        id.toLowerCase() === 'gopal-chandra-de' ||
+        id.toLowerCase() === 'hg-art-260501';
+
       const stored =
         localStorage.getItem('artisan_profile_override') ||
         localStorage.getItem(`artisan_profile_${id.toLowerCase()}`) ||
-        (id.toLowerCase() === 'hg-84192' || id.toLowerCase() === 'gopal-chandra-dey'
-          ? localStorage.getItem('artisan_session')
-          : null);
+        (isMasterPage ? localStorage.getItem('artisan_profile_hg-84192') : null) ||
+        (isMasterPage ? localStorage.getItem('artisan_profile_gopal-chandra-dey') : null) ||
+        (isMasterPage ? localStorage.getItem('artisan_session') : null);
       if (stored) {
         const parsed = JSON.parse(stored);
         if (parsed?.name) {
@@ -69,12 +75,20 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
           : data.profile
           ? [data.profile]
           : [];
+        const isMaster =
+          id.toLowerCase() === 'hg-84192' ||
+          id.toLowerCase() === 'gopal-chandra-dey' ||
+          id.toLowerCase() === 'gopal-chandra-de' ||
+          id.toLowerCase() === 'hg-art-260501';
+
         const match = profileList.find(
           (p: any) =>
             p.artisanNo?.toLowerCase() === id.toLowerCase() ||
             p.id?.toLowerCase() === id.toLowerCase() ||
-            (id.toLowerCase() === 'hg-84192' &&
-              (p.artisanNo?.toLowerCase() === 'hg-84192' || p.id === 'HG-ART-260501')) ||
+            (isMaster &&
+              (p.artisanNo?.toLowerCase() === 'hg-84192' ||
+               p.id?.toLowerCase() === 'hg-art-260501' ||
+               p.id?.toLowerCase() === 'gopal-chandra-dey')) ||
             p.name?.toLowerCase() === initialArtisan.name.toLowerCase()
         );
 

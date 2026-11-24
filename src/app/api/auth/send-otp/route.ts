@@ -17,6 +17,20 @@ function generateHmacToken(identifier: string, otp: string, expiresAt: number): 
   return crypto.createHmac('sha256', AUTH_SECRET).update(payload).digest('hex');
 }
 
+function getMasterArtisanName(): string {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const filePath = path.join(process.cwd(), 'src/data/artisan_profiles_list.json');
+    if (fs.existsSync(filePath)) {
+      const list = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      const master = list.find((p: any) => p.artisanNo?.toLowerCase() === 'hg-84192' || p.id === 'HG-ART-260501');
+      if (master?.name) return master.name;
+    }
+  } catch {}
+  return 'Gopal Chandra De';
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -42,11 +56,12 @@ export async function POST(req: Request) {
       // Check if already registered when applying as artisan
       if (portal === 'artisan_apply' || portal === 'artisan') {
         if (cleanDigits === '9876543210' || MASTER_ARTISAN_PHONES.has(cleanDigits)) {
+          const masterName = getMasterArtisanName();
           return NextResponse.json({
             success: false,
             alreadyRegistered: true,
-            artisanName: 'Gopal Chandraa',
-            message: 'This mobile number is already registered with Master Artisan Gopal Chandraa. Please sign in to your artisan portal.',
+            artisanName: masterName,
+            message: `This mobile number is already registered with Master Artisan ${masterName}. Please sign in to your artisan portal.`,
           }, { status: 400 });
         }
 

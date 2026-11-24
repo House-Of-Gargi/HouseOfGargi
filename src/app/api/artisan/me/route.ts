@@ -5,15 +5,29 @@ import { supabaseAdmin } from '@/lib/supabaseAdmin';
 const DEFAULT_PROFILE = {
   id: 'HG-ART-260501',
   artisanNo: 'HG-84192',
-  name: 'Gopal Chandraa',
-  role: 'Master Tangail Jamdani Pit Loom Weaver',
-  artStyle: 'Tangail Jamdani Pit Loom',
-  region: 'Shantipur, Nadia, West Bengal, India',
-  regionalBelonging: 'Shantipur, Nadia, West Bengal',
+  name: 'Gopal Chandra De',
+  role: 'Maharaja Embroidary Design',
+  artStyle: 'Maharaja Embroidary Design',
+  region: 'Kolkata, West Bengal',
+  regionalBelonging: 'Kolkata, West Bengal',
   experience: '32 Years',
   profileImage: '/images/artisans_split.png',
   email: 'team.anga9@gmail.com',
 };
+
+function getDynamicDefaultProfile() {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const filePath = path.join(process.cwd(), 'src/data/artisan_profiles_list.json');
+    if (fs.existsSync(filePath)) {
+      const list = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      const master = list.find((p: any) => p.artisanNo?.toLowerCase() === 'hg-84192' || p.id === 'HG-ART-260501');
+      if (master) return { ...DEFAULT_PROFILE, ...master };
+    }
+  } catch {}
+  return DEFAULT_PROFILE;
+}
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

@@ -14,6 +14,20 @@ const MASTER_ARTISAN_EMAILS = new Set([
   'artisan@gargisaha.com',
 ]);
 
+function getMasterArtisanName(): string {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const filePath = path.join(process.cwd(), 'src/data/artisan_profiles_list.json');
+    if (fs.existsSync(filePath)) {
+      const list = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      const master = list.find((p: any) => p.artisanNo?.toLowerCase() === 'hg-84192' || p.id === 'HG-ART-260501');
+      if (master?.name) return master.name;
+    }
+  } catch {}
+  return 'Gopal Chandra De';
+}
+
 function extractPhoneDigits(raw: string): string {
   let cleaned = raw.trim();
   if (cleaned.startsWith('+91')) {
@@ -48,7 +62,7 @@ export async function POST(req: Request) {
         return NextResponse.json({
           registered: true,
           isMasterArtisan: true,
-          artisanName: 'Gopal Chandraa',
+          artisanName: getMasterArtisanName(),
           email: 'team.anga9@gmail.com',
           artisanNo: 'HG-84192',
           applicationNumber: 'HG-ART-260501',
@@ -142,7 +156,7 @@ export async function POST(req: Request) {
         return NextResponse.json({
           registered: true,
           isMasterArtisan: true,
-          artisanName: 'Gopal Chandraa',
+          artisanName: getMasterArtisanName(),
           email: rawEmail,
           artisanNo: 'HG-84192',
           applicationNumber: 'HG-ART-260501',
