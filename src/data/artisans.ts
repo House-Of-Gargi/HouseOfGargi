@@ -4,7 +4,7 @@ import { Artisan } from '@/types';
 export const artisans: Artisan[] = [
   {
     id: 'gopal-chandra-dey',
-    name: 'Gopal Chandra Dey',
+    name: 'Gopal Chandraa',
     role: 'Master Tangail Jamdani Pit Loom Weaver',
     region: 'Shantipur, Nadia, West Bengal, India',
     lineage: '4th Generation Pit Loom Lineage (Trained by Late Narayan Chandra Dey)',
@@ -12,7 +12,7 @@ export const artisans: Artisan[] = [
     loomHoursTotal: '15,000+ Loom Hours Preserved',
     image: '/images/artisans_split.png',
     coverImage: '/images/banner-sarees-wide.png',
-    bio: 'Rooted in the historic weaving cluster of Shantipur, Nadia, Master Gopal Chandra Dey preserves the centuries-old royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to hand-craft timeless heirloom drapes originally celebrated in Royal Bengal courts.',
+    bio: 'Rooted in the historic weaving cluster of Shantipur, Nadia, Master Gopal Chandraa preserves the centuries-old royal Jamdani pit-loom craft. Mentoring 14 rural weaver families, his workshop utilizes 100% certified Murshidabad mulberry silk, combed fine cotton, and natural AZO-free dyes to hand-craft timeless heirloom drapes originally celebrated in Royal Bengal courts.',
     philosophy: '"In Shantipur, every Jamdani motif is a sacred prayer of rhythm, breath, and patience. When the shuttle moves across mulberry silk on our pit loom, time stands still."',
     specialties: ['Tangail Jamdani Pit Loom Weave', '100% Murshidabad Mulberry Silk', 'Tested Real Silver & Gold Zari', 'Natural AZO-Free Vegetable Dyes', 'Terracotta & Geometric Peacock Motifs'],
     awards: ['Heritage Guild Certified Master Artisan (2026)', 'Silk Mark Certified Handloom Weaver', 'Preserver of Shantipur Pit Loom Weaving Heritage'],
@@ -215,6 +215,8 @@ export function getArtisan(id: string): Artisan | undefined {
       (p: any) =>
         p.artisanNo?.toLowerCase() === norm ||
         p.id?.toLowerCase() === norm ||
+        ((norm === 'gopal-chandra-dey' || norm === 'hg-84192') &&
+          (p.artisanNo?.toLowerCase() === 'hg-84192' || p.id === 'HG-ART-260501')) ||
         p.name?.toLowerCase() === baseArtisan?.name?.toLowerCase()
     );
 
@@ -242,7 +244,8 @@ export function getArtisan(id: string): Artisan | undefined {
 }
 
 export function getArtisanByProductId(productId: string): Artisan | undefined {
-  return artisans.find(a => a.productIds.includes(productId));
+  const a = artisans.find(art => art.productIds.includes(productId));
+  return a ? getArtisan(a.id) : undefined;
 }
 
 export function getAllArtisans(): Artisan[] {

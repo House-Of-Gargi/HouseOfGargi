@@ -230,7 +230,7 @@ interface ArtisanQuestionnaireDossierProps {
 
 export default function ArtisanQuestionnaireDossier({
   application,
-  artisanName = 'Gopal Chandra Dey',
+  artisanName = 'Gopal Chandraa',
   artisanCode = 'HG-ART-260501',
   onSwitchToProfileTab,
 }: ArtisanQuestionnaireDossierProps) {

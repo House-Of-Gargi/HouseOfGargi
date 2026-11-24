@@ -56,13 +56,28 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const categoryName = categories.find(c => c.id === product?.category)?.name || 'Collection';
   const saved = isLoggedIn && product ? isInWishlist(product.id) : false;
   const artisan = product ? (product.artisanId ? getArtisan(product.artisanId) : getArtisanByProductId(product.id)) : undefined;
-  const [artisanName, setArtisanName] = useState(artisan?.name || 'Gopal Chandra Dey');
+  const [artisanName, setArtisanName] = useState(artisan?.name || product?.artisanName || 'Gopal Chandraa');
   const [artisanCode, setArtisanCode] = useState(product?.artisanId || artisan?.id || 'HG-84192');
 
   useEffect(() => {
-    if (!product) return;
+    // 1. Check local storage override immediately
+    try {
+      const stored =
+        localStorage.getItem('artisan_profile_override') ||
+        localStorage.getItem('artisan_profile_hg-84192') ||
+        localStorage.getItem('artisan_profile_gopal-chandra-dey');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed?.name) {
+          setArtisanName(parsed.name);
+          if (parsed.artisanNo || parsed.id) setArtisanCode(parsed.artisanNo || parsed.id);
+        }
+      }
+    } catch {}
+
+    // 2. Fetch live updated profile from API
     let isMounted = true;
-    fetch('/api/admin/artisans/profile')
+    fetch('/api/artisan/profile')
       .then((res) => res.json())
       .then((data) => {
         if (!isMounted) return;
@@ -70,8 +85,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           const profiles = Array.isArray(data.profiles) ? data.profiles : (data.profile ? [data.profile] : []);
           const match = profiles.find(
             (p: any) =>
-              (product.artisanId && p.artisanNo?.toLowerCase() === product.artisanId.toLowerCase()) ||
-              (product.artisanId && p.id?.toLowerCase() === product.artisanId.toLowerCase()) ||
+              (product?.artisanId && p.artisanNo?.toLowerCase() === product.artisanId.toLowerCase()) ||
+              (product?.artisanId && p.id?.toLowerCase() === product.artisanId.toLowerCase()) ||
+              (product?.artisanId?.toLowerCase() === 'gopal-chandra-dey' &&
+                (p.artisanNo?.toLowerCase() === 'hg-84192' || p.id === 'HG-ART-260501')) ||
               (artisan?.name && p.name?.toLowerCase() === artisan.name.toLowerCase())
           ) || profiles[0];
 

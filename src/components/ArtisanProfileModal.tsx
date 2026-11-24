@@ -14,18 +14,26 @@ interface ArtisanProfileModalProps {
 export default function ArtisanProfileModal({
   isOpen,
   onClose,
-  artisanName = 'Gopal Chandra Dey',
+  artisanName = 'Gopal Chandraa',
   artisanCode = 'HG-84192',
 }: ArtisanProfileModalProps) {
   const [profile, setProfile] = useState<any>(null);
 
   useEffect(() => {
     if (isOpen) {
-      fetch('/api/admin/artisans/profile')
+      try {
+        const stored = localStorage.getItem('artisan_profile_override');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed?.name) setProfile(parsed);
+        }
+      } catch {}
+
+      fetch('/api/artisan/profile')
         .then((r) => r.json())
         .then((d) => {
-          if (d.success && d.profile) {
-            setProfile(d.profile);
+          if (d.success && (d.profile || (Array.isArray(d.profiles) && d.profiles[0]))) {
+            setProfile(d.profile || d.profiles[0]);
           }
         })
         .catch(console.error);
@@ -36,7 +44,7 @@ export default function ArtisanProfileModal({
 
   const data = profile || {};
 
-  const displayName = data.name || artisanName || 'Gopal Chandra Dey';
+  const displayName = data.name || artisanName || 'Gopal Chandraa';
   const displayCode = data.artisanNo || artisanCode || 'HG-84192';
   const displayArtStyle = data.artStyle || data.role || 'Maharaja Embroidary Design';
   const displayRegion = data.regionalBelonging || data.region || 'Kolkata, West Bengal';
