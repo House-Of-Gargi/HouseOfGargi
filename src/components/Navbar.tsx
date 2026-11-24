@@ -463,14 +463,29 @@ export default function Navbar() {
                   <button 
                     type="button" 
                     className="navbar__login-pill-btn navbar__login-pill-btn--desktop-only"
-                    onClick={handleUserClick}
-                    aria-label="Account"
+                    onClick={() => router.push('/cart')}
+                    aria-label="Cart"
+                    title="Cart"
+                    style={{ position: 'relative' }}
                   >
-                    Account
+                    <CartIcon size={19} />
+                    <span>Cart</span>
+                    {mounted && itemCount > 0 && (
+                      <span className="navbar__badge">{itemCount}</span>
+                    )}
                   </button>
                   <button 
                     type="button" 
-                    className="navbar__icon-btn"
+                    className="navbar__icon-btn navbar__icon-btn--desktop-only"
+                    aria-label="Account" 
+                    title="Account Profile" 
+                    onClick={handleUserClick}
+                  >
+                    <UserIcon size={23} />
+                  </button>
+                  <button 
+                    type="button" 
+                    className="navbar__icon-btn navbar__mobile-cart-btn"
                     aria-label="Cart" 
                     title="Cart" 
                     onClick={() => router.push('/cart')}
