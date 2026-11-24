@@ -2,7 +2,7 @@
 
 import { useState, FormEvent, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, Check, ShieldCheck, AlertCircle, Loader2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, ShieldCheck, AlertCircle, Loader2, CheckCircle2 } from 'lucide-react';
 
 interface FormData {
   name: string;
@@ -94,6 +94,154 @@ export default function ArtisanApplyPage() {
   const [error, setError] = useState('');
   const [submittedAppId, setSubmittedAppId] = useState<string | null>(null);
 
+  // Phone OTP & Registration Verification State
+  const [isPhoneChecking, setIsPhoneChecking] = useState(false);
+  const [isOtpSending, setIsOtpSending] = useState(false);
+  const [phoneOtpSent, setPhoneOtpSent] = useState(false);
+  const [phoneOtp, setPhoneOtp] = useState('');
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+  const [isPhoneVerified, setIsPhoneVerified] = useState(false);
+  const [isAlreadyRegistered, setIsAlreadyRegistered] = useState(false);
+  const [registeredArtisanInfo, setRegisteredArtisanInfo] = useState<{ name?: string } | null>(null);
+  const [phoneVerificationError, setPhoneVerificationError] = useState('');
+  const [phoneVerificationToken, setPhoneVerificationToken] = useState('');
+  const [phoneExpiresAt, setPhoneExpiresAt] = useState<number | null>(null);
+  const [resendCountdown, setResendCountdown] = useState(0);
+
+  // Resend countdown timer
+  useEffect(() => {
+    if (resendCountdown <= 0) return;
+    const timer = setInterval(() => {
+      setResendCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [resendCountdown]);
+
+  const getRawPhoneDigits = (phoneStr: string) => {
+    return phoneStr.replace(/^\+91\s*/, '').replace(/\D/g, '').slice(-10);
+  };
+
+  const handleSendPhoneOtp = async () => {
+    const digits = getRawPhoneDigits(formData.phone);
+    if (digits.length !== 10) {
+      setPhoneVerificationError('Please enter a valid 10-digit mobile number first.');
+      return;
+    }
+
+    setPhoneVerificationError('');
+    setIsAlreadyRegistered(false);
+    setRegisteredArtisanInfo(null);
+    setIsPhoneChecking(true);
+
+    try {
+      // Step 1: Pre-flight check if phone is already registered as an artisan
+      const checkRes = await fetch('/api/auth/check-artisan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: digits }),
+      });
+      const checkData = await checkRes.json();
+
+      if (checkRes.ok && checkData?.registered) {
+        setIsAlreadyRegistered(true);
+        setRegisteredArtisanInfo({ name: checkData.artisanName });
+        setPhoneVerificationError(
+          `This mobile number (+91 ${digits}) is already registered with an existing artisan account${checkData.artisanName ? ` (${checkData.artisanName})` : ''}. Please log in to your artisan portal instead.`
+        );
+        setIsPhoneChecking(false);
+        return;
+      }
+
+      // Step 2: Dispatch OTP
+      setIsPhoneChecking(false);
+      setIsOtpSending(true);
+
+      const otpRes = await fetch('/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: digits, portal: 'artisan_apply' }),
+      });
+      const otpData = await otpRes.json();
+
+      if (!otpRes.ok || !otpData.success) {
+        if (otpData?.alreadyRegistered) {
+          setIsAlreadyRegistered(true);
+          setRegisteredArtisanInfo({ name: otpData.artisanName });
+        }
+        throw new Error(otpData.message || 'Failed to dispatch verification code.');
+      }
+
+      setPhoneVerificationToken(otpData.verificationToken || otpData.token || '');
+      setPhoneExpiresAt(otpData.expiresAt || Date.now() + 10 * 60 * 1000);
+      setPhoneOtpSent(true);
+      setResendCountdown(60);
+      setPhoneOtp('');
+    } catch (err: any) {
+      setPhoneVerificationError(err?.message || 'Failed to send OTP code.');
+    } finally {
+      setIsPhoneChecking(false);
+      setIsOtpSending(false);
+    }
+  };
+
+  const handleVerifyPhoneOtp = async () => {
+    const digits = getRawPhoneDigits(formData.phone);
+    const cleanOtp = phoneOtp.trim();
+
+    if (cleanOtp.length < 6) {
+      setPhoneVerificationError('Please enter all 6 digits of the OTP code.');
+      return;
+    }
+
+    setIsVerifyingOtp(true);
+    setPhoneVerificationError('');
+
+    try {
+      const verifyRes = await fetch('/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone: digits,
+          otp: cleanOtp,
+          token: phoneVerificationToken,
+          expiresAt: phoneExpiresAt,
+          portal: 'artisan_apply',
+        }),
+      });
+
+      const verifyData = await verifyRes.json();
+
+      if (!verifyRes.ok || !verifyData.success) {
+        throw new Error(verifyData.message || 'Invalid or expired OTP code.');
+      }
+
+      // Success: Lock in phone number
+      setIsPhoneVerified(true);
+      setPhoneOtpSent(false);
+      setPhoneOtp('');
+      setPhoneVerificationError('');
+      setError('');
+    } catch (err: any) {
+      setPhoneVerificationError(err?.message || 'Verification failed. Please check the code.');
+    } finally {
+      setIsVerifyingOtp(false);
+    }
+  };
+
+  const handleUnlockPhone = () => {
+    setIsPhoneVerified(false);
+    setPhoneOtpSent(false);
+    setPhoneOtp('');
+    setPhoneVerificationError('');
+    setIsAlreadyRegistered(false);
+  };
+
   // Auto calculate age when DOB changes
   useEffect(() => {
     if (formData.dob) {
@@ -119,8 +267,12 @@ export default function ArtisanApplyPage() {
 
   const validateStep1 = () => {
     if (!formData.name.trim()) return 'Please enter your full name';
-    if (!formData.phone.trim() || formData.phone.replace(/\D/g, '').length < 10) {
+    const digits = getRawPhoneDigits(formData.phone);
+    if (!formData.phone.trim() || digits.length < 10) {
       return 'Please enter a valid 10-digit mobile number';
+    }
+    if (!isPhoneVerified) {
+      return 'Please verify and lock in your mobile number with OTP before proceeding to the next step.';
     }
     if (!formData.email.trim() || !formData.email.includes('@')) {
       return 'Please enter a valid email address';
@@ -153,6 +305,12 @@ export default function ArtisanApplyPage() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!isPhoneVerified) {
+      setError('Your mobile number must be verified with OTP before submitting this application.');
+      setCurrentStep(1);
+      window.scrollTo({ top: 120, behavior: 'smooth' });
+      return;
+    }
     if (!formData.agreedChildLabor || !formData.agreedInspection) {
       setError('Please check both compulsory agreement checkboxes to submit');
       return;
@@ -807,26 +965,48 @@ export default function ArtisanApplyPage() {
                 {/* PHONE & EMAIL */}
                 <div className="artisan-form-grid-2">
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
-                      MOBILE NUMBER: /  : <span style={{ color: '#7A2331' }}>*</span>
-                    </label>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+                      <label style={{ fontSize: '0.85rem', fontWeight: 500, color: '#241A15', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                        MOBILE NUMBER: / চলভাষ দূরভাষ : <span style={{ color: '#7A2331' }}>*</span>
+                      </label>
+                      {isPhoneVerified && (
+                        <span style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          fontSize: '0.74rem',
+                          fontWeight: 700,
+                          color: '#16A34A',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.04em',
+                        }}>
+                          <CheckCircle2 size={13} /> Verified &amp; Locked
+                        </span>
+                      )}
+                    </div>
+
                     <div style={{
                       display: 'flex',
                       alignItems: 'center',
-                      border: '1.5px solid var(--soft-gold-line)',
+                      border: isPhoneVerified
+                        ? '1.5px solid #16A34A'
+                        : isAlreadyRegistered
+                          ? '1.5px solid #DC2626'
+                          : '1.5px solid var(--soft-gold-line)',
                       borderRadius: '8px',
                       overflow: 'hidden',
-                      background: '#FFFFFF',
+                      background: isPhoneVerified ? '#F0FDF4' : '#FFFFFF',
                       width: '100%',
                       boxSizing: 'border-box',
+                      transition: 'border-color 0.2s ease, background 0.2s ease',
                     }}>
                       <span style={{
                         padding: '0.85rem 0.85rem',
-                        background: '#FAF7F2',
-                        borderRight: '1px solid var(--soft-gold-line)',
+                        background: isPhoneVerified ? '#DCFCE7' : '#FAF7F2',
+                        borderRight: isPhoneVerified ? '1px solid #86EFAC' : '1px solid var(--soft-gold-line)',
                         fontSize: '0.92rem',
-                        fontWeight: 500,
-                        color: '#7A2331',
+                        fontWeight: 600,
+                        color: isPhoneVerified ? '#166534' : '#7A2331',
                         flexShrink: 0,
                       }}>
                         +91
@@ -834,9 +1014,15 @@ export default function ArtisanApplyPage() {
                       <input
                         type="tel"
                         value={formData.phone.replace(/^\+91\s*/, '')}
+                        disabled={isPhoneVerified}
                         onChange={(e) => {
+                          if (isPhoneVerified) return;
                           const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
                           handleInputChange('phone', `+91 ${digits}`);
+                          setIsAlreadyRegistered(false);
+                          setRegisteredArtisanInfo(null);
+                          setPhoneVerificationError('');
+                          setPhoneOtpSent(false);
                         }}
                         placeholder="10-digit number"
                         required
@@ -846,11 +1032,205 @@ export default function ArtisanApplyPage() {
                           border: 'none',
                           outline: 'none',
                           fontSize: '1rem',
-                          color: '#241A15',
+                          color: isPhoneVerified ? '#166534' : '#241A15',
+                          fontWeight: isPhoneVerified ? 600 : 400,
+                          backgroundColor: 'transparent',
                           fontFamily: 'var(--font-nav)',
                         }}
                       />
+                      {!isPhoneVerified && (
+                        <button
+                          type="button"
+                          onClick={handleSendPhoneOtp}
+                          disabled={isPhoneChecking || isOtpSending || getRawPhoneDigits(formData.phone).length !== 10 || (phoneOtpSent && resendCountdown > 0)}
+                          style={{
+                            margin: '4px 6px',
+                            padding: '0.55rem 0.95rem',
+                            fontSize: '0.78rem',
+                            fontWeight: 700,
+                            letterSpacing: '0.04em',
+                            textTransform: 'uppercase',
+                            background: getRawPhoneDigits(formData.phone).length === 10 ? '#7A2331' : '#E8E1D5',
+                            color: getRawPhoneDigits(formData.phone).length === 10 ? '#FFFFFF' : '#8C7B70',
+                            border: 'none',
+                            borderRadius: '6px',
+                            cursor: getRawPhoneDigits(formData.phone).length === 10 ? 'pointer' : 'not-allowed',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '5px',
+                            whiteSpace: 'nowrap',
+                            transition: 'all 0.2s ease',
+                          }}
+                        >
+                          {(isPhoneChecking || isOtpSending) ? (
+                            <>
+                              <Loader2 size={13} className="animate-spin" />
+                              {isPhoneChecking ? 'Checking...' : 'Sending...'}
+                            </>
+                          ) : phoneOtpSent ? (
+                            resendCountdown > 0 ? `Resend (${resendCountdown}s)` : 'Resend OTP'
+                          ) : (
+                            'Send OTP'
+                          )}
+                        </button>
+                      )}
+                      {isPhoneVerified && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingRight: '12px' }}>
+                          <button
+                            type="button"
+                            onClick={handleUnlockPhone}
+                            style={{
+                              background: 'transparent',
+                              border: 'none',
+                              color: '#8C7B70',
+                              fontSize: '0.75rem',
+                              textDecoration: 'underline',
+                              cursor: 'pointer',
+                              padding: '2px 4px',
+                            }}
+                          >
+                            Change
+                          </button>
+                        </div>
+                      )}
                     </div>
+
+                    {/* ALREADY REGISTERED ARTISAN BANNER */}
+                    {isAlreadyRegistered && (
+                      <div style={{
+                        marginTop: '0.65rem',
+                        padding: '0.85rem 1rem',
+                        background: '#FEF2F2',
+                        border: '1.5px solid #FCA5A5',
+                        borderRadius: '8px',
+                        fontSize: '0.82rem',
+                        color: '#991B1B',
+                        lineHeight: 1.45,
+                      }}>
+                        <div style={{ fontWeight: 700, marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <AlertCircle size={16} color="#DC2626" />
+                          Mobile Number Already Registered
+                        </div>
+                        <div style={{ marginBottom: '8px' }}>
+                          This number (+91 {getRawPhoneDigits(formData.phone)}) is already associated with{' '}
+                          <strong>{registeredArtisanInfo?.name || 'an existing registered artisan'}</strong>. Duplicate artisan applications are not allowed.
+                        </div>
+                        <Link
+                          href="/artisan/login"
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            padding: '0.45rem 0.85rem',
+                            background: '#7A2331',
+                            color: '#FFFFFF',
+                            borderRadius: '5px',
+                            textDecoration: 'none',
+                            fontSize: '0.76rem',
+                            fontWeight: 700,
+                            letterSpacing: '0.04em',
+                            textTransform: 'uppercase',
+                          }}
+                        >
+                          Sign In to Artisan Portal &rarr;
+                        </Link>
+                      </div>
+                    )}
+
+                    {/* OTP VERIFICATION BOX */}
+                    {phoneOtpSent && !isPhoneVerified && !isAlreadyRegistered && (
+                      <div style={{
+                        marginTop: '0.65rem',
+                        padding: '0.85rem 1rem',
+                        background: '#FAF7F2',
+                        border: '1.5px solid #D4AF37',
+                        borderRadius: '8px',
+                      }}>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginBottom: '0.5rem',
+                        }}>
+                          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#7A2331', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                            Enter 6-Digit OTP sent to +91 {getRawPhoneDigits(formData.phone)}:
+                          </span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                          <input
+                            type="text"
+                            maxLength={6}
+                            value={phoneOtp}
+                            onChange={(e) => setPhoneOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                            placeholder="&bull; &bull; &bull; &bull; &bull; &bull;"
+                            style={{
+                              flex: 1,
+                              padding: '0.65rem 0.85rem',
+                              border: '1.5px solid #D4AF37',
+                              borderRadius: '6px',
+                              fontSize: '1.15rem',
+                              fontWeight: 700,
+                              letterSpacing: '0.3em',
+                              textAlign: 'center',
+                              background: '#FFFFFF',
+                              color: '#241A15',
+                              outline: 'none',
+                            }}
+                          />
+                          <button
+                            type="button"
+                            onClick={handleVerifyPhoneOtp}
+                            disabled={phoneOtp.trim().length !== 6 || isVerifyingOtp}
+                            style={{
+                              padding: '0.65rem 1.15rem',
+                              background: phoneOtp.trim().length === 6 ? '#7A2331' : '#C7B9AC',
+                              color: '#FFFFFF',
+                              border: 'none',
+                              borderRadius: '6px',
+                              fontSize: '0.82rem',
+                              fontWeight: 700,
+                              letterSpacing: '0.04em',
+                              textTransform: 'uppercase',
+                              cursor: phoneOtp.trim().length === 6 ? 'pointer' : 'not-allowed',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {isVerifyingOtp ? (
+                              <>
+                                <Loader2 size={13} className="animate-spin" /> Verifying...
+                              </>
+                            ) : (
+                              'Verify & Lock'
+                            )}
+                          </button>
+                        </div>
+                        {phoneVerificationError && (
+                          <div style={{ marginTop: '0.45rem', fontSize: '0.78rem', color: '#DC2626', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <AlertCircle size={13} /> {phoneVerificationError}
+                          </div>
+                        )}
+                        <div style={{ marginTop: '0.4rem', fontSize: '0.74rem', color: '#8C7B70' }}>
+                          Test verification code: <strong>123456</strong>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* PHONE VERIFICATION ERROR NOT IN OTP BOX */}
+                    {phoneVerificationError && !phoneOtpSent && !isAlreadyRegistered && (
+                      <div style={{ marginTop: '0.45rem', fontSize: '0.78rem', color: '#DC2626', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <AlertCircle size={13} /> {phoneVerificationError}
+                      </div>
+                    )}
+
+                    {/* SUCCESS NOTE WHEN LOCKED */}
+                    {isPhoneVerified && (
+                      <div style={{ marginTop: '0.4rem', fontSize: '0.78rem', color: '#16A34A', display: 'flex', alignItems: 'center', gap: '5px', fontWeight: 600 }}>
+                        <ShieldCheck size={14} /> Mobile verified &amp; locked. You may proceed to the next step.
+                      </div>
+                    )}
                   </div>
 
                   <div>

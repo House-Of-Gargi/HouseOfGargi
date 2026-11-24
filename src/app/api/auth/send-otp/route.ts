@@ -1,19 +1,135 @@
 import { NextResponse } from 'next/server';
 import crypto from 'node:crypto';
 import { resend, NOREPLY_EMAIL } from '@/lib/resend';
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import localApplications from '@/data/artisan_applications.json';
 
 const AUTH_SECRET = process.env.AUTH_SECRET || 'house_of_gargi_vedic_auth_secret_2026';
 
-function generateHmacToken(email: string, otp: string, expiresAt: number): string {
-  const payload = `${email.toLowerCase().trim()}:${otp.trim()}:${expiresAt}`;
+const MASTER_ARTISAN_PHONES = new Set([
+  '9876543210',
+  '919876543210',
+  '+919876543210',
+]);
+
+function generateHmacToken(identifier: string, otp: string, expiresAt: number): string {
+  const payload = `${identifier.toLowerCase().trim()}:${otp.trim()}:${expiresAt}`;
   return crypto.createHmac('sha256', AUTH_SECRET).update(payload).digest('hex');
 }
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    const rawPhone = (body.phone || '').toString().trim();
     const cleanEmail = (body.email || '').toLowerCase().trim();
     const portal = (body.portal || 'customer').toLowerCase().trim();
+
+    // 0. Phone OTP Handling
+    if (rawPhone) {
+      let cleanDigits = rawPhone.replace(/^\+91\s*/, '').replace(/\D/g, '');
+      if (cleanDigits.startsWith('91') && cleanDigits.length > 10) {
+        cleanDigits = cleanDigits.slice(2);
+      }
+      cleanDigits = cleanDigits.slice(-10);
+
+      if (cleanDigits.length !== 10) {
+        return NextResponse.json(
+          { success: false, message: 'Please enter a valid 10-digit mobile number.' },
+          { status: 400 }
+        );
+      }
+
+      // Check if already registered when applying as artisan
+      if (portal === 'artisan_apply' || portal === 'artisan') {
+        if (cleanDigits === '9876543210' || MASTER_ARTISAN_PHONES.has(cleanDigits)) {
+          return NextResponse.json({
+            success: false,
+            alreadyRegistered: true,
+            artisanName: 'Gopal Chandraa',
+            message: 'This mobile number is already registered with Master Artisan Gopal Chandraa. Please sign in to your artisan portal.',
+          }, { status: 400 });
+        }
+
+        // Check local applications
+        try {
+          const matchedLocal = (localApplications as any[]).find(app => {
+            const p = (app.phone || '').replace(/\D/g, '').slice(-10);
+            return p === cleanDigits;
+          });
+          if (matchedLocal) {
+            return NextResponse.json({
+              success: false,
+              alreadyRegistered: true,
+              artisanName: matchedLocal.name || 'Registered Artisan',
+              message: `This mobile number is already registered with an artisan account (${matchedLocal.name || 'Artisan'}). Please log in instead.`,
+            }, { status: 400 });
+          }
+        } catch {}
+
+        // Check Supabase artisan_applications
+        try {
+          const { data: matchedApp } = await supabaseAdmin
+            .from('artisan_applications')
+            .select('id, name, phone, status')
+            .ilike('phone', `%${cleanDigits}%`)
+            .neq('status', 'rejected')
+            .limit(1)
+            .maybeSingle();
+
+          if (matchedApp) {
+            return NextResponse.json({
+              success: false,
+              alreadyRegistered: true,
+              artisanName: matchedApp.name || 'Registered Artisan',
+              message: `This mobile number is already registered with an artisan account (${matchedApp.name || 'Artisan'}). Please log in instead.`,
+            }, { status: 400 });
+          }
+        } catch {}
+
+        // Check Supabase artisan_profiles
+        try {
+          const { data: matchedProfile } = await supabaseAdmin
+            .from('artisan_profiles')
+            .select('id, full_name, phone')
+            .ilike('phone', `%${cleanDigits}%`)
+            .limit(1)
+            .maybeSingle();
+
+          if (matchedProfile) {
+            return NextResponse.json({
+              success: false,
+              alreadyRegistered: true,
+              artisanName: matchedProfile.full_name || 'Registered Artisan',
+              message: `This mobile number is already registered with an artisan account (${matchedProfile.full_name || 'Artisan'}). Please log in instead.`,
+            }, { status: 400 });
+          }
+        } catch {}
+      }
+
+      // Generate OTP and verification token
+      const otp = crypto.randomInt(100000, 1000000).toString();
+      const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
+      const verificationToken = generateHmacToken(`phone:${cleanDigits}`, otp, expiresAt);
+
+      // Attempt Supabase SMS dispatch if configured
+      try {
+        await supabaseAdmin.auth.signInWithOtp({
+          phone: `+91${cleanDigits}`,
+        });
+      } catch (smsErr) {
+        console.warn('[Phone OTP SMS dispatch notice]:', smsErr);
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: `Verification code sent to +91 ${cleanDigits}.`,
+        token: verificationToken,
+        verificationToken,
+        expiresAt,
+        phone: cleanDigits,
+        debugOtp: process.env.NODE_ENV !== 'production' ? otp : undefined,
+      });
+    }
 
     if (!cleanEmail || !cleanEmail.includes('@') || !cleanEmail.includes('.')) {
       return NextResponse.json(

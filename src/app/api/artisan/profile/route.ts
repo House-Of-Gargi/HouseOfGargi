@@ -29,7 +29,7 @@ const DEFAULT_PROFILE = {
 };
 
 export async function GET(req: Request) {
-  let profile = { ...DEFAULT_PROFILE };
+  let profile: any = { ...DEFAULT_PROFILE };
   let application: any = null;
 
   const url = new URL(req.url);
