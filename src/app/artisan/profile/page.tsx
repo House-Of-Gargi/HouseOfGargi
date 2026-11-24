@@ -191,6 +191,10 @@ export default function PersonalArtisanProfilePage() {
             parsedAuth.name = name.trim();
             localStorage.setItem('auth_session', JSON.stringify(parsedAuth));
           }
+          localStorage.setItem('artisan_profile_override', JSON.stringify(payload));
+          localStorage.setItem(`artisan_profile_${artisanNo.toLowerCase()}`, JSON.stringify(payload));
+          localStorage.setItem('artisan_profile_hg-84192', JSON.stringify(payload));
+          localStorage.setItem('artisan_profile_gopal-chandra-dey', JSON.stringify(payload));
         } catch {}
       } else {
         setSaveError('Failed to update: ' + (data.message || 'Unknown error'));

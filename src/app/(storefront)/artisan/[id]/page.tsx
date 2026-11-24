@@ -29,34 +29,70 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
 
   useEffect(() => {
     let isMounted = true;
-    fetch('/api/admin/artisans/profile')
+
+    // 1. Check local storage for immediate sync in current browser
+    try {
+      const stored =
+        localStorage.getItem('artisan_profile_override') ||
+        localStorage.getItem(`artisan_profile_${id.toLowerCase()}`) ||
+        (id.toLowerCase() === 'hg-84192' || id.toLowerCase() === 'gopal-chandra-dey'
+          ? localStorage.getItem('artisan_session')
+          : null);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed?.name) {
+          setArtisan((prev) => ({
+            ...prev,
+            ...parsed,
+            name: parsed.name || prev.name,
+            role: parsed.artStyle || parsed.role || prev.role,
+            artStyle: parsed.artStyle || prev.artStyle || prev.role,
+            region: parsed.regionalBelonging || parsed.region || prev.region,
+            regionalBelonging: parsed.regionalBelonging || parsed.region || prev.regionalBelonging,
+            experience: parsed.experience || prev.experience,
+            bio: parsed.description || parsed.bio || prev.bio,
+            description: parsed.description || parsed.bio || prev.description,
+            image: parsed.profileImage || parsed.image || prev.image,
+            profileImage: parsed.profileImage || parsed.image || prev.profileImage || prev.image,
+          }));
+        }
+      }
+    } catch {}
+
+    // 2. Fetch live updated profile from API
+    fetch('/api/artisan/profile')
       .then((res) => res.json())
       .then((data) => {
         if (!isMounted) return;
-        if (data.success && Array.isArray(data.profiles)) {
-          const match = data.profiles.find(
-            (p: any) =>
-              p.artisanNo?.toLowerCase() === id.toLowerCase() ||
-              p.id?.toLowerCase() === id.toLowerCase() ||
-              p.name?.toLowerCase() === initialArtisan.name.toLowerCase()
-          );
+        const profileList = Array.isArray(data.profiles)
+          ? data.profiles
+          : data.profile
+          ? [data.profile]
+          : [];
+        const match = profileList.find(
+          (p: any) =>
+            p.artisanNo?.toLowerCase() === id.toLowerCase() ||
+            p.id?.toLowerCase() === id.toLowerCase() ||
+            (id.toLowerCase() === 'hg-84192' &&
+              (p.artisanNo?.toLowerCase() === 'hg-84192' || p.id === 'HG-ART-260501')) ||
+            p.name?.toLowerCase() === initialArtisan.name.toLowerCase()
+        );
 
-          if (match) {
-            setArtisan((prev) => ({
-              ...prev,
-              ...match,
-              name: match.name || prev.name,
-              role: match.artStyle || match.role || prev.role,
-              artStyle: match.artStyle || prev.artStyle || prev.role,
-              region: match.regionalBelonging || match.region || prev.region,
-              regionalBelonging: match.regionalBelonging || match.region || prev.regionalBelonging,
-              experience: match.experience || prev.experience,
-              bio: match.description || match.bio || prev.bio,
-              description: match.description || match.bio || prev.description,
-              image: match.profileImage || match.image || prev.image,
-              profileImage: match.profileImage || match.image || prev.profileImage || prev.image,
-            }));
-          }
+        if (match) {
+          setArtisan((prev) => ({
+            ...prev,
+            ...match,
+            name: match.name || prev.name,
+            role: match.artStyle || match.role || prev.role,
+            artStyle: match.artStyle || prev.artStyle || prev.role,
+            region: match.regionalBelonging || match.region || prev.region,
+            regionalBelonging: match.regionalBelonging || match.region || prev.regionalBelonging,
+            experience: match.experience || prev.experience,
+            bio: match.description || match.bio || prev.bio,
+            description: match.description || match.bio || prev.description,
+            image: match.profileImage || match.image || prev.image,
+            profileImage: match.profileImage || match.image || prev.profileImage || prev.image,
+          }));
         }
       })
       .catch((err) => console.error('Error fetching live artisan profile:', err));
