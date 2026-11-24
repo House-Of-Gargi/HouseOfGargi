@@ -822,13 +822,10 @@ export default function ArtisanApplyPage() {
             {/* ═══════════════ STEP 1: BASIC INFORMATION ═══════════════ */}
             {currentStep === 1 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.35rem' }}>
-                <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem', marginBottom: '0.25rem' }}>
-                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 600 }}>
-                    Step 1: Basic Profile &amp; Contact Information
-                  </h3>
-                  <p style={{ margin: '0.25rem 0 0', fontSize: '0.84rem', color: '#8C7B70' }}>
-                    Please provide your verified details to register with the House of Gargi Artisan Guild.
-                  </p>
+                <div style={{ borderBottom: '1px solid #F0E6D2', paddingBottom: '0.5rem', marginBottom: '0.25rem' }}>
+                  <h2 style={{ margin: 0, fontSize: '0.95rem', color: '#7A2331', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Step 1: Basic Information
+                  </h2>
                 </div>
 
                 {/* ARTIST NAME */}
@@ -1244,10 +1241,10 @@ export default function ArtisanApplyPage() {
             {/* ═══════════════ STEP 2: QUESTIONS 1 TO 4 ═══════════════ */}
             {currentStep === 2 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
-                <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
-                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 600 }}>
-                    Step 2: Personal Journey &amp; Dreams (Questions 1 - 4)
-                  </h3>
+                <div style={{ borderBottom: '1px solid #F0E6D2', paddingBottom: '0.5rem' }}>
+                  <h2 style={{ margin: 0, fontSize: '0.95rem', color: '#7A2331', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Step 2: Personal Journey
+                  </h2>
                 </div>
 
                 {/* Q1 */}
@@ -1311,10 +1308,10 @@ export default function ArtisanApplyPage() {
             {/* ═══════════════ STEP 3: QUESTIONS 5 TO 8 ═══════════════ */}
             {currentStep === 3 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
-                <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
-                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 600 }}>
-                    Step 3: Craft, Lineage &amp; Materials (Questions 5 - 8)
-                  </h3>
+                <div style={{ borderBottom: '1px solid #F0E6D2', paddingBottom: '0.5rem' }}>
+                  <h2 style={{ margin: 0, fontSize: '0.95rem', color: '#7A2331', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Step 3: Craft &amp; Lineage
+                  </h2>
                 </div>
 
                 {/* Q5 */}
@@ -1378,10 +1375,10 @@ export default function ArtisanApplyPage() {
             {/* ═══════════════ STEP 4: QUESTIONS 9 TO 14 ═══════════════ */}
             {currentStep === 4 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
-                <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
-                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 600 }}>
-                    Step 4: Community, Inspiration &amp; Design (Questions 9 - 14)
-                  </h3>
+                <div style={{ borderBottom: '1px solid #F0E6D2', paddingBottom: '0.5rem' }}>
+                  <h2 style={{ margin: 0, fontSize: '0.95rem', color: '#7A2331', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Step 4: Workshop &amp; Community
+                  </h2>
                 </div>
 
                 {/* Q9 */}
@@ -1477,13 +1474,10 @@ export default function ArtisanApplyPage() {
             {/* ═══════════════ STEP 5: CHILD LABOR AGREEMENT & SUBMISSION ═══════════════ */}
             {currentStep === 5 && (
               <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
-                <div style={{ borderBottom: '1.5px solid #F0E6D2', paddingBottom: '0.75rem' }}>
-                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#7A2331', fontWeight: 600 }}>
-                    Step 5: Ethical Agreement &amp; Submission
-                  </h3>
-                  <p style={{ margin: '0.25rem 0 0', fontSize: '0.85rem', color: '#8C7B70' }}>
-                    All master artisans and atelier suppliers must commit to international child labor standards.
-                  </p>
+                <div style={{ borderBottom: '1px solid #F0E6D2', paddingBottom: '0.5rem' }}>
+                  <h2 style={{ margin: 0, fontSize: '0.95rem', color: '#7A2331', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Step 5: Ethical Agreement
+                  </h2>
                 </div>
 
                 {/* Agreement Scroll Box */}
